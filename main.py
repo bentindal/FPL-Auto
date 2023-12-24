@@ -10,62 +10,63 @@ from pprint import pprint
 import json
 from fplapi import fplapi_data
 from vastaav import vastaav_data
+from evaluate import fpl_evaluate
 from sklearn import linear_model, tree
 import matplotlib.pyplot as plt
 
 target_season = '2023-24'
-target_gameweek = 4
+target_gameweek = 15
 fplapi = fplapi_data(target_season)
 vastaav = vastaav_data('../Fantasy-Premier-League/data', target_season)
+eval = fpl_evaluate()
 
 def main():
     print('Extracting data & reducing feature set...')
-    week_one = vastaav.get_training_data(target_gameweek - 1)
-
-    # Get features and labels for FWD
-    features = week_one[3][0]
-    labels = week_one[3][1]
+    week_data = vastaav.get_training_data(target_gameweek - 1)
 
     # Lets train a model
     print('Training model...')
-    model = linear_model.LinearRegression()
-    model.fit(features, labels)
-    print('Model trained!')
+    gk_model = linear_model.LinearRegression()
+    gk_model.fit(week_data[0][0], week_data[0][1])
 
-    for i in range(target_gameweek, target_gameweek + 10):
-        # Get features for GWi
+    def_model = linear_model.LinearRegression()
+    def_model.fit(week_data[1][0], week_data[1][1])
+
+    mid_model = linear_model.LinearRegression()
+    mid_model.fit(week_data[2][0], week_data[2][1])
+
+    fwd_model = linear_model.LinearRegression()
+    fwd_model.fit(week_data[3][0], week_data[3][1])
+
+    print('Models trained!')
+
+    for i in range(target_gameweek, target_gameweek + 3):
         week_data = vastaav.get_training_data(i)
-        features = week_data[3][0]
-        labels = week_data[3][1]
 
         # Predict points for GWi
         print(f'Predicting points for GW{i}...')
-        predictions = model.predict(features)
-        
-        # Calculate error
-        error = 0
-        square_error = 0
-        accuracy = 0
-        for i in range(len(predictions)):
-            error += abs(predictions[i] - labels[i])
-            square_error += (predictions[i] - labels[i]) ** 2
-            if predictions[i] == labels[i]:
-                accuracy += 1
-        error /= len(predictions)
-        square_error /= len(predictions)
-        accuracy /= len(predictions)
+        gk_predictions = gk_model.predict(week_data[0][0])
+        def_predictions = def_model.predict(week_data[1][0])
+        mid_predictions = mid_model.predict(week_data[2][0])
+        fwd_predictions = fwd_model.predict(week_data[3][0])
 
-        print(f'Average error: {error}')
-        print(f'Average square error: {square_error}')
-        print(f'Accuracy: {accuracy}')
+        eval.score_model(gk_predictions, week_data[0][1])
+        eval.score_model(def_predictions, week_data[1][1])
+        eval.score_model(mid_predictions, week_data[2][1])
+        eval.score_model(fwd_predictions, week_data[3][1])
 
-        # Plot predictions vs actual points
-        plt.scatter(predictions, labels)
+        # Plot predictions vs actual points for GWi
+        # Colour code by position
+        plt.title(f'GW{i} predictions vs actual points')
         plt.xlabel('Predicted points')
         plt.ylabel('Actual points')
-        # Plot y=x
-        x = np.linspace(0, 20, 100)
-        plt.plot(x, x, '-r', label='y=x')
+        plt.scatter(gk_predictions, week_data[0][1], color='red')
+        plt.scatter(def_predictions, week_data[1][1], color='blue')
+        plt.scatter(mid_predictions, week_data[2][1], color='green')
+        plt.scatter(fwd_predictions, week_data[3][1], color='orange')
+        plt.legend(['GK', 'DEF', 'MID', 'FWD'])
+        # Plot y=x line to show perfect prediction
+        plt.plot([0, 20], [0, 20], color='black')
 
         plt.show()
 
