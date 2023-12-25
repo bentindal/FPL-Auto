@@ -30,7 +30,7 @@ class vastaav_data:
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home']]
         return gw_data.set_index('name')
 
-    def get_pos_data(self, week_num, position, training=False):
+    def get_pos_data(self, week_num, position):
         gw_data = self.get_gw_data(week_num)
         # Drop all players that are not of the specified position
         gw_data = gw_data[gw_data['position'] == position]
@@ -83,10 +83,10 @@ class vastaav_data:
         return gw_data
     
     def get_training_data(self, week_num):
-        gk_features = self.get_pos_data(week_num, 'GK', True)
-        def_features = self.get_pos_data(week_num, 'DEF', True)
-        mid_features = self.get_pos_data(week_num, 'MID', True)
-        fwd_features = self.get_pos_data(week_num, 'FWD', True)
+        gk_features = self.get_pos_data(week_num, 'GK')
+        def_features = self.get_pos_data(week_num, 'DEF')
+        mid_features = self.get_pos_data(week_num, 'MID')
+        fwd_features = self.get_pos_data(week_num, 'FWD')
 
         # Remove all players that have not played
         gk_features = gk_features[gk_features['minutes'] > 0]
@@ -105,26 +105,6 @@ class vastaav_data:
         def_features = def_features.drop(['was_home', 'team', 'position', 'total_points'], axis=1)
         mid_features = mid_features.drop(['was_home', 'team', 'position', 'total_points'], axis=1)
         fwd_features = fwd_features.drop(['was_home', 'team', 'position', 'total_points'], axis=1)
-
-        # Make sure there are no NaN values
-        gk_features = gk_features.fillna(0)
-        def_features = def_features.fillna(0)
-        mid_features = mid_features.fillna(0)
-        fwd_features = fwd_features.fillna(0)
-
-        # Check for NaN values in labels
-        if gk_labels.isnull().values.any():
-            print('NaN values in gk_labels')
-            quit()
-        if def_labels.isnull().values.any():
-            print('NaN values in def_labels')
-            quit()
-        if mid_labels.isnull().values.any():
-            print('NaN values in mid_labels')
-            quit()
-        if fwd_labels.isnull().values.any():
-            print('NaN values in fwd_labels')
-            quit()
         
         # Get the feature names in a list from each pos
         gk_feature_list = list(gk_features.columns)

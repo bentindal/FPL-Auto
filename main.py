@@ -15,7 +15,7 @@ from sklearn import linear_model, tree
 import matplotlib.pyplot as plt
 
 target_season = '2023-24'
-target_gameweek = 15
+target_gameweek = 14
 fplapi = fplapi_data(target_season)
 vastaav = vastaav_data('../Fantasy-Premier-League/data', target_season)
 eval = fpl_evaluate()
@@ -58,7 +58,7 @@ def main():
     
 
     for i in range(target_gameweek, target_gameweek + 3):
-        week_data = vastaav.get_training_data(i)
+        feature_names, week_data = vastaav.get_training_data(i)
 
         # Predict points for GWi
         print(f'Predicting points for GW{i}...')
