@@ -22,7 +22,7 @@ eval = fpl_evaluate()
 
 def main():
     print('Extracting data & reducing feature set...')
-    week_data = vastaav.get_training_data(target_gameweek - 1)
+    feature_names, week_data = vastaav.get_training_data(target_gameweek - 1)
 
     # Lets train a model
     print('Training model...')
@@ -39,6 +39,23 @@ def main():
     fwd_model.fit(week_data[3][0], week_data[3][1])
 
     print('Models trained!')
+    
+    # Plot the weights to each feature
+    gk_weights = gk_model.coef_
+    def_weights = def_model.coef_
+    mid_weights = mid_model.coef_
+    fwd_weights = fwd_model.coef_
+
+    weights = np.concatenate((gk_weights, def_weights, mid_weights, fwd_weights))
+    feature_names = np.concatenate((feature_names[0], feature_names[1], feature_names[2], feature_names[3]))
+
+    plt.title('Feature weights')
+    plt.xlabel('Feature')
+    plt.ylabel('Weight')
+    plt.bar(feature_names, weights)
+    plt.xticks(rotation=90)
+    plt.show()
+    
 
     for i in range(target_gameweek, target_gameweek + 3):
         week_data = vastaav.get_training_data(i)
@@ -67,6 +84,8 @@ def main():
         plt.legend(['GK', 'DEF', 'MID', 'FWD'])
         # Plot y=x line to show perfect prediction
         plt.plot([0, 20], [0, 20], color='black')
+        # Plot line of best fit
+        
 
         plt.show()
 

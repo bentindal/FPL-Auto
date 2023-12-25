@@ -125,6 +125,12 @@ class vastaav_data:
         if fwd_labels.isnull().values.any():
             print('NaN values in fwd_labels')
             quit()
+        
+        # Get the feature names in a list from each pos
+        gk_feature_list = list(gk_features.columns)
+        def_feature_list = list(def_features.columns)
+        mid_feature_list = list(mid_features.columns)
+        fwd_feature_list = list(fwd_features.columns)
 
         # Convert features and labels to numpy arrays
         gk_features = gk_features.to_numpy()
@@ -143,5 +149,5 @@ class vastaav_data:
         training_mid = (mid_features, mid_labels)
         training_fwd = (fwd_features, fwd_labels)
 
-        return training_gk, training_def, training_mid, training_fwd
+        return [gk_feature_list, def_feature_list, mid_feature_list, fwd_feature_list], [training_gk, training_def, training_mid, training_fwd]
     
