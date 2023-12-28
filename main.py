@@ -15,21 +15,22 @@ from sklearn import linear_model, tree
 import matplotlib.pyplot as plt
 
 target_season = '2023-24'
-target_gameweek = 9
-last_gameweek = 18
+target_gameweek = 15
+last_gameweek = 17
 fplapi = fplapi_data(target_season)
 vastaav = vastaav_data('../Fantasy-Premier-League/data', target_season)
 eval = fpl_evaluate()
 
 def main():
     # Predict points for GWi
-    for i in range(target_gameweek, target_gameweek + 10):
+    for i in range(target_gameweek, target_gameweek + 5):
         # Retrain model each time
         # Lets sum up the last 3 gameweeks to get a more accurate representation of player performance
         if i >= last_gameweek:
-            i = last_gameweek - 1
-
-        __, feature_names, week_data = vastaav.get_training_data(i - 1)
+            print(f'GW{i}: n/a')
+            __, feature_names, week_data = vastaav.get_training_data(last_gameweek - 1)
+        else:
+            __, feature_names, week_data = vastaav.get_training_data(i - 1)
 
         # Lets train a model
         gk_model = linear_model.LinearRegression()
@@ -55,14 +56,12 @@ def main():
         plt.xticks(rotation=90)
         plt.show()
 
-
         # target_gameweek has not happened yet, so we predict it using past data 
         # Get test data by summing up 3 previous gameweeks
         # week_data = GWi-3 + GWi-2 + GWi-1
-        if i == last_gameweek - 1:
-            print(f'Predicting FUTURE GW{i}...')
+        if i >= last_gameweek:
             # Get features from most up to date data
-            player_names, feature_names, features = vastaav.get_test_data(last_gameweek - 1)
+            player_names, feature_names, features = vastaav.get_test_data(last_gameweek)
         else: 
             player_names, feature_names, test_data = vastaav.get_training_data(i)
         
@@ -75,11 +74,7 @@ def main():
         mid_predictions = np.round(mid_model.predict(features[2]), 3)
         fwd_predictions = np.round(fwd_model.predict(features[3]), 3)
 
-        # Round predictions to 3dp
-
-
-
-        if i < last_gameweek - 1:
+        if i < last_gameweek:
             gk_error, gk_square_error, gk_accuracy = eval.score_model(gk_predictions, labels[0])
             def_error, def_square_error, def_accuracy = eval.score_model(def_predictions, labels[1])
             mid_error, mid_square_error, mid_accuracy = eval.score_model(mid_predictions, labels[2])
@@ -89,9 +84,9 @@ def main():
             error = (gk_error + def_error + mid_error + fwd_error) / 4
             ase = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
             aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4
-            print(f'GW{i}, AE: {error:.2f}, ASE: {ase:.2f}, ACC: {aa*100:.2f}%')
+            print(f'GW{i}: AE: {error:.2f}, ASE: {ase:.2f}, ACC: {aa*100:.2f}%')
 
-        if i < last_gameweek - 1:
+        if i < last_gameweek:
             # Output predictions to csv, use player_names as first column, then predictions, then actual points
             # This will allow us to compare predictions to actual points
             csv_gk_predictions = np.column_stack((player_names[0], gk_predictions, labels[0]))
