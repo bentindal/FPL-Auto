@@ -28,7 +28,7 @@ def main():
         # Lets sum up the last 3 gameweeks to get a more accurate representation of player performance
         if i >= last_gameweek:
             i = last_gameweek - 1
-            
+
         __, feature_names, week_data = vastaav.get_training_data(i - 1)
 
         # Lets train a model
@@ -70,10 +70,14 @@ def main():
             features = [test_data[0][0], test_data[1][0], test_data[2][0], test_data[3][0]]
             labels = [test_data[0][1], test_data[1][1], test_data[2][1], test_data[3][1]] 
 
-        gk_predictions = gk_model.predict(features[0])
-        def_predictions = def_model.predict(features[1])
-        mid_predictions = mid_model.predict(features[2])
-        fwd_predictions = fwd_model.predict(features[3])
+        gk_predictions = np.round(gk_model.predict(features[0]), 3)
+        def_predictions = np.round(def_model.predict(features[1]), 3)
+        mid_predictions = np.round(mid_model.predict(features[2]), 3)
+        fwd_predictions = np.round(fwd_model.predict(features[3]), 3)
+
+        # Round predictions to 3dp
+
+
 
         if i < last_gameweek - 1:
             gk_error, gk_square_error, gk_accuracy = eval.score_model(gk_predictions, labels[0])
