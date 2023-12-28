@@ -32,7 +32,7 @@ class vastaav_data:
     def get_pos_data(self, week_num, position):
         gw_data = self.get_gw_data(week_num)
         gw_data = gw_data[gw_data['position'] == position]
-        gw_data = gw_data.drop(['position', 'team'], axis=1)
+        gw_data = gw_data.drop(['position', 'team', 'ict_index'], axis=1)
         return gw_data
     
     def get_training_data(self, week_num):
