@@ -99,14 +99,14 @@ def main():
             csv_mid_predictions = np.column_stack((player_names[2], mid_predictions, labels[2]))
             csv_fwd_predictions = np.column_stack((player_names[3], fwd_predictions, labels[3]))
             
-            csv_gk_predictions = np.concatenate((np.array([['Name', 'Predicted points', 'Actual Points']]), csv_gk_predictions), axis=0)
+            csv_gk_predictions = np.concatenate((np.array([['Name', 'xP', 'P']]), csv_gk_predictions), axis=0)
         else:
             csv_gk_predictions = np.column_stack((player_names[0], gk_predictions))
             csv_def_predictions = np.column_stack((player_names[1], def_predictions))
             csv_mid_predictions = np.column_stack((player_names[2], mid_predictions))
             csv_fwd_predictions = np.column_stack((player_names[3], fwd_predictions))
 
-            csv_gk_predictions = np.concatenate((np.array([['Name', 'Predicted points']]), csv_gk_predictions), axis=0)
+            csv_gk_predictions = np.concatenate((np.array([['Name', 'xP']]), csv_gk_predictions), axis=0)
         
         csv_predictions = np.concatenate((csv_gk_predictions, csv_def_predictions, csv_mid_predictions, csv_fwd_predictions), axis=0)
 
