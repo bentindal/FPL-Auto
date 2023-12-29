@@ -20,9 +20,9 @@ class fpl_evaluate:
 
         return error, square_error, accuracy
     
-    def display_weights(self, weights, feature_names, pos):
+    def display_weights(self, week_num, weights, feature_names, pos):
         # Plot the weights
-        plt.title(f'GW{i} {pos} feature weights')
+        plt.title(f'GW{week_num} {pos} feature weights')
         plt.xlabel('Feature')
         plt.ylabel('Weight')
         plt.bar(feature_names, weights)

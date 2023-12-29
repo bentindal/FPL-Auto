@@ -53,10 +53,10 @@ def main():
         # Lets sum up the last 3 gameweeks to get a more accurate representation of player performance
         if i > last_gameweek:
             print(f'GW{i}: n/a')
-            feature_names, training_data, test_data = vastaav.get_training_data_all(
+            training_data, test_data = vastaav.get_training_data_all(
                 season, last_gameweek - training_prev_weeks, last_gameweek - 1)
         else:
-            feature_names, training_data, test_data = vastaav.get_training_data_all(
+            training_data, test_data = vastaav.get_training_data_all(
                 season, i - training_prev_weeks, i - 1)
 
         gk_model, def_model, mid_model, fwd_model = vastaav.get_model(modelType, training_data)
@@ -65,8 +65,8 @@ def main():
             ''' NOT WORKING PROPERLY
             - Feature names are not in the same order as the weights
             - Need to find a way to get the feature names in the same order as the weights'''
-
-            eval.display_weights(gk_model, feature_names[0], 'GK')
+            weights = gk_model.feature_importances_
+            eval.display_weights(weights, len(training_data[0][0].columns), 'GK')
 
         gk_predictions = np.round(gk_model.predict(test_data[0][0]), 3)
         def_predictions = np.round(def_model.predict(test_data[1][0]), 3)
