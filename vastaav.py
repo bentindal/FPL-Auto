@@ -7,6 +7,9 @@ import json
 import sklearn
 from sklearn import linear_model, ensemble, model_selection
 from sklearn.model_selection import train_test_split
+import xgboost as xgb
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 
 class vastaav_data:
     def __init__(self, data_location, season):
@@ -141,3 +144,40 @@ class vastaav_data:
         fwd_features = fwd_features.to_numpy()
 
         return [gk_names_list, def_names_list, mid_names_list, fwd_names_list], [gk_feature_names, def_feature_names, mid_feature_names, fwd_feature_names], [gk_features, def_features, mid_features, fwd_features]
+
+    def get_model(self, modelType, training_data):
+        # Pick a model type
+        if modelType == 'linear':
+            gk_model = linear_model.LinearRegression()
+            def_model = linear_model.LinearRegression()
+            mid_model = linear_model.LinearRegression()
+            fwd_model = linear_model.LinearRegression()
+            
+        elif modelType == 'randomforest':
+            gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+
+        elif modelType == 'xgboost':
+            gk_model = xgb.XGBRegressor()
+            def_model = xgb.XGBRegressor()
+            mid_model = xgb.XGBRegressor()
+            fwd_model = xgb.XGBRegressor()
+
+        elif modelType == 'gradientboost':
+            loss_function = 'squared_error'
+            n_est = 1000 # keep at 1000 whilst in development for speed
+            l_rate = 0.2
+            gk_model = GradientBoostingRegressor(max_features=17, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            def_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            mid_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            fwd_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+
+        # Fit training data to model
+        gk_model.fit(training_data[0][0], training_data[0][1])
+        def_model.fit(training_data[1][0], training_data[1][1])
+        mid_model.fit(training_data[2][0], training_data[2][1])
+        fwd_model.fit(training_data[3][0], training_data[3][1])
+
+        return gk_model, def_model, mid_model, fwd_model
