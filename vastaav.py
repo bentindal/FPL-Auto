@@ -145,27 +145,27 @@ class vastaav_data:
 
         return [gk_names_list, def_names_list, mid_names_list, fwd_names_list], [gk_feature_names, def_feature_names, mid_feature_names, fwd_feature_names], [gk_features, def_features, mid_features, fwd_features]
 
-    def get_model(self, modelType, training_data):
+    def get_model(self, model_type, training_data):
         # Pick a model type
-        if modelType == 'linear':
+        if model_type == 'linear':
             gk_model = linear_model.LinearRegression()
             def_model = linear_model.LinearRegression()
             mid_model = linear_model.LinearRegression()
             fwd_model = linear_model.LinearRegression()
             
-        elif modelType == 'randomforest':
+        elif model_type == 'randomforest':
             gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
             def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
             mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
             fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
 
-        elif modelType == 'xgboost':
+        elif model_type == 'xgboost':
             gk_model = xgb.XGBRegressor()
             def_model = xgb.XGBRegressor()
             mid_model = xgb.XGBRegressor()
             fwd_model = xgb.XGBRegressor()
 
-        elif modelType == 'gradientboost':
+        elif model_type == 'gradientboost':
             loss_function = 'squared_error'
             n_est = 1000 # keep at 1000 whilst in development for speed
             l_rate = 0.2
