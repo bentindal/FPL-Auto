@@ -11,12 +11,16 @@ import json
 from fplapi import fplapi_data
 from vastaav import vastaav_data
 from evaluate import fpl_evaluate
-from sklearn import linear_model, tree
+from sklearn import linear_model
+from sklearn import ensemble  
+from sklearn.ensemble import RandomForestRegressor 
 import matplotlib.pyplot as plt
 
 target_season = '2023-24'
-target_gameweek = 15
+target_gameweek = 9
 last_gameweek = 17
+modelType = 'randomforest' # linear or randomforest
+display_weights = False
 fplapi = fplapi_data(target_season)
 vastaav = vastaav_data('../Fantasy-Premier-League/data', target_season)
 eval = fpl_evaluate()
@@ -33,28 +37,33 @@ def main():
             __, feature_names, week_data = vastaav.get_training_data(i - 1)
 
         # Lets train a model
-        gk_model = linear_model.LinearRegression()
+        if modelType == 'linear':
+            gk_model = linear_model.LinearRegression()
+            def_model = linear_model.LinearRegression()
+            mid_model = linear_model.LinearRegression()
+            fwd_model = linear_model.LinearRegression()
+        elif modelType == 'randomforest':
+            gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+
         gk_model.fit(week_data[0][0], week_data[0][1])
-
-        def_model = linear_model.LinearRegression()
         def_model.fit(week_data[1][0], week_data[1][1])
-
-        mid_model = linear_model.LinearRegression()
         mid_model.fit(week_data[2][0], week_data[2][1])
-
-        fwd_model = linear_model.LinearRegression()
         fwd_model.fit(week_data[3][0], week_data[3][1])
 
-        # Plot the weights to each feature
-        weights = np.concatenate((gk_model.coef_, def_model.coef_, mid_model.coef_, fwd_model.coef_))
-        feature_names = np.concatenate((feature_names[0], feature_names[1], feature_names[2], feature_names[3]))
+        if modelType == 'linear' and display_weights:
+            # Plot the weights to each feature
+            weights = np.concatenate((gk_model.coef_, def_model.coef_, mid_model.coef_, fwd_model.coef_))
+            feature_names = np.concatenate((feature_names[0], feature_names[1], feature_names[2], feature_names[3]))
 
-        plt.title(f'Feature weights for GW{i}')
-        plt.xlabel('Feature')
-        plt.ylabel('Weight')
-        plt.bar(feature_names, weights)
-        plt.xticks(rotation=90)
-        plt.show()
+            plt.title(f'Feature weights for GW{i}')
+            plt.xlabel('Feature')
+            plt.ylabel('Weight')
+            plt.bar(feature_names, weights)
+            plt.xticks(rotation=90)
+            plt.show()
 
         # target_gameweek has not happened yet, so we predict it using past data 
         # Get test data by summing up 3 previous gameweeks
@@ -108,7 +117,7 @@ def main():
         csv_predictions = pd.DataFrame(csv_predictions[1:], columns=csv_predictions[0])
         csv_predictions.set_index('Name', inplace=True)
 
-        csv_predictions.to_csv(f'predictions/predictions_gw{i}.csv')
+        csv_predictions.to_csv(f'predictions/predictions_{modelType}_gw{i}.csv')
         
         '''# Plot predictions vs actual points for GWi
         # Colour code by position
