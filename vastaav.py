@@ -120,38 +120,6 @@ class vastaav_data:
 
         return feature_names, training_data, test_data
 
-    def get_test_data(self, season, week_num):
-        gk_features = self.get_pos_data(season, week_num, 'GK')
-        def_features = self.get_pos_data(season, week_num, 'DEF')
-        mid_features = self.get_pos_data(season, week_num, 'MID')
-        fwd_features = self.get_pos_data(season, week_num, 'FWD')
-
-        # Drop the remaining columns that are not features
-        gk_features = gk_features.drop(['total_points'], axis=1)
-        def_features = def_features.drop(['total_points'], axis=1)
-        mid_features = mid_features.drop(['total_points'], axis=1)
-        fwd_features = fwd_features.drop(['total_points'], axis=1)
-
-        # Get the player names in a list from each pos
-        gk_names_list = list(gk_features.index)
-        def_names_list = list(def_features.index)
-        mid_names_list = list(mid_features.index)
-        fwd_names_list = list(fwd_features.index)
-
-        # Get the feature names in a list from each pos
-        gk_feature_names = list(gk_features.columns)
-        def_feature_names = list(def_features.columns)
-        mid_feature_names = list(mid_features.columns)
-        fwd_feature_names = list(fwd_features.columns)
-
-        # Convert features and labels to numpy arrays
-        gk_features = gk_features.to_numpy()
-        def_features = def_features.to_numpy()
-        mid_features = mid_features.to_numpy()
-        fwd_features = fwd_features.to_numpy()
-
-        return [gk_names_list, def_names_list, mid_names_list, fwd_names_list], [gk_feature_names, def_feature_names, mid_feature_names, fwd_feature_names], [gk_features, def_features, mid_features, fwd_features]
-
     def get_model(self, model_type, training_data):
         # Pick a model type
         if model_type == 'linear':
@@ -174,7 +142,7 @@ class vastaav_data:
 
         elif model_type == 'gradientboost':
             loss_function = 'squared_error'
-            n_est = 1000 # keep at 1000 whilst in development for speed
+            n_est = 100 # keep at 1000 whilst in development for speed
             l_rate = 0.2
             gk_model = GradientBoostingRegressor(max_features=17, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
             def_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
