@@ -13,39 +13,40 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 class vastaav_data:
     def __init__(self, data_location, season):
-        self.data_location = f'{data_location}/{season}'
+        self.data_location = f'{data_location}'
         self.season = season
-        self.player_list = self.get_player_list().set_index('name').to_dict()
+        self.prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
+        self.player_list = self.get_player_list(season).set_index('name').to_dict()
         self.player_id_list = {v: k for k, v in self.player_list['id'].items()}
-        self.team_list = self.get_team_list()
+        self.team_list = self.get_team_list(season)
     
-    def get_player_list(self):
-        player_list = pd.read_csv(f'{self.data_location}/player_idlist.csv')
+    def get_player_list(self, season):
+        player_list = pd.read_csv(f'{self.data_location}/{season}/player_idlist.csv')
         # Merge first_name and second_name columns into one column
         player_list['name'] = player_list['first_name'] + ' ' + player_list['second_name']
         return player_list[['name', 'id']]
     
-    def get_team_list(self):
-        team_list = pd.read_csv(f'{self.data_location}/teams.csv')
+    def get_team_list(self, season):
+        team_list = pd.read_csv(f'{self.data_location}/{season}/teams.csv')
         team_list = team_list[['name', 'strength_overall_home', 'strength_overall_away', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
         return team_list.set_index('name')
     
-    def get_gw_data(self, week_num):
-        gw_data = pd.read_csv(f'{self.data_location}/gws/gw{week_num}.csv')
+    def get_gw_data(self, season, week_num):
+        gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home']]
         return gw_data.set_index('name')
 
-    def get_pos_data(self, week_num, position):
-        gw_data = self.get_gw_data(week_num)
+    def get_pos_data(self, season, week_num, position):
+        gw_data = self.get_gw_data(season, week_num)
         gw_data = gw_data[gw_data['position'] == position]
         gw_data = gw_data.drop(['position', 'team', 'ict_index'], axis=1)
         return gw_data
     
-    def get_training_data(self, week_num):
-        gk_features = self.get_pos_data(week_num, 'GK')
-        def_features = self.get_pos_data(week_num, 'DEF')
-        mid_features = self.get_pos_data(week_num, 'MID')
-        fwd_features = self.get_pos_data(week_num, 'FWD')
+    def get_training_data(self, season, week_num):
+        gk_features = self.get_pos_data(season, week_num, 'GK')
+        def_features = self.get_pos_data(season, week_num, 'DEF')
+        mid_features = self.get_pos_data(season, week_num, 'MID')
+        fwd_features = self.get_pos_data(season, week_num, 'FWD')
 
         gk_labels = gk_features['total_points']
         def_labels = def_features['total_points']
@@ -79,13 +80,19 @@ class vastaav_data:
 
         return feature_names, training_gk, training_def, training_mid, training_fwd
 
-    def get_training_data_all(self, from_gw, to_gw):
+    def get_training_data_all(self, season, from_gw, to_gw):
         feature_names = []
         for i in range(from_gw, to_gw):
             if i == from_gw:
-                feature_names, training_gk, training_def, training_mid, training_fwd = self.get_training_data(i)
+                if i < 1:
+                    feature_names, training_gk, training_def, training_mid, training_fwd = self.get_training_data(self.prev_season, 37 + i)
+                else:
+                    feature_names, training_gk, training_def, training_mid, training_fwd = self.get_training_data(season, i)
             else:
-                feature_names, training_gk_new, training_def_new, training_mid_new, training_fwd_new = self.get_training_data(i)
+                if i < 1:
+                    feature_names, training_gk_new, training_def_new, training_mid_new, training_fwd_new = self.get_training_data(self.prev_season, 38 + i)
+                else:
+                    feature_names, training_gk_new, training_def_new, training_mid_new, training_fwd_new = self.get_training_data(season, i)
                 training_gk = (np.concatenate((training_gk[0], training_gk_new[0])), np.concatenate((training_gk[1], training_gk_new[1])))
                 training_def = (np.concatenate((training_def[0], training_def_new[0])), np.concatenate((training_def[1], training_def_new[1])))
                 training_mid = (np.concatenate((training_mid[0], training_mid_new[0])), np.concatenate((training_mid[1], training_mid_new[1])))
@@ -113,11 +120,11 @@ class vastaav_data:
 
         return feature_names, training_data, test_data
 
-    def get_test_data(self, week_num):
-        gk_features = self.get_pos_data(week_num, 'GK')
-        def_features = self.get_pos_data(week_num, 'DEF')
-        mid_features = self.get_pos_data(week_num, 'MID')
-        fwd_features = self.get_pos_data(week_num, 'FWD')
+    def get_test_data(self, season, week_num):
+        gk_features = self.get_pos_data(season, week_num, 'GK')
+        def_features = self.get_pos_data(season, week_num, 'DEF')
+        mid_features = self.get_pos_data(season, week_num, 'MID')
+        fwd_features = self.get_pos_data(season, week_num, 'FWD')
 
         # Drop the remaining columns that are not features
         gk_features = gk_features.drop(['total_points'], axis=1)

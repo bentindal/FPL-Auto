@@ -17,10 +17,10 @@ from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
 # Season to predict points for
-target_season = '2022-23'
-prev_season = f'{int(target_season[:4])-1}-{int(target_season[5:])-1}'
+season = '2022-23'
+prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
 # First gameweek to predict points for
-target_gameweek = 6
+target_gameweek = 1
 # Last gameweek data is available for
 last_gameweek = 37
 # How many weeks to repeat testing over
@@ -36,9 +36,9 @@ plot_predictions = False
 
 # Initialise classes
 
-fplapi = fplapi_data(target_season)
+fplapi = fplapi_data(season)
 # Ensure that the correct location is specified for Vastaav data
-vastaav = vastaav_data('../Fantasy-Premier-League/data', target_season)
+vastaav = vastaav_data('../Fantasy-Premier-League/data', season)
 
 eval = fpl_evaluate()
 
@@ -55,10 +55,10 @@ def main():
         if i > last_gameweek:
             print(f'GW{i}: n/a')
             feature_names, training_data, test_data = vastaav.get_training_data_all(
-                last_gameweek - training_prev_weeks, last_gameweek - 1)
+                season, last_gameweek - training_prev_weeks, last_gameweek - 1)
         else:
             feature_names, training_data, test_data = vastaav.get_training_data_all(
-                i - training_prev_weeks, i - 1)
+                season, i - training_prev_weeks, i - 1)
 
         gk_model, def_model, mid_model, fwd_model = vastaav.get_model(modelType, training_data)
 
