@@ -22,9 +22,9 @@ prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
 # First gameweek to predict points for
 target_gameweek = 1
 # Last gameweek data is available for
-last_gameweek = 37
+last_gameweek = 38
 # How many weeks to repeat testing over
-repeat = 10
+repeat = 37
 # Select a model type [linear, randomforest, xgboost, gradientboost]
 modelType = 'gradientboost'
 # How many past weeks of data to use for training
