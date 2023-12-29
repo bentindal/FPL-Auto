@@ -24,18 +24,17 @@ target_gameweek = 1
 # Last gameweek data is available for
 last_gameweek = 38
 # How many weeks to repeat testing over
-repeat = 37
+repeat = 5
 # Select a model type [linear, randomforest, xgboost, gradientboost]
 modelType = 'gradientboost'
 # How many past weeks of data to use for training
-training_prev_weeks = 5
+training_prev_weeks = 10
 # Whether to display feature weights CURRENTLY NOT WORKING
 display_weights = False
 # Whether to plot predictions vs actual points
 plot_predictions = False
 
 # Initialise classes
-
 fplapi = fplapi_data(season)
 # Ensure that the correct location is specified for Vastaav data
 vastaav = vastaav_data('../Fantasy-Premier-League/data', season)
