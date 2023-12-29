@@ -54,12 +54,10 @@ class vastaav_data:
         fwd_labels = fwd_features['total_points']
 
         # Drop the remaining columns that are not features
-        gk_features = gk_features.drop(['total_points'], axis=1)
-        def_features = def_features.drop(['total_points'], axis=1)
-        mid_features = mid_features.drop(['total_points'], axis=1)
-        fwd_features = fwd_features.drop(['total_points'], axis=1)
-
-        feature_names = list(gk_features.columns)
+        gk_features = gk_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        def_features = def_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        mid_features = mid_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        fwd_features = fwd_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
 
         # Group features & labels for convenience
         training_gk = (gk_features, gk_labels)
@@ -70,7 +68,6 @@ class vastaav_data:
         return training_gk, training_def, training_mid, training_fwd
 
     def get_training_data_all(self, season, from_gw, to_gw):
-        feature_names = []
         for i in range(from_gw, to_gw):
             if i == from_gw:
                 if i < 1:
@@ -82,11 +79,11 @@ class vastaav_data:
                     training_gk_new, training_def_new, training_mid_new, training_fwd_new = self.get_training_data(self.prev_season, 38 + i)
                 else:
                     training_gk_new, training_def_new, training_mid_new, training_fwd_new = self.get_training_data(season, i)
-                training_gk = (np.concatenate((training_gk[0], training_gk_new[0])), np.concatenate((training_gk[1], training_gk_new[1])))
-                training_def = (np.concatenate((training_def[0], training_def_new[0])), np.concatenate((training_def[1], training_def_new[1])))
-                training_mid = (np.concatenate((training_mid[0], training_mid_new[0])), np.concatenate((training_mid[1], training_mid_new[1])))
-                training_fwd = (np.concatenate((training_fwd[0], training_fwd_new[0])), np.concatenate((training_fwd[1], training_fwd_new[1])))
-
+                training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+                training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+                training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+                training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+            
         gk_features_train, gk_features_test, gk_labels_train, gk_labels_test = train_test_split(training_gk[0], training_gk[1], test_size=0.2, random_state=42)
         def_features_train, def_features_test, def_labels_train, def_labels_test = train_test_split(training_def[0], training_def[1], test_size=0.2, random_state=42)
         mid_features_train, mid_features_test, mid_labels_train, mid_labels_test = train_test_split(training_mid[0], training_mid[1], test_size=0.2, random_state=42)
@@ -131,10 +128,11 @@ class vastaav_data:
             loss_function = 'squared_error'
             n_est = 100 # keep at 1000 whilst in development for speed
             l_rate = 0.2
-            gk_model = GradientBoostingRegressor(max_features=17, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
-            def_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
-            mid_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
-            fwd_model = GradientBoostingRegressor(max_features=17,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            max_f = 10
+            gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            def_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            mid_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
+            fwd_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
 
         # Fit training data to model
         gk_model.fit(training_data[0][0], training_data[0][1])

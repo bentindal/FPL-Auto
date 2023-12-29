@@ -20,17 +20,17 @@ import matplotlib.pyplot as plt
 season = '2022-23'
 prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
 # First gameweek to predict points for
-target_gameweek = 1
+target_gameweek = 6
 # Last gameweek data is available for
 last_gameweek = 38
 # How many weeks to repeat testing over
-repeat = 5
+repeat = 1
 # Select a model type [linear, randomforest, xgboost, gradientboost]
 modelType = 'gradientboost'
 # How many past weeks of data to use for training
 training_prev_weeks = 10
-# Whether to display feature weights CURRENTLY NOT WORKING
-display_weights = False
+# Whether to display feature weights
+display_weights = True
 # Whether to plot predictions vs actual points
 plot_predictions = False
 
@@ -65,8 +65,9 @@ def main():
             ''' NOT WORKING PROPERLY
             - Feature names are not in the same order as the weights
             - Need to find a way to get the feature names in the same order as the weights'''
-            weights = gk_model.feature_importances_
-            eval.display_weights(weights, len(training_data[0][0].columns), 'GK')
+            feature_list = training_data[0][0].columns
+            importances = [gk_model.feature_importances_, def_model.feature_importances_, mid_model.feature_importances_, fwd_model.feature_importances_]
+            eval.display_weights(i, importances, feature_list, ['GK', 'DEF', 'MID', 'FWD'])
 
         gk_predictions = np.round(gk_model.predict(test_data[0][0]), 3)
         def_predictions = np.round(def_model.predict(test_data[1][0]), 3)

@@ -21,14 +21,27 @@ class fpl_evaluate:
         return error, square_error, accuracy
     
     def display_weights(self, week_num, weights, feature_names, pos):
-        # Plot the weights
-        plt.title(f'GW{week_num} {pos} feature weights')
-        plt.xlabel('Feature')
-        plt.ylabel('Weight')
-        plt.bar(feature_names, weights)
-        plt.xticks(rotation=90)
+        plt.figure(figsize=(15, 6))
+        # big title
+        plt.suptitle(f'GW{week_num} feature importances')
+        # 4 subplots
+        for i in range(4):
+            plt.subplot(1, 4, i + 1)
+            plt.title(pos[i])
+            plt.barh(feature_names, weights[i])
+            plt.xlabel('Importance')
+            # Hide y axis labels for all but first subplot
+            if i != 0:
+                plt.yticks([])
+            if i == 0:
+                plt.ylabel('Feature')
+            plt.gca().invert_yaxis()
+
+        
+
         plt.tight_layout()
         plt.show()
+
 
     def plot_predictions(self, predictions, test_data, week_num):
         # Plot predictions vs actual points
