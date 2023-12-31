@@ -3,6 +3,7 @@ FPL Automation Project
 Author: Benjamin Tindal
 '''
 
+import argparse
 import numpy as np
 import pandas as pd
 import math
@@ -16,32 +17,67 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor 
 import matplotlib.pyplot as plt
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
+    parser.add_argument('-model', type=str, default="gradientboost",
+                        choices=[
+                            "linear", "randomforest", "xgboost", "gradientboost"])
+    
+    parser.add_argument('-season', type=str, default='2023-24')
+    
+    parser.add_argument('-target_gw', type=int)
+
+    parser.add_argument('-repeat', type=int, default=1)
+
+    parser.add_argument('-training_prev_weeks', type=int, default=10)
+
+    parser.add_argument('-last_gw', type=int, default=19)
+
+    parser.add_argument('-display_weights',
+                        action=argparse.BooleanOptionalAction, default=False)
+    
+    parser.add_argument('-plot_predictions',
+                        action=argparse.BooleanOptionalAction, default=False)
+    
+    parser.add_argument('-export_csv',
+                        action=argparse.BooleanOptionalAction, default=False)
+    
+    
+
+    
+    
+    args = parser.parse_args()
+    
+    
+    return args
+
+inputs = parse_args()
 # Season to predict points for
-season = '2023-24'
+season = inputs.season
 prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
 # First gameweek to predict points for
-target_gameweek = 15
+target_gameweek = inputs.target_gw
 # Last gameweek data is available for
-last_gameweek = 19
+last_gameweek = inputs.last_gw
 # How many weeks to repeat testing over
-repeat = 5
+repeat = inputs.repeat
 # Select a model type [linear, randomforest, xgboost, gradientboost]
-modelType = 'gradientboost'
+modelType = inputs.model
 # How many past weeks of data to use for training
-training_prev_weeks = 10
+training_prev_weeks = inputs.training_prev_weeks
 # Whether to display feature weights
-display_weights = False
+display_weights = inputs.display_weights
 # Whether to plot predictions vs actual points
-plot_predictions = False
-# Export predictions to csv
-export_csv = True
+plot_predictions = inputs.plot_predictions
+# Whether to export predictions to csv
+export_csv = inputs.export_csv
 
 # Initialise classes
 fplapi = fplapi_data(season)
 # Ensure that the correct location is specified for Vastaav data
 vastaav = vastaav_data('../Fantasy-Premier-League/data', season)
-
 eval = fpl_evaluate()
+
 
 def main():
     count = 0
