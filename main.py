@@ -17,22 +17,24 @@ from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
 
 # Season to predict points for
-season = '2022-23'
+season = '2023-24'
 prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
 # First gameweek to predict points for
-target_gameweek = 6
+target_gameweek = 15
 # Last gameweek data is available for
-last_gameweek = 38
+last_gameweek = 19
 # How many weeks to repeat testing over
-repeat = 1
+repeat = 5
 # Select a model type [linear, randomforest, xgboost, gradientboost]
 modelType = 'gradientboost'
 # How many past weeks of data to use for training
 training_prev_weeks = 10
 # Whether to display feature weights
-display_weights = True
+display_weights = False
 # Whether to plot predictions vs actual points
 plot_predictions = False
+# Export predictions to csv
+export_csv = True
 
 # Initialise classes
 fplapi = fplapi_data(season)
@@ -50,21 +52,18 @@ def main():
     # Predict points for GWi
     for i in range(target_gameweek, target_gameweek + repeat):
         # Retrain model each time
-        # Lets sum up the last 3 gameweeks to get a more accurate representation of player performance
+        # Lets sum up the last 10 gameweeks to get a more accurate representation of player performance
         if i > last_gameweek:
-            print(f'GW{i}: n/a')
+            print(f'Predicting GW{i+1}: n/a')
             training_data, test_data = vastaav.get_training_data_all(
-                season, last_gameweek - training_prev_weeks, last_gameweek - 1)
+                season, last_gameweek - training_prev_weeks, last_gameweek)
         else:
             training_data, test_data = vastaav.get_training_data_all(
-                season, i - training_prev_weeks, i - 1)
+                season, i - training_prev_weeks, i)
 
         gk_model, def_model, mid_model, fwd_model = vastaav.get_model(modelType, training_data)
 
         if display_weights:
-            ''' NOT WORKING PROPERLY
-            - Feature names are not in the same order as the weights
-            - Need to find a way to get the feature names in the same order as the weights'''
             feature_list = training_data[0][0].columns
             importances = [gk_model.feature_importances_, def_model.feature_importances_, mid_model.feature_importances_, fwd_model.feature_importances_]
             eval.display_weights(i, importances, feature_list, ['GK', 'DEF', 'MID', 'FWD'])
@@ -84,7 +83,7 @@ def main():
             error = (gk_error + def_error + mid_error + fwd_error) / 4
             ase = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
             aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4
-            print(f'GW{i}: AE: {error:.3f}, ASE: {math.sqrt(ase):.3f}, ACC: {aa*100:.2f}%')
+            print(f'Predicting GW{i+1}: AE: {error:.3f}, ASE: {math.sqrt(ase):.3f}, ACC: {aa*100:.2f}%')
 
         '''if i <= last_gameweek:
             # Output predictions to csv, use player_names as first column, then predictions, then actual points
@@ -120,7 +119,27 @@ def main():
             total_e += error
             total_ase += ase
             total_aa += aa
-    
+
+        if export_csv:
+            # Lets use these models to predict the next gameweek
+            models = gk_model, def_model, mid_model, fwd_model
+            player_names, predictions = vastaav.get_player_predictions(season, i, models)
+            # Output predictions to csv, use player_names as first column, then predictions
+            csv_gk_predictions = np.column_stack((player_names[0], predictions[0]))
+            csv_def_predictions = np.column_stack((player_names[1], predictions[1]))
+            csv_mid_predictions = np.column_stack((player_names[2], predictions[2]))
+            csv_fwd_predictions = np.column_stack((player_names[3], predictions[3]))
+
+            csv_combined = np.concatenate((csv_gk_predictions, csv_def_predictions, csv_mid_predictions, csv_fwd_predictions), axis=0)
+            # Add headers
+            csv_combined = np.concatenate((np.array([['Name', 'xP']]), csv_combined), axis=0)
+
+            csv_predictions = pd.DataFrame(csv_combined[1:], columns=csv_combined[0])
+            csv_predictions.set_index('Name', inplace=True)
+
+            csv_predictions.to_csv(f'predictions/predictions_{modelType}_gw{i+1}.csv')
+            print(f'GW{i+1} predictions saved to csv')
+
     total_e /= count
     total_ase /= count
     total_aa /= count

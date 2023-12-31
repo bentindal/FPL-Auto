@@ -28,7 +28,7 @@ class vastaav_data:
     
     def get_team_list(self, season):
         team_list = pd.read_csv(f'{self.data_location}/{season}/teams.csv')
-        team_list = team_list[['name', 'strength_overall_home', 'strength_overall_away', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
+        team_list = team_list[['name', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
         return team_list.set_index('name')
     
     def get_gw_data(self, season, week_num):
@@ -39,31 +39,84 @@ class vastaav_data:
     def get_pos_data(self, season, week_num, position):
         gw_data = self.get_gw_data(season, week_num)
         gw_data = gw_data[gw_data['position'] == position]
+        # Append team data to player data
+        gw_data = gw_data.join(self.team_list, on='team')
+        # Drop rows with NaN values
+        gw_data = gw_data.dropna()
         gw_data = gw_data.drop(['position', 'team', 'ict_index'], axis=1)
         return gw_data
     
-    def get_training_data(self, season, week_num):
-        gk_features = self.get_pos_data(season, week_num, 'GK')
-        def_features = self.get_pos_data(season, week_num, 'DEF')
-        mid_features = self.get_pos_data(season, week_num, 'MID')
-        fwd_features = self.get_pos_data(season, week_num, 'FWD')
+    def get_all_pos_data(self, season, week_num):
+        gk_data = self.get_pos_data(season, week_num, 'GK')
+        def_data = self.get_pos_data(season, week_num, 'DEF')
+        mid_data = self.get_pos_data(season, week_num, 'MID')
+        fwd_data = self.get_pos_data(season, week_num, 'FWD')
+        return gk_data, def_data, mid_data, fwd_data
+    
+    def get_all_pos_data_in_range(self, season, from_gw, to_gw):
+        weeks_covered = to_gw - from_gw
+        print(f'GW{from_gw}')
+        gk_data = self.get_pos_data(season, from_gw, 'GK')
+        def_data = self.get_pos_data(season, from_gw, 'DEF')
+        mid_data = self.get_pos_data(season, from_gw, 'MID')
+        fwd_data = self.get_pos_data(season, from_gw, 'FWD')
+        for i in range(from_gw + 1, to_gw + 1):
+            print(f'GW{i}')
+            gk_data = pd.concat((gk_data, self.get_pos_data(season, i, 'GK')))
+            def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
+            mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
+            fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
 
-        gk_labels = gk_features['total_points']
-        def_labels = def_features['total_points']
-        mid_labels = mid_features['total_points']
-        fwd_labels = fwd_features['total_points']
+        # Each individual feature should be divided by the number of gameweeks
+        for row in gk_data:
+            gk_data[row] /= weeks_covered
+        for row in def_data:
+            def_data[row] /= weeks_covered
+        for row in mid_data:
+            mid_data[row] /= weeks_covered
+        for row in fwd_data:
+            fwd_data[row] /= weeks_covered
+        
+        return gk_data, def_data, mid_data, fwd_data
+    
+    def prune_features(self, features):
+        # Drop the remaining columns that are not features
+        features = features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        return features
+    
+    def prune_all_features(self, features):
+        gk_features, def_features, mid_features, fwd_features = features
+        gk_features = self.prune_features(gk_features)
+        def_features = self.prune_features(def_features)
+        mid_features = self.prune_features(mid_features)
+        fwd_features = self.prune_features(fwd_features)
+        return (gk_features, def_features, mid_features, fwd_features)
+    
+    def extract_labels(self, features):
+        labels = features['total_points']
+        return labels
+    
+    def extract_all_labels(self, features):
+        gk_features, def_features, mid_features, fwd_features = features
+        gk_labels = self.extract_labels(gk_features)
+        def_labels = self.extract_labels(def_features)
+        mid_labels = self.extract_labels(mid_features)
+        fwd_labels = self.extract_labels(fwd_features)
+        return (gk_labels, def_labels, mid_labels, fwd_labels)
+    
+    def get_training_data(self, season, week_num):
+        features = self.get_all_pos_data(season, week_num)
+
+        feature_labels = self.extract_all_labels(features)
 
         # Drop the remaining columns that are not features
-        gk_features = gk_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
-        def_features = def_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
-        mid_features = mid_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
-        fwd_features = fwd_features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        features = self.prune_all_features(features)
 
         # Group features & labels for convenience
-        training_gk = (gk_features, gk_labels)
-        training_def = (def_features, def_labels)
-        training_mid = (mid_features, mid_labels)
-        training_fwd = (fwd_features, fwd_labels)
+        training_gk = (features[0], feature_labels[0])
+        training_def = (features[1], feature_labels[1])
+        training_mid = (features[2], feature_labels[2])
+        training_fwd = (features[3], feature_labels[3])
 
         return training_gk, training_def, training_mid, training_fwd
 
@@ -126,9 +179,9 @@ class vastaav_data:
 
         elif model_type == 'gradientboost':
             loss_function = 'squared_error'
-            n_est = 100 # keep at 1000 whilst in development for speed
+            n_est = 100 # keep at 100 whilst in development for speed
             l_rate = 0.2
-            max_f = 10
+            max_f = 20
             gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
             def_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
             mid_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
@@ -141,3 +194,22 @@ class vastaav_data:
         fwd_model.fit(training_data[3][0], training_data[3][1])
 
         return gk_model, def_model, mid_model, fwd_model
+    
+    def get_player_predictions(self, season, gameweek, models):
+        features = self.get_all_pos_data_in_range(season, gameweek - 2, gameweek)
+        gk_player_names = features[0].index.values
+        def_player_names = features[1].index.values
+        mid_player_names = features[2].index.values
+        fwd_player_names = features[3].index.values
+
+        player_names = [gk_player_names, def_player_names, mid_player_names, fwd_player_names]
+
+        pruned_features = self.prune_all_features(features)
+
+        gk_predictions = np.round(models[0].predict(pruned_features[0]), 3)
+        def_predictions = np.round(models[1].predict(pruned_features[1]), 3)
+        mid_predictions = np.round(models[2].predict(pruned_features[2]), 3)
+        fwd_predictions = np.round(models[3].predict(pruned_features[3]), 3)
+        
+        predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
+        return player_names, predictions
