@@ -67,15 +67,7 @@ class vastaav_data:
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
 
-        # Each individual feature should be divided by the number of gameweeks
-        for row in gk_data:
-            gk_data[row] /= weeks_covered
-        for row in def_data:
-            def_data[row] /= weeks_covered
-        for row in mid_data:
-            mid_data[row] /= weeks_covered
-        for row in fwd_data:
-            fwd_data[row] /= weeks_covered
+        # TODO Each individual feature should be divided by the number of gameweeks
         
         return gk_data, def_data, mid_data, fwd_data
     
@@ -195,8 +187,9 @@ class vastaav_data:
 
         return gk_model, def_model, mid_model, fwd_model
     
-    def get_player_predictions(self, season, gameweek, models):
-        features = self.get_all_pos_data_in_range(season, gameweek - 2, gameweek)
+    def get_player_predictions(self, season, from_gw, to_gw, models):
+
+        features = self.get_all_pos_data_in_range(season, from_gw, to_gw - 1)
         gk_player_names = features[0].index.values
         def_player_names = features[1].index.values
         mid_player_names = features[2].index.values
