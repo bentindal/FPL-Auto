@@ -1,11 +1,6 @@
 import numpy as np
 import pandas as pd
-import requests
-import json
-from pprint import pprint
-import json
-import sklearn
-from sklearn import linear_model, ensemble, model_selection
+from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor
@@ -54,20 +49,15 @@ class vastaav_data:
         return gk_data, def_data, mid_data, fwd_data
     
     def get_all_pos_data_in_range(self, season, from_gw, to_gw):
-        weeks_covered = to_gw - from_gw
-        print(f'GW{from_gw}')
         gk_data = self.get_pos_data(season, from_gw, 'GK')
         def_data = self.get_pos_data(season, from_gw, 'DEF')
         mid_data = self.get_pos_data(season, from_gw, 'MID')
         fwd_data = self.get_pos_data(season, from_gw, 'FWD')
         for i in range(from_gw + 1, to_gw + 1):
-            print(f'GW{i}')
             gk_data = pd.concat((gk_data, self.get_pos_data(season, i, 'GK')))
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
-
-        # TODO Each individual feature should be divided by the number of gameweeks
         
         return gk_data, def_data, mid_data, fwd_data
     
@@ -199,10 +189,24 @@ class vastaav_data:
 
         pruned_features = self.prune_all_features(features)
 
-        gk_predictions = np.round(models[0].predict(pruned_features[0]), 3)
-        def_predictions = np.round(models[1].predict(pruned_features[1]), 3)
-        mid_predictions = np.round(models[2].predict(pruned_features[2]), 3)
-        fwd_predictions = np.round(models[3].predict(pruned_features[3]), 3)
+        gk_predictions = models[0].predict(pruned_features[0])
+        def_predictions = models[1].predict(pruned_features[1])
+        mid_predictions = models[2].predict(pruned_features[2])
+        fwd_predictions = models[3].predict(pruned_features[3])
         
+        weeks_covered = to_gw - from_gw
+
+        gk_predictions /= weeks_covered
+        def_predictions /= weeks_covered
+        mid_predictions /= weeks_covered
+        fwd_predictions /= weeks_covered
+
+        # Round predictions
+        round_to = 1
+        gk_predictions = np.round(gk_predictions, round_to)
+        def_predictions = np.round(def_predictions, round_to)
+        mid_predictions = np.round(mid_predictions, round_to)
+        fwd_predictions = np.round(fwd_predictions, round_to)
+
         predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
         return player_names, predictions
