@@ -123,21 +123,7 @@ def main():
             # Lets use these models to predict the next gameweek
             models = gk_model, def_model, mid_model, fwd_model
             player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, models)
-            # Output predictions to csv, use player_names as first column, then predictions
-            csv_gk_predictions = np.column_stack((player_names[0], predictions[0]))
-            csv_def_predictions = np.column_stack((player_names[1], predictions[1]))
-            csv_mid_predictions = np.column_stack((player_names[2], predictions[2]))
-            csv_fwd_predictions = np.column_stack((player_names[3], predictions[3]))
-
-            csv_combined = np.concatenate((csv_gk_predictions, csv_def_predictions, csv_mid_predictions, csv_fwd_predictions), axis=0)
-            # Add headers
-            csv_combined = np.concatenate((np.array([['Name', 'xP']]), csv_combined), axis=0)
-
-            csv_predictions = pd.DataFrame(csv_combined[1:], columns=csv_combined[0])
-            csv_predictions.set_index('Name', inplace=True)
-
-            csv_predictions.to_csv(f'predictions/predictions_{modelType}_gw{i}.csv')
-            print(f'GW{i} predictions saved to csv')
+            eval.export_csv(player_names, predictions, i, modelType)
 
     if repeat > 1:
         total_e /= count
