@@ -1,4 +1,4 @@
-# FPL Automation Project: Through the Use of Machine Learning & Strategy
+# Automating FPL Through the Use of Machine Learning & Strategy
 
 By Benjamin Tindal, completed as part of my dissertation "Unleashing Strategy through the Use of Machine Learning in Fantasy Football Automation" at the University of Sheffield.
 
