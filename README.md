@@ -25,8 +25,10 @@ The project fully aims to abide by the rules of the FPL game, and so the team se
 * Work in Progress! *
 
 TODO - Initial Team Selection
+
 TODO - Transfer Selection
 
 ## Bibliography
 [1] FPL Historical Dataset, Anand, V., 2019. https://github.com/vaastav/Fantasy-Premier-League/
+
 [2] Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011. https://scikit-learn.org/stable/
