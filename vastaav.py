@@ -48,18 +48,32 @@ class vastaav_data:
         fwd_data = self.get_pos_data(season, week_num, 'FWD')
         return gk_data, def_data, mid_data, fwd_data
     
-    def get_all_pos_data_in_range(self, season, from_gw, to_gw):
+    def sum_player_data(self, season, from_gw, to_gw):
         gk_data = self.get_pos_data(season, from_gw, 'GK')
         def_data = self.get_pos_data(season, from_gw, 'DEF')
         mid_data = self.get_pos_data(season, from_gw, 'MID')
         fwd_data = self.get_pos_data(season, from_gw, 'FWD')
+
         for i in range(from_gw + 1, to_gw + 1):
             gk_data = pd.concat((gk_data, self.get_pos_data(season, i, 'GK')))
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
-        
+
+        # Group by player name and calculate the average
+        gk_data = gk_data.groupby('name').mean().reset_index()
+        def_data = def_data.groupby('name').mean().reset_index()
+        mid_data = mid_data.groupby('name').mean().reset_index()
+        fwd_data = fwd_data.groupby('name').mean().reset_index()
+
+        # Set name to be the index again
+        gk_data = gk_data.set_index('name')
+        def_data = def_data.set_index('name')
+        mid_data = mid_data.set_index('name')
+        fwd_data = fwd_data.set_index('name')
+
         return gk_data, def_data, mid_data, fwd_data
+
     
     def prune_features(self, features):
         # Drop the remaining columns that are not features
@@ -179,7 +193,7 @@ class vastaav_data:
     
     def get_player_predictions(self, season, from_gw, to_gw, models):
 
-        features = self.get_all_pos_data_in_range(season, from_gw, to_gw - 1)
+        features = self.sum_player_data(season, from_gw, to_gw - 1)
         gk_player_names = features[0].index.values
         def_player_names = features[1].index.values
         mid_player_names = features[2].index.values
@@ -193,16 +207,9 @@ class vastaav_data:
         def_predictions = models[1].predict(pruned_features[1])
         mid_predictions = models[2].predict(pruned_features[2])
         fwd_predictions = models[3].predict(pruned_features[3])
-        
-        weeks_covered = to_gw - from_gw
-
-        gk_predictions /= weeks_covered
-        def_predictions /= weeks_covered
-        mid_predictions /= weeks_covered
-        fwd_predictions /= weeks_covered
 
         # Round predictions
-        round_to = 1
+        round_to = 2
         gk_predictions = np.round(gk_predictions, round_to)
         def_predictions = np.round(def_predictions, round_to)
         mid_predictions = np.round(mid_predictions, round_to)
