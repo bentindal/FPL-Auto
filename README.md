@@ -1,10 +1,10 @@
-# FPL Automation Dissertation Project
+# FPL Automation Project: Through the Use of Machine Learning & Strategy
 
-By Benjamin Tindal, completed as part as my dissertation at the University of Sheffield.
+By Benjamin Tindal, completed as part of my dissertation "Unleashing Strategy through the Use of Machine Learning in Fantasy Football Automation" at the University of Sheffield.
 
 ## Introduction
 
-This project is a fully autonomous Fantasy Premier League (FPL) team selection system. It explores the use of machine learning techniques to predict the performance of players in the English Premier League, and uses these predictions to select a team of players that will score the most points in the upcoming gameweek.
+This project is a fully autonomous Fantasy Premier League (FPL) team selection system. It explores the use of machine learning techniques to predict the performance of players in the English Premier League and uses these predictions to select a team of players that will score the most points in the upcoming weeks.
 
 The project is split into multiple parts, each of which is described in detail below.
 
