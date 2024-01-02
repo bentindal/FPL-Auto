@@ -66,7 +66,7 @@ output_files = inputs.output_files
 # Initialise classes
 fplapi = fplapi_data(season)
 # Ensure that the correct location is specified for Vastaav data
-vastaav = vastaav_data('../Fantasy-Premier-League/data', season)
+vastaav = vastaav_data('data', season)
 eval = fpl_evaluate()
 
 
