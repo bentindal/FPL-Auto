@@ -27,7 +27,10 @@ class vastaav_data:
         return team_list.set_index('name')
     
     def get_gw_data(self, season, week_num):
-        gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
+        if week_num < 1:
+            gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
+        else:
+            gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home']]
         return gw_data.set_index('name')
 

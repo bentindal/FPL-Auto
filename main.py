@@ -143,7 +143,7 @@ def main():
             subs = t.suggest_subs()
             t.make_subs(subs)
             t.display()
-            print(f'Team xP (without subs): {t.team_xp():.2f}')
+            print(f'Team xP: {t.team_xp():.2f}')
 
         if repeat > 1:
             total_e /= count
