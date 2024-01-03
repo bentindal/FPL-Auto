@@ -7,15 +7,9 @@ import argparse
 import numpy as np
 import pandas as pd
 import math
-from pprint import pprint
-import json
 from vastaav import vastaav_data
 from evaluate import fpl_evaluate
 import team
-from sklearn import linear_model, ensemble
-import xgboost as xgb
-from sklearn.ensemble import RandomForestRegressor 
-import matplotlib.pyplot as plt
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
@@ -23,7 +17,7 @@ def parse_args():
                         help='Location of Vastaav Dataset, default: ../Fantasy-Premier-League/data')
     parser.add_argument('-model', type=str, default="gradientboost",
                         choices=[
-                            "linear", "randomforest", "xgboost", "gradientboost"], 
+                            "linear", "randomforest", "gradientboost"], 
                         help='Model type to use')
     parser.add_argument('-season', type=str, default='2023-24', help='Season to predict points for, default: 2023-24')
     parser.add_argument('-target_gw', type=int, required=True, help='Gameweek to predict points for, required')

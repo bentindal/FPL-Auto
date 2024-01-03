@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn import linear_model
 from sklearn.model_selection import train_test_split
-import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 
@@ -168,12 +167,6 @@ class vastaav_data:
             def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
             mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
             fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
-
-        elif model_type == 'xgboost':
-            gk_model = xgb.XGBRegressor()
-            def_model = xgb.XGBRegressor()
-            mid_model = xgb.XGBRegressor()
-            fwd_model = xgb.XGBRegressor()
 
         elif model_type == 'gradientboost':
             loss_function = 'squared_error'
