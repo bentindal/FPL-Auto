@@ -9,7 +9,6 @@ import pandas as pd
 import math
 from pprint import pprint
 import json
-from fplapi import fplapi_data
 from vastaav import vastaav_data
 from evaluate import fpl_evaluate
 import team
@@ -64,7 +63,6 @@ plot_predictions = inputs.plot_predictions
 output_files = inputs.output_files
 
 # Initialise classes
-fplapi = fplapi_data(season)
 # Ensure that the correct location is specified for Vastaav data
 vastaav = vastaav_data('data', season)
 eval = fpl_evaluate()
@@ -127,7 +125,7 @@ def main():
         t.add_player('Gabriel dos Santos Magalhães', 'DEF')
         t.add_player('Pedro Porro', 'DEF')
         t.add_player('Kieran Trippier', 'DEF')
-        t.add_player('Mohamed Salah', 'MID')
+        t.add_player('Cole Palmer', 'MID')
         t.add_player('Jarrod Bowen', 'MID')
         t.add_player('Bukayo Saka', 'MID')
         t.add_player('Phil Foden', 'MID')
@@ -139,11 +137,13 @@ def main():
         t.add_player('Joachim Andersen', 'DEF')
         t.add_player('Shandon Baptiste', 'MID')
         t.add_player('George Baldock', 'DEF')
-        subs = t.suggest_subs()
-        t.make_subs(subs)
-        t.display()
-        print(f'Team xP: {t.team_xp():.2f}')
+        t.auto_subs()
+        t.auto_captain()
 
+        t.display()
+
+        print(f'Team xP: {t.team_xp():.2f}')
+        
     if repeat > 1:
         total_e /= count
         total_ase /= count

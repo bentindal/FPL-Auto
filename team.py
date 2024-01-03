@@ -1,7 +1,8 @@
 import pandas as pd
-
+import vastaav
 class team:
     def __init__(self, season, gameweek):
+        self.vastaav_data = vastaav.vastaav_data('data', season)
         self.season = season
         self.gameweek = gameweek
         self.gk = []
@@ -17,6 +18,15 @@ class team:
         self.def_player_list = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_player_list = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
         self.fwd_player_list = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
+        self.price_list = self.vastaav_data.price_list(self.gameweek)
+        self.gk_xp_dict = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
+        self.def_xp_dict = dict(zip(self.def_xp.Name, self.def_xp.xP))
+        self.mid_xp_dict = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
+        self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
+        self.xp_dict = {**self.gk_xp_dict, **self.def_xp_dict, **self.mid_xp_dict, **self.fwd_xp_dict}
+        self.player_list = self.gk_xp.Name.tolist() + self.def_xp.Name.tolist() + self.mid_xp.Name.tolist() + self.fwd_xp.Name.tolist()
+        self.captain = ''
+        self.vice_captain = ''
 
     def add_player(self, player, position):
         if position == 'GK':
@@ -62,6 +72,7 @@ class team:
         print(f'MID: {self.mids}')
         print(f'FWD: {self.fwds}')
         print(f'SUBS: {self.subs}')
+        print(f'C: {self.captain}, VC: {self.vice_captain}')
 
     def get_team(self):
         return self.gk, self.defs, self.mids, self.fwds
@@ -118,37 +129,72 @@ class team:
         # Add subs to list
         self.subs = subs
     
-    def player_xp(self, player, position, gameweek):
-        # Read in gw{gameweek}_{position}.tsv
-        model_data = pd.read_csv(f'predictions/gw{gameweek}_{position}.tsv', sep='\t')
-        # convert model into dictionary
-        xp_dict = dict(zip(model_data.Name, model_data.xP))
+    def auto_subs(self):
+        subs = self.suggest_subs()
+        self.make_subs(subs)
+
+    def player_xp(self, player, position):
+        if position == 'GK':
+            xp_dict = self.gk_xp_dict
+        elif position == 'DEF':
+            xp_dict = self.def_xp_dict
+        elif position == 'MID':
+            xp_dict = self.mid_xp_dict
+        elif position == 'FWD':
+            xp_dict = self.fwd_xp_dict
+
         # return xP for player
-        if player in xp_dict[player]:
+        if player in xp_dict:
             return xp_dict[player]
         else:
             print(f'Player {player} {position} not found')
             return 0
         
-    def team_xp(self):
+    def get_all_xp(self):
+        # List of players and their xP
+        team_xp = []
         # Get xP for each player in team
-        # Sum up xP for each position
-        # Return total xP
-        gk_xp = 0
-        def_xp = 0
-        mid_xp = 0
-        fwd_xp = 0
 
         for player in self.gk:
-            gk_xp += self.gk_player_list[player]
-
+            team_xp.append([player, self.player_xp(player, 'GK')])
         for player in self.defs:
-            def_xp += self.def_player_list[player]
-
+            team_xp.append([player, self.player_xp(player, 'DEF')])
         for player in self.mids:
-            mid_xp += self.mid_player_list[player]
-
+            team_xp.append([player, self.player_xp(player, 'MID')])
         for player in self.fwds:
-            fwd_xp += self.fwd_player_list[player]
+            team_xp.append([player, self.player_xp(player, 'FWD')])
 
-        return gk_xp + def_xp + mid_xp + fwd_xp
+        return team_xp
+    
+    def team_xp(self):
+        # Get xP for each player in team
+        xp_list = self.get_all_xp()
+        total_xp = 0
+        for player in xp_list:
+            total_xp += player[1]
+
+        return total_xp
+    
+    def player_value(self, player):
+        # Get price for player
+        price = self.price_list[player]
+        return price
+    
+    def suggest_captaincy(self):
+        # Get xP for each player in team
+        xp_list = self.get_all_xp()
+        # Sort by xP
+        xp_list.sort(key=lambda x: float(x[1]), reverse=True)
+        # Suggest captain & Co-captain
+        return xp_list[0], xp_list[1]
+    
+    def update_captain(self, captain, vice_captain):
+        self.captain = captain
+        self.vice_captain = vice_captain
+    
+    def auto_captain(self):
+        captain, vice_captain = self.suggest_captaincy()
+        self.update_captain(captain, vice_captain)
+    
+    
+    

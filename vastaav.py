@@ -14,7 +14,6 @@ class vastaav_data:
         self.player_list = self.get_player_list(season).set_index('name').to_dict()
         self.player_id_list = {v: k for k, v in self.player_list['id'].items()}
         self.team_list = self.get_team_list(season)
-    
     def get_player_list(self, season):
         player_list = pd.read_csv(f'{self.data_location}/{season}/player_idlist.csv')
         # Merge first_name and second_name columns into one column
@@ -31,7 +30,7 @@ class vastaav_data:
             gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
         else:
             gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
-        gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home']]
+        gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
         return gw_data.set_index('name')
 
     def get_pos_data(self, season, week_num, position):
@@ -220,3 +219,40 @@ class vastaav_data:
 
         predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
         return player_names, predictions
+    
+    def price_list(self, week_num):
+        gw_data = self.get_gw_data(self.season, week_num - 1)
+        gw_data = gw_data[['value']]
+        gw_data = gw_data / 10
+        # Turn gw_data into dictionary (name --> value)
+        gw_data = gw_data.to_dict()['value']
+        return gw_data
+    
+    def post_model_weightings(self, predictions):
+        # For each pos in predictions
+        for pos in predictions:
+            # For each player in pos
+            for player in pos:
+                # Check for injuries
+                    # If significant injury, xP = 0
+
+                    # Slight injury, xP *= 0.8
+            
+                # Check for suspension
+                    # If player is suspended, xP = 0
+            
+            
+                # Difficulty of fixture (based on team)
+                    # Players Team Rating - Other Teams Rating
+                    # If pos, xP *= 1.2
+                    # If neg, xP *= 0.8
+                
+                # Home *= 1.1
+                # Away *= 0.9
+            
+                # Check for form? 
+                pass
+            # Convert back to [[Player, xP]]
+            pass
+
+        return None #[gk_predictions, def_predictions, mid_predictions, fwd_predictions]
