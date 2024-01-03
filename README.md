@@ -1,6 +1,6 @@
-# Automating FPL Through the Use of Machine Learning & Strategy
-
-By Benjamin Tindal, completed as part of my dissertation "Unleashing Strategy through the Use of Machine Learning in Fantasy Football Automation" at the University of Sheffield.
+# Automating FPL Through the Use of Machine Learning and Strategy
+## Please Note this is a Work In Progress! Due to be Completed in May
+Created by Benjamin Tindal as part of my dissertation "Unleashing Strategy through the Use of Machine Learning in Fantasy Football Automation" at the University of Sheffield.
 
 ## Introduction
 
@@ -16,11 +16,11 @@ The data collection process is split into two parts: historical data collection 
 
 ## Machine Learning
 
-The machine learning makes use of a Gradient Boosting tree regression model, from the sklearn library [2], which is trained on the historical data collected from the FPL API. The model is trained to predict the points scored by each player in the upcoming gameweek, and is then used to select the team of players that will score the most points.
+The machine learning makes use of a Gradient Boosting tree regression model from the sklearn library [2], which is trained on the historical data collected from the FPL API. The model is trained to predict the points scored by each player in the upcoming week and is then used to select the team of players that will score the most points.
 
 ## Team Selection
 
-The project fully aims to abide by the rules of the FPL game, and so the team selection process is split into two parts: the initial team selection and the transfer selection.
+The project fully aims to abide by the rules of the FPL game, so the team selection process is split into two parts: the initial and transfer selection.
 
 * Work in Progress! *
 
