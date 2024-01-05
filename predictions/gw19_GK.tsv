@@ -1,120 +1,89 @@
 Name	xP
-Aaron Ramsdale	0.00075
-Adam Davies	0.00251
-Adrián San Miguel del Castillo	0.00075
-Alex McCarthy	0.00251
-Alex Smithies	0.00251
-Alfie Whiteman	0.00075
-Alisson Ramses Becker	1.21493
-Alphonse Areola	0.97035
-Altay Bayindir	0.00075
-André Onana	4.26855
-Andy Lonergan	0.00251
-Arijanet Muric	0.00251
-Asmir Begović	1.03435
-Bailey Peacock-Farrell	0.00251
-Bart Verbruggen	3.96757
-Bernd Leno	0.50573
-Brandon Austin	0.9634
-Brice Samba	2.0038
-Cameron Plain	0.00269
-Caoimhin Kelleher	0.00269
-Daniel Bentley	1.03026
-Daniel Iversen	1.81692
-Danny Ward	-0.0208
-Darren Randolph	0.00251
-David De Gea Quintana	0.00075
-David Raya Martin	1.3739
-Dean Henderson	2.00765
-Denis Franchi	0.00251
-Djordje Petrovic	1.90665
-Eddie Beach	0.00195
-Ederson Santana de Moraes	1.05583
-Edouard Mendy	0.00075
-Eldin Jakupovic	0.00075
-Ellery Balcombe	0.00251
-Emiliano Martínez Romero	1.0279
-Ethan Horvath	0.00251
-Filip Marschall	0.00131
-Fraser Forster	0.00251
-Gabriel Słonina	0.00195
-Gavin Bazunu	0.00251
-George Shelvey	0.00251
-George Wickens	0.00075
-Guglielmo Vicario	4.90153
-Harvey Davies	0.00075
-Hugo Lloris	0.95412
-Illan Meslier	0.04195
-Ionuț Radu	0.00251
-Jack Butland	0.00075
-Jack Walton	0.00251
-Jackson Smith	2.11782
-James Shea	0.00251
-James Trafford	4.2485
-James Wright	0.00075
-Jason Steele	0.00251
-Joe Whitworth	0.00251
-Joel Robles	1.0361
-Jordan Amissah	0.00251
-Jordan Pickford	1.90721
-Jordan Smith	0.89754
-Joseph Anang	0.00251
-Joseph Whitworth	8.88847
-José Malheiro de Sá	1.1603
-João Neves Virgínia	0.00251
-Karl Darlow	1.16413
-Karl Hein	0.98771
-Kasper Schmeichel	0.00269
-Kepa Arrizabalaga	0.91411
-Keylor Navas	0.00075
-Kjell Scherpen	0.43629
-Kristoffer Klaesson	1.03199
-Krisztián Hegyi	0.00251
-Lawrence Vigouroux	0.00251
-Loris Karius	0.75686
-Lucas Bergström	0.00195
-Lukasz Fabianski	0.97035
-Marcelo de Araújo Pitaluga Filho	0.00269
-Marcus Bettinelli	1.02565
-Marek Rodák	0.00251
-Mark Flekken	1.95124
-Mark Gillespie	0.00075
-Mark Travers	0.96652
-Martin Dubravka	1.7882
-Matej Kovár	0.00075
-Mateusz Lis	1.00789
-Matija Šarkić	0.00251
-Matt Macey	0.00251
-Matt Turner	0.3511
-Matthew Cox	1.07884
-Nathan Bishop	0.00075
-Nick Pope	-0.00211
-Norberto Murara Neto	1.28273
-Odysseas Vlachodimos	0.00251
-Oliwier Zych	0.00251
-Owen Goodman	0.00251
-Paulo Gazzaniga Farias	-0.00035
-Radek Vítek	0.00075
-Remi Matthews	0.92087
-Robert Sánchez	1.1603
-Robin Olsen	0.00131
-Rúnar Alex Rúnarsson	0.00269
-Sam Johnstone	0.00251
-Sam Proctor	0.00075
-Scott Carson	0.00075
-Stefan Ortega Moreno	0.00269
-Steven Benda	0.00075
-Thomas Kaminski	6.12089
-Thomas Strakosha	0.00075
-Tim Krul	0.00251
-Tom Heaton	0.00075
-Tom King	0.00251
-Tom McGill	0.00075
-Vicente Guaita	1.15855
-Viljami Sinisalo	0.98577
-Vincent Angelini	0.00075
-Wayne Hennessey	0.00251
-Wes Foderingham	4.09347
-Will Dennis	7.05253
-Willy Caballero	-0.00035
-Zack Steffen	0.00269
+Aaron Ramsdale	0.0
+Adam Davies	-0.0
+Adrián San Miguel del Castillo	0.0
+Alfie Whiteman	-0.0
+Alisson Ramses Becker	1.96
+Alphonse Areola	1.04
+Altay Bayindir	-0.0
+André Onana	2.02
+Andy Lonergan	0.0
+Arijanet Muric	-0.0
+Bailey Peacock-Farrell	-0.0
+Bart Verbruggen	2.94
+Bernd Leno	2.03
+Brandon Austin	-0.0
+Caoimhin Kelleher	-0.0
+Daniel Bentley	1.29
+Darren Randolph	-0.0
+David Raya Martin	1.92
+Dean Henderson	2.66
+Denis Franchi	0.0
+Djordje Petrovic	1.51
+Eddie Beach	-0.0
+Ederson Santana de Moraes	2.02
+Ellery Balcombe	-0.0
+Emiliano Martínez Romero	2.61
+Ethan Horvath	0.0
+Filip Marschall	0.0
+Fraser Forster	-0.0
+Gabriel Słonina	-0.0
+George Shelvey	0.0
+Guglielmo Vicario	2.97
+Hugo Lloris	-0.0
+Ionuț Radu	0.0
+Jack Walton	0.0
+James Shea	0.0
+James Trafford	3.65
+Jason Steele	-0.0
+Joe Whitworth	-0.0
+Jordan Amissah	-0.0
+Jordan Pickford	7.44
+Joseph Anang	-0.0
+José Malheiro de Sá	1.55
+João Neves Virgínia	0.0
+Karl Darlow	0.0
+Karl Hein	-0.0
+Kepa Arrizabalaga	0.0
+Kjell Scherpen	0.0
+Lawrence Vigouroux	0.0
+Loris Karius	0.0
+Lucas Bergström	-0.0
+Lukasz Fabianski	0.23
+Marcelo de Araújo Pitaluga Filho	0.0
+Marcus Bettinelli	-0.0
+Marek Rodák	-0.0
+Mark Flekken	2.96
+Mark Gillespie	0.0
+Mark Travers	-0.0
+Martin Dubravka	1.96
+Matija Šarkić	-0.0
+Matt Macey	0.0
+Matt Turner	1.66
+Matthew Cox	0.0
+Nick Pope	-0.0
+Norberto Murara Neto	2.01
+Odysseas Vlachodimos	-0.0
+Oliwier Zych	0.0
+Radek Vítek	-0.0
+Remi Matthews	-0.0
+Robert Sánchez	1.24
+Robin Olsen	0.0
+Rúnar Alex Rúnarsson	-0.0
+Sam Johnstone	0.68
+Sam Proctor	0.0
+Scott Carson	0.0
+Stefan Ortega Moreno	0.0
+Steven Benda	-0.0
+Thomas Kaminski	2.9
+Thomas Strakosha	-0.0
+Tim Krul	-0.0
+Tom Heaton	-0.0
+Tom King	-0.0
+Tom McGill	0.0
+Vicente Guaita	0.0
+Viljami Sinisalo	0.0
+Vincent Angelini	0.0
+Wayne Hennessey	0.0
+Wes Foderingham	2.86
+Zack Steffen	0.0

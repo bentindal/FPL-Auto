@@ -65,7 +65,7 @@ eval = fpl_evaluate()
 def main():
     count = 0
     total_e = 0
-    total_ase = 0
+    total_mse = 0
     total_aa = 0
     
     # Predict points for GWi:
@@ -104,7 +104,7 @@ def main():
 
         count += 1
         total_e += error
-        total_ase += ase
+        total_mse += ase
         total_aa += aa
 
         if output_files:
@@ -115,10 +115,10 @@ def main():
         
     if repeat > 1:
         total_e /= count
-        total_ase /= count
+        total_mse /= count
         total_aa /= count
     
-        print(f'Count: {count}, Average AE: {total_e:.2f}, Average ASE: {math.sqrt(total_ase):.2f}, Average ACC: {total_aa*100:.2f}%')
+        print(f'Count: {count}, Average AE: {total_e:.2f}, Average MSE: {math.sqrt(total_mse):.2f}, Average ACC: {total_aa*100:.2f}%')
 
 if __name__ == "__main__":
     main()

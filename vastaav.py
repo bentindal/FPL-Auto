@@ -170,7 +170,7 @@ class vastaav_data:
 
         elif model_type == 'gradientboost':
             loss_function = 'squared_error'
-            n_est = 100 # keep at 100 whilst in development for speed
+            n_est = 1000 # keep at 100 whilst in development for speed
             l_rate = 0.2
             max_f = 20
             gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, loss=loss_function)
