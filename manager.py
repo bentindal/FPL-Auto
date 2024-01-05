@@ -1,10 +1,11 @@
 import team
 
 season = '2023-24'
-i = 17
+start_gw = 2
 
 def main():
-    t = team.team(season, i)
+    t = team.team(season, start_gw)
+
     t.add_player('André Onana', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Pedro Porro', 'DEF')
@@ -21,12 +22,16 @@ def main():
     t.add_player('Joachim Andersen', 'DEF')
     t.add_player('Shandon Baptiste', 'MID')
     t.add_player('George Baldock', 'DEF')
-    t.auto_subs()
-    t.auto_captain()
 
-    t.display()
+    for i in range(start_gw, 21):
+        t.auto_subs()
+        t.auto_captain()
 
-    print(f'Team xP: {t.team_xp():.2f}')
+        t.display()
+
+        print(f'Team xP: {t.team_xp():.2f}')
+
+        t = team.team(season, i + 1, t.gks, t.defs, t.mids, t.fwds, t.subs)
 
 if __name__ == '__main__':
     main()

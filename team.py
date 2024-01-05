@@ -1,16 +1,16 @@
 import pandas as pd
 import vastaav
 class team:
-    def __init__(self, season, gameweek):
+    def __init__(self, season, gameweek, gks=[], defs=[], mids=[], fwds=[], subs=[]):
         self.vastaav_data = vastaav.vastaav_data('data', season)
         self.season = season
         self.gameweek = gameweek
-        self.gks = []
-        self.defs = []
-        self.mids = []
-        self.fwds = []
-        self.subs = []
-        self.squad_size = 0
+        self.gks = gks
+        self.defs = defs
+        self.mids = mids
+        self.fwds = fwds
+        self.subs = subs
+        self.squad_size = len(gks) + len(defs) + len(mids) + len(fwds)
         self.gk_xp = pd.read_csv(f'predictions/gw{self.gameweek}_GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/gw{self.gameweek}_DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/gw{self.gameweek}_MID.tsv', sep='\t')
@@ -95,12 +95,21 @@ class team:
     def get_subs(self):
         return self.subs
     
+    def return_subs_to_team(self):
+        for sub in self.subs:
+            self.add_player(sub[0], sub[1])
+        self.subs = []
+
     def suggest_subs(self):
         # Rank each player by their xP, list the lowest xP first
         ranked_gk = []
+
+        # Return subs to team
+        self.return_subs_to_team()
+
+        # Sort players by xP
         for player in self.gks:
             ranked_gk.append([player, self.player_list[player], 'GK'])
-        # Sort by xP
         ranked_gk.sort(key=lambda x: float(x[1]))
         ranked_others = []
         for player in self.defs:
