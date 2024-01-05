@@ -5,11 +5,12 @@ class team:
         self.vastaav_data = vastaav.vastaav_data('data', season)
         self.season = season
         self.gameweek = gameweek
-        self.gk = []
+        self.gks = []
         self.defs = []
         self.mids = []
         self.fwds = []
         self.subs = []
+        self.squad_size = 0
         self.gk_xp = pd.read_csv(f'predictions/gw{self.gameweek}_GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/gw{self.gameweek}_DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/gw{self.gameweek}_MID.tsv', sep='\t')
@@ -18,44 +19,46 @@ class team:
         self.def_player_list = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_player_list = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
         self.fwd_player_list = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
-        self.price_list = self.vastaav_data.price_list(self.gameweek)
+
+        self.price_list = self.vastaav_data.price_list(self.gameweek)        
         self.gk_xp_dict = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
         self.def_xp_dict = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_xp_dict = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
         self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
         self.xp_dict = {**self.gk_xp_dict, **self.def_xp_dict, **self.mid_xp_dict, **self.fwd_xp_dict}
-        self.player_list = self.gk_xp.Name.tolist() + self.def_xp.Name.tolist() + self.mid_xp.Name.tolist() + self.fwd_xp.Name.tolist()
+        self.player_name_list = self.gk_xp.Name.tolist() + self.def_xp.Name.tolist() + self.mid_xp.Name.tolist() + self.fwd_xp.Name.tolist()
+        self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
+        self.player_list = dict(zip(self.player_name_list, self.player_xp_list))
         self.captain = ''
         self.vice_captain = ''
 
     def add_player(self, player, position):
-        if position == 'GK':
-            if player in self.gk_player_list and len(self.gk) < 2:
-                self.gk.append(player)
-            else:
-                print(f'Player {player} {position} not found or max players reached')
+        if position not in ['GK', 'DEF', 'MID', 'FWD']:
+            print(f'Invalid position {position}')
+            return
 
-        elif position == 'DEF':
-            if player in self.def_player_list and len(self.defs) < 5:
-                self.defs.append(player)
-            else:
-                print(f'Player {player} {position} not found or max players reached')
-        elif position == 'MID':
-            if player in self.mid_player_list and len(self.mids) < 5:
-                self.mids.append(player)
-            else:
-                print(f'Player {player} {position} not found or max players reached')
-        elif position == 'FWD':
-            if player in self.fwd_player_list and len(self.fwds) < 3:
-                self.fwds.append(player)
-            else:
-                print(f'Player {player} {position} not found or max players reached')
+        position_list = getattr(self, position.lower() + 's')
+        if player in self.player_list and len(position_list) < self.get_max_players(position):
+            position_list.append(player)
+            self.squad_size += 1
+        elif len(position_list) >= self.get_max_players(position):
+            print(f'Player {player} {position} max players reached')
         else:
-            print('Invalid position')
+            print(f'Player {player} {position} not found')
+
+    def get_max_players(self, position):
+        if position == 'GK':
+            return 2
+        elif position == 'DEF':
+            return 5
+        elif position == 'MID':
+            return 5
+        elif position == 'FWD':
+            return 3
     
     def remove_player(self, player, position):
         if position == 'GK':
-            self.gk.remove(player)
+            self.gks.remove(player)
         elif position == 'DEF':
             self.defs.remove(player)
         elif position == 'MID':
@@ -67,7 +70,7 @@ class team:
 
     def display(self):
         print(f'GW{self.gameweek}:')
-        print(f'GK: {self.gk}')
+        print(f'GK: {self.gks}')
         print(f'DEF: {self.defs}')
         print(f'MID: {self.mids}')
         print(f'FWD: {self.fwds}')
@@ -75,10 +78,10 @@ class team:
         print(f'C: {self.captain}, VC: {self.vice_captain}')
 
     def get_team(self):
-        return self.gk, self.defs, self.mids, self.fwds
+        return self.gks, self.defs, self.mids, self.fwds
     
-    def get_gk(self):
-        return self.gk
+    def get_gks(self):
+        return self.gks
     
     def get_defs(self):
         return self.defs
@@ -95,17 +98,17 @@ class team:
     def suggest_subs(self):
         # Rank each player by their xP, list the lowest xP first
         ranked_gk = []
-        for player in self.gk:
-            ranked_gk.append([player, self.gk_player_list[player], 'GK'])
+        for player in self.gks:
+            ranked_gk.append([player, self.player_list[player], 'GK'])
         # Sort by xP
         ranked_gk.sort(key=lambda x: float(x[1]))
         ranked_others = []
         for player in self.defs:
-            ranked_others.append([player, self.def_player_list[player], 'DEF'])
+            ranked_others.append([player, self.player_list[player], 'DEF'])
         for player in self.mids:
-            ranked_others.append([player, self.mid_player_list[player], 'MID'])
+            ranked_others.append([player, self.player_list[player], 'MID'])
         for player in self.fwds:
-            ranked_others.append([player, self.fwd_player_list[player], 'FWD'])
+            ranked_others.append([player, self.player_list[player], 'FWD'])
         ranked_others.sort(key=lambda x: float(x[1]))
 
         # Suggest subs
@@ -155,7 +158,7 @@ class team:
         team_xp = []
         # Get xP for each player in team
 
-        for player in self.gk:
+        for player in self.gks:
             team_xp.append([player, self.player_xp(player, 'GK')])
         for player in self.defs:
             team_xp.append([player, self.player_xp(player, 'DEF')])
@@ -170,8 +173,15 @@ class team:
         # Get xP for each player in team
         xp_list = self.get_all_xp()
         total_xp = 0
-        for player in xp_list:
-            total_xp += player[1]
+        if self.squad_size != 15:
+            print('Team not complete')
+            return 0
+        else:
+            for player in xp_list:
+                if player[0] == self.captain:
+                    total_xp += player[1] * 2
+                else:
+                    total_xp += player[1]
 
         return total_xp
     

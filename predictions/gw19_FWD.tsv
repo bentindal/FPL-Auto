@@ -1,99 +1,140 @@
 Name	xP
-Aaron Connolly	0.0
-Ademola Ola-Adebomi	0.0
-Admiral Muskwe	0.0
-Alejo Véliz	0.0
-Aleksandar Mitrović	0.0
-Alexander Isak	0.96
-Andi Zeqiri	0.0
-Anthony Martial	0.97
-Antoine Semenyo	2.01
-Antwoine Hackford	0.0
-Aribim Pepple	0.0
-Armando Broja	0.96
-Ben Parkinson	0.0
-Bénie Traoré	0.0
-Callum Wilson	2.01
-Cameron Archer	2.37
-Carlos Vinícius Alves Morais	0.99
-Carlton Morris	0.98
-Cauley Woodrow	0.0
-Chiedozie Ogbene	0.99
-Chris Wood	1.59
-Christopher Nkunku	0.98
-Cody Gakpo	0.96
-Dane Scarlett	0.0
-Daniel Jebbison	0.0
-Danny Ings	0.99
-Danny Welbeck	0.97
-Darwin Núñez Ribeiro	1.09
-David Datro Fofana	0.0
-Deivid Washington de Souza Eugênio	0.0
-Deniz Undav	0.0
-Divin Mubama	0.99
-Divock Origi	0.99
-Dominic Calvert-Lewin	2.03
-Dominic Solanke	12.96
-Eddie Nketiah	0.99
-Elijah Adebayo	2.34
-Ellis Simms	0.0
-Emmanuel Dennis	0.0
-Erling Haaland	0.0
-Evan Ferguson	0.94
-Folarin Balogun	0.0
-Fábio Silva	0.0
-Gabriel Fernando de Jesus	2.54
-Gianluca Scamacca	0.0
-Halil Dervişoğlu	0.0
-Harry Kane	0.0
-Hwang Ui-jo	0.0
-Iliman Ndiaye	0.0
-Ivan Toney	0.0
-Jacob Brown	1.98
-Jamie Donley	0.0
-Jay Rodriguez	0.94
-Jay Stansfield	0.0
-Jean-Philippe Mateta	5.91
-Jhon Durán	0.98
-Joe Hugill	0.0
-Joe Taylor	0.0
-John McAtee	0.0
-John-Kymani Gordon	0.0
-João Pedro Junqueira de Jesus	1.97
-Julián Álvarez	2.56
-Keinan Davis	0.0
-Kieffer Moore	0.99
-Louie Marsh	0.0
-Luke Plange	0.0
-Lyle Foster	0.96
-Mark O’Mahony	0.0
-Mason Burstow	0.0
-Matheus Santos Carneiro Da Cunha	2.38
-Michael Ndiweni	0.0
-Michael Obafemi	0.0
-Michail Antonio	0.0
-Nathan Fraser	0.0
-Neal Maupay	1.08
-Nicolas Jackson	2.44
-Norberto Bercique Gomes Betuncal	0.98
-Odsonne Edouard	0.98
-Oliver McBurnie	0.97
-Ollie Watkins	2.47
-Pierre-Emerick Aubameyang	0.0
-Rasmus Højlund	1.94
-Raúl Jiménez	0.97
-Rhian Brewster	0.0
-Rodrigo Muniz Carvalho	0.97
-Romelu Lukaku Bolingoli	0.0
-Ronnie Stutter	0.0
-Sam Surridge	0.0
-Sasa Kalajdzic	0.0
-Shola Shoretire	0.0
-Taiwo Awoniyi	0.0
-Thomas Cannon	0.0
-Wesley Moraes Ferreira da Silva	0.0
-William Osula	0.98
-Wout Weghorst	0.0
-Yoane Wissa	1.85
-Youssef Ramalho Chermiti	0.0
-Zeki Amdouni	2.0
+Aaron Connolly	0.00225
+Adam Armstrong	0.00296
+Ademola Ola-Adebomi	0.00296
+Admiral Muskwe	0.00296
+Alejo Véliz	0.00225
+Aleksandar Mitrović	1.02552
+Alexander Isak	0.98537
+Andi Zeqiri	0.00225
+Anthony Martial	0.00225
+Antoine Semenyo	0.97247
+Antwoine Hackford	0.00296
+Aribim Pepple	0.00296
+Armando Broja	1.05796
+Ben Parkinson	0.00225
+Brennan Johnson	0.98327
+Bryan Mbeumo	0.00296
+Bénie Traoré	0.00296
+Callum Wilson	1.97928
+Cameron Archer	2.03684
+Carlos Vinícius Alves Morais	1.06952
+Carlton Morris	1.05843
+Cauley Woodrow	0.00296
+Che Adams	0.00296
+Chiedozie Ogbene	0.9795
+Chris Wood	8.33836
+Christian Benteke	0.00225
+Christian Saydee	1.35658
+Christopher Nkunku	1.54896
+Cody Gakpo	0.96473
+Cristiano Ronaldo dos Santos Aveiro	0.94074
+Dale Taylor	0.00225
+Dane Scarlett	0.98537
+Daniel Adu-Adjei	0.00296
+Daniel Jebbison	0.00296
+Danny Ings	0.94496
+Danny Welbeck	1.05519
+Darwin Núñez Ribeiro	1.01617
+David Datro Fofana	0.00296
+Deivid Washington de Souza Eugênio	0.00296
+Deniz Undav	0.00225
+Diego Da Silva Costa	0.00225
+Diogo Teixeira da Silva	9.07196
+Divin Mubama	0.87309
+Divock Origi	0.99712
+Dominic Calvert-Lewin	1.49098
+Dominic Sadi	0.00296
+Dominic Solanke	11.65908
+Dwight Gayle	0.00296
+Eddie Nketiah	1.0484
+Elijah Adebayo	2.12422
+Ellis Simms	0.00296
+Emmanuel Dennis	0.00296
+Erling Haaland	-0.0015
+Euan Pollock	0.97091
+Evan Ferguson	2.4352
+Fabio Silva	0.00225
+Folarin Balogun	0.00225
+Fábio Silva	0.00296
+Gabriel Fernando de Jesus	2.35221
+Georginio Rutter	0.00225
+Gianluca Scamacca	0.00225
+Halil Dervişoğlu	0.00225
+Harry Kane	0.946
+Hwang Ui-jo	0.00296
+Iliman Ndiaye	0.00296
+Ivan Toney	0.00225
+Jacob Brown	2.06953
+Jamie Donley	0.00225
+Jamie Vardy	0.00225
+Jay Rodriguez	0.98662
+Jay Stansfield	0.94551
+Jean-Philippe Mateta	2.13026
+Jhon Durán	0.98537
+Jimmy Morgan	0.00296
+Joe Gelhardt	0.48255
+Joe Hugill	0.00225
+Joe Taylor	0.00296
+John McAtee	0.00296
+John-Kymani Gordon	0.00296
+João Félix Sequeira	1.25137
+João Pedro Junqueira de Jesus	2.05177
+Julio Enciso	0.934
+Julián Álvarez	1.08499
+Kai Havertz	2.90075
+Keinan Davis	0.96569
+Kelechi Iheanacho	1.07106
+Kieffer Moore	0.93486
+Liam Delap	0.00225
+Louie Marsh	0.00296
+Luke Plange	0.00296
+Lyle Foster	1.05519
+Lyle Taylor	0.00296
+Marcus Forss	0.00296
+Mark O’Mahony	0.00225
+Mason Burstow	0.00296
+Mateo Joseph Fernández	0.00296
+Matheus Santos Carneiro Da Cunha	0.92598
+Michael Ndiweni	0.00225
+Michael Obafemi	0.00296
+Michail Antonio	0.00225
+Nathan Butler-Oyedeji	0.00296
+Nathan Fraser	0.00296
+Neal Maupay	0.99436
+Nicolas Jackson	2.44562
+Norberto Bercique Gomes Betuncal	0.98958
+Odsonne Edouard	0.00296
+Oliver McBurnie	0.97653
+Ollie Watkins	2.00577
+Patrick Bamford	0.00225
+Patson Daka	0.00225
+Paul Onuachu	0.00225
+Pierre-Emerick Aubameyang	1.05739
+Rasmus Højlund	1.84688
+Raúl Jiménez	0.98577
+Rhian Brewster	0.00296
+Richarlison de Andrade	0.00225
+Roberto Firmino	0.00225
+Rodrigo Muniz Carvalho	1.17229
+Romelu Lukaku Bolingoli	0.00296
+Ronnie Stutter	0.00296
+Salomón Rondón	4.97198
+Sam Greenwood	0.00225
+Sam Surridge	0.00296
+Sasa Kalajdzic	0.00296
+Shola Shoretire	1.03948
+Sonny Perkins	7.13837
+Sékou Mara	0.12536
+Taiwo Awoniyi	0.00296
+Terry Ablade	6.03995
+Thomas Cannon	0.00225
+Timo Werner	0.00225
+Troy Parrott	1.90003
+Wesley Moraes Ferreira da Silva	0.00225
+Wilfried Gnonto	0.00296
+William Osula	0.94637
+Wout Weghorst	0.97176
+Yoane Wissa	2.17858
+Youssef Ramalho Chermiti	0.00296
+Zeki Amdouni	1.88825

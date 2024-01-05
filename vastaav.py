@@ -13,6 +13,7 @@ class vastaav_data:
         self.player_list = self.get_player_list(season).set_index('name').to_dict()
         self.player_id_list = {v: k for k, v in self.player_list['id'].items()}
         self.team_list = self.get_team_list(season)
+
     def get_player_list(self, season):
         player_list = pd.read_csv(f'{self.data_location}/{season}/player_idlist.csv')
         # Merge first_name and second_name columns into one column
@@ -74,7 +75,6 @@ class vastaav_data:
         fwd_data = fwd_data.set_index('name')
 
         return gk_data, def_data, mid_data, fwd_data
-
     
     def prune_features(self, features):
         # Drop the remaining columns that are not features
