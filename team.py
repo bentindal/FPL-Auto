@@ -12,10 +12,10 @@ class team:
         self.fwds = fwds
         self.subs = subs
         self.squad_size = len(gks) + len(defs) + len(mids) + len(fwds) + len(subs)
-        self.gk_xp = pd.read_csv(f'predictions/gw{self.gameweek}_GK.tsv', sep='\t')
-        self.def_xp = pd.read_csv(f'predictions/gw{self.gameweek}_DEF.tsv', sep='\t')
-        self.mid_xp = pd.read_csv(f'predictions/gw{self.gameweek}_MID.tsv', sep='\t')
-        self.fwd_xp = pd.read_csv(f'predictions/gw{self.gameweek}_FWD.tsv', sep='\t')
+        self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
+        self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
+        self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
+        self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
         self.gk_player_list = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
         self.def_player_list = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_player_list = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
@@ -250,7 +250,7 @@ class team:
     
     def player_pos(self, player):
         # Get position for player
-        if player in self.positions_list[player]:
+        if player in self.positions_list:
             return self.positions_list[player]
         else:
             print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
@@ -292,7 +292,9 @@ class team:
             player_list = self.mid_player_list
         elif position == 'FWD':
             player_list = self.fwd_player_list
-
+        else:
+            print(f'Invalid position {position}')
+            quit()
         # Sort players by xP
         ranked_player_list = []
         for player in player_list:

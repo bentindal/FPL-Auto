@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import team
 import time
 
-season = '2022-23'
-start_gw = 5
-repeat = 16
+season = '2023-24'
+start_gw = 6
+repeat = 13
 before_transfer = []
 after_transfer = []
 
@@ -28,7 +28,7 @@ def main():
     t.add_player('Shandon Baptiste', 'MID')
     t.add_player('George Baldock', 'DEF')
 
-    for i in range(start_gw, start_gw + repeat):
+    for i in range(start_gw, start_gw + repeat + 1):
         before_transfer.append(t.team_p())
 
         out, pos, budget = t.suggest_transfer_out()
@@ -45,15 +45,10 @@ def main():
         # print(f'Team xP: {t.team_xp():.2f}')
         print(f'Actual P: {t.team_p():.2f}')
         after_transfer.append(t.team_p())
-        
 
+        t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.subs)
 
-        #time.sleep(10)
-
-        if i != 20:
-            t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.subs)
-
-    gameweeks = range(start_gw, start_gw + repeat)
+    gameweeks = range(start_gw, start_gw + repeat + 1)
 
     plt.plot(gameweeks, after_transfer, label='After Transfer')
     plt.plot(gameweeks, before_transfer, label='Before Transfer')
