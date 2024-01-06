@@ -4,21 +4,32 @@ import pandas as pd
 import os
 
 class fpl_evaluate:
-    def score_model(self, predictions, labels):
-        # Calculate error
-        error = 0
-        mse = 0
-        accuracy = 0
-        for i in range(len(predictions)):
-            error += abs(predictions[i] - labels[i])
-            mse += (predictions[i] - labels[i]) ** 2
-            if round(predictions[i]) == labels[i]:
-                accuracy += 1
-        error /= len(predictions)
-        mse /= len(predictions)
-        accuracy /= len(predictions)
+    class Evaluate:
+        def score_model(self, predictions, labels):
+            """
+            Calculate the error, mean squared error (MSE), and accuracy of the model's predictions.
 
-        return error, mse, accuracy
+            Args:
+                predictions (list): The predicted values.
+                labels (list): The actual values.
+
+            Returns:
+                tuple: A tuple containing the error, MSE, and accuracy.
+            """
+            # Calculate error
+            error = 0
+            mse = 0
+            accuracy = 0
+            for i in range(len(predictions)):
+                error += abs(predictions[i] - labels[i])
+                mse += (predictions[i] - labels[i]) ** 2
+                if round(predictions[i]) == labels[i]:
+                    accuracy += 1
+            error /= len(predictions)
+            mse /= len(predictions)
+            accuracy /= len(predictions)
+
+            return error, mse, accuracy
     
     def display_weights(self, week_num, weights, feature_names, pos):
         plt.figure(figsize=(15, 6))
