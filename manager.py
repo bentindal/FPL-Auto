@@ -1,16 +1,12 @@
 import matplotlib.pyplot as plt
-import team
-import time
+import fpl_auto.team as team
 
 season = '2023-24'
-start_gw = 6
-repeat = 13
-before_transfer = []
-after_transfer = []
+start_gw = 1
+repeat = 19
 
-def main():
-    t = team.team(season, start_gw, 5)
-
+def my_current_team_at_gw21():
+    t = team.team(season, start_gw, 1)
     t.add_player('André Onana', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Pedro Porro', 'DEF')
@@ -27,36 +23,59 @@ def main():
     t.add_player('Joachim Andersen', 'DEF')
     t.add_player('Shandon Baptiste', 'MID')
     t.add_player('George Baldock', 'DEF')
-
+    return t
+def my_team_at_gw1():
+    t = team.team(season, 2)
+    t.add_player('Aaron Ramsdale', 'GK')
+    t.add_player('Gabriel dos Santos Magalhães', 'DEF')
+    t.add_player('Luke Shaw', 'DEF')
+    t.add_player('Pervis Estupiñán', 'DEF')
+    t.add_player('Marcus Rashford', 'MID')
+    t.add_player('Kaoru Mitoma', 'MID')
+    t.add_player('Eberechi Eze', 'MID')
+    t.add_player('Mohamed Salah', 'MID')
+    t.add_player('Erling Haaland', 'FWD')
+    t.add_player('João Pedro Junqueira de Jesus', 'FWD')
+    t.add_player('Julián Álvarez', 'FWD')
+    
+    t.add_player('Alphonse Areola', 'GK')
+    t.add_player("Amari'i Bell", 'DEF')
+    t.add_player('George Baldock', 'DEF')
+    t.add_player('Alexis Mac Allister', 'MID')
+    return t
+def main():
+    t = my_team_at_gw1()
+    p_list = [69]
+    xp_list = [69]
     for i in range(start_gw, start_gw + repeat + 1):
-        before_transfer.append(t.team_p())
-
-        out, pos, budget = t.suggest_transfer_out()
-        transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
-        print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
-        t.transfer(out, transfer_in, pos)
-        
         t.auto_subs()
         t.auto_captain()
         t.display()
 
         print(f'Budget Remaining: {t.budget:.1f}')
         # t.auto_chips
-        # print(f'Team xP: {t.team_xp():.2f}')
-        print(f'Actual P: {t.team_p():.2f}')
-        after_transfer.append(t.team_p())
-
-        t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.subs)
-
-    gameweeks = range(start_gw, start_gw + repeat + 1)
-
-    plt.plot(gameweeks, after_transfer, label='After Transfer')
-    plt.plot(gameweeks, before_transfer, label='Before Transfer')
-    plt.xlabel('Gameweek')
-    plt.ylabel('Points')
-    plt.title('Points Comparison')
-    plt.legend()
-    plt.show()
+        #print(f'Team xP: {t.team_xp():.2f}')
+        print(f'P: {t.team_p():.2f}')
+        p_list.append(t.team_p())
+        xp_list.append(t.team_xp())
+        
+        try:
+            out, pos, budget = t.suggest_transfer_out()
+            transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
+            print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
+            t.transfer(out, transfer_in, pos)
+        except:
+            pass
+        print('-----------------------------')
+        if i != start_gw + repeat:
+            t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.subs)
     
+    # Sum the p_list and xp_list and report results
+    print('==============================')
+    p_sum = sum(p_list)
+    xp_sum = sum(xp_list)
+    print(f'p_sum: {p_sum}')
+    print(f'xp_sum: {xp_sum:.0f}')
+
 if __name__ == '__main__':
     main()

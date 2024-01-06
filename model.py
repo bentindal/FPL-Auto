@@ -1,5 +1,5 @@
 '''
-FPL Automation Project
+Model Generator for FPL Automation Project
 Author: Benjamin Tindal
 '''
 
@@ -7,8 +7,8 @@ import argparse
 import numpy as np
 import pandas as pd
 import math
-from vastaav import vastaav_data
-from evaluate import fpl_evaluate
+from fpl_auto.data import fpl_data
+from fpl_auto.evaluate import fpl_evaluate
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
@@ -57,7 +57,7 @@ output_files = inputs.output_files
 
 # Initialise classes
 # Ensure that the correct location is specified for Vastaav data
-vastaav = vastaav_data('data', season)
+vastaav = fpl_data('data', season)
 eval = fpl_evaluate()
 
 

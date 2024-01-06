@@ -1,8 +1,9 @@
 import pandas as pd
-import vastaav
+import fpl_auto.data as fpl
+
 class team:
-    def __init__(self, season, gameweek, budget=0, gks=[], defs=[], mids=[], fwds=[], subs=[]):
-        self.vastaav_data = vastaav.vastaav_data('data', season)
+    def __init__(self, season, gameweek, budget=100, gks=[], defs=[], mids=[], fwds=[], subs=[]):
+        self.fpl = fpl.fpl_data('data', season)
         self.season = season
         self.gameweek = gameweek
         self.budget = budget
@@ -28,12 +29,12 @@ class team:
         self.player_name_list = self.gk_xp.Name.tolist() + self.def_xp.Name.tolist() + self.mid_xp.Name.tolist() + self.fwd_xp.Name.tolist()
         self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
         self.player_list = dict(zip(self.player_name_list, self.player_xp_list))
-        self.positions_list = self.vastaav_data.position_dict(self.gameweek)
+        self.positions_list = self.fpl.position_dict(self.gameweek)
         self.captain = ''
         self.vice_captain = ''
         self.points_scored = {}
         if self.gameweek < 21:
-            self.points_scored = self.vastaav_data.actual_points_dict(season, gameweek)
+            self.points_scored = self.fpl.actual_points_dict(season, gameweek)
 
     def add_player(self, player, position):
         if position not in ['GK', 'DEF', 'MID', 'FWD']:
@@ -43,6 +44,7 @@ class team:
         position_list = getattr(self, position.lower() + 's')
         if player in self.player_list and len(position_list) < self.get_max_players(position):
             position_list.append(player)
+            self.budget -= self.player_value(player)
             self.squad_size += 1
         elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
@@ -79,7 +81,7 @@ class team:
         else:
             print('Invalid position')
     
-    def sub_player(self, player, position):
+    def add_sub(self, player, position):
         if position == 'GK':
             self.gks.remove(player)
         elif position == 'DEF':
@@ -91,7 +93,24 @@ class team:
         else:
             print('Invalid position, cannot sub player')
 
+    def remove_sub(self, player, position):
+        if position == 'GK':
+            self.gks.append(player)
+        elif position == 'DEF':
+            self.defs.append(player)
+        elif position == 'MID':
+            self.mids.append(player)
+        elif position == 'FWD':
+            self.fwds.append(player)
+        else:
+            print('Invalid position, cannot add sub')
+            
     def display(self):
+        self.return_subs_to_team()
+
+        self.auto_subs()
+        self.auto_captain()
+
         print(f'GW{self.gameweek}:')
         print(f'GK: {self.gks}')
         print(f'DEF: {self.defs}')
@@ -120,8 +139,20 @@ class team:
     
     def return_subs_to_team(self):
         for sub in self.subs:
-            self.add_player(sub[0], sub[1])
+            self.return_player_to_team(sub[0], sub[1])
         self.subs = []
+
+    def return_player_to_team(self, player, position):
+        if position == 'GK':
+            self.gks.append(player)
+        elif position == 'DEF':
+            self.defs.append(player)
+        elif position == 'MID':
+            self.mids.append(player)
+        elif position == 'FWD':
+            self.fwds.append(player)
+        else:
+            print('Invalid position, cannot return player to team')
 
     def suggest_subs(self):
         # Rank each player by their xP, list the lowest xP first
@@ -157,16 +188,17 @@ class team:
         return subs
 
     def make_subs(self, subs):
-        # Remove players from team
-        for sub in subs:
-            self.sub_player(sub[0], sub[1])
-
         # Add subs to list
         self.subs = subs
+        # Remove players from team
+        for sub in subs:
+            self.add_sub(sub[0], sub[1])
+    
     
     def auto_subs(self):
-        subs = self.suggest_subs()
-        self.make_subs(subs)
+        self.return_subs_to_team()
+        suggested_subs = self.suggest_subs()
+        self.make_subs(suggested_subs)
 
     def player_xp(self, player, position):
         if position == 'GK':
@@ -205,6 +237,9 @@ class team:
         return team_xp
     
     def team_xp(self):
+        self.return_subs_to_team()
+        self.auto_subs()
+        self.auto_captain()
         # Get xP for each player in team
         xp_list = self.get_all_xp()
         total_xp = 0
@@ -242,15 +277,20 @@ class team:
         return all_p
     
     def team_p(self):
+        self.return_subs_to_team()
+        self.auto_subs()
+        self.auto_captain()
         return self.get_team_p()
     
     def player_value(self, player):
         # Get price for player
-        return self.vastaav_data.get_price(self.gameweek, player)
+        return self.fpl.get_price(self.gameweek, player)
     
     def player_pos(self, player):
         # Get position for player
-        if player in self.positions_list:
+        if player in self.fpl.position_dict(self.gameweek - 1):
+            return self.fpl.position_dict(self.gameweek - 1)[player]
+        elif player in self.positions_list:
             return self.positions_list[player]
         else:
             print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
@@ -279,7 +319,7 @@ class team:
         xp_list.sort(key=lambda x: float(x[1]), reverse=True)
         target_name = xp_list[-1][0]
         target_pos = self.player_pos(target_name)
-        target_budget = self.vastaav_data.get_price(self.gameweek, target_name)
+        target_budget = self.fpl.get_price(self.gameweek, target_name)
         # Suggest transfer target
         return target_name, target_pos, target_budget
     
@@ -327,7 +367,6 @@ class team:
         self.return_subs_to_team()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
-        self.budget -= self.player_value(transfer_in)
         
     
     
