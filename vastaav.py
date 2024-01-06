@@ -213,13 +213,27 @@ class vastaav_data:
         predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
         return player_names, predictions
     
-    def price_list(self, week_num):
+    def get_price(self, week_num, player):
         gw_data = self.get_gw_data(self.season, week_num - 1)
         gw_data = gw_data[['value']]
         gw_data = gw_data / 10
         # Turn gw_data into dictionary (name --> value)
         gw_data = gw_data.to_dict()['value']
+        if player in gw_data:
+            return gw_data[player]
+        else:
+            return None
+    
+    def actual_points_dict(self, season, week_num):
+        gw_data = self.get_gw_data(season, week_num)
+        # Name --> Actual Points (Dictionary)
+        gw_data = gw_data[['total_points']]
+        gw_data = gw_data.to_dict()['total_points']
         return gw_data
+    
+    def position_dict(self, week_num):
+        pos_data = self.get_gw_data(self.season, week_num)
+        return pos_data.to_dict()['position']
     
     def post_model_weightings(self, predictions):
         # For each pos in predictions
