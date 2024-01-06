@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import team
 import time
 
-season = '2023-24'
+season = '2022-23'
 start_gw = 5
 repeat = 16
 before_transfer = []
@@ -29,29 +29,21 @@ def main():
     t.add_player('George Baldock', 'DEF')
 
     for i in range(start_gw, start_gw + repeat):
-        #t.auto_subs()
-        #t.auto_captain()
-        #t.display()
-        print(f'SquadSize: {t.squad_size}')
-        print(f'Team xP (before transfer): {t.team_xp():.2f}')
-        print(f'Actual P (before transfer): {t.team_p():.2f}')
         before_transfer.append(t.team_p())
-        out, pos, budget = t.suggest_transfer_out()
-        print(f'Transfer out: {out} {pos}')
 
+        out, pos, budget = t.suggest_transfer_out()
         transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
-        print(f'Transfer in: {transfer_in} {pos}')
-        
+        print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
         t.transfer(out, transfer_in, pos)
         
         t.auto_subs()
         t.auto_captain()
         t.display()
-        print(f'SquadSize: {t.squad_size}')
-        print(f'Budget: {t.budget:.2f}')
-        #t.auto_chips
-        print(f'Team xP (after transfer): {t.team_xp():.2f}')
-        print(f'Actual P (after transfer): {t.team_p():.2f}')
+
+        print(f'Budget Remaining: {t.budget:.1f}')
+        # t.auto_chips
+        # print(f'Team xP: {t.team_xp():.2f}')
+        print(f'Actual P: {t.team_p():.2f}')
         after_transfer.append(t.team_p())
         
 

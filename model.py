@@ -9,7 +9,6 @@ import pandas as pd
 import math
 from vastaav import vastaav_data
 from evaluate import fpl_evaluate
-import team
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
@@ -19,8 +18,8 @@ def parse_args():
                         choices=[
                             "linear", "randomforest", "gradientboost"], 
                         help='Model type to use')
-    parser.add_argument('-season', type=str, default='2023-24', help='Season to predict points for, default: 2023-24')
-    parser.add_argument('-target_gw', type=int, required=True, help='Gameweek to predict points for, required')
+    parser.add_argument('-season', type=str, required=True, help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
+    parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=1, help='How many weeks to repeat testing over, default: 1')
     parser.add_argument('-training_prev_weeks', type=int, default=10, help='How many past weeks of data to use for training, default: 10')
     parser.add_argument('-predict_weeks', type=int, default=3, help='How many past weeks of data to use for predicting, default: 3')
@@ -94,9 +93,9 @@ def main():
 
         # Average the errors
         error = (gk_error + def_error + mid_error + fwd_error) / 4
-        ase = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
+        mse = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
         aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4
-        print(f'Predicting GW{i}: AE: {error:.3f}, ASE: {math.sqrt(ase):.3f}, ACC: {aa*100:.2f}%')
+        print(f'Predicting GW{i}: AE: {error:.3f}, MSE: {math.sqrt(mse):.3f}, ACC: {aa*100:.2f}%')
 
         if plot_predictions:
             all_predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
@@ -104,14 +103,14 @@ def main():
 
         count += 1
         total_e += error
-        total_mse += ase
+        total_mse += mse
         total_aa += aa
 
         if output_files:
             # Lets use these models to predict the next gameweek
             models = gk_model, def_model, mid_model, fwd_model
             player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, models)
-            eval.export_tsv(player_names, predictions, i)
+            eval.export_tsv(player_names, predictions, season, i)
         
     if repeat > 1:
         total_e /= count

@@ -226,7 +226,6 @@ class team:
         elif player in self.points_scored:
             return self.points_scored[player]
         else:
-            print(f'Player {player} {position} points not found')
             return 0
     
     def get_team_p(self):
@@ -251,7 +250,11 @@ class team:
     
     def player_pos(self, player):
         # Get position for player
-        return self.positions_list[player]
+        if player in self.positions_list[player]:
+            return self.positions_list[player]
+        else:
+            print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
+            return None
     
     def suggest_captaincy(self):
         # Get xP for each player in team
