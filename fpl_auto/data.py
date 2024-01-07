@@ -315,7 +315,7 @@ class fpl_data:
             n_est = 50 # keep at 100 whilst in development for speed
             l_rate = 0.2
             max_f = 10
-            max_leaf = 10
+            max_leaf = 20
             gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
             def_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
             mid_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
