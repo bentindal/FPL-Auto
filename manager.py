@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import fpl_auto.team as team
 
 season = '2023-24'
-start_gw = 1
-repeat = 19
+start_gw = 2
+repeat = 18
 
 def my_current_team_at_gw21():
     t = team.team(season, start_gw, 1)
@@ -25,7 +25,7 @@ def my_current_team_at_gw21():
     t.add_player('George Baldock', 'DEF')
     return t
 def my_team_at_gw1():
-    t = team.team(season, 2)
+    t = team.team(season, start_gw)
     t.add_player('Aaron Ramsdale', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Luke Shaw', 'DEF')
@@ -48,27 +48,37 @@ def main():
     p_list = [69]
     xp_list = [69]
     for i in range(start_gw, start_gw + repeat + 1):
-        t.auto_subs()
+        print(f'GW{i}')
+        # Prepare team
         t.auto_captain()
-        t.display()
+        t.auto_subs()
 
-        print(f'Budget Remaining: {t.budget:.1f}')
-        # t.auto_chips
-        #print(f'Team xP: {t.team_xp():.2f}')
-        print(f'P: {t.team_p():.2f}')
-        p_list.append(t.team_p())
-        xp_list.append(t.team_xp())
+        team_xp = t.team_xp()
+
+        # View team before
+        #t.display()
         
-        try:
-            out, pos, budget = t.suggest_transfer_out()
-            transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
-            print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
-            t.transfer(out, transfer_in, pos)
-        except:
-            pass
+        # Now lets score the team
+        team_p = t.team_p()
+        
+        
+        # View team after!
+        #t.display()
+        print(f'Result: {team_p:.2f}')
+        
+        xp_list.append(team_xp)
+        p_list.append(team_p)
+        
+        # Lets make a transfer
+        out, pos, budget = t.suggest_transfer_out()
+        transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
+        print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
+        t.transfer(out, transfer_in, pos)
+
         print('-----------------------------')
         if i != start_gw + repeat:
-            t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.subs)
+            t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
+        
     
     # Sum the p_list and xp_list and report results
     print('==============================')

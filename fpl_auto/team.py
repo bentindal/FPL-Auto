@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 
 class team:
-    def __init__(self, season, gameweek, budget=100, gks=[], defs=[], mids=[], fwds=[], subs=[]):
+    def __init__(self, season, gameweek, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
         """
         Initializes a team object.
 
@@ -27,8 +27,7 @@ class team:
         self.defs = defs
         self.mids = mids
         self.fwds = fwds
-        self.subs = subs
-        self.squad_size = len(gks) + len(defs) + len(mids) + len(fwds) + len(subs)
+        self.subs = []
         self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
@@ -71,7 +70,7 @@ class team:
         if player in self.player_list and len(position_list) < self.get_max_players(position):
             position_list.append(player)
             self.budget -= self.player_value(player)
-            self.squad_size += 1
+    
         elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
         else:
@@ -109,19 +108,15 @@ class team:
         """
         if position == 'GK':
             self.gks.remove(player)
-            self.squad_size -= 1
             self.budget += self.player_value(player)
         elif position == 'DEF':
             self.defs.remove(player)
-            self.squad_size -= 1
             self.budget += self.player_value(player)
         elif position == 'MID':
             self.mids.remove(player)
-            self.squad_size -= 1
             self.budget += self.player_value(player)
         elif position == 'FWD':
             self.fwds.remove(player)
-            self.squad_size -= 1
             self.budget += self.player_value(player)
         else:
             print('Invalid position')
@@ -399,6 +394,9 @@ class team:
 
         return team_xp
     
+    def squad_size(self):
+        return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds) + len(self.subs)
+    
     def team_xp(self):
         """
         Calculates the expected points (xP) for the entire team.
@@ -412,8 +410,8 @@ class team:
         # Get xP for each player in team
         xp_list = self.get_all_xp()
         total_xp = 0
-        if self.squad_size != 15:
-            print(f'Team not complete, squad size {self.squad_size}')
+        if self.squad_size() != 15:
+            print(f'Team not complete, squad size {self.squad_size()}')
             return 0
         else:
             for player in xp_list:
@@ -440,6 +438,7 @@ class team:
         elif player in self.points_scored:
             return self.points_scored[player]
         else:
+            #print(f'Player {player} {position} points not found for GW{self.gameweek} {self.season}!')
             return 0
     
     def get_team_p(self):
@@ -450,6 +449,9 @@ class team:
         - int: The total actual points scored by the team.
         """
         all_p = 0
+        
+        self.swap_players_who_didnt_play()
+        
         for player in self.gks:
             all_p += self.player_p(player, 'GK')
         for player in self.defs:
@@ -469,8 +471,11 @@ class team:
         - int: The total actual points scored by the team.
         """
         self.return_subs_to_team()
+        
         self.auto_subs()
+        
         self.auto_captain()
+        
         return self.get_team_p()
     
     def player_value(self, player):
@@ -484,7 +489,10 @@ class team:
         - int: The price of the player.
         """
         # Get price for player
-        return self.fpl.get_price(self.gameweek, player)
+        if self.fpl.get_price(self.gameweek, player) != None:
+            return self.fpl.get_price(self.gameweek, player)
+        else:
+            return self.fpl.get_price(self.gameweek - 1, player)
     
     def player_pos(self, player):
         """
@@ -531,12 +539,15 @@ class team:
         # Get xP for each player in team
         xp_list = self.get_all_xp(include_subs=True)
         # Sort by xP
-        xp_list.sort(key=lambda x: float(x[1]), reverse=True)
-        target_name = xp_list[-1][0]
-        target_pos = self.player_pos(target_name)
-        target_budget = self.fpl.get_price(self.gameweek, target_name)
-        # Suggest transfer target
-        return target_name, target_pos, target_budget
+        xp_list.sort(key=lambda x: float(x[1]), reverse=False)
+        for potential_player in xp_list:
+            target_name = potential_player[0]
+            target_pos = self.player_pos(target_name)
+            target_budget = self.fpl.get_price(self.gameweek, target_name)
+            if target_pos != None and target_budget != None:
+                return target_name, target_pos, target_budget
+            
+        return '', '', 0
     
     def suggest_transfer_in(self, position, budget):
         if position == 'GK':
@@ -579,10 +590,98 @@ class team:
             return False
         
     def transfer(self, transfer_out, transfer_in, position):
+
         self.return_subs_to_team()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
         
-    
+    def swap_players_who_didnt_play(self):
+        # Get players who didn't play
+        players_who_didnt_play = self.fpl.get_players_who_didnt_play(self.gameweek)
+
+        # Get a list of players on the team who didnt play
+        gks_who_didnt_play = []
+        defs_who_didnt_play = []
+        mids_who_didnt_play = []
+        fwds_who_didnt_play = []
+        subs_who_didnt_play = []
+        
+        # get list of subs names
+        sub_list = []
+        for sub in self.subs:
+            sub_list.append(sub[0])
+
+        for player in players_who_didnt_play:
+            if player in self.gks:
+                gks_who_didnt_play.append(player)
+            elif player in self.defs:
+                defs_who_didnt_play.append(player)
+            elif player in self.mids:
+                mids_who_didnt_play.append(player)
+            elif player in self.fwds:
+                fwds_who_didnt_play.append(player)
+            elif player in sub_list:
+                subs_who_didnt_play.append(player)
+        
+        # Get a list of players on the team who did play
+        team_nonplayers = gks_who_didnt_play + defs_who_didnt_play + mids_who_didnt_play + fwds_who_didnt_play
+        
+        if len(team_nonplayers) > 0:
+            sub_list = self.subs
+            
+            for p in sub_list:
+                if p in team_nonplayers:
+                    sub_list.remove(p)
+            
+            #print(f'Players who didnt play: {team_nonplayers}')
+            #print(f'Potential subs: {sub_list}')
+            
+            for player in team_nonplayers:
+                
+                for sub in sub_list:
+                    sub_made = False
+                    # Lets try and swap the sub with a player that didnt play
+                    
+                    # If sub matches play pos 
+                    #print(f'Player: {player} {self.player_pos(player)}, Sub: {sub}')
+                    if self.player_pos(player) == sub[1] and sub[0] not in team_nonplayers:
+                        
+                        # Add sub to team
+                        self.remove_sub(sub[0], sub[1])
+                        # Remove sub from subs
+                        self.subs.remove(sub)
+                        # Remove player from team
+                        self.add_sub(player, sub[1])
+                        # Add player to subs
+                        self.subs.append([player, sub[1]])
+                        print(f'Swapped {sub[0]} {self.player_p(sub[0], sub[1])} with {player} {self.player_p(player, self.positions_list[player])} (pos match)')
+                        
+                        sub_made = True
+                        break
+
+                            
+
+                if not sub_made:
+                    #print(f'Could not find a pos match for {player} with any sub')
+                    # Attempt to swap player with the first sub who plays thats not a gk
+                    for sub in sub_list:
+                        if sub[0] not in team_nonplayers and sub[1] != 'GK':
+                            # Add sub to team
+                            self.remove_sub(sub[0], sub[1])
+                            # Remove sub from subs
+                            self.subs.remove(sub)
+                            # Remove player from team
+                            self.add_sub(player, self.positions_list[player])
+                            # Add player to subs
+                            self.subs.append([player, self.positions_list[player]])
+                            print(f'Swapped {sub[0]} with {player} (no pos match)')
+                            sub_made = True
+                            break
+                            
+
+
+            
+
+
     
     

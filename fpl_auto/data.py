@@ -390,6 +390,15 @@ class fpl_data:
         pos_data = self.get_gw_data(self.season, week_num)
         return pos_data.to_dict()['position']
     
+    def get_players_who_didnt_play(self, gameweek):
+        gw_data = self.get_gw_data(self.season, gameweek)
+        gw_data = gw_data[gw_data['minutes'] == 0]
+        # conver to dict (name --> id)
+        gw_data = gw_data.to_dict()['minutes']
+        return gw_data
+        
+
+
     def post_model_weightings(self, predictions):
         # For each pos in predictions
         for pos in predictions:
