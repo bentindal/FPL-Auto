@@ -50,9 +50,6 @@ def main():
     for i in range(start_gw, start_gw + repeat + 1):
         print(f'GW{i}')
         # Prepare team
-        t.auto_captain()
-        t.auto_subs()
-
         team_xp = t.team_xp()
 
         # View team before
@@ -60,7 +57,6 @@ def main():
         
         # Now lets score the team
         team_p = t.team_p()
-        
         
         # View team after!
         #t.display()

@@ -397,6 +397,9 @@ class team:
     def squad_size(self):
         return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds) + len(self.subs)
     
+    def xi_size(self):
+        return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds)
+    
     def team_xp(self):
         """
         Calculates the expected points (xP) for the entire team.
@@ -450,8 +453,6 @@ class team:
         """
         all_p = 0
         
-        self.swap_players_who_didnt_play()
-        
         for player in self.gks:
             all_p += self.player_p(player, 'GK')
         for player in self.defs:
@@ -476,6 +477,8 @@ class team:
         
         self.auto_captain()
         
+        self.swap_players_who_didnt_play()
+
         return self.get_team_p()
     
     def player_value(self, player):
