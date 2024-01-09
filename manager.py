@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import fpl_auto.team as team
 
-season = '2023-24'
+season = '2022-23'
 start_gw = 1
-repeat = 19
+repeat = 37
 
 def my_current_team_at_gw21():
     t = team.team(season, start_gw, 1)
@@ -47,10 +47,10 @@ def main():
     t = team.team(season, start_gw, 100)
     new_team = t.select_intial_team()
     print(f'Budget: {new_team.budget}')
-    new_team.display()
     t = new_team
-    p_list = [69]
-    xp_list = [69]
+    p_list = []
+    xp_list = []
+
     for i in range(start_gw, start_gw + repeat + 1):
         #print(f'GW{i}')
         # Prepare team
@@ -68,12 +68,10 @@ def main():
         
         xp_list.append(team_xp)
         p_list.append(team_p)
-        
+
+        print('-----------------------------')
         # Lets make a transfer
-        out, pos, budget = t.suggest_transfer_out()
-        transfer_in = t.suggest_transfer_in(pos, t.budget + budget)
-        print(f'Transfer out: {out} {pos} for {transfer_in} {pos}')
-        t.transfer(out, transfer_in, pos)
+        t.auto_transfer()
 
         print('-----------------------------')
         if i != start_gw + repeat:

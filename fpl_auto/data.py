@@ -130,28 +130,27 @@ class fpl_data:
         Returns:
             tuple: Summarized player data for each position.
         """
+        if self.season == '2022-23' and from_gw == 7:
+            from_gw = 8
+
         gk_data = self.get_pos_data(season, from_gw, 'GK')
         def_data = self.get_pos_data(season, from_gw, 'DEF')
         mid_data = self.get_pos_data(season, from_gw, 'MID')
         fwd_data = self.get_pos_data(season, from_gw, 'FWD')
 
         for i in range(from_gw + 1, to_gw + 1):
+            if self.season == '2022-23' and i == 7:
+                continue
             gk_data = pd.concat((gk_data, self.get_pos_data(season, i, 'GK')))
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
 
         # Group by player name and calculate the average
-        gk_data = gk_data.groupby('name').mean().reset_index()
-        def_data = def_data.groupby('name').mean().reset_index()
-        mid_data = mid_data.groupby('name').mean().reset_index()
-        fwd_data = fwd_data.groupby('name').mean().reset_index()
-
-        # Set name to be the index again
-        gk_data = gk_data.set_index('name')
-        def_data = def_data.set_index('name')
-        mid_data = mid_data.set_index('name')
-        fwd_data = fwd_data.set_index('name')
+        gk_data = gk_data.groupby('name').mean().reset_index().set_index('name')
+        def_data = def_data.groupby('name').mean().reset_index().set_index('name')
+        mid_data = mid_data.groupby('name').mean().reset_index().set_index('name')
+        fwd_data = fwd_data.groupby('name').mean().reset_index().set_index('name')
 
         return gk_data, def_data, mid_data, fwd_data
     
@@ -167,6 +166,7 @@ class fpl_data:
         """
         # Drop the remaining columns that are not features
         features = features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+
         return features
     
     def prune_all_features(self, features):
@@ -346,7 +346,7 @@ class fpl_data:
         Returns:
             pandas.DataFrame: The player predictions.
         """
-        pass
+        
         features = self.sum_player_data(season, from_gw, to_gw - 1)
         gk_player_names = features[0].index.values
         def_player_names = features[1].index.values
@@ -373,7 +373,7 @@ class fpl_data:
         return player_names, predictions
     
     def get_price(self, week_num, player):
-        gw_data = self.get_gw_data(self.season, week_num - 1)
+        gw_data = self.get_gw_data(self.season, week_num)
         gw_data = gw_data[['value']]
         gw_data = gw_data / 10
         # Turn gw_data into dictionary (name --> value)
@@ -400,8 +400,6 @@ class fpl_data:
         # conver to dict (name --> id)
         gw_data = gw_data.to_dict()['minutes']
         return gw_data
-        
-
 
     def post_model_weightings(self, predictions):
         # For each pos in predictions
