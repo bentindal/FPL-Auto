@@ -52,10 +52,6 @@ def main():
     xp_list = []
 
     for i in range(start_gw, start_gw + repeat + 1):
-        if i == 13:
-            print('USE CHIP: WILDCARD')
-            t = t.select_intial_team()
-
         # Prepare team
         team_xp = t.team_xp()
 
