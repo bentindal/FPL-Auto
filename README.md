@@ -26,9 +26,7 @@ The project fully aims to abide by the rules of the FPL game, so the team select
 
 * Work in Progress! *
 
-TODO - Initial Team Selection
-
-TODO - Transfer Selection
+TODO - Chip Usage
 
 ## Bibliography
 [1] FPL Historical Dataset, Anand, V., 2019. https://github.com/vaastav/Fantasy-Premier-League/
