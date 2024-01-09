@@ -12,7 +12,7 @@ The project is split into multiple parts, each of which is described in detail b
 
 ## Data Collection
 
-Special thanks to Vastaav Anand for his FPL API [1], which was used to collect the historical data for this project. The API can be found <a href="https://github.com/vaastav/Fantasy-Premier-League">here</a>.
+Special thanks to Vastaav Anand for his FPL Data Scraper [1], which was used to collect the historical data for this project. The project can be found <a href="https://github.com/vaastav/Fantasy-Premier-League">here</a>.
 
 The data collection process is split into two parts: historical data collection and live data collection, where the former is used to train the machine learning models and the latter is used to make predictions for the upcoming gameweek.
 
