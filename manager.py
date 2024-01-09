@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import fpl_auto.team as team
 
 season = '2023-24'
-start_gw = 2
-repeat = 18
+start_gw = 1
+repeat = 19
 
 def my_current_team_at_gw21():
     t = team.team(season, start_gw, 1)
@@ -44,11 +44,15 @@ def my_team_at_gw1():
     t.add_player('Alexis Mac Allister', 'MID')
     return t
 def main():
-    t = my_team_at_gw1()
+    t = team.team(season, start_gw, 100)
+    new_team = t.select_intial_team()
+    print(f'Budget: {new_team.budget}')
+    new_team.display()
+    t = new_team
     p_list = [69]
     xp_list = [69]
     for i in range(start_gw, start_gw + repeat + 1):
-        print(f'GW{i}')
+        #print(f'GW{i}')
         # Prepare team
         team_xp = t.team_xp()
 
@@ -59,8 +63,8 @@ def main():
         team_p = t.team_p()
         
         # View team after!
-        #t.display()
-        print(f'Result: {team_p:.2f}')
+        t.display()
+        print(f'P: {team_p:.2f}, XP: {team_xp:.2f}')
         
         xp_list.append(team_xp)
         p_list.append(team_p)

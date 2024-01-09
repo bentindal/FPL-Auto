@@ -32,24 +32,23 @@ class team:
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
         self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
-        self.gk_player_list = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
-        self.def_player_list = dict(zip(self.def_xp.Name, self.def_xp.xP))
-        self.mid_player_list = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
-        self.fwd_player_list = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
+
+        self.player_list = self.fpl.player_list
+
         self.gk_xp_dict = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
         self.def_xp_dict = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_xp_dict = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
         self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
         self.xp_dict = {**self.gk_xp_dict, **self.def_xp_dict, **self.mid_xp_dict, **self.fwd_xp_dict}
-        self.player_name_list = self.gk_xp.Name.tolist() + self.def_xp.Name.tolist() + self.mid_xp.Name.tolist() + self.fwd_xp.Name.tolist()
         self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
-        self.player_list = dict(zip(self.player_name_list, self.player_xp_list))
         self.positions_list = self.fpl.position_dict(self.gameweek)
         self.captain = ''
         self.vice_captain = ''
         self.points_scored = {}
         if self.gameweek < 21:
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
+        
+        self.avoid_list = ['Bryan Mbeumo']
 
     def add_player(self, player, position):
         """
@@ -123,7 +122,7 @@ class team:
     
     def add_sub(self, player, position):
         """
-        Adds a substitute player to the team.
+        Removes a player from the team without affecting the budget
 
         Parameters:
         - player (str): The name of the player.
@@ -132,6 +131,7 @@ class team:
         Returns:
         - None
         """
+
         if position == 'GK':
             self.gks.remove(player)
         elif position == 'DEF':
@@ -172,10 +172,7 @@ class team:
         Returns:
         - None
         """
-        self.return_subs_to_team()
-
-        self.auto_subs()
-        self.auto_captain()
+        
 
         print(f'GW{self.gameweek}:')
         print(f'GK: {self.gks}')
@@ -284,18 +281,30 @@ class team:
 
         # Return subs to team
         self.return_subs_to_team()
-
         # Sort players by xP
         for player in self.gks:
-            ranked_gk.append([player, self.player_list[player], 'GK'])
+            if player in self.player_list:
+                ranked_gk.append([player, self.gk_xp_dict[player], 'GK'])
+            else:
+                ranked_gk.append([player, 0, 'GK'])
         ranked_gk.sort(key=lambda x: float(x[1]))
         ranked_others = []
         for player in self.defs:
-            ranked_others.append([player, self.player_list[player], 'DEF'])
+            if player in self.player_list:
+                ranked_others.append([player, self.def_xp_dict[player], 'DEF'])
+            else:
+                ranked_others.append([player, 0, 'DEF'])
         for player in self.mids:
-            ranked_others.append([player, self.player_list[player], 'MID'])
+            if player in self.player_list:
+                ranked_others.append([player, self.mid_xp_dict[player], 'MID'])
+            else:
+                ranked_others.append([player, 0, 'MID'])
         for player in self.fwds:
-            ranked_others.append([player, self.player_list[player], 'FWD'])
+            if player in self.player_list:
+                ranked_others.append([player, self.fwd_xp_dict[player], 'FWD'])
+            else:
+                ranked_others.append([player, 0, 'FWD'])
+                
         ranked_others.sort(key=lambda x: float(x[1]))
 
         # Suggest subs
@@ -363,7 +372,7 @@ class team:
         if player in xp_dict:
             return xp_dict[player]
         else:
-            print(f'Player {player} {position} not found')
+            print(f'Player {player} {position} did not play')
             return 0
         
     def get_all_xp(self, include_subs=False):
@@ -513,7 +522,7 @@ class team:
         elif player in self.positions_list:
             return self.positions_list[player]
         else:
-            print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
+            #print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
             return None
     
     def suggest_captaincy(self):
@@ -546,37 +555,41 @@ class team:
         for potential_player in xp_list:
             target_name = potential_player[0]
             target_pos = self.player_pos(target_name)
+            print(f'Target: {target_name} {target_pos}')
             target_budget = self.fpl.get_price(self.gameweek, target_name)
-            if target_pos != None and target_budget != None:
+            if target_pos != None and target_budget != None and target_budget != None:
                 return target_name, target_pos, target_budget
             
         return '', '', 0
     
     def suggest_transfer_in(self, position, budget):
         if position == 'GK':
-            player_list = self.gk_player_list
+            player_xp_list = self.gk_xp_dict
         elif position == 'DEF':
-            player_list = self.def_player_list
+            player_xp_list = self.def_xp_dict
         elif position == 'MID':
-            player_list = self.mid_player_list
+            player_xp_list = self.mid_xp_dict
         elif position == 'FWD':
-            player_list = self.fwd_player_list
+            player_xp_list = self.fwd_xp_dict
         else:
             print(f'Invalid position {position}')
             quit()
         # Sort players by xP
         ranked_player_list = []
-        for player in player_list:
-            ranked_player_list.append([player, player_list[player]])
+        for player in self.player_list:
+            if position == self.player_pos(player) and player not in self.avoid_list and player in player_xp_list:
+                ranked_player_list.append([player, player_xp_list[player]])
         ranked_player_list.sort(key=lambda x: float(x[1]), reverse=True)
 
         # Go through ranked_player_list, find first player that is within the budget and is not already in the team
         for player in ranked_player_list:
             p_cost = self.player_value(player[0])
             if p_cost != None:
-                if p_cost <= budget and not self.player_in_squad(player): # and not in team already!
+                if p_cost <= budget and not self.player_in_squad(player):
+                    # Check players position matches up with actual using positions_list
+                    print(f'{position} versus {self.player_pos(player[0])}')
                     return player[0]
-        
+
         print(f'No player found within budget {budget} for position {position}')
         return ''
     
@@ -595,6 +608,7 @@ class team:
     def transfer(self, transfer_out, transfer_in, position):
 
         self.return_subs_to_team()
+        self.display()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
         
@@ -681,6 +695,118 @@ class team:
                             sub_made = True
                             break
                             
+    def select_intial_team(self):
+        temp_t = team(self.season, self.gameweek, self.budget)
+
+        new_gks = self.initial_gks(1, 4.5, 1, 4.5)
+        new_defs = self.initial_defs(2, 6, 3, 4.5)
+        new_mids = self.initial_mids(2, 6, 3, 4.5)
+        new_fwds = self.initial_fwds(2, 6, 1, 4.5)
+
+        for player in new_gks:
+            temp_t.add_player(player, 'GK')
+
+        for player in new_defs:
+            temp_t.add_player(player, 'DEF')
+
+        for player in new_mids:
+            temp_t.add_player(player, 'MID')
+        
+        for player in new_fwds:
+            temp_t.add_player(player, 'FWD')
+
+        return temp_t
+
+    def initial_gks(self, n_high, high_budget, n_low, low_budget):
+        # Get a list of all goalkeepers
+        gks = self.gk_xp.Name.tolist()
+        # Sort by xP
+        gks.sort(key=lambda x: float(self.gk_xp_dict[x]), reverse=True)
+        # n_high = Number of high value players to 'buy'
+        high_players = []
+        low_players = []
+        for player in gks:
+            if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
+                if self.positions_list[player] == 'GK':
+                    high_players.append(player)
+            elif self.player_value(player) < high_budget and len(low_players) < n_low and player in self.positions_list:
+                if self.positions_list[player] == 'GK':
+                    low_players.append(player)
+            if len(high_players) == n_high and len(low_players) == n_low:
+                break
+        
+        new_gks = high_players + low_players
+        print(f'GKs: {new_gks}')
+        return new_gks
+    
+    def initial_defs(self, n_high, high_budget, n_low, low_budget):
+        # Get a list of all defenders
+        defs = self.def_xp.Name.tolist()
+        # Sort by xP
+        defs.sort(key=lambda x: float(self.def_xp_dict[x]), reverse=True)
+        # n_high = Number of high value players to 'buy'
+        high_players = []
+        low_players = []
+        for player in defs:
+            if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
+                if self.positions_list[player] == 'DEF':
+                    high_players.append(player)
+            elif self.player_value(player) < high_budget and len(low_players) < n_low and player in self.positions_list:
+                if self.positions_list[player] == 'DEF':
+                    low_players.append(player)
+            if len(high_players) == n_high and len(low_players) == n_low:
+                break
+        
+        new_defs = high_players + low_players
+        print(f'DEFs: {new_defs}')
+        return new_defs
+    
+    def initial_mids(self, n_high, high_budget, n_low, low_budget):
+        # Get a list of all midfielders
+        mids = self.mid_xp.Name.tolist()
+        # Sort by xP
+        mids.sort(key=lambda x: float(self.mid_xp_dict[x]), reverse=True)
+        # n_high = Number of high value players to 'buy'
+        high_players = []
+        low_players = []
+        for player in mids:
+            if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
+                if self.positions_list[player] == 'MID':
+                    high_players.append(player)
+            elif self.player_value(player) < high_budget and len(low_players) < n_low and player in self.positions_list:
+                if self.positions_list[player] == 'MID':
+                    low_players.append(player)
+            if len(high_players) == n_high and len(low_players) == n_low:
+                break
+        
+        new_mids = high_players + low_players
+        print(f'MIDs: {new_mids}')
+        return new_mids
+    
+    def initial_fwds(self, n_high, high_budget, n_low, low_budget):
+        # Get a list of all forwards
+        fwds = self.fwd_xp.Name.tolist()
+        # Sort by xP
+        fwds.sort(key=lambda x: float(self.fwd_xp_dict[x]), reverse=True)
+        # n_high = Number of high value players to 'buy'
+        high_players = []
+        low_players = []
+        for player in fwds:
+            if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
+                if self.positions_list[player] == 'FWD':
+                    high_players.append(player)
+            elif self.player_value(player) < high_budget and len(low_players) < n_low and player in self.positions_list:
+                if self.positions_list[player] == 'FWD':
+                    low_players.append(player)
+            if len(high_players) == n_high and len(low_players) == n_low:
+                break
+        
+        new_fwds = high_players + low_players
+        print(f'FWDs: {new_fwds}')
+        return new_fwds
+    
+
+        
 
 
             

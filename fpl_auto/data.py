@@ -23,8 +23,7 @@ class fpl_data:
         self.data_location = f'{data_location}'
         self.season = season
         self.prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
-        self.player_list = self.get_player_list(season).set_index('name').to_dict()
-        self.player_id_list = {v: k for k, v in self.player_list['id'].items()}
+        self.player_list = self.get_player_list(season)
         self.team_list = self.get_team_list(season)
 
     def get_player_list(self, season):
@@ -35,12 +34,17 @@ class fpl_data:
             season (str): The season of the data.
 
         Returns:
-            pandas.DataFrame: The player list for the specified season.
+            dict: The player list for the specified season.
         """
-        player_list = pd.read_csv(f'{self.data_location}/{season}/player_idlist.csv')
+        player_list = pd.read_csv(f'{self.data_location}/{season}/cleaned_players.csv')
         # Merge first_name and second_name columns into one column
         player_list['name'] = player_list['first_name'] + ' ' + player_list['second_name']
-        return player_list[['name', 'id']]
+        player_list = player_list[['name', 'element_type']]
+        player_list = player_list.set_index('name')
+        player_list = player_list.rename(columns={'element_type': 'position'})
+        # Convert to dictionary
+        player_dict = player_list.to_dict(orient='dict')['position']
+        return player_dict
     
     def get_team_list(self, season):
         """
