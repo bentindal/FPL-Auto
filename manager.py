@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import fpl_auto.team as team
 
-season = '2021-22'
+season = '2023-24'
 start_gw = 1
-repeat = 37
+repeat = 19
 
 def my_current_team_at_gw21():
     t = team.team(season, start_gw, 1)
@@ -52,17 +52,16 @@ def main():
     xp_list = []
 
     for i in range(start_gw, start_gw + repeat + 1):
-        #print(f'GW{i}')
+        if i == 13:
+            print('USE CHIP: WILDCARD')
+            t = t.select_intial_team()
+
         # Prepare team
         team_xp = t.team_xp()
 
-        # View team before
-        #t.display()
-        
-        # Now lets score the team
+        # Deadline reached! Now lets score the team
         team_p = t.team_p()
         
-        # View team after!
         t.display()
         print(f'P: {team_p:.2f}, XP: {team_xp:.2f}')
         

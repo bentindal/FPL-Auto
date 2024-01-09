@@ -583,7 +583,7 @@ class team:
                     return player[0]
 
         print(f'No player found within budget {budget} for position {position}')
-        return ''
+        return None
     
     def player_in_squad(self, player):
         if player[0] in self.gks:
@@ -610,7 +610,8 @@ class team:
         
         out, pos, budget = self.suggest_transfer_out()
         transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
-        self.transfer(out, transfer_in, pos)
+        if transfer_in != None:
+            self.transfer(out, transfer_in, pos)
 
     def swap_players_who_didnt_play(self):
         # Get players who didn't play
@@ -696,22 +697,34 @@ class team:
                             break
                             
     def select_intial_team(self):
-        temp_t = team(self.season, self.gameweek, self.budget)
+        temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
 
         new_gks = self.initial_gks(1, 4.5, 1, 4.5)
         new_defs = self.initial_defs(2, 6, 3, 4.5)
         new_mids = self.initial_mids(2, 6, 3, 4.5)
         new_fwds = self.initial_fwds(2, 6, 1, 4.5)
 
+        for player in self.gks:
+            temp_t.remove_player(player, 'GK')
+
         for player in new_gks:
             temp_t.add_player(player, 'GK')
+
+        for player in self.defs:
+            temp_t.remove_player(player, 'DEF')
 
         for player in new_defs:
             temp_t.add_player(player, 'DEF')
 
+        for player in self.mids:
+            temp_t.remove_player(player, 'MID')
+
         for player in new_mids:
             temp_t.add_player(player, 'MID')
         
+        for player in self.fwds:
+            temp_t.remove_player(player, 'FWD')
+
         for player in new_fwds:
             temp_t.add_player(player, 'FWD')
 
