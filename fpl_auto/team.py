@@ -279,24 +279,24 @@ class team:
         self.return_subs_to_team()
         # Sort players by xP
         for player in self.gks:
-            if player in self.player_list:
+            if player in self.gk_xp_dict:
                 ranked_gk.append([player, self.gk_xp_dict[player], 'GK'])
             else:
                 ranked_gk.append([player, 0, 'GK'])
         ranked_gk.sort(key=lambda x: float(x[1]))
         ranked_others = []
         for player in self.defs:
-            if player in self.player_list:
+            if player in self.def_xp_dict:
                 ranked_others.append([player, self.def_xp_dict[player], 'DEF'])
             else:
                 ranked_others.append([player, 0, 'DEF'])
         for player in self.mids:
-            if player in self.player_list:
+            if player in self.mid_xp_dict:
                 ranked_others.append([player, self.mid_xp_dict[player], 'MID'])
             else:
                 ranked_others.append([player, 0, 'MID'])
         for player in self.fwds:
-            if player in self.player_list:
+            if player in self.fwd_xp_dict:
                 ranked_others.append([player, self.fwd_xp_dict[player], 'FWD'])
             else:
                 ranked_others.append([player, 0, 'FWD'])
@@ -726,6 +726,8 @@ class team:
         high_players = []
         low_players = []
         for player in gks:
+            if self.player_value(player) == None:
+                continue
             if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
                 if self.positions_list[player] == 'GK':
                     high_players.append(player)
@@ -748,6 +750,8 @@ class team:
         high_players = []
         low_players = []
         for player in defs:
+            if self.player_value(player) == None:
+                continue
             if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
                 if self.positions_list[player] == 'DEF':
                     high_players.append(player)
@@ -770,6 +774,8 @@ class team:
         high_players = []
         low_players = []
         for player in mids:
+            if self.player_value(player) == None:
+                continue
             if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
                 if self.positions_list[player] == 'MID':
                     high_players.append(player)
@@ -792,6 +798,8 @@ class team:
         high_players = []
         low_players = []
         for player in fwds:
+            if self.player_value(player) == None:
+                continue
             if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
                 if self.positions_list[player] == 'FWD':
                     high_players.append(player)

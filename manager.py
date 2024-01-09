@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import fpl_auto.team as team
 
-season = '2022-23'
+season = '2021-22'
 start_gw = 1
 repeat = 37
 
