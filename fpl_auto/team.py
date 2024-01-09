@@ -41,12 +41,18 @@ class team:
         self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
         self.xp_dict = {**self.gk_xp_dict, **self.def_xp_dict, **self.mid_xp_dict, **self.fwd_xp_dict}
         self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
-        self.positions_list = self.fpl.position_dict(self.gameweek)
+        
         self.captain = ''
         self.vice_captain = ''
-        self.points_scored = self.fpl.actual_points_dict(season, gameweek)
+        self.recent_gw = 20
+        if self.gameweek >= self.recent_gw:
+            self.positions_list = self.fpl.position_dict(self.recent_gw)
+            self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw)
+        else:
+            self.positions_list = self.fpl.position_dict(self.gameweek)
+            self.points_scored = self.fpl.actual_points_dict(season, gameweek)
 
-    def add_player(self, player, position):
+    def add_player(self, player, position, custom_price=None):
         """
         Adds a player to the team.
 
@@ -64,7 +70,10 @@ class team:
         position_list = getattr(self, position.lower() + 's')
         if player in self.player_list and len(position_list) < self.get_max_players(position):
             position_list.append(player)
-            self.budget -= self.player_value(player)
+            if custom_price != None:
+                self.budget -= custom_price
+            else:
+                self.budget -= self.player_value(player)
     
         elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
@@ -461,6 +470,8 @@ class team:
         """
         if self.season == '2022-23' and self.gameweek == 7:
             return 0
+        if self.season == '2023-24' and self.gameweek > self.recent_gw:
+            return -1
         
         self.return_subs_to_team()
         
@@ -607,7 +618,8 @@ class team:
     def auto_transfer(self):
         if self.season == '2022-23' and self.gameweek == 7:
             return
-        
+        if self.season == '2023-24' and self.gameweek > self.recent_gw:
+            return
         out, pos, budget = self.suggest_transfer_out()
         transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
         if transfer_in != None:
@@ -825,3 +837,6 @@ class team:
         new_fwds = high_players + low_players
         
         return new_fwds
+
+    def id_to_name(self, id):
+        return self.fpl.id_to_name[id]

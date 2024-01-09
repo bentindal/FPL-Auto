@@ -25,6 +25,7 @@ class fpl_data:
         self.prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
         self.player_list = self.get_player_list(season)
         self.team_list = self.get_team_list(season)
+        self.id_to_name = self.id_to_name_dict()
 
     def get_player_list(self, season):
         """
@@ -429,3 +430,20 @@ class fpl_data:
             pass
 
         return None #[gk_predictions, def_predictions, mid_predictions, fwd_predictions]
+    
+    def id_to_name_dict(self):
+        """
+        Get the id to name dictionary.
+
+        Returns:
+            dict: The id to name dictionary.
+        """
+        players = pd.read_csv(f'{self.data_location}/{self.season}/player_idlist.csv')
+        # Combine name = first name + last_name
+        players['name'] = players['first_name'] + ' ' + players['second_name']
+
+        # Create dict (id --> name)
+        id_to_name = players.set_index('id')['name'].to_dict()
+
+        return id_to_name
+        
