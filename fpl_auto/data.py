@@ -4,12 +4,9 @@ from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
-
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn import linear_model
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import GradientBoostingRegressor
+import datetime
+import requests 
+import json
 
 class fpl_data:
     def __init__(self, data_location, season):
@@ -446,4 +443,20 @@ class fpl_data:
         id_to_name = players.set_index('id')['name'].to_dict()
 
         return id_to_name
+    
+    def get_recent_gw(self):
+        """
+        Get's the most recent gameweek's ID.
+        """
+
+        data = requests.get('https://fantasy.premierleague.com/api/bootstrap-static/')
+        data = json.loads(data.content)
+
+        gameweeks = data['events']
         
+        now = datetime.datetime.utcnow()
+        for gameweek in gameweeks:
+            next_deadline_date = datetime.datetime.strptime(gameweek['deadline_time'], '%Y-%m-%dT%H:%M:%SZ')
+            if next_deadline_date > now:
+                return gameweek['id'] - 1
+            

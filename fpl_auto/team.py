@@ -1,6 +1,6 @@
 import pandas as pd
 import fpl_auto.data as fpl
-
+import datetime as dt
 class team:
     def __init__(self, season, gameweek, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
         """
@@ -34,6 +34,10 @@ class team:
         self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
 
         self.player_list = self.fpl.player_list
+        self.gk_player_list = self.generate_player_list('GK')
+        self.def_player_list = self.generate_player_list('DEF')
+        self.mid_player_list = self.generate_player_list('MID')
+        self.fwd_player_list = self.generate_player_list('FWD')
 
         self.gk_xp_dict = dict(zip(self.gk_xp.Name, self.gk_xp.xP))
         self.def_xp_dict = dict(zip(self.def_xp.Name, self.def_xp.xP))
@@ -44,7 +48,8 @@ class team:
         
         self.captain = ''
         self.vice_captain = ''
-        self.recent_gw = 20
+        self.recent_gw = self.fpl.get_recent_gw() - 1
+        
         if self.gameweek >= self.recent_gw:
             self.positions_list = self.fpl.position_dict(self.recent_gw)
             self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw)
@@ -99,6 +104,24 @@ class team:
         elif position == 'FWD':
             return 3
     
+    def generate_player_list(self, position):
+        player_to_pos = self.player_list
+        player_list = []
+        for player in player_to_pos:
+            if player_to_pos[player] == position:
+                player_list.append(player)
+        return player_list
+    
+    def get_player_list(self, position):
+        if position == 'GK':
+            return self.gk_player_list
+        elif position == 'DEF':
+            return self.def_player_list
+        elif position == 'MID':
+            return self.mid_player_list
+        elif position == 'FWD':
+            return self.fwd_player_list
+        
     def remove_player(self, player, position):
         """
         Removes a player from the team.
@@ -377,7 +400,7 @@ class team:
         if player in xp_dict:
             return xp_dict[player]
         else:
-            print(f'Player {player} {position} did not play')
+            #print(f'No xP found for player {player} {position}')
             return 0
         
     def get_all_xp(self, include_subs=False):
@@ -471,7 +494,7 @@ class team:
         if self.season == '2022-23' and self.gameweek == 7:
             return 0
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
-            return -1
+            return 0
         
         self.return_subs_to_team()
         
@@ -568,32 +591,35 @@ class team:
     def suggest_transfer_in(self, position, budget):
         if position == 'GK':
             player_xp_list = self.gk_xp_dict
+            pos_list = self.gk_player_list
         elif position == 'DEF':
             player_xp_list = self.def_xp_dict
+            pos_list = self.def_player_list
         elif position == 'MID':
             player_xp_list = self.mid_xp_dict
+            pos_list = self.mid_player_list
         elif position == 'FWD':
             player_xp_list = self.fwd_xp_dict
+            pos_list = self.fwd_player_list
         else:
-            return 
-
-        # Sort players by xP
+            return None
+        
+        # Time complexity seems large for this
+        # t1 = dt.datetime.now()
         ranked_player_list = []
-        for player in self.player_list:
-            if position == self.player_pos(player) and player in player_xp_list: # and player not in self.avoid_list
+        for player in pos_list:
+            if position == self.player_pos(player) and player in player_xp_list:
                 ranked_player_list.append([player, player_xp_list[player]])
         ranked_player_list.sort(key=lambda x: float(x[1]), reverse=True)
+        # t2 = dt.datetime.now()
+        # print(f'Time taken: {t2 - t1})
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-        # Go through ranked_player_list, find first player that is within the budget and is not already in the team
         for player in ranked_player_list:
             p_cost = self.player_value(player[0])
-            if p_cost != None:
-                if p_cost <= budget and not self.player_in_squad(player):
-                    # Check players position matches up with actual using positions_list
-                    #print(f'{position} versus {self.player_pos(player[0])}')
-                    return player[0]
-
-        print(f'No player found within budget {budget} for position {position}')
+            if p_cost is not None and p_cost <= budget and not self.player_in_squad(player):
+                return player[0]
+        
         return None
     
     def player_in_squad(self, player):
@@ -613,7 +639,7 @@ class team:
         self.return_subs_to_team()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
-        print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}')
+        print(f'\nTRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
         
     def auto_transfer(self):
         if self.season == '2022-23' and self.gameweek == 7:
@@ -621,7 +647,9 @@ class team:
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             return
         out, pos, budget = self.suggest_transfer_out()
+
         transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
+
         if transfer_in != None:
             self.transfer(out, transfer_in, pos)
 
@@ -708,7 +736,7 @@ class team:
                             sub_made = True
                             break
                             
-    def select_intial_team(self):
+    def select_ideal_team(self):
         temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
 
         new_gks = self.initial_gks(1, 4.5, 1, 4.5)
