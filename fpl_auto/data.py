@@ -182,6 +182,7 @@ class fpl_data:
         def_features = self.prune_features(def_features)
         mid_features = self.prune_features(mid_features)
         fwd_features = self.prune_features(fwd_features)
+        
         return (gk_features, def_features, mid_features, fwd_features)
     
     def extract_labels(self, features):
@@ -225,8 +226,12 @@ class fpl_data:
         Returns:
             tuple: The training data for each position.
         """
-        features = self.get_all_pos_data(season, week_num)
-
+        try:
+            features = self.get_all_pos_data(season, week_num)
+        except FileNotFoundError:
+            print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
+            exit()
+        
         feature_labels = self.extract_all_labels(features)
 
         # Drop the remaining columns that are not features
