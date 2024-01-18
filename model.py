@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import math
 from fpl_auto.data import fpl_data
-from fpl_auto.evaluate import fpl_evaluate
+from fpl_auto import evaluate as eval
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
@@ -58,13 +58,12 @@ output_files = inputs.output_files
 # Initialise classes
 # Ensure that the correct location is specified for Vastaav data
 vastaav = fpl_data('data', season)
-eval = fpl_evaluate()
 
 
 def main():
     count = 0
     total_e = 0
-    total_mse = 0
+    total_rmse = 0
     total_aa = 0
     
     # Predict points for GWi:
@@ -93,9 +92,9 @@ def main():
 
         # Average the errors
         error = (gk_error + def_error + mid_error + fwd_error) / 4
-        mse = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
+        rmse = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
         aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4
-        print(f'Predicting GW{i}: AE: {error:.3f}, MSE: {math.sqrt(mse):.3f}, ACC: {aa*100:.2f}%')
+        print(f'Predicting GW{i}: AE: {error:.3f}, RMSE: {rmse:.3f}, ACC: {aa*100:.2f}%')
 
         if plot_predictions:
             all_predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
@@ -103,7 +102,7 @@ def main():
 
         count += 1
         total_e += error
-        total_mse += mse
+        total_rmse += rmse
         total_aa += aa
 
         if output_files:
@@ -114,10 +113,10 @@ def main():
         
     if repeat > 1:
         total_e /= count
-        total_mse /= count
+        total_rmse /= count
         total_aa /= count
     
-        print(f'Count: {count}, Average AE: {total_e:.2f}, Average MSE: {math.sqrt(total_mse):.2f}, Average ACC: {total_aa*100:.2f}%')
+        print(f'Count: {count}, Average AE: {total_e:.2f}, Average RMSE: {math.sqrt(total_rmse):.2f}, Average ACC: {total_aa*100:.2f}%')
 
 if __name__ == "__main__":
     main()

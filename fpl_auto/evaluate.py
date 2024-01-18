@@ -2,17 +2,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
+import math
 
 def score_model(predictions, labels):
     """
-    Calculate the error, mean squared error (MSE), and accuracy of the model's predictions.
+    Calculate the error, mean squared error (RMSE), and accuracy of the model's predictions.
 
     Args:
         predictions (list): The predicted values.
         labels (list): The actual values.
 
     Returns:
-        tuple: A tuple containing the error, MSE, and accuracy.
+        tuple: A tuple containing the error, RMSE, and accuracy.
     """
     # Calculate error
     error = 0
@@ -27,7 +28,7 @@ def score_model(predictions, labels):
     mse /= len(predictions)
     accuracy /= len(predictions)
 
-    return error, mse, accuracy
+    return error, math.sqrt(mse), accuracy
 
 def display_weights(week_num, weights, feature_names, pos):
     plt.figure(figsize=(15, 6))
