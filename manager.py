@@ -41,12 +41,12 @@ def my_team_at_gw1():
     return t
 
 def main():
-    #t = team.team(season, start_gw, 100)
-    #t.select_ideal_team()
+    t = team.team(season, start_gw, 100)
+    t.select_ideal_team()
 
-    t = get_team_from_manager_id(1) # 1 is my manager id
+    #t = get_team_from_manager_id(1) # 1 is my manager id
     
-    repeat = t.recent_gw - start_gw
+    repeat = t.recent_gw - start_gw + 1
 
     p_list = []
     xp_list = []
