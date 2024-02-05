@@ -12,15 +12,15 @@ from fpl_auto import evaluate as eval
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
-    parser.add_argument('-gw_data', type=str, default='../Fantasy-Premier-League/data',
-                        help='Location of Vastaav Dataset, default: ../Fantasy-Premier-League/data')
+    parser.add_argument('-gw_data', type=str, default='data/',
+                        help='Location of Vastaav Dataset, default: data/')
     parser.add_argument('-model', type=str, default="gradientboost",
                         choices=[
                             "linear", "randomforest", "gradientboost"], 
                         help='Model type to use')
     parser.add_argument('-season', type=str, required=True, help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
-    parser.add_argument('-repeat', type=int, default=1, help='How many weeks to repeat testing over, default: 1')
+    parser.add_argument('-repeat', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
     parser.add_argument('-training_prev_weeks', type=int, default=10, help='How many past weeks of data to use for training, default: 10')
     parser.add_argument('-predict_weeks', type=int, default=3, help='How many past weeks of data to use for predicting, default: 3')
     parser.add_argument('-display_weights',
