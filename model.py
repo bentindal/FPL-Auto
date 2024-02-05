@@ -27,7 +27,7 @@ def parse_args():
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to display feature weights, default: False')
     parser.add_argument('-plot_predictions',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to plot predictions vs actual points, default: False')
-    parser.add_argument('-output_files',
+    parser.add_argument('-save', '-s',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to export predictions to tsv, default: False')
     
     args = parser.parse_args()
@@ -53,7 +53,7 @@ display_weights = inputs.display_weights
 # Whether to plot predictions vs actual points
 plot_predictions = inputs.plot_predictions
 # Whether to export predictions to tsv
-output_files = inputs.output_files
+output_files = inputs.save
 
 # Initialise classes
 # Ensure that the correct location is specified for Vastaav data

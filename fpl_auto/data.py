@@ -69,10 +69,15 @@ class fpl_data:
         Returns:
             pandas.DataFrame: The game week data for the specified season and week.
         """
-        if week_num < 1:
-            gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
-        else:
-            gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
+        try:
+            if week_num < 1:
+                gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
+            else:
+                gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
+        except FileNotFoundError:
+            print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
+            exit()
+            
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
         return gw_data.set_index('name')
 

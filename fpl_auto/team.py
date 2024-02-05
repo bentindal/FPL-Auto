@@ -79,7 +79,7 @@ class team:
                 self.budget -= custom_price
             else:
                 self.budget -= self.player_value(player)
-    
+                
         elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
         else:
@@ -201,14 +201,14 @@ class team:
         - None
         """
         
-        print(f'GW{self.gameweek} | {self.season}')
         print(f'GK: {self.gks}')
         print(f'DEF: {self.defs}')
         print(f'MID: {self.mids}')
         print(f'FWD: {self.fwds}')
         print(f'SUBS: {self.subs}')
         print(f'C: {self.captain}, VC: {self.vice_captain}')
-        print(f'Budget: {self.budget:.1f}')
+        print(f'Budget: {self.budget:.1f}\n')
+
 
     def get_team(self):
         """
@@ -417,13 +417,26 @@ class team:
         team_xp = []
         # Get xP for each player in team
         for player in self.gks:
-            team_xp.append([player, self.player_xp(player, 'GK')])
+            if player == self.captain:
+                team_xp.append([player, self.player_xp(player, 'GK') * 2])
+            else:
+                team_xp.append([player, self.player_xp(player, 'GK')])
         for player in self.defs:
-            team_xp.append([player, self.player_xp(player, 'DEF')])
+            if player == self.captain:
+                team_xp.append([player, self.player_xp(player, 'DEF') * 2])
+            else:
+                team_xp.append([player, self.player_xp(player, 'DEF')])
         for player in self.mids:
-            team_xp.append([player, self.player_xp(player, 'MID')])
+            if player == self.captain:
+                team_xp.append([player, self.player_xp(player, 'MID') * 2])
+            else:
+                team_xp.append([player, self.player_xp(player, 'MID')])
         for player in self.fwds:
-            team_xp.append([player, self.player_xp(player, 'FWD')])
+            if player == self.captain:
+                team_xp.append([player, self.player_xp(player, 'FWD') * 2])
+            else:
+                team_xp.append([player, self.player_xp(player, 'FWD')])
+                
         if include_subs:
             for player in self.subs:
                 team_xp.append([player[0], self.player_xp(player[0], player[1])])
@@ -517,6 +530,58 @@ class team:
 
         return all_p
     
+    def team_p_list(self):
+        # Returns a list of points scored by each player in the team (Name, Position, Points)
+        p_list = []
+        for player in self.gks:
+            if player == self.captain:
+                p_list.append([f'(C) {player}', 'GK', self.player_p(player, 'GK') * 2])
+            else:
+                p_list.append([player, 'GK', self.player_p(player, 'GK')])
+        for player in self.defs:
+            if player == self.captain:
+                p_list.append([f'(C) {player}', 'DEF', self.player_p(player, 'DEF') * 2])
+            else:
+                p_list.append([player, 'DEF', self.player_p(player, 'DEF')])
+        for player in self.mids:
+            if player == self.captain:
+                p_list.append([f'(C) {player}', 'MID', self.player_p(player, 'MID') * 2])
+            else:
+                p_list.append([player, 'MID', self.player_p(player, 'MID')])
+        for player in self.fwds:
+            if player == self.captain:
+                p_list.append([f'(C) {player}', 'FWD', self.player_p(player, 'FWD') * 2])
+            else:
+                p_list.append([player, 'FWD', self.player_p(player, 'FWD')])
+
+        return p_list
+    
+    def team_xp_list(self):
+        # Returns a list of points scored by each player in the team (Name, Position, Points)
+        xp_list = []
+        for player in self.gks:
+            if player == self.captain:
+                xp_list.append([f'(C) {player}', 'GK', self.player_xp(player, 'GK') * 2])
+            else:
+                xp_list.append([player, 'GK', self.player_xp(player, 'GK')])
+        for player in self.defs:
+            if player == self.captain:
+                xp_list.append([f'(C) {player}', 'DEF', self.player_xp(player, 'DEF') * 2])
+            else:
+                xp_list.append([player, 'DEF', self.player_xp(player, 'DEF')])
+        for player in self.mids:
+            if player == self.captain:
+                xp_list.append([f'(C) {player}', 'MID', self.player_xp(player, 'MID') * 2])
+            else:
+                xp_list.append([player, 'MID', self.player_xp(player, 'MID')])
+        for player in self.fwds:
+            if player == self.captain:
+                xp_list.append([f'(C) {player}', 'FWD', self.player_xp(player, 'FWD') * 2])
+            else:
+                xp_list.append([player, 'FWD', self.player_xp(player, 'FWD')])
+
+        return xp_list
+    
     def player_value(self, player):
         """
         Returns the price of a player.
@@ -572,7 +637,7 @@ class team:
     
     def auto_captain(self):
         captain, vice_captain = self.suggest_captaincy()
-        self.update_captain(captain, vice_captain)
+        self.update_captain(captain[0], vice_captain[0])
     
     def suggest_transfer_out(self):
         # Get xP for each player in team
@@ -769,6 +834,35 @@ class team:
             temp_t.add_player(player, 'FWD')
 
         return temp_t
+
+    def result_summary(self):
+        """
+        Displays the result summary for the team based on actual points.
+        Best 3 performing players followed by worst 3 performing players.
+        If a player is a captain it displays this.
+        
+        Returns:
+        - None
+        """
+        if self.season == '2022-23' and self.gameweek == 7:
+            return 0
+        if self.season == '2023-24' and self.gameweek > self.recent_gw:
+            all_p = self.team_xp_list()
+            print('IMPORTANT: No actual points available, displaying xP instead')
+        else:
+            # Get P for each player in team
+            all_p = self.team_p_list()
+
+        self.list_to_summary(all_p)
+    
+    def list_to_summary(self, p_list):
+        # Sort by P all_p[x][2]
+        all_p = sorted(p_list, key=lambda x: x[2], reverse=True)
+        # Display best 3 players
+        print(f'''GW{self.gameweek} - {self.season} | P: {self.team_p()} | C: {self.captain} | VC: {self.vice_captain}
+Top 3: {all_p[0][0]} {all_p[0][1]} {all_p[0][2]}, {all_p[1][0]} {all_p[1][1]} {all_p[1][2]}, {all_p[2][0]} {all_p[2][1]} {all_p[2][2]}
+Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2][1]} {all_p[-2][2]}, {all_p[-3][0]} {all_p[-3][1]} {all_p[-3][2]}''')
+
 
     def initial_gks(self, n_high, high_budget, n_low, low_budget):
         # Get a list of all goalkeepers

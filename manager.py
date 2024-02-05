@@ -42,7 +42,7 @@ def my_team_at_gw1():
 
 def main():
     t = team.team(season, start_gw, 100)
-    t.select_ideal_team()
+    t = t.select_ideal_team()
 
     #t = get_team_from_manager_id(1) # 1 is my manager id
     
@@ -50,6 +50,9 @@ def main():
 
     p_list = []
     xp_list = []
+    t.auto_subs()
+    t.auto_captain()
+    t.display()
 
     for i in range(start_gw, start_gw + repeat + 1):
         # --- BEFORE DEADLINE ---
@@ -59,10 +62,11 @@ def main():
 
         # --- AFTER DEADLINE ---
         team_p = t.team_p()
-        t.display()
-
         # Week Results
-        print(f'P: {team_p:.2f}, XP: {team_xp:.2f}')
+        t.result_summary()
+        
+        #t.display()
+        #print(f'P: {team_p:.2f}, XP: {team_xp:.2f}')
         
         # Lets make a transfer
         t.auto_transfer()        
