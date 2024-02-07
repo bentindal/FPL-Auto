@@ -71,10 +71,11 @@ def main():
         # Lets make a transfer
         t.auto_transfer()        
 
+        xp_list.append(team_xp)
+        p_list.append(team_p)
+        
         # Set team to next week
         if i != start_gw + repeat:
-            xp_list.append(team_xp)
-            p_list.append(team_p)
             t.return_subs_to_team()
             t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
         
@@ -87,7 +88,7 @@ def main():
     print(f'xp_sum: {xp_sum:.0f}')
 
     # Plot ABS Error of P minus xP
-    eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
+    #eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
 
 if __name__ == '__main__':
     main()
