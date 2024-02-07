@@ -163,8 +163,8 @@ def plot_current_average_comparison(p_list, avg_list, from_week, to_week):
 
     plt.bar(x_axis - width/2, y_axis_one, width=width, label='Actual P')
     plt.bar(x_axis + width/2, y_axis_two, width=width, label='Average P')
-    plt.xlabel('X-Axis')
-    plt.ylabel('Y-Axis')
+    plt.xlabel('Gameweek')
+    plt.ylabel('Points')
     plt.legend()
     plt.show()
 
