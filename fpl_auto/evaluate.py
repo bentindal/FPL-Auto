@@ -102,7 +102,7 @@ def export_tsv(player_names, predictions, season, week_num):
 
 def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     # X-axis is Gameweeks
-    x_data = range(from_week, to_week)
+    x_data = range(from_week, to_week + 1)
     # Y-axis is P - xP
     differences = [p - xp for p, xp in zip(p_list, xp_list)]
     plt.title('Actual Points minus Expected Points')
@@ -119,3 +119,63 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     
     plt.legend()
     plt.show()
+
+def plot_average_comparison(p_list, from_week, to_week):
+    # Categorise each week as above or below average, where the average is 50 points
+    week_count = range(from_week, to_week + 1)
+    # poor = 0-49, okay = 50-59, good = 60-69, excellent = 70+
+    poor = np.zeros(len(week_count))
+    okay = np.zeros(len(week_count))
+    good = np.zeros(len(week_count))
+    excellent = np.zeros(len(week_count))
+    
+    for i, p in enumerate(p_list):
+        
+        if p < 50:
+            poor[i] = p
+        elif p < 60:
+            okay[i] = p
+        elif p < 70:
+            good[i] = p
+        else:
+            excellent[i] = p
+        
+    # Plot the data
+    plt.title('Average Comparison')
+    plt.bar(week_count, poor, label='Poor (< 50)', color='red')
+    plt.bar(week_count, okay, label='Okay (>= 50)', color='orange', bottom=poor)
+    plt.bar(week_count, good, label='Good (>= 60)', color='yellow', bottom=poor + okay)
+    plt.bar(week_count, excellent, label='Excellent (>= 70)', color='green', bottom=poor + okay + good)
+    plt.axhline(50, color='black', linestyle='--')
+    plt.axhline(60, color='black', linestyle='--')
+    plt.axhline(70, color='black', linestyle='--')
+    plt.xlabel('Gameweek')
+    plt.ylabel('Points')
+    plt.legend()
+    plt.show()
+
+def plot_current_average_comparison(p_list, avg_list, from_week, to_week):
+    # Categorise each week as above or below average, where the average is 50 points
+    x_axis = np.arange(from_week, to_week + 1)
+    y_axis_one = p_list
+    y_axis_two = avg_list[:len(p_list)]
+    width = 0.35  # Width of each bar
+
+    plt.bar(x_axis - width/2, y_axis_one, width=width, label='Actual P')
+    plt.bar(x_axis + width/2, y_axis_two, width=width, label='Average P')
+    plt.xlabel('X-Axis')
+    plt.ylabel('Y-Axis')
+    plt.legend()
+    plt.show()
+
+def score_model(p_list, avg_list):
+    """
+    Categorise each week as above or below average, where the average in avg_list"""
+    bad = 0
+    good = 0
+    for i, p in enumerate(p_list):
+        if p < avg_list[i]:
+            bad += 1
+        else:
+            good += 1
+    return bad, good

@@ -470,3 +470,18 @@ class fpl_data:
             if next_deadline_date > now:
                 return gameweek['id'] - 1
             
+    def get_avg_score_list(self):
+        """
+        Get the average score for current season only.
+
+        Returns:
+            float: The average score for the specified gameweek.
+        """
+        fpl_api = requests.get(f'https://fantasy.premierleague.com/api/bootstrap-static/')
+        fpl_api = json.loads(fpl_api.content)
+        events = fpl_api['events']
+        avg_scores = np.zeros(len(events))
+        for i, event in enumerate(events):
+            avg_scores[i] = event['average_entry_score']
+
+        return avg_scores

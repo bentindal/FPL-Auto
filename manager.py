@@ -70,12 +70,12 @@ def main():
         
         # Lets make a transfer
         t.auto_transfer()        
-
-        xp_list.append(team_xp)
         p_list.append(team_p)
-        
+
         # Set team to next week
         if i != start_gw + repeat:
+            xp_list.append(team_xp)
+            
             t.return_subs_to_team()
             t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
         
@@ -86,9 +86,13 @@ def main():
     xp_sum = sum(xp_list)
     print(f'p_sum: {p_sum}')
     print(f'xp_sum: {xp_sum:.0f}')
-
+    bad, good = eval.score_model(p_list, t.get_avg_score())
+    print(f'Poor: {bad}, Good: {good}')
     # Plot ABS Error of P minus xP
     #eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
-
+    # Plot Average Comparison
+    #eval.plot_average_comparison(p_list, start_gw, start_gw + repeat)
+    eval.plot_current_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
+    
 if __name__ == '__main__':
     main()

@@ -962,3 +962,6 @@ Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2]
 
     def id_to_name(self, id):
         return self.fpl.id_to_name[id]
+    
+    def get_avg_score(self):
+        return self.fpl.get_avg_score_list()
