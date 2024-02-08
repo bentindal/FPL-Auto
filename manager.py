@@ -1,10 +1,38 @@
-import matplotlib.pyplot as plt
+'''
+Team Manager for FPL Automation Project
+Author: Benjamin Tindal
+'''
+
+import argparse
 import fpl_auto.team as team
 import json
 from fpl_auto import evaluate as eval
 
-season = '2023-24'
-start_gw = 1
+def parse_args():
+    
+    parser = argparse.ArgumentParser(description="FPL Automation Project: Team Manager")
+    parser.add_argument('-season', type=str, required=True, help='Season to simulate. Format: YYYY-YY e.g 2021-22')
+    parser.add_argument('-start_gw', type=int, default=1, help='Gameweek to start on, default 1')
+    parser.add_argument('-repeat_until', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
+    parser.add_argument('-starting_team', type=str, default="auto",
+                        choices=[
+                            "auto", "custom_1", "custom_2"], 
+                        help='Initial team to use: auto = generate own team, custom_1 = use my team at GW1, custom_2 = use my team at GW18, default: auto')
+    
+    parser.add_argument('-plot_p_minus_xp',
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
+    parser.add_argument('-plot_score_comparison',
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
+    parser.add_argument('-plot_average_comparison',
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
+    args = parser.parse_args()
+    
+    return args
+
+inputs = parse_args()
+season = inputs.season
+start_gw = inputs.start_gw
+repeat = inputs.repeat_until   #t.recent_gw - start_gw + 1
 
 def get_team_from_manager_id(manager_id):
     target_url = f'https://fantasy.premierleague.com/api/my-team/{manager_id}/'
@@ -41,12 +69,13 @@ def my_team_at_gw1():
     return t
 
 def main():
-    t = team.team(season, start_gw, 100)
-    t = t.select_ideal_team()
-
-    #t = get_team_from_manager_id(1) # 1 is my manager id
-    
-    repeat = t.recent_gw - start_gw + 1
+    if inputs.starting_team == 'custom_one':
+        t = my_team_at_gw1()
+    elif inputs.starting_team == 'custom_two':
+        t = get_team_from_manager_id(1) # 1 is my manager id
+    else:
+        t = team.team(season, start_gw, 100)
+        t = t.select_ideal_team()
 
     p_list = []
     xp_list = []
@@ -76,22 +105,28 @@ def main():
         # Set team to next week
         if i != start_gw + repeat:
             t.return_subs_to_team()
-            t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
-        
+            try:
+                t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
+            except FileNotFoundError:
+                print(f'GW{i + 1} not found')
+                break
     
     # Sum the p_list and xp_list and report results
-    print('==============================')
+    print('\n==============================')
     p_sum = sum(p_list)
     xp_sum = sum(xp_list)
     print(f'p_sum: {p_sum}')
     print(f'xp_sum: {xp_sum:.0f}')
-    bad, good = eval.score_model(p_list, t.get_avg_score())
-    print(f'Poor: {bad}, Good: {good}')
+    good, bad = eval.score_model(p_list, t.get_avg_score())
+    print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
 
-    # (optional) Plots
-    eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
-    eval.plot_average_comparison(p_list, start_gw, start_gw + repeat)
-    eval.plot_current_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
+    # Plots
+    if inputs.plot_p_minus_xp:
+        eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
+    if inputs.plot_average_comparison:
+        eval.plot_score_comparison(p_list, start_gw, start_gw + repeat)
+    if inputs.plot_average_comparison:
+        eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
 
 if __name__ == '__main__':
     main()

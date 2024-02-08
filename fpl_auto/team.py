@@ -848,7 +848,7 @@ class team:
             return 0
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             all_p = self.team_xp_list()
-            print('IMPORTANT: No actual points available, displaying xP instead')
+            print('IMPORTANT: No actual points available, displaying xP instead\n')
         else:
             # Get P for each player in team
             all_p = self.team_p_list()

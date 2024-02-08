@@ -102,7 +102,7 @@ def export_tsv(player_names, predictions, season, week_num):
 
 def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     # X-axis is Gameweeks
-    x_data = range(from_week, to_week + 1)
+    x_data = range(from_week, to_week + 1)[:len(p_list)]
     # Y-axis is P - xP
     differences = [p - xp for p, xp in zip(p_list, xp_list)]
     plt.title('Actual Points minus Expected Points')
@@ -120,7 +120,7 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_average_comparison(p_list, from_week, to_week):
+def plot_score_comparison(p_list, from_week, to_week):
     # Categorise each week as above or below average, where the average is 50 points
     week_count = range(from_week, to_week + 1)
     # poor = 0-49, okay = 50-59, good = 60-69, excellent = 70+
@@ -129,8 +129,8 @@ def plot_average_comparison(p_list, from_week, to_week):
     good = np.zeros(len(week_count))
     excellent = np.zeros(len(week_count))
     
+    # Categorise each week
     for i, p in enumerate(p_list):
-        
         if p < 50:
             poor[i] = p
         elif p < 60:
@@ -154,9 +154,9 @@ def plot_average_comparison(p_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_current_average_comparison(p_list, avg_list, from_week, to_week):
+def plot_average_comparison(p_list, avg_list, from_week, to_week):
     # Categorise each week as above or below average, where the average is 50 points
-    x_axis = np.arange(from_week, to_week + 1)
+    x_axis = np.arange(from_week, to_week + 1)[:len(p_list)]
     y_axis_one = p_list
     y_axis_two = avg_list[:len(p_list)]
     width = 0.35  # Width of each bar
@@ -178,4 +178,4 @@ def score_model(p_list, avg_list):
             bad += 1
         else:
             good += 1
-    return bad, good
+    return good, bad

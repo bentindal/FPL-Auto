@@ -5,13 +5,12 @@ Author: Benjamin Tindal
 
 import argparse
 import numpy as np
-import pandas as pd
 import math
 from fpl_auto.data import fpl_data
 from fpl_auto import evaluate as eval
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="FPL Automation Project through ML and Strategy")
+    parser = argparse.ArgumentParser(description="FPL Automation Project: Model")
     parser.add_argument('-gw_data', type=str, default='data/',
                         help='Location of Vastaav Dataset, default: data/')
     parser.add_argument('-model', type=str, default="gradientboost",
