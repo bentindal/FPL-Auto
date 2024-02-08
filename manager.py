@@ -9,7 +9,6 @@ import json
 from fpl_auto import evaluate as eval
 
 def parse_args():
-    
     parser = argparse.ArgumentParser(description="FPL Automation Project: Team Manager")
     parser.add_argument('-season', type=str, required=True, help='Season to simulate. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-start_gw', type=int, default=1, help='Gameweek to start on, default 1')
@@ -32,7 +31,7 @@ def parse_args():
 inputs = parse_args()
 season = inputs.season
 start_gw = inputs.start_gw
-repeat = inputs.repeat_until - 1  #t.recent_gw - start_gw + 1
+repeat = inputs.repeat_until - 1
 
 def get_team_from_manager_id(manager_id):
     target_url = f'https://fantasy.premierleague.com/api/my-team/{manager_id}/'
@@ -93,9 +92,6 @@ def main():
         team_p = t.team_p()
         # Week Results
         t.result_summary()
-        
-        #t.display()
-        #print(f'P: {team_p:.2f}, XP: {team_xp:.2f}')
         
         # Lets make a transfer
         t.auto_transfer()        
