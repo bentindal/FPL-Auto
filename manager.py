@@ -32,7 +32,7 @@ def parse_args():
 inputs = parse_args()
 season = inputs.season
 start_gw = inputs.start_gw
-repeat = inputs.repeat_until   #t.recent_gw - start_gw + 1
+repeat = inputs.repeat_until - 1  #t.recent_gw - start_gw + 1
 
 def get_team_from_manager_id(manager_id):
     target_url = f'https://fantasy.premierleague.com/api/my-team/{manager_id}/'
@@ -112,7 +112,7 @@ def main():
                 break
     
     # Sum the p_list and xp_list and report results
-    print('\n==============================')
+    print('==============================')
     p_sum = sum(p_list)
     xp_sum = sum(xp_list)
     print(f'p_sum: {p_sum}')
@@ -123,7 +123,7 @@ def main():
     # Plots
     if inputs.plot_p_minus_xp:
         eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
-    if inputs.plot_average_comparison:
+    if inputs.plot_score_comparison:
         eval.plot_score_comparison(p_list, start_gw, start_gw + repeat)
     if inputs.plot_average_comparison:
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
