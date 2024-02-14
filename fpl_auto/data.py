@@ -22,6 +22,7 @@ class fpl_data:
         self.prev_season = f'{int(season[:4])-1}-{int(season[5:])-1}'
         self.player_list = self.get_player_list(season)
         self.team_list = self.get_team_list(season)
+        self.team_to_id = self.team_list.reset_index().set_index('name').to_dict()['id']
         self.id_to_name = self.id_to_name_dict()
 
     def get_player_list(self, season):
@@ -42,6 +43,7 @@ class fpl_data:
         player_list = player_list.rename(columns={'element_type': 'position'})
         # Convert to dictionary
         player_dict = player_list.to_dict(orient='dict')['position']
+
         return player_dict
     
     def get_team_list(self, season):
@@ -55,7 +57,7 @@ class fpl_data:
             pandas.DataFrame: The team list for the specified season.
         """
         team_list = pd.read_csv(f'{self.data_location}/{season}/teams.csv')
-        team_list = team_list[['name', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
+        team_list = team_list[['name', 'id', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
         return team_list.set_index('name')
     
     def get_gw_data(self, season, week_num):
@@ -97,7 +99,6 @@ class fpl_data:
         gw_data = gw_data[gw_data['position'] == position]
         # Append team data to player data
         gw_data = gw_data.join(self.team_list, on='team')
-        # I'd also like to add the total points column from the previous weeks data to this
         
         # Drop rows with NaN values
         gw_data = gw_data.dropna()
@@ -409,34 +410,86 @@ class fpl_data:
         gw_data = gw_data.to_dict()['minutes']
         return gw_data
 
-    def post_model_weightings(self, predictions):
+    def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
+        overall_predictions = []
         # For each pos in predictions
-        for pos in predictions:
+        for pos in clean_predictions:
+            # change pos into dataframe, skip first header
+            pos = pos.reset_index()
             # For each player in pos
-            for player in pos:
-                # Check for injuries
-                    # If significant injury, xP = 0
-
-                    # Slight injury, xP *= 0.8
-            
-                # Check for suspension
-                    # If player is suspended, xP = 0
-            
-            
-                # Difficulty of fixture (based on team)
-                    # Players Team Rating - Other Teams Rating
-                    # If pos, xP *= 1.2
-                    # If neg, xP *= 0.8
+            post_predictions = []
+            for i in range(len(pos)):
+                name = pos.loc[i, 'Name']
+                xP = pos.loc[i, 'xP']
+                next_gws_p = np.ones(next_num_gws) * xP
                 
-                # Home *= 1.1
-                # Away *= 0.9
-            
-                # Check for form? 
-                pass
-            # Convert back to [[Player, xP]]
-            pass
+                # Lets cut-off xp below a threshold
+                if xP < 1:
+                    post_predictions.append([name, 0])
+                    continue
 
-        return None #[gk_predictions, def_predictions, mid_predictions, fwd_predictions]
+                try:
+                    team_name = self.get_player_team(name, week_num)
+                    team_id = self.team_to_id[team_name]
+                    fixture_list = self.get_future_fixtures_for_player(name, week_num)[0:next_num_gws]
+                except (KeyError, TypeError):
+                    #print(f'Player {name} not found in fixtures')
+                    post_predictions.append([name, 0])
+                    continue
+
+                for i, p in enumerate(next_gws_p):
+                    fixture = fixture_list.iloc[i]
+
+                    # Check for injuries
+                    injuries_p = 0
+                        # If significant injury, xP = 0
+
+                        # Slight injury, xP *= 0.8
+                
+                    # Check for suspension
+                    susp_p = 0
+                        # If player is suspended, xP = 0
+                
+                    home_away_p = 0
+                    home_fixture = False
+                    if fixture['team_h'] == team_id:
+                        home_fixture = True
+                    
+                    if home_fixture:
+                        home_away_p = p * 0.1
+                    else:
+                        home_away_p = p * -0.1
+                    
+                    # Difficulty of fixture (based on team)
+                    diff_p = 0
+                    if home_fixture:
+                        difficulty = fixture['team_h_difficulty']
+                    else:
+                        difficulty = fixture['team_a_difficulty']
+
+                    if difficulty == 1:
+                        diff_p = p * 0.2
+                    elif difficulty == 2:
+                        diff_p = p * 0.05
+                    elif difficulty == 3:
+                        diff_p = p * 0.0
+                    elif difficulty == 4:
+                        diff_p = p * -0.05
+                    elif difficulty == 5:
+                        diff_p = p * -0.2
+                
+                    # Check for form?
+                    p += injuries_p + susp_p + home_away_p + diff_p
+                    next_gws_p[i] = p
+                    
+                # Sum and average predictions
+                total_p = np.round(np.sum(next_gws_p) / next_num_gws, 2)
+                post_predictions.append([name, total_p])
+
+            # Convert to dataframe and set index to name
+            post_predictions = pd.DataFrame(post_predictions, columns=['Name', 'xP'])
+            overall_predictions.append(post_predictions)
+        return overall_predictions #[gk_predictions, def_predictions, mid_predictions, fwd_predictions]
     
     def id_to_name_dict(self):
         """
@@ -485,3 +538,28 @@ class fpl_data:
             avg_scores[i] = event['average_entry_score']
 
         return avg_scores
+    
+    def get_future_fixtures(self, season, week_num):
+        # load fixtures.csv
+        all_fixtures = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
+
+        # Get fixtures where event > current gw
+        future_fixtures = all_fixtures[all_fixtures['event'] > week_num]
+        return future_fixtures
+        
+    def get_future_fixtures_for_team(self, team_name, week_num):
+        # convert team_name to id
+        team_id = self.team_to_id[team_name]
+        upcoming_fixtures = self.get_future_fixtures(self.season, week_num)
+        team_fixtures = upcoming_fixtures[(upcoming_fixtures['team_a'] == team_id) | (upcoming_fixtures['team_h'] == team_id)]
+        team_fixtures = team_fixtures[['event', 'team_h', 'team_a', 'team_h_difficulty', 'team_a_difficulty']]
+        return team_fixtures
+    
+    def get_future_fixtures_for_player(self, player_name, week_num):
+        team_name = self.get_player_team(player_name, week_num)
+        player_fixtures = self.get_future_fixtures_for_team(team_name, week_num)
+        return player_fixtures
+    
+    def get_player_team(self, player_name, week_num):
+        gw_data = self.get_gw_data(self.season, week_num)
+        return gw_data.loc[player_name]['team']
