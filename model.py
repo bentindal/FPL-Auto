@@ -8,6 +8,7 @@ import numpy as np
 import math
 from fpl_auto.data import fpl_data
 from fpl_auto import evaluate as eval
+import pandas as pd
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project: Model")
@@ -79,12 +80,12 @@ def main():
             importances = [gk_model.feature_importances_, def_model.feature_importances_, mid_model.feature_importances_, fwd_model.feature_importances_]
             eval.display_weights(i, importances, feature_list, ['GK', 'DEF', 'MID', 'FWD'])
 
-        gk_predictions = np.round(gk_model.predict(test_data[0][0]), 3)
-        def_predictions = np.round(def_model.predict(test_data[1][0]), 3)
-        mid_predictions = np.round(mid_model.predict(test_data[2][0]), 3)
-        fwd_predictions = np.round(fwd_model.predict(test_data[3][0]), 3)
+        gk_predictions = np.round(gk_model.predict(test_data[0][0]), 5)
+        def_predictions = np.round(def_model.predict(test_data[1][0]), 5)
+        mid_predictions = np.round(mid_model.predict(test_data[2][0]), 5)
+        fwd_predictions = np.round(fwd_model.predict(test_data[3][0]), 5)
 
-        gk_error, gk_square_error, gk_accuracy = eval.score_model(gk_predictions, test_data[0][1])
+        """ gk_error, gk_square_error, gk_accuracy = eval.score_model(gk_predictions, test_data[0][1])
         def_error, def_square_error, def_accuracy = eval.score_model(def_predictions, test_data[1][1])
         mid_error, mid_square_error, mid_accuracy = eval.score_model(mid_predictions, test_data[2][1])
         fwd_error, fwd_square_error, fwd_accuracy = eval.score_model(fwd_predictions, test_data[3][1])
@@ -92,30 +93,41 @@ def main():
         # Average the errors
         error = (gk_error + def_error + mid_error + fwd_error) / 4
         rmse = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
-        aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4
-        print(f'Predicting GW{i}: AE: {error:.3f}, RMSE: {rmse:.3f}, ACC: {aa*100:.2f}%')
+        aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4"""
+        print(f'Predicting GW{i}') #: AE: {error:.3f}, RMSE: {rmse:.3f}, ACC: {aa*100:.2f}%')
 
         if plot_predictions:
             all_predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
             eval.plot_predictions(all_predictions, test_data, i)
 
         count += 1
-        total_e += error
+        """ total_e += error
         total_rmse += rmse
-        total_aa += aa
+        total_aa += aa """
 
+        # Lets use these models to predict the next gameweek
+        models = gk_model, def_model, mid_model, fwd_model
+        player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, models)
+        clean_predictions = []
+        
+        for j in range(4):
+            tsv_predictions = np.column_stack((player_names[j], predictions[j]))
+            tsv_predictions = np.concatenate((np.array([['Name', 'xP']]), tsv_predictions), axis=0)
+            tsv_predictions = pd.DataFrame(tsv_predictions[1:], columns=tsv_predictions[0])
+            tsv_predictions.set_index('Name', inplace=True)
+            clean_predictions.append(tsv_predictions)
+
+        # Now we have our model predictions, lets do some post-weightings
+        clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, 3)
+        
         if output_files:
-            # Lets use these models to predict the next gameweek
-            models = gk_model, def_model, mid_model, fwd_model
-            player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, models)
-            eval.export_tsv(player_names, predictions, season, i)
+            eval.export_tsv(clean_predictions, season, i)
         
     if repeat > 1:
-        total_e /= count
+        """ total_e /= count
         total_rmse /= count
-        total_aa /= count
+        total_aa /= count"""
     
-        print(f'Count: {count}, Average AE: {total_e:.2f}, Average RMSE: {math.sqrt(total_rmse):.2f}, Average ACC: {total_aa*100:.2f}%')
-
+        print(f'Count: {count}')#, Average AE: {total_e:.2f}, Average RMSE: {math.sqrt(total_rmse):.2f}, Average ACC: {total_aa*100:.2f}%')
 if __name__ == "__main__":
     main()
