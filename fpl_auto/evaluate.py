@@ -99,7 +99,7 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_score_comparison(p_list, from_week, to_week):
+def plot_score_comparison(p_list, from_week, to_week, season):
     # Categorise each week as above or below average, where the average is 50 points
     week_count = range(from_week, to_week + 1)
     # poor = 0-49, okay = 50-59, good = 60-69, excellent = 70+
@@ -118,16 +118,18 @@ def plot_score_comparison(p_list, from_week, to_week):
             good[i] = p
         else:
             excellent[i] = p
-        
+    avg_p = sum(p_list) / len(p_list)
+
     # Plot the data
-    plt.title('Average Comparison')
+    plt.title(f'Score Comparison - {season}')
     plt.bar(week_count, poor, label='Poor (< 50)', color='red')
     plt.bar(week_count, okay, label='Okay (>= 50)', color='orange', bottom=poor)
     plt.bar(week_count, good, label='Good (>= 60)', color='yellow', bottom=poor + okay)
     plt.bar(week_count, excellent, label='Excellent (>= 70)', color='green', bottom=poor + okay + good)
-    plt.axhline(50, color='black', linestyle='--')
-    plt.axhline(60, color='black', linestyle='--')
-    plt.axhline(70, color='black', linestyle='--')
+    plt.axhline(50, color='black', linestyle='-')
+    plt.axhline(60, color='black', linestyle='-')
+    plt.axhline(70, color='black', linestyle='-')
+    plt.axhline(avg_p, color='purple', linestyle='--', label=f'Average = {avg_p:.2f}')
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
     plt.legend()

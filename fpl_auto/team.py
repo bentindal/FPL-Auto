@@ -365,7 +365,6 @@ class team:
         for sub in subs:
             self.add_sub(sub[0], sub[1])
     
-    
     def auto_subs(self):
         """
         Automatically makes substitutions in the team.
@@ -443,6 +442,46 @@ class team:
                 team_xp.append([player[0], self.player_xp(player[0], player[1])])
 
         return team_xp
+    
+    def get_all_p(self, include_subs=False):
+        """
+        Returns the expected points (p) for all players in the team.
+
+        Parameters:
+        - include_subs (bool): Whether to include the expected points for substitutes (default: False).
+
+        Returns:
+        - list: A list of player names and their expected points.
+        """
+        # List of players and their p
+        team_p = []
+        # Get p for each player in team
+        for player in self.gks:
+            if player == self.captain:
+                team_p.append([player, self.player_p(player, 'GK') * 2])
+            else:
+                team_p.append([player, self.player_p(player, 'GK')])
+        for player in self.defs:
+            if player == self.captain:
+                team_p.append([player, self.player_p(player, 'DEF') * 2])
+            else:
+                team_p.append([player, self.player_p(player, 'DEF')])
+        for player in self.mids:
+            if player == self.captain:
+                team_p.append([player, self.player_p(player, 'MID') * 2])
+            else:
+                team_p.append([player, self.player_p(player, 'MID')])
+        for player in self.fwds:
+            if player == self.captain:
+                team_p.append([player, self.player_p(player, 'FWD') * 2])
+            else:
+                team_p.append([player, self.player_p(player, 'FWD')])
+                
+        if include_subs:
+            for player in self.subs:
+                team_p.append([player[0], self.player_p(player[0], player[1])])
+
+        return team_p
     
     def squad_size(self):
         return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds) + len(self.subs)
@@ -531,7 +570,7 @@ class team:
 
         return all_p
     
-    def team_p_list(self):
+    def team_p_list(self, include_subs=False):
         # Returns a list of points scored by each player in the team (Name, Position, Points)
         p_list = []
         for player in self.gks:
@@ -554,6 +593,9 @@ class team:
                 p_list.append([f'(C) {player}', 'FWD', self.player_p(player, 'FWD') * 2])
             else:
                 p_list.append([player, 'FWD', self.player_p(player, 'FWD')])
+        if include_subs:
+            for player in self.subs:
+                p_list.append([player[0], player[1], self.player_p(player[0], player[1])])
 
         return p_list
     
@@ -651,7 +693,7 @@ class team:
             target_budget = self.fpl.get_price(self.gameweek, target_name)
             if target_pos != None and target_budget != None and target_budget != None:
                 return target_name, target_pos, target_budget
-            
+        print('No player found to transfer out')
         return '', '', 0
     
     def suggest_transfer_in(self, position, budget):
@@ -701,7 +743,6 @@ class team:
             return False
         
     def transfer(self, transfer_out, transfer_in, position):
-
         self.return_subs_to_team()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
@@ -713,9 +754,7 @@ class team:
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             return
         out, pos, budget = self.suggest_transfer_out()
-
         transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
-
         if transfer_in != None:
             self.transfer(out, transfer_in, pos)
 

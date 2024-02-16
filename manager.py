@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument('-plot_p_minus_xp',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
     parser.add_argument('-plot_score_comparison',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
+                        action=argparse.BooleanOptionalAction, default=True, help='Plot P each week categorised by performance, default: True')
     parser.add_argument('-plot_average_comparison',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
     args = parser.parse_args()
@@ -120,7 +120,7 @@ def main():
     if inputs.plot_p_minus_xp:
         eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
     if inputs.plot_score_comparison:
-        eval.plot_score_comparison(p_list, start_gw, start_gw + repeat)
+        eval.plot_score_comparison(p_list, start_gw, start_gw + repeat, season)
     if inputs.plot_average_comparison:
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
 

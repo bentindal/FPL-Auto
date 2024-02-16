@@ -122,11 +122,11 @@ def main():
 
         # Now we have our model predictions, lets do some post-weightings
         weeks_left = 38 - i
-        
-        if weeks_left >= future_weeks:
-            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, future_weeks)
-        elif weeks_left < future_weeks and weeks_left > 0:
-            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
+        if future_weeks != 0:
+            if weeks_left >= future_weeks:
+                clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, future_weeks)
+            elif weeks_left < future_weeks and weeks_left > 0:
+                clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
         
         if output_files:
             eval.export_tsv(clean_predictions, season, i)
