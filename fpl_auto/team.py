@@ -834,21 +834,24 @@ class team:
                             # Remove sub from subs
                             self.subs.remove(sub)
                             # Remove player from team
-                            self.add_sub(player, self.positions_list[player])
-                            # Add player to subs
-                            self.subs.append([player, self.positions_list[player]])
-                            #print(f'Swapped {sub[0]} with {player} (no pos match)')
-                            sub_made = True
+                            try:
+                                self.add_sub(player, self.positions_list[player])
+                                # Add player to subs
+                                self.subs.append([player, self.positions_list[player]])
+                                #print(f'Swapped {sub[0]} with {player} (no pos match)')
+                                sub_made = True
+                            except KeyError:
+                                sub_made = False
                             break
                             
     def select_ideal_team(self):
-        temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
+        temp_t = team(self.season, self.gameweek, self.budget * 2, self.gks, self.defs, self.mids, self.fwds)
 
         # Lets go shopping for players, [POS, N_EXPENSIVE, BUDGET, N_CHEAP, BUDGET]
-        new_fwds = self.initial_players('FWD', 2, 6, 1, 5)
-        new_mids = self.initial_players('MID', 2, 6, 3, 5)
-        new_defs = self.initial_players('DEF', 2, 6, 3, 5)
-        new_gks = self.initial_players('GK', 1, 5, 1, 4.5)
+        new_fwds = self.initial_players('FWD', 3, 6, 0, 5)
+        new_mids = self.initial_players('MID', 5, 6, 0, 5)
+        new_defs = self.initial_players('DEF', 5, 6, 0, 5)
+        new_gks = self.initial_players('GK', 2, 5, 0, 4.5)
         
         for player in self.gks:
             temp_t.remove_player(player, 'GK')
