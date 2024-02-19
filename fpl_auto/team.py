@@ -845,11 +845,11 @@ class team:
         temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
 
         # Lets go shopping for players, [POS, N_EXPENSIVE, BUDGET, N_CHEAP, BUDGET]
-        new_gks = self.initial_players('GK', 1, 5, 1, 4.5)
-        new_defs = self.initial_players('DEF', 2, 6, 3, 5)
-        new_mids = self.initial_players('MID', 2, 6, 3, 5)
         new_fwds = self.initial_players('FWD', 2, 6, 1, 5)
-
+        new_mids = self.initial_players('MID', 2, 6, 3, 5)
+        new_defs = self.initial_players('DEF', 2, 6, 3, 5)
+        new_gks = self.initial_players('GK', 1, 5, 1, 4.5)
+        
         for player in self.gks:
             temp_t.remove_player(player, 'GK')
 
