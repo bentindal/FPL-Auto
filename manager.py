@@ -94,7 +94,7 @@ def main():
         t.result_summary()
         
         # Lets make a transfer
-        t.auto_transfer()        
+        t.auto_transfer()      
         p_list.append(team_p)
         xp_list.append(team_xp)
 
