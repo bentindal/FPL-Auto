@@ -625,6 +625,12 @@ class team:
 
         return xp_list
     
+    def p_list(self):
+        entire_list = self.team_p_list()
+        points_list = [item[2] for item in entire_list]
+
+        return points_list
+    
     def player_value(self, player):
         """
         Returns the price of a player.
@@ -657,7 +663,6 @@ class team:
         elif player in self.positions_list:
             return self.positions_list[player]
         else:
-            #print(f'Player {player} not found in GW{self.gameweek}, {self.season}')
             return None
     
     def suggest_captaincy(self):

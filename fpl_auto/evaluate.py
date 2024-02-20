@@ -160,3 +160,39 @@ def score_model_against_list(p_list, avg_list):
         else:
             good += 1
     return good, bad
+
+def box_plot_by_season(points, seasons):
+    # Creating dataset    
+    fig = plt.figure(figsize=(10, 7))
+
+    y_axis = seasons
+    box = plt.boxplot(points, patch_artist=True, vert=False)
+
+    # Set the color of the boxes
+    colors = ['lightblue', 'lightgreen', 'lightpink']
+    for patch, color in zip(box['boxes'], colors):
+        patch.set_facecolor(color)
+
+    plt.xlabel('Points')
+    plt.ylabel('Season')
+    plt.title('Points Box Plot by Season')
+    plt.yticks(range(1, len(y_axis) + 1), y_axis)
+    plt.tight_layout()
+    plt.show()
+
+def box_plot_by_week(points, start_gw, end_gw, season):    
+    fig = plt.figure(figsize=(10, 7))
+    x_axis = np.arange(start_gw, end_gw)
+
+    # Creating plot
+    box = plt.boxplot(points, positions=x_axis, patch_artist=True)
+
+    # Set the color of the boxes
+    
+    for patch in box['boxes']:
+        patch.set_facecolor('lightblue')
+
+    plt.xlabel('Gameweek')
+    plt.ylabel('Points')
+    plt.title(f'Box Plot of {season} Points')
+    plt.show()

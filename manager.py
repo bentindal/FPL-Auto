@@ -78,9 +78,7 @@ def main():
 
     p_list = []
     xp_list = []
-    t.auto_subs()
-    t.auto_captain()
-    t.display()
+    all_p = []
 
     for i in range(start_gw, start_gw + repeat + 1):
         # --- BEFORE DEADLINE ---
@@ -92,15 +90,16 @@ def main():
         team_p = t.team_p()
         # Week Results
         t.result_summary()
-        
-        # Lets make a transfer     
-        p_list.append(team_p)
-        xp_list.append(team_xp)
 
         # Set team to next week
         if i != start_gw + repeat:
+            if team_p != 0:
+                p_list.append(team_p)
+                xp_list.append(team_xp)
+                all_p.append(t.p_list())
+
             t.return_subs_to_team()
-            t.auto_transfer() # Make a transfer
+            #t.auto_transfer() # Make a transfer
             try:
                 t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
             except FileNotFoundError:
@@ -123,6 +122,10 @@ def main():
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
         good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
         print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
+    
+    eval.box_plot_by_season([p_list], [season])
+
+    print(all_p)
 
 if __name__ == '__main__':
     main()
