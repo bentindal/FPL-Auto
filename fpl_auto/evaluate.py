@@ -149,7 +149,7 @@ def plot_average_comparison(p_list, avg_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def score_model(p_list, avg_list):
+def score_model_against_list(p_list, avg_list):
     """
     Categorise each week as above or below average, where the average in avg_list"""
     bad = 0

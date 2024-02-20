@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument('-plot_p_minus_xp',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
     parser.add_argument('-plot_score_comparison',
-                        action=argparse.BooleanOptionalAction, default=True, help='Plot P each week categorised by performance, default: True')
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
     parser.add_argument('-plot_average_comparison',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
     args = parser.parse_args()
@@ -74,7 +74,7 @@ def main():
         t = get_team_from_manager_id(1) # 1 is my manager id
     else:
         t = team.team(season, start_gw, 100)
-        t = t.select_ideal_team()
+        t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5) 
 
     p_list = []
     xp_list = []
@@ -93,14 +93,14 @@ def main():
         # Week Results
         t.result_summary()
         
-        # Lets make a transfer
-        t.auto_transfer()      
+        # Lets make a transfer     
         p_list.append(team_p)
         xp_list.append(team_xp)
 
         # Set team to next week
         if i != start_gw + repeat:
             t.return_subs_to_team()
+            t.auto_transfer() # Make a transfer
             try:
                 t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
             except FileNotFoundError:
@@ -113,8 +113,6 @@ def main():
     xp_sum = sum(xp_list)
     print(f'p_sum: {p_sum}')
     print(f'xp_sum: {xp_sum:.0f}')
-    good, bad = eval.score_model(p_list, t.get_avg_score())
-    print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
 
     # Plots
     if inputs.plot_p_minus_xp:
@@ -123,6 +121,8 @@ def main():
         eval.plot_score_comparison(p_list, start_gw, start_gw + repeat, season)
     if inputs.plot_average_comparison:
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
+        good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
+        print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
 
 if __name__ == '__main__':
     main()

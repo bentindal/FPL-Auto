@@ -81,10 +81,10 @@ class team:
             else:
                 self.budget -= self.player_value(player)
                 
-        elif len(position_list) >= self.get_max_players(position):
+        '''elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
         else:
-            print(f'Player {player} {position} not found')
+            print(f'Player {player} {position} not found')'''
 
     def get_max_players(self, position):
         """
@@ -684,15 +684,17 @@ class team:
     
     def suggest_transfer_out(self):
         # Get xP for each player in team
-        xp_list = self.get_all_p(include_subs=True)
+        p_list = self.get_all_p(include_subs=True)
         # Sort by xP
-        xp_list.sort(key=lambda x: float(x[1]), reverse=False)
-        for potential_player in xp_list:
+        p_list.sort(key=lambda x: float(x[1]), reverse=False)
+
+        for potential_player in p_list:
             target_name = potential_player[0]
             target_pos = self.player_pos(target_name)
             target_budget = self.fpl.get_price(self.gameweek, target_name)
             if target_pos != None and target_budget != None and target_budget != None:
                 return target_name, target_pos, target_budget
+            
         print('No player found to transfer out')
         return '', '', 0
     
@@ -805,8 +807,7 @@ class team:
                     sub_made = False
                     # Lets try and swap the sub with a player that didnt play
                     
-                    # If sub matches play pos 
-                    #print(f'Player: {player} {self.player_pos(player)}, Sub: {sub}')
+                    # If sub matches play pos and player is not in team
                     if self.player_pos(player) == sub[1] and sub[0] not in team_nonplayers:
                         
                         # Add sub to team
@@ -820,9 +821,7 @@ class team:
                         #print(f'Swapped {sub[0]} {self.player_p(sub[0], sub[1])} with {player} {self.player_p(player, self.positions_list[player])} (pos match)')
                         
                         sub_made = True
-                        break
-
-                            
+                        break  
 
                 if not sub_made:
                     #print(f'Could not find a pos match for {player} with any sub')
@@ -844,44 +843,27 @@ class team:
                                 sub_made = False
                             break
                             
-    def select_ideal_team(self):
-        temp_t = team(self.season, self.gameweek, self.budget * 2, self.gks, self.defs, self.mids, self.fwds)
+    def select_ideal_team(self, fwd_n, fwd_budget, mid_n, mid_budget, def_n, def_budget, gk_n, gk_budget):
+        temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
 
-        # Lets go shopping for players, [POS, N_EXPENSIVE, BUDGET, N_CHEAP, BUDGET]
-        new_fwds = self.initial_players('FWD', 3, 6, 0, 5)
-        new_mids = self.initial_players('MID', 5, 6, 0, 5)
-        new_defs = self.initial_players('DEF', 5, 6, 0, 5)
-        new_gks = self.initial_players('GK', 2, 5, 0, 4.5)
+        new_fwds = self.initial_players('FWD', fwd_n, fwd_budget)
+        new_mids = self.initial_players('MID', mid_n, mid_budget)
+        new_defs = self.initial_players('DEF', def_n, def_budget)
+        new_gks = self.initial_players('GK', gk_n, gk_budget)
+
+        player_positions = {'GK': (self.gks, new_gks), 'DEF': (self.defs, new_defs), 'MID': (self.mids, new_mids), 'FWD': (self.fwds, new_fwds)}
         
-        for player in self.gks:
-            temp_t.remove_player(player, 'GK')
+        for position, (existing_players, new_players) in player_positions.items():
 
-        for player in new_gks:
-            temp_t.add_player(player, 'GK')
-
-        for player in self.defs:
-            temp_t.remove_player(player, 'DEF')
-
-        for player in new_defs:
-            temp_t.add_player(player, 'DEF')
-
-        for player in self.mids:
-            temp_t.remove_player(player, 'MID')
-
-        for player in new_mids:
-            temp_t.add_player(player, 'MID')
-        
-        for player in self.fwds:
-            temp_t.remove_player(player, 'FWD')
-
-        for player in new_fwds:
-            temp_t.add_player(player, 'FWD')
+            for player in new_players:
+                temp_t.add_player(player, position)
 
         squad_size = temp_t.squad_size()
 
-        if squad_size != 15: 
-            print(f'Error: Could not select ideal team (Got: {squad_size}, Required: 15), budget allocation failed, try changing the budget allocation.')
-            quit()
+        if squad_size != 15 or temp_t.budget < 0: 
+            print(f'Error: Could not select ideal team (Got: {squad_size}, Required: 15) or budget allocation failed (Budget Remaining: {temp_t.budget}), try changing the budget allocation.')
+            return None
+        
         return temp_t
 
     def result_summary(self):
@@ -910,42 +892,65 @@ class team:
         # Display best 3 players
         print(f'''GW{self.gameweek} - {self.season} | P: {self.team_p()} | C: {self.captain} | VC: {self.vice_captain}
     Top 3: {all_p[0][0]} {all_p[0][1]} {all_p[0][2]}, {all_p[1][0]} {all_p[1][1]} {all_p[1][2]}, {all_p[2][0]} {all_p[2][1]} {all_p[2][2]}
-    Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2][1]} {all_p[-2][2]}, {all_p[-3][0]} {all_p[-3][1]} {all_p[-3][2]}''')
+    Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2][1]} {all_p[-2][2]}, {all_p[-3][0]} {all_p[-3][1]} {all_p[-3][2]}\n''')
 
-    def initial_players(self, position, n_high, high_budget, n_low, low_budget):
+    def name_in_list(self, name, list):
+        for player in list:
+            if name in player:
+                return True
+        return False
+    
+    def pos_size(self, position):
+        if position == 'FWD': 
+            return 3
+        elif position == 'MID' or position == 'DEF':
+            return 5
+        elif position == 'GK':
+            return 2
+        else:
+            print(f'Invalid position: {position}')
+
+            return 0
+        
+    def initial_players(self, position, n, budget):
+        n_low = self.pos_size(position) - n 
         # Get a list of all players for the given position
-        expensive_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
-        cheap_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
-        # Sort by xP
-        expensive_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=True)
-        cheap_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=False)
+        best_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
+        best_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=True)
 
-        # n_high = Number of high value players to 'buy'
-        high_players = []
-        low_players = []
+        # n = Number of players to 'buy'
+        bought_players = []
+        
+        for player in best_players:
+            #print(player, bought_players, self.name_in_list(player, bought_players))
+            if self.name_in_list(player, bought_players):
+                print(f'Player {player} already in list')
+                print(bought_players)
 
-        for player in expensive_players:
-            if self.player_value(player) == None or self.player_value(player) > self.budget:
-                continue
-            if self.player_value(player) >= high_budget and len(high_players) < n_high and player in self.positions_list:
+            if len(bought_players) == n:
+                break
+
+            # check player is not already in bought players
+            if len(bought_players) < n and self.player_value(player) <= budget and player in self.positions_list:
                 if self.positions_list[player] == position:
-                    high_players.append(player)
+                    bought_players.append(player)
             
-            if len(high_players) == n_high and len(low_players) == n_low:
+        worst_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
+        worst_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=False)
+
+        for player in worst_players:
+            if self.name_in_list(player, bought_players):
+                print(f'Player {player} already in list')
+                print(bought_players)
+            if len(bought_players) == n_low + n or self.name_in_list(player, bought_players):
                 break
 
-        for player in cheap_players:
-            if self.player_value(player) == None or self.player_value(player) > self.budget:
-                continue
-            elif self.player_value(player) < low_budget and len(low_players) < n_low and player in self.positions_list:
-                    if self.positions_list[player] == position:
-                        low_players.append(player)
-            if len(low_players) == n_low:
-                break
-
-        new_players = high_players + low_players
-        print(f'New {position} players: {new_players}, N: {len(new_players)}')
-        return new_players
+            # player must be expected to score at least 1 point
+            if len(bought_players) < n_low + n and player in self.positions_list and self.player_xp(player, position) >= 1 and not self.name_in_list(player, bought_players):
+                if self.positions_list[player] == position:
+                    bought_players.append(player)
+        
+        return bought_players
 
     def id_to_name(self, id):
         return self.fpl.id_to_name[id]
