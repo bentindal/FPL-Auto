@@ -1,6 +1,7 @@
 import pandas as pd
 import fpl_auto.data as fpl
 import datetime as dt
+import collections
 class team:
     def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
         """
@@ -58,6 +59,18 @@ class team:
             self.positions_list = self.fpl.position_dict(self.gameweek)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
 
+    def check_violate_club_rule(self, player, club_counts=None):
+        player_club = self.fpl.get_player_team(player, self.gameweek)
+        if club_counts is None:
+            club_counts = self.get_club_counts()
+
+        if player_club not in club_counts:
+            club_counts[player_club] = 0
+        club_counts[player_club] += 1
+        if club_counts[player_club] > 3:
+            return True
+        return False
+    
     def add_player(self, player, position='none', custom_price=None):
         """
         Adds a player to the team.
@@ -750,7 +763,7 @@ class team:
 
         for player in ranked_player_list:
             p_cost = self.player_value(player[0])
-            if p_cost is not None and p_cost <= budget and not self.player_in_squad(player):
+            if p_cost is not None and p_cost <= budget and not self.player_in_squad(player) and not self.check_violate_club_rule(player[0]):
                 return player[0]
         
         return None
@@ -868,11 +881,17 @@ class team:
                             
     def select_ideal_team(self, fwd_n, fwd_budget, mid_n, mid_budget, def_n, def_budget, gk_n, gk_budget):
         temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
-
-        new_fwds = self.initial_players('FWD', fwd_n, fwd_budget)
-        new_mids = self.initial_players('MID', mid_n, mid_budget)
-        new_defs = self.initial_players('DEF', def_n, def_budget)
-        new_gks = self.initial_players('GK', gk_n, gk_budget)
+        counts = {}
+        new_fwds = self.initial_players('FWD', fwd_n, fwd_budget, counts)
+        all_players = new_fwds
+        counts = self.counts_from_list(all_players)
+        new_mids = self.initial_players('MID', mid_n, mid_budget, counts)
+        all_players = all_players + new_mids
+        counts = self.counts_from_list(all_players)
+        new_defs = self.initial_players('DEF', def_n, def_budget, counts)
+        all_players = all_players + new_defs
+        counts = self.counts_from_list(all_players)
+        new_gks = self.initial_players('GK', gk_n, gk_budget, counts)
 
         player_positions = {'GK': (self.gks, new_gks), 'DEF': (self.defs, new_defs), 'MID': (self.mids, new_mids), 'FWD': (self.fwds, new_fwds)}
         
@@ -935,7 +954,7 @@ class team:
 
             return 0
         
-    def initial_players(self, position, n, budget):
+    def initial_players(self, position, n, budget, counts={}):
         n_low = self.pos_size(position) - n 
         # Get a list of all players for the given position
         best_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
@@ -946,17 +965,18 @@ class team:
         
         for player in best_players:
             #print(player, bought_players, self.name_in_list(player, bought_players))
-            if self.name_in_list(player, bought_players):
-                print(f'Player {player} already in list')
-                print(bought_players)
 
             if len(bought_players) == n:
                 break
-
             # check player is not already in bought players
-            if len(bought_players) < n and self.player_value(player) <= budget and player in self.positions_list:
+            if len(bought_players) < n and self.player_value(player) <= budget and player in self.positions_list and not self.check_violate_club_rule(player, counts) and not self.name_in_list(player, bought_players):
                 if self.positions_list[player] == position:
                     bought_players.append(player)
+                    p_team = self.fpl.get_player_team(player, self.gameweek)
+                    if p_team not in counts:
+                        counts[p_team] = 0
+                    
+                    counts[p_team] += 1
             
         worst_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
         worst_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=False)
@@ -969,7 +989,7 @@ class team:
                 break
 
             # player must be expected to score at least 1 point
-            if len(bought_players) < n_low + n and player in self.positions_list and self.player_xp(player, position) >= 1 and not self.name_in_list(player, bought_players):
+            if len(bought_players) < n_low + n and player in self.positions_list and self.player_xp(player, position) >= 1 and not self.name_in_list(player, bought_players) and not self.check_violate_club_rule(player):
                 if self.positions_list[player] == position:
                     bought_players.append(player)
         
@@ -998,6 +1018,15 @@ class team:
             club_counts[club] = club_counts.get(club, 0) + 1
         for player in self.subs:
             club = self.fpl.get_player_team(player[0], self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+
+        return club_counts
+    
+    def counts_from_list(self, player_list):
+        # Get counts of each player's club
+        club_counts = {}
+        for player in player_list:
+            club = self.fpl.get_player_team(player, self.gameweek)
             club_counts[club] = club_counts.get(club, 0) + 1
 
         return club_counts
