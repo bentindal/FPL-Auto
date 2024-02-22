@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 import datetime as dt
 class team:
-    def __init__(self, season, gameweek, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
+    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
         """
         Initializes a team object.
 
@@ -58,7 +58,7 @@ class team:
             self.positions_list = self.fpl.position_dict(self.gameweek)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
 
-    def add_player(self, player, position, custom_price=None):
+    def add_player(self, player, position='none', custom_price=None):
         """
         Adds a player to the team.
 
@@ -69,9 +69,23 @@ class team:
         Returns:
         - None
         """
+        if position == 'none':
+            position = fpl.get_player_position(player)
+
         if position not in ['GK', 'DEF', 'MID', 'FWD']:
             print(f'Invalid position {position}')
-            return
+            return False
+        
+        player_club = self.fpl.get_player_team(player, self.gameweek)
+        club_counts = self.get_club_counts()
+        
+        # Add 1 to the count of the player's club
+        if club_counts != {}:
+            club_counts[player_club] += 1
+            # Check if the count is greater than 3
+            if club_counts[player_club] > 3:
+                print(f'Cannot add {player}, {player_club} has 3 players already')
+                return False            
 
         position_list = getattr(self, position.lower() + 's')
         if player in self.player_list and len(position_list) < self.get_max_players(position):
@@ -84,7 +98,9 @@ class team:
         '''elif len(position_list) >= self.get_max_players(position):
             print(f'Player {player} {position} max players reached')
         else:
-            print(f'Player {player} {position} not found')'''
+            print(f'Player {player} {position} not ffound')'''
+
+        return True
 
     def get_max_players(self, position):
         """
@@ -962,3 +978,41 @@ class team:
     
     def get_avg_score(self):
         return self.fpl.get_avg_score_list()
+    
+    def get_club_counts(self):
+        # Get counts of each player's club
+        club_counts = {}
+        for player in self.gks:
+            club = self.fpl.get_player_team(player, self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+        for player in self.defs:
+            club = self.fpl.get_player_team(player, self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+        for player in self.mids:
+            club = self.fpl.get_player_team(player, self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+        for player in self.fwds:
+            club = self.fpl.get_player_team(player, self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+        for player in self.subs:
+            club = self.fpl.get_player_team(player[0], self.gameweek)
+            club_counts[club] = club_counts.get(club, 0) + 1
+
+        return club_counts
+    
+    def check_max_from_same_club(self):
+        """
+        Checks if the team has more than 3 players from the same club.
+
+        Returns:
+            bool: True if the team has at most 3 players from the same club, False otherwise.
+        """
+        club_counts = self.get_club_counts()
+
+        # Check if any club has more than 3 players
+        for club in club_counts:
+            if club_counts[club] > 3:
+                print(f'Club {club} has {club_counts[club]} players from the same team')
+                return False
+            
+        return True
