@@ -80,12 +80,14 @@ class team:
         club_counts = self.get_club_counts()
         
         # Add 1 to the count of the player's club
-        if club_counts != {}:
-            club_counts[player_club] += 1
-            # Check if the count is greater than 3
-            if club_counts[player_club] > 3:
-                print(f'Cannot add {player}, {player_club} has 3 players already')
-                return False            
+        if player_club not in club_counts:
+            club_counts[player_club] = 0
+
+        club_counts[player_club] += 1
+        # Check if the count is greater than 3
+        if club_counts[player_club] > 3:
+            print(f'Cannot add {player}, {player_club} has 3 players already')
+            return False            
 
         position_list = getattr(self, position.lower() + 's')
         if player in self.player_list and len(position_list) < self.get_max_players(position):
