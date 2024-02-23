@@ -99,7 +99,7 @@ def main():
                 all_p.append(t.p_list())
 
             t.return_subs_to_team()
-            #t.auto_transfer() # Make a transfer
+            t.auto_transfer() # Make a transfer
             try:
                 t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
             except FileNotFoundError:

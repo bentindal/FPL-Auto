@@ -63,12 +63,14 @@ class team:
         player_club = self.fpl.get_player_team(player, self.gameweek)
         if club_counts is None:
             club_counts = self.get_club_counts()
-
-        if player_club not in club_counts:
-            club_counts[player_club] = 0
-        club_counts[player_club] += 1
-        if club_counts[player_club] > 3:
-            return True
+        try:
+            if player_club not in club_counts:
+                club_counts[player_club] = 0
+            club_counts[player_club] += 1
+            if club_counts[player_club] > 3:
+                return True
+        except TypeError:
+            return False
         return False
     
     def add_player(self, player, position='none', custom_price=None):
@@ -89,7 +91,7 @@ class team:
             print(f'Invalid position {position}')
             return False
         
-        player_club = self.fpl.get_player_team(player, self.gameweek)
+        player_club = str(self.fpl.get_player_team(player, self.gameweek))  # Convert player_club to a string
         club_counts = self.get_club_counts()
         
         # Add 1 to the count of the player's club
@@ -98,7 +100,7 @@ class team:
 
         club_counts[player_club] += 1
         # Check if the count is greater than 3
-        if club_counts[player_club] > 3:
+        if club_counts[player_club] > 3 and player_club != 'None':
             print(f'Cannot add {player}, {player_club} has 3 players already')
             return False            
 
@@ -109,11 +111,6 @@ class team:
                 self.budget -= custom_price
             else:
                 self.budget -= self.player_value(player)
-                
-        '''elif len(position_list) >= self.get_max_players(position):
-            print(f'Player {player} {position} max players reached')
-        else:
-            print(f'Player {player} {position} not ffound')'''
 
         return True
 
@@ -784,7 +781,7 @@ class team:
         self.return_subs_to_team()
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
-        print(f'\nTRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
+        print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
         
     def auto_transfer(self):
         if self.season == '2022-23' and self.gameweek == 7:
@@ -895,7 +892,7 @@ class team:
 
         player_positions = {'GK': (self.gks, new_gks), 'DEF': (self.defs, new_defs), 'MID': (self.mids, new_mids), 'FWD': (self.fwds, new_fwds)}
         
-        for position, (existing_players, new_players) in player_positions.items():
+        for position, (_, new_players) in player_positions.items():
 
             for player in new_players:
                 temp_t.add_player(player, position)
@@ -1004,20 +1001,10 @@ class team:
     def get_club_counts(self):
         # Get counts of each player's club
         club_counts = {}
-        for player in self.gks:
-            club = self.fpl.get_player_team(player, self.gameweek)
-            club_counts[club] = club_counts.get(club, 0) + 1
-        for player in self.defs:
-            club = self.fpl.get_player_team(player, self.gameweek)
-            club_counts[club] = club_counts.get(club, 0) + 1
-        for player in self.mids:
-            club = self.fpl.get_player_team(player, self.gameweek)
-            club_counts[club] = club_counts.get(club, 0) + 1
-        for player in self.fwds:
-            club = self.fpl.get_player_team(player, self.gameweek)
-            club_counts[club] = club_counts.get(club, 0) + 1
-        for player in self.subs:
-            club = self.fpl.get_player_team(player[0], self.gameweek)
+        players = self.gks + self.defs + self.mids + self.fwds + [player[0] for player in self.subs]
+
+        for player in players:
+            club = str(self.fpl.get_player_team(player, self.gameweek))  # Convert club to string
             club_counts[club] = club_counts.get(club, 0) + 1
 
         return club_counts

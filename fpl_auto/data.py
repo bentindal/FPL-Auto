@@ -562,4 +562,7 @@ class fpl_data:
     
     def get_player_team(self, player_name, week_num):
         gw_data = self.get_gw_data(self.season, week_num)
-        return gw_data.loc[player_name]['team']
+        try:
+            return gw_data.loc[player_name]['team']
+        except KeyError:
+            return None
