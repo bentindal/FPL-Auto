@@ -3,7 +3,7 @@ import fpl_auto.data as fpl
 import datetime as dt
 import collections
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[]):
+    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
         """
         Initializes a team object.
 
@@ -29,6 +29,11 @@ class team:
         self.mids = mids
         self.fwds = fwds
         self.subs = []
+
+        self.chip_triple_captain_available = triple_captain_available
+        self.chip_bench_boost_available = bench_boost_available
+        self.chip_free_hit_available = free_hit_available
+        self.chip_wildcard_available = wildcard_available
         
         self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
@@ -1034,3 +1039,4 @@ class team:
                 return False
             
         return True
+    

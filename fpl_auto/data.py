@@ -566,3 +566,15 @@ class fpl_data:
             return gw_data.loc[player_name]['team']
         except KeyError:
             return None
+    
+    def api_to_json(self):
+        res = requests.get(f'https://fantasy.premierleague.com/api/bootstrap-static/')
+        res = json.loads(res.content)
+        return res
+    
+    def get_injuries(self):
+        fpl_api = requests.get(f'https://fantasy.premierleague.com/api/bootstrap-static/')
+        fpl_api = json.loads(fpl_api.content)
+        # export this to json
+        with open('fpl_auto/injuries.json', 'w') as f:
+            json.dump(fpl_api, f)
