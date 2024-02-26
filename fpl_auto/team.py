@@ -31,8 +31,11 @@ class team:
         self.subs = []
 
         self.chip_triple_captain_available = triple_captain_available
+        self.chip_triple_captain_active = False
         self.chip_bench_boost_available = bench_boost_available
+        self.chip_bench_boost_active = False
         self.chip_free_hit_available = free_hit_available
+        self.chip_free_hit_active = False
         self.chip_wildcard_available = wildcard_available
         
         self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
@@ -490,22 +493,30 @@ class team:
         team_p = []
         # Get p for each player in team
         for player in self.gks:
-            if player == self.captain:
+            if player == self.captain and self.chip_triple_captain_active:
+                team_p.append([player, self.player_p(player, 'GK') * 3])
+            elif player == self.captain:
                 team_p.append([player, self.player_p(player, 'GK') * 2])
             else:
                 team_p.append([player, self.player_p(player, 'GK')])
         for player in self.defs:
-            if player == self.captain:
+            if player == self.captain and self.chip_triple_captain_active:
+                team_p.append([player, self.player_p(player, 'DEF') * 3])
+            elif player == self.captain:
                 team_p.append([player, self.player_p(player, 'DEF') * 2])
             else:
                 team_p.append([player, self.player_p(player, 'DEF')])
         for player in self.mids:
-            if player == self.captain:
+            if player == self.captain and self.chip_triple_captain_active:
+                team_p.append([player, self.player_p(player, 'MID') * 3])
+            elif player == self.captain:
                 team_p.append([player, self.player_p(player, 'MID') * 2])
             else:
                 team_p.append([player, self.player_p(player, 'MID')])
         for player in self.fwds:
-            if player == self.captain:
+            if player == self.captain and self.chip_triple_captain_active:
+                team_p.append([player, self.player_p(player, 'FWD') * 3])
+            elif player == self.captain:
                 team_p.append([player, self.player_p(player, 'FWD') * 2])
             else:
                 team_p.append([player, self.player_p(player, 'FWD')])
@@ -562,7 +573,9 @@ class team:
         Returns:
         - int: The actual points scored by the player.
         """
-        if player in self.points_scored and self.captain == player:
+        if player in self.points_scored and self.captain == player and self.chip_triple_captain_active:
+            return self.points_scored[player] * 3
+        elif player in self.points_scored and self.captain == player:
             return self.points_scored[player] * 2
         elif player in self.points_scored:
             return self.points_scored[player]
@@ -1039,4 +1052,16 @@ class team:
                 return False
             
         return True
+    
+    def auto_chips(self):
+        # Triple Captain
+        if self.chip_triple_captain_available:
+            # check if its worth using it
+            captain = self.captain
+            captain_xp = self.player_xp(captain, self.player_pos(captain))
+
+            if captain_xp > 13:
+                print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp} xP\n')
+                self.chip_triple_captain_available = False
+                self.chip_triple_captain_active = True
     
