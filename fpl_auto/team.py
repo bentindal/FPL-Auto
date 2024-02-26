@@ -1,9 +1,8 @@
 import pandas as pd
 import fpl_auto.data as fpl
-import datetime as dt
-import collections
+
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
+    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
         """
         Initializes a team object.
 
@@ -30,6 +29,7 @@ class team:
         self.fwds = fwds
         self.subs = []
 
+        self.chips_used = chips_used
         self.chip_triple_captain_available = triple_captain_available
         self.chip_triple_captain_active = False
         self.chip_bench_boost_available = bench_boost_available
@@ -53,7 +53,6 @@ class team:
         self.def_xp_dict = dict(zip(self.def_xp.Name, self.def_xp.xP))
         self.mid_xp_dict = dict(zip(self.mid_xp.Name, self.mid_xp.xP))
         self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
-        self.xp_dict = {**self.gk_xp_dict, **self.def_xp_dict, **self.mid_xp_dict, **self.fwd_xp_dict}
         self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
         
         self.captain = ''
@@ -533,7 +532,7 @@ class team:
     def xi_size(self):
         return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds)
     
-    def team_xp(self):
+    def team_xp(self, include_subs=False):
         """
         Calculates the expected points (xP) for the entire team.
 
@@ -548,7 +547,10 @@ class team:
         self.auto_captain()
         
         # Get xP for each player in team
-        xp_list = self.get_all_xp()
+        if include_subs:
+            xp_list = self.get_all_xp(include_subs=True)
+        else:
+            xp_list = self.get_all_xp()
         total_xp = 0
         if self.squad_size() != 15:
             print(f'Team not complete, squad size {self.squad_size()}')
@@ -613,6 +615,10 @@ class team:
             all_p += self.player_p(player, 'MID')
         for player in self.fwds:
             all_p += self.player_p(player, 'FWD')
+
+        if self.chip_bench_boost_active:
+            for player in self.subs:
+                all_p += self.player_p(player[0], player[1])
 
         return all_p
     
@@ -939,7 +945,10 @@ class team:
             print('IMPORTANT: No actual points available, displaying xP instead\n')
         else:
             # Get P for each player in team
-            all_p = self.team_p_list()
+            if self.chip_bench_boost_active:
+                all_p = self.team_p_list(include_subs=True)
+            else:
+                all_p = self.team_p_list()
 
         self.list_to_summary(all_p)
     
@@ -1059,9 +1068,23 @@ class team:
             # check if its worth using it
             captain = self.captain
             captain_xp = self.player_xp(captain, self.player_pos(captain))
-
-            if captain_xp > 13:
-                print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp} xP\n')
+            #print(f'Captain xP: {captain_xp:.2f}')
+            if captain_xp > 12:
+                print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp:.2f} xP\n')
+                self.chips_used.append(['Triple Captain', self.gameweek])
                 self.chip_triple_captain_available = False
                 self.chip_triple_captain_active = True
+
+        # Bench Boost
+        if self.chip_bench_boost_available:
+            # check if its worth using it
+            all_xp = self.team_xp(include_subs=True)
+            xi_xp = self.team_xp(include_subs=False)
+            bench_xp = all_xp - xi_xp
+            #print(f'Bench xP: {bench_xp:.2f}')
+            if bench_xp > 8:
+                print(f'CHIP: Bench Boost activated on GW{self.gameweek} for {bench_xp:.2f} xP\n')
+                self.chips_used.append(['Bench Boost', self.gameweek])
+                self.chip_bench_boost_available = False
+                self.chip_bench_boost_active = True
     
