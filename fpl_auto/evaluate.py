@@ -124,14 +124,14 @@ def plot_score_comparison(p_list, from_week, to_week, season):
 
     # Plot the data
     plt.title(f'Score Comparison - {season}')
-    plt.bar(week_count, poor, label='Poor (< 50)', color='red')
-    plt.bar(week_count, okay, label='Okay (>= 50)', color='orange', bottom=poor)
-    plt.bar(week_count, good, label='Good (>= 60)', color='yellow', bottom=poor + okay)
-    plt.bar(week_count, excellent, label='Excellent (>= 70)', color='green', bottom=poor + okay + good)
-    plt.axhline(50, color='black', linestyle='-')
-    plt.axhline(60, color='black', linestyle='-')
-    plt.axhline(70, color='black', linestyle='-')
-    plt.axhline(avg_p, color='purple', linestyle='--', label=f'Average = {avg_p:.2f}')
+    plt.bar(week_count, poor, label='Poor (< 50)', color='orange', edgecolor='black')
+    plt.bar(week_count, okay, label='Okay (>= 50)', color='yellowgreen', bottom=poor, edgecolor='black')
+    plt.bar(week_count, good, label='Good (>= 60)', color='olivedrab', bottom=poor + okay, edgecolor='black')
+    plt.bar(week_count, excellent, label='Excellent (>= 70)', color='darkolivegreen', bottom=poor + okay + good, edgecolor='black')
+    plt.axhline(50, color='black', linestyle='--')
+    plt.axhline(60, color='black', linestyle='--')
+    plt.axhline(70, color='black', linestyle='--')
+    plt.axhline(avg_p, color='red', linestyle='-', label=f'Average = {avg_p:.2f}')
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
     plt.legend()
@@ -149,6 +149,17 @@ def plot_average_comparison(p_list, avg_list, from_week, to_week):
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
     plt.legend()
+    plt.show()
+
+def plot_cumulative_points(p_list, season):
+    # Calculate the cumulative points
+    cumulative_points = np.cumsum(p_list)
+    x_axis = np.arange(1, len(p_list) + 1)
+
+    plt.plot(x_axis, cumulative_points)
+    plt.xlabel('Gameweek')
+    plt.ylabel('Cumulative Points')
+    plt.title(f'Cumulative Points for {season}')
     plt.show()
 
 def score_model_against_list(p_list, avg_list):

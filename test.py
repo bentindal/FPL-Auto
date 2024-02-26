@@ -19,3 +19,6 @@ all_p = [[2, 2, 0, 2, 0, 1, 1, 1, 20, 0, 13], [6, 2, 1, 0, 6, 0, 1, 10, 0, 1, 2]
 #eval.box_plot_by_week(all_p, 1, 25, '2023-24')
 
 eval.point_distribution(p_list[2], seasons[2])
+eval.plot_cumulative_points(p_list[0], seasons[0])
+eval.plot_cumulative_points(p_list[1], seasons[1])
+eval.plot_cumulative_points(p_list[2], seasons[2])
