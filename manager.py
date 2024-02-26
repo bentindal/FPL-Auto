@@ -91,6 +91,7 @@ def main():
         # --- BEFORE DEADLINE ---
         t.auto_subs()
         t.auto_captain()
+        t.auto_chips()
         team_xp = t.team_xp()
 
         # --- AFTER DEADLINE ---
@@ -106,7 +107,7 @@ def main():
             t.return_subs_to_team()
             t.auto_transfer() # Make a transfer
             try:
-                t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds)
+                t = team.team(season, i + 1, t.budget, t.gks, t.defs, t.mids, t.fwds, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available)
             except FileNotFoundError:
                 print(f'GW{i + 1} not found')
                 break
