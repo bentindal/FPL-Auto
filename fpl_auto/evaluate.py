@@ -4,7 +4,7 @@ import pandas as pd
 import os
 import math
 import numpy as np
-from scipy.stats import norm
+from scipy import stats
 
 def score_model(predictions, labels):
     """
@@ -202,22 +202,20 @@ def box_plot_by_week(points, start_gw, end_gw, season):
 def point_distribution(points, season):
     sorted_points = np.sort(points)
     plt.hist(sorted_points, density=True)
-    plt.xlabel('Gameweek')
+
+    plt.xlabel('Team Points per Gameweek')
     plt.ylabel('Probability')
-    
+
     # Generate random data
     data = sorted_points
 
     # Fit a normal distribution to the data
-    mu, std = norm.fit(data)
+    mu, std = stats.norm.fit(data)
 
-    # Plot the histogram
-    plt.hist(data, bins=30, density=True, alpha=0.7, color='skyblue')
-
-    # Set labels and title
-    plt.xlabel('Value')
-    plt.ylabel('Probability')
-    plt.title(f'PDF for {season} season')
-
-    # Show the plot
+    # Plot the PDF.
+    xmin, xmax = plt.xlim()
+    x = np.linspace(xmin, xmax, 150)
+    p = stats.norm.pdf(x, mu, std)
+    plt.plot(x, p, 'k', linewidth=2)
+    plt.title(f'Point Distribution for {season} Season, mu = {mu:.2f}, std = {std:.2f}')
     plt.show()
