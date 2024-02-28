@@ -119,7 +119,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
             good[i] = p
 
     # Plot the data
-    plt.title(f'{season} Performance | {total_p} points total')
+    plt.title(f'{season} Performance - {total_p} points total')
     plt.bar(week_count, poor, label='Poor', color='red')
     plt.bar(week_count, good, label='Good', color='olivedrab')
     
