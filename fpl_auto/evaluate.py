@@ -101,40 +101,43 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_score_comparison(p_list, from_week, to_week, season):
+def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
     # Categorise each week as above or below average, where the average is 50 points
     week_count = range(from_week, to_week + 1)
     # poor = 0-49, okay = 50-59, good = 60-69, excellent = 70+
     poor = np.zeros(len(week_count))
-    okay = np.zeros(len(week_count))
     good = np.zeros(len(week_count))
-    excellent = np.zeros(len(week_count))
     
     # Categorise each week
+    avg_score = 46.54 # sourced from https://www.livefpl.net/Overall | 28/02/24
     for i, p in enumerate(p_list):
-        if p < 50:
+        if p < avg_score:
             poor[i] = p
-        elif p < 60:
-            okay[i] = p
-        elif p < 70:
-            good[i] = p
         else:
-            excellent[i] = p
+            good[i] = p
     avg_p = sum(p_list) / len(p_list)
 
     # Plot the data
     plt.title(f'Score Comparison - {season}')
-    plt.bar(week_count, poor, label='Poor (< 50)', color='orange', edgecolor='black')
-    plt.bar(week_count, okay, label='Okay (>= 50)', color='yellowgreen', bottom=poor, edgecolor='black')
-    plt.bar(week_count, good, label='Good (>= 60)', color='olivedrab', bottom=poor + okay, edgecolor='black')
-    plt.bar(week_count, excellent, label='Excellent (>= 70)', color='darkolivegreen', bottom=poor + okay + good, edgecolor='black')
-    plt.axhline(50, color='black', linestyle='--')
-    plt.axhline(60, color='black', linestyle='--')
-    plt.axhline(70, color='black', linestyle='--')
-    plt.axhline(avg_p, color='red', linestyle='-', label=f'Average = {avg_p:.2f}')
+    plt.bar(week_count, poor, label='Poor', color='red')
+    plt.bar(week_count, good, label='Good', color='olivedrab')
+    
+    plt.axhline(avg_score, color='black', linestyle='--', label=f'FPL Avg {avg_score:.2f}')
+    plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
+    chip_colors = {'Triple Captain': 'mediumvioletred', 
+                   'Bench Boost': 'steelblue', 
+                   'Freehit': 'blueviolet', 
+                   'Wildcard': 'lightcoral'}
+    for chip, i in chips_usage:
+        plt.axvline(i, color=chip_colors[chip], linestyle='-', label=f'{chip} GW{i}', linewidth=2, alpha=0.7)
+
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
     plt.legend()
+
+    # save the plot as png in results folder
+    total_p = sum(p_list)
+    plt.savefig(f'results/{season}_{total_p}_score_comparison.png')
     plt.show()
 
 def plot_average_comparison(p_list, avg_list, from_week, to_week):

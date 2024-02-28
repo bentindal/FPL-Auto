@@ -126,7 +126,7 @@ def main():
     if inputs.plot_p_minus_xp:
         eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
     if inputs.plot_score_comparison:
-        eval.plot_score_comparison(p_list, start_gw, start_gw + repeat, season)
+        eval.plot_score_comparison(p_list, t.chips_used, start_gw, start_gw + repeat, season)
     if inputs.plot_average_comparison:
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
         good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
