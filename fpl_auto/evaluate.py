@@ -109,20 +109,21 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
     good = np.zeros(len(week_count))
     
     # Categorise each week
-    avg_score = 46.54 # sourced from https://www.livefpl.net/Overall | 28/02/24
+    total_p = sum(p_list)
+    fpl_avg = 46.54 # sourced from https://www.livefpl.net/Overall | 28/02/24
+    avg_p = sum(p_list) / len(p_list)
     for i, p in enumerate(p_list):
-        if p < avg_score:
+        if p < fpl_avg:
             poor[i] = p
         else:
             good[i] = p
-    avg_p = sum(p_list) / len(p_list)
 
     # Plot the data
-    plt.title(f'Score Comparison - {season}')
+    plt.title(f'{season} Performance | {total_p} points total')
     plt.bar(week_count, poor, label='Poor', color='red')
     plt.bar(week_count, good, label='Good', color='olivedrab')
     
-    plt.axhline(avg_score, color='black', linestyle='--', label=f'FPL Avg {avg_score:.2f}')
+    plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
     plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
     chip_colors = {'Triple Captain': 'mediumvioletred', 
                    'Bench Boost': 'steelblue', 
@@ -136,7 +137,6 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
     plt.legend()
 
     # save the plot as png in results folder
-    total_p = sum(p_list)
     plt.savefig(f'results/{season}_{total_p}_score_comparison.png')
     plt.show()
 
