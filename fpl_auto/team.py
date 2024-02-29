@@ -817,7 +817,7 @@ class team:
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             return
         if self.transfers_left > 0:
-            min_improvement = 3
+            min_improvement = 5
             out, pos, budget = self.suggest_transfer_out()
             transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
             if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
@@ -1081,7 +1081,7 @@ class team:
             captain = self.captain
             captain_xp = self.player_xp(captain, self.player_pos(captain))
             #print(f'Captain xP: {captain_xp:.2f}')
-            if captain_xp > 12:
+            if captain_xp > 15:
                 print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp:.2f} xP\n')
                 self.chips_used.append(['Triple Captain', self.gameweek])
                 self.chip_triple_captain_available = False
@@ -1093,8 +1093,8 @@ class team:
             all_xp = self.team_xp(include_subs=True)
             xi_xp = self.team_xp(include_subs=False)
             bench_xp = all_xp - xi_xp
-            #print(f'Bench xP: {bench_xp:.2f}')
-            if bench_xp > 8:
+            
+            if bench_xp > 7:
                 print(f'CHIP: Bench Boost activated on GW{self.gameweek} for {bench_xp:.2f} xP\n')
                 self.chips_used.append(['Bench Boost', self.gameweek])
                 self.chip_bench_boost_available = False

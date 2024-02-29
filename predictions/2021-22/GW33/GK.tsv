@@ -1,84 +1,58 @@
 	Name	xP
-0	Aaron Ramsdale	0.99
-1	Adrián San Miguel del Castillo	0.0
-2	Alex McCarthy	0.0
-3	Alisson Ramses Becker	2.25
-4	Alphonse Areola	0.0
-5	Andreas Söndergaard	0.0
-6	Andy Lonergan	0.0
-7	Angus Gunn	0.0
-8	Arthur Okonkwo	0.0
-9	Asmir Begović	0.0
-10	Bailey Peacock-Farrell	0.0
-11	Ben Foster	1.24
-12	Bernd Leno	1.81
-13	Brandon Austin	0.0
-14	Caoimhin Kelleher	0.0
-15	Cieran Slicker	0.0
-16	Daniel Bachmann	0.0
-17	Danny Ward	0.0
-18	Darren Randolph	0.0
-19	David Raya Martin	3.34
-20	David de Gea	1.97
-21	Dean Henderson	0.0
-22	Ederson Santana de Moraes	2.0
-23	Edouard Mendy	0.0
-24	Eldin Jakupovic	0.0
-25	Ellery Balcombe	0.0
-26	Emiliano Martínez	1.13
-27	Filip Marschall	0.0
-28	Francisco Casilla Cortés	0.0
-29	Fraser Forster	2.38
-30	Freddie Woodman	0.0
-31	Harry Lewis	0.0
-32	Harry Tyrer	0.0
-33	Hugo Lloris	2.66
-34	Illan Meslier	1.93
-35	Jack Butland	0.0
-36	James Storer	0.0
-37	Jason Steele	0.0
-38	Jed Steer	0.0
-39	Joe Hart	0.0
-40	John Ruddy	0.0
-41	Jon McCracken	0.0
-42	Jonas Lössl	0.0
-43	Jordan Pickford	2.2
-44	José Malheiro de Sá	1.69
-45	João Virgínia	0.0
-46	Karl Darlow	0.0
-47	Karl Hein	0.0
-48	Kasper Schmeichel	3.14
-49	Kepa Arrizabalaga	0.0
-50	Kjell Scherpen	0.0
-51	Kristoffer Klaesson	2.6
-52	Louie Moulden	0.0
-53	Lukasz Fabianski	2.07
-54	Marcelo de Araújo Pitaluga Filho	0.0
-55	Marcus Bettinelli	0.0
-56	Mark Gillespie	0.0
-57	Martin Dubravka	1.13
-58	Mathew Ryan	0.0
-59	Matthew Cox	0.0
-60	Michael McGovern	0.0
-61	Nick Pope	2.23
-62	Patrik Gunnarsson	0.0
-63	Pierluigi Gollini	0.0
-64	Remi Matthews	0.0
-65	Robert Elliot	0.0
-66	Robert Sánchez	3.03
-67	Robin Olsen	0.0
-68	Rui Pedro dos Santos Patrício	0.0
-69	Rúnar Alex Rúnarsson	0.0
-70	Sam Waller	0.0
-71	Scott Carson	0.0
-72	Thomas McGill	0.0
-73	Tim Krul	9.27
-74	Tom Heaton	0.0
-75	Vicente Guaita	2.01
-76	Viljami Sinisalo	0.0
-77	Vincent Angelini	0.0
-78	Wayne Hennessey	0.0
-79	Will Norris	0.0
-80	Willy Caballero	0.0
-81	Zack Steffen	0.0
-82	Álvaro Fernández	0.0
+0	Adrián San Miguel del Castillo	0.0
+1	Alex McCarthy	0.0
+2	Alisson Ramses Becker	2.38
+3	Andy Lonergan	0.0
+4	Angus Gunn	0.0
+5	Asmir Begović	0.0
+6	Bailey Peacock-Farrell	0.0
+7	Ben Foster	1.4
+8	Bernd Leno	1.66
+9	Caoimhin Kelleher	0.0
+10	Cieran Slicker	0.0
+11	Daniel Bachmann	0.0
+12	David Raya Martin	3.17
+13	David de Gea	2.31
+14	Dean Henderson	0.0
+15	Ederson Santana de Moraes	2.17
+16	Edouard Mendy	0.0
+17	Emiliano Martínez	0.98
+18	Fraser Forster	2.48
+19	Freddie Woodman	0.0
+20	Harry Lewis	0.0
+21	Harry Tyrer	0.0
+22	Hugo Lloris	3.06
+23	Illan Meslier	1.87
+24	Jack Butland	0.0
+25	Jason Steele	0.0
+26	Jon McCracken	0.0
+27	Jordan Pickford	2.67
+28	José Malheiro de Sá	1.61
+29	João Virgínia	0.0
+30	Karl Darlow	0.0
+31	Kasper Schmeichel	2.83
+32	Kepa Arrizabalaga	0.0
+33	Kjell Scherpen	0.0
+34	Kristoffer Klaesson	2.52
+35	Lukasz Fabianski	2.43
+36	Marcelo de Araújo Pitaluga Filho	0.0
+37	Marcus Bettinelli	0.0
+38	Mark Gillespie	0.0
+39	Martin Dubravka	1.3
+40	Mathew Ryan	0.0
+41	Michael McGovern	0.0
+42	Nick Pope	1.91
+43	Remi Matthews	0.0
+44	Robert Elliot	0.0
+45	Robert Sánchez	2.74
+46	Sam Waller	0.0
+47	Scott Carson	0.0
+48	Thomas McGill	0.0
+49	Tim Krul	7.96
+50	Tom Heaton	0.0
+51	Vicente Guaita	1.79
+52	Vincent Angelini	0.0
+53	Wayne Hennessey	0.0
+54	Will Norris	0.0
+55	Willy Caballero	0.0
+56	Zack Steffen	0.0

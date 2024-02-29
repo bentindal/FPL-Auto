@@ -156,6 +156,17 @@ class fpl_data:
         mid_data = mid_data.groupby('name').mean().reset_index().set_index('name')
         fwd_data = fwd_data.groupby('name').mean().reset_index().set_index('name')
 
+        print(f'Before: {len(gk_data)}')
+        # Filter out players who do not play
+        players_who_didnt_play = self.non_players(season, from_gw)
+        players_who_didnt_play = players_who_didnt_play.index
+
+        gk_data = gk_data[~gk_data.index.isin(players_who_didnt_play)]
+        def_data = def_data[~def_data.index.isin(players_who_didnt_play)]
+        mid_data = mid_data[~mid_data.index.isin(players_who_didnt_play)]
+        fwd_data = fwd_data[~fwd_data.index.isin(players_who_didnt_play)]
+        print(f'After: {len(gk_data)}')
+
         return gk_data, def_data, mid_data, fwd_data
     
     def prune_features(self, features):
@@ -408,6 +419,11 @@ class fpl_data:
         gw_data = gw_data[gw_data['minutes'] == 0]
         # conver to dict (name --> id)
         gw_data = gw_data.to_dict()['minutes']
+        return gw_data
+    
+    def non_players(self, season, gameweek):
+        gw_data = self.get_gw_data(season, gameweek)
+        gw_data = gw_data[gw_data['minutes'] == 0]
         return gw_data
 
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):

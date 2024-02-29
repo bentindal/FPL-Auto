@@ -20,9 +20,8 @@ def parse_args():
     parser.add_argument('-season', type=str, required=True, help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
-    parser.add_argument('-training_prev_weeks', type=int, default=10, help='How many past weeks of data to use for training, default: 10')
-    parser.add_argument('-predict_weeks', type=int, default=3, help='How many past weeks of data to use for predicting, default: 3')
-    parser.add_argument('-future_weeks', type=int, default=3, help='How many future weeks to use for predicting, default: 3')
+    parser.add_argument('-training_prev_weeks', type=int, default=19, help='How many past weeks of data to use for training, default: 19')
+    parser.add_argument('-predict_weeks', type=int, default=5, help='How many past weeks of data to use for predicting, default: 5')
     parser.add_argument('-display_weights',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to display feature weights, default: False')
     parser.add_argument('-plot_predictions',
@@ -54,8 +53,6 @@ display_weights = inputs.display_weights
 plot_predictions = inputs.plot_predictions
 # Whether to export predictions to tsv
 output_files = inputs.save
-# Future weeks to use
-future_weeks = inputs.future_weeks
 
 # Initialise classes
 # Ensure that the correct location is specified for Vastaav data
@@ -121,12 +118,11 @@ def main():
 
         # Now we have our model predictions, lets do some post-weightings
         weeks_left = 38 - i
-        if future_weeks != 0:
-            if weeks_left >= future_weeks:
-                clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, future_weeks)
-            elif weeks_left < future_weeks and weeks_left > 0:
-                clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
-        
+        if weeks_left > 0:
+            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, 1)
+        elif weeks_left < 1 and weeks_left > 0:
+            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
+
         if output_files:
             eval.export_tsv(clean_predictions, season, i)
         
