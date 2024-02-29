@@ -5,7 +5,6 @@ Author: Benjamin Tindal
 
 import argparse
 import numpy as np
-import math
 from fpl_auto.data import fpl_data
 from fpl_auto import evaluate as eval
 import pandas as pd
@@ -29,7 +28,7 @@ def parse_args():
     parser.add_argument('-plot_predictions',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to plot predictions vs actual points, default: False')
     parser.add_argument('-save', '-s',
-                        action=argparse.BooleanOptionalAction, default=False, help='Whether to export predictions to tsv, default: False')
+                        action=argparse.BooleanOptionalAction, default=True, help='Whether to export predictions to tsv, default: True')
     
     args = parser.parse_args()
     
