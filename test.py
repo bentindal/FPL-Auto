@@ -1,5 +1,6 @@
 from fpl_auto import evaluate as eval
 from fpl_auto import team
+from fpl_auto import data
 t = team.team('2023-24')
 p_list = [
     [56, 38, 66, 35, 49, 44, 50, 50, 32, 31, 45, 59, 42, 29, 64, 43, 26, 44, 36, 53, 44, 65, 20, 68, 64, 70, 79, 70, 62, 75, 69, 76, 72, 75, 62, 83, 90, 89],
@@ -12,20 +13,25 @@ xp_list = [
     [45.09, 42.83, 51.06, 50.35, 52.989999999999995, 49.92999999999999, 84.22000000000001, 90.21, 102.81999999999998, 85.00999999999999, 62.150000000000006, 46.480000000000004, 41.83, 30.749999999999996, 43.830000000000005, 70.89, 61.220000000000006, 61.9, 40.39, 61.86000000000001, 55.77, 71.85999999999999, 72.96, 80.58999999999999, 48.12]
 ]
 seasons = ['2021-22', '2022-23', '2023-24']
-
-eval.box_plot_by_season(p_list, seasons)
-
 all_p = [[2, 2, 0, 2, 0, 1, 1, 1, 20, 0, 13], [6, 2, 1, 0, 6, 0, 1, 10, 0, 1, 2], [1, 0, 6, 2, 2, 1, 4, 2, 1, 1, 8], [2, 1, 4, 1, 1, 4, 1, 2, 1, 6, 8], [8, 8, 8, 2, 0, 0, 3, 2, 3, 1, 5], [2, 18, 1, 14, 0, 11, 1, 3, 2, 24, 5], [6, 48, 7, 1, 0, 0, 3, 3, 2, 2, 6], [6, 24, 6, 7, 2, 1, 1, 3, 0, 13, 1], [2, 40, 6, 0, 0, 7, 2, 3, 0, 1, 6], [6, 0, 2, 6, 1, 0, 1, 2, 0, 13, 0], [2, 9, 0, 4, 1, 0, 2, 4, 4, 0, 2], [3, 1, 5, 1, 0, 0, 2, 3, 2, 0, 0], [6, 1, 5, 1, 2, 0, 2, 1, 8, 0, 0], [2, 12, 0, 1, 8, 1, 14, 4, 2, 0, 0], [1, 1, 5, 6, 6, 1, 8, 1, 1, 0, 2], [2, -1, 5, 6, 6, 1, 8, 2, 1, 2, 4], [6, 8, 2, 6, 10, 4, 9, 2, 3, 0, 2], [2, 2, 1, 1, 2, 0, 3, 2, 0, 2, 1], [6, 5, 4, 0, 0, 1, 2, 2, 2, 1, 7], [1, 2, 0, 1, 1, 24, 4, 7, 1, 6, 0], [8, 6, 1, 7, 5, 2, 2, 2, 0, 24, 8], [2, 1, 7, -1, 6, 2, 2, 1, 0, 4, 10], [2, 1, 9, 1, 6, 14, 13, 2, 1, 0, 1], [6, 2, 4, 1, 1, 1, 8, 8, 1, 6, 1]]
+
+#eval.box_plot_by_season(p_list, seasons)
 
 # #eval.box_plot_by_week(all_p, 1, 25, '2023-24')
 
-eval.point_distribution(p_list[0], seasons[0])
-eval.point_distribution(p_list[1], seasons[1])
-eval.point_distribution(p_list[2], seasons[2])
+# eval.point_distribution(p_list[0], seasons[0])
+# eval.point_distribution(p_list[1], seasons[1])
+# eval.point_distribution(p_list[2], seasons[2])
 
-eval.plot_cumulative_points(p_list[0], seasons[0])
-eval.plot_cumulative_points(p_list[1], seasons[1])
-eval.plot_cumulative_points(p_list[2], seasons[2])
+# eval.plot_cumulative_points(p_list[0], seasons[0])
+# eval.plot_cumulative_points(p_list[1], seasons[1])
+# eval.plot_cumulative_points(p_list[2], seasons[2])
 
-print(f'Sum of avg list = {sum(t.get_avg_score())}')
-print(f'avg p per week of avg list = {sum(t.get_avg_score()) / len(t.get_avg_score())}')
+# print(f'Sum of avg list = {sum(t.get_avg_score())}')
+import pulp
+
+d = data.fpl_data('data/', '2023-24')
+
+player_list = d.get_gw_data('2023-24', 1)
+player_list = [{k: v for k, v in player.items() if k in ['name', 'position', 'team']} for player in player_list]
+print(player_list)

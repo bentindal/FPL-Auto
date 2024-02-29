@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, gks=[], defs=[], mids=[], fwds=[], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
+    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, gks=[], defs=[], mids=[], fwds=[], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
         """
         Initializes a team object.
 
@@ -29,6 +29,7 @@ class team:
         self.fwds = fwds
         self.subs = []
 
+        self.transfers_left = min(transfers_left, 2)
         self.chips_used = chips_used
         self.chip_triple_captain_available = triple_captain_available
         self.chip_triple_captain_active = False
@@ -109,17 +110,19 @@ class team:
         # Check if the count is greater than 3
         if club_counts[player_club] > 3 and player_club != 'None':
             print(f'Cannot add {player}, {player_club} has 3 players already')
-            return False            
+            return False
 
         position_list = getattr(self, position.lower() + 's')
-        if player in self.player_list and len(position_list) < self.get_max_players(position):
+        if player in self.player_list and len(position_list) < self.get_max_players(position) and self.budget >= self.player_value(player):
             position_list.append(player)
             if custom_price != None:
                 self.budget -= custom_price
             else:
                 self.budget -= self.player_value(player)
 
-        return True
+            return True
+        else:
+            return False
 
     def get_max_players(self, position):
         """
@@ -806,16 +809,25 @@ class team:
         self.remove_player(transfer_out, position)
         self.add_player(transfer_in, position)
         print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
+        self.transfers_left -= 1
         
     def auto_transfer(self):
         if self.season == '2022-23' and self.gameweek == 7:
             return
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             return
-        out, pos, budget = self.suggest_transfer_out()
-        transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
-        if transfer_in != None:
-            self.transfer(out, transfer_in, pos)
+        if self.transfers_left > 0:
+            min_improvement = 3
+            out, pos, budget = self.suggest_transfer_out()
+            transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
+            if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
+                self.transfer(out, transfer_in, pos)
+            # If theres still another transfer left, go again
+            if self.transfers_left > 0:
+                out, pos, budget = self.suggest_transfer_out()
+                transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
+                if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
+                    self.transfer(out, transfer_in, pos)
 
     def swap_players_who_didnt_play(self):
         # Get players who didn't play
@@ -901,7 +913,7 @@ class team:
                             break
                             
     def select_ideal_team(self, fwd_n, fwd_budget, mid_n, mid_budget, def_n, def_budget, gk_n, gk_budget):
-        temp_t = team(self.season, self.gameweek, self.budget, self.gks, self.defs, self.mids, self.fwds)
+        temp_t = team(self.season, self.gameweek, self.budget, self.transfers_left, self.gks, self.defs, self.mids, self.fwds)
         counts = {}
         new_fwds = self.initial_players('FWD', fwd_n, fwd_budget, counts)
         all_players = new_fwds
