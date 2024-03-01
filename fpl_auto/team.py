@@ -38,6 +38,10 @@ class team:
         self.chip_free_hit_available = free_hit_available
         self.chip_free_hit_active = False
         self.chip_wildcard_available = wildcard_available
+
+        if self.chip_wildcard_available is False and self.gameweek == 19:
+            print('============== Wildcard Returned! ==============\n')
+            self.chip_wildcard_available = True
         
         self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
@@ -56,9 +60,15 @@ class team:
         self.fwd_xp_dict = dict(zip(self.fwd_xp.Name, self.fwd_xp.xP))
         self.player_xp_list = self.gk_xp.xP.tolist() + self.def_xp.xP.tolist() + self.mid_xp.xP.tolist() + self.fwd_xp.xP.tolist()
         
+        self.prev_pos_list = self.fpl.position_dict(self.gameweek - 1)
+
         self.captain = ''
         self.vice_captain = ''
-        self.recent_gw = self.fpl.get_recent_gw() - 1
+
+        try:
+            self.recent_gw = self.fpl.get_recent_gw() - 1
+        except:
+            self.recent_gw = 38
         
         if self.gameweek >= self.recent_gw:
             self.positions_list = self.fpl.position_dict(self.recent_gw)
@@ -172,6 +182,7 @@ class team:
         Returns:
         - None
         """
+        self.return_subs_to_team()
         if position == 'GK':
             self.gks.remove(player)
             self.budget += self.player_value(player)
@@ -198,17 +209,19 @@ class team:
         Returns:
         - None
         """
-
-        if position == 'GK':
-            self.gks.remove(player)
-        elif position == 'DEF':
-            self.defs.remove(player)
-        elif position == 'MID':
-            self.mids.remove(player)
-        elif position == 'FWD':
-            self.fwds.remove(player)
-        else:
-            print('Invalid position, cannot sub player')
+        try:
+            if position == 'GK':
+                self.gks.remove(player)
+            elif position == 'DEF':
+                self.defs.remove(player)
+            elif position == 'MID':
+                self.mids.remove(player)
+            elif position == 'FWD':
+                self.fwds.remove(player)
+            else:
+                print('Invalid position, cannot sub player')
+        except ValueError:
+            pass
 
     def remove_sub(self, player, position):
         """
@@ -376,6 +389,7 @@ class team:
 
         # Suggest subs
         subs = []
+        
         subs.append([ranked_gk[0][0], 'GK'])
         
         # Limit substitution of maximum two players of the same position (except GK)
@@ -588,7 +602,7 @@ class team:
             #print(f'Player {player} {position} points not found for GW{self.gameweek} {self.season}!')
             return 0
     
-    def team_p(self):
+    def team_p(self, include_subs=False):
         """
         Calculates the actual points scored by the team.
 
@@ -618,6 +632,9 @@ class team:
             all_p += self.player_p(player, 'MID')
         for player in self.fwds:
             all_p += self.player_p(player, 'FWD')
+        if include_subs:
+            for player in self.subs:
+                all_p += self.player_p(player, self.player_pos(player))
 
         if self.chip_bench_boost_active:
             for player in self.subs:
@@ -713,8 +730,8 @@ class team:
         - str: The position of the player.
         """
         # Get position for player
-        if player in self.fpl.position_dict(self.gameweek - 1):
-            return self.fpl.position_dict(self.gameweek - 1)[player]
+        if player in self.prev_pos_list:
+            return self.prev_pos_list[player]
         elif player in self.positions_list:
             return self.positions_list[player]
         else:
@@ -805,11 +822,14 @@ class team:
             return False
         
     def transfer(self, transfer_out, transfer_in, position):
-        self.return_subs_to_team()
-        self.remove_player(transfer_out, position)
-        self.add_player(transfer_in, position)
-        print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
-        self.transfers_left -= 1
+        try:
+            self.return_subs_to_team()
+            self.remove_player(transfer_out, position)
+            self.add_player(transfer_in, position)
+            print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
+            self.transfers_left -= 1
+        except ValueError:
+            pass
         
     def auto_transfer(self):
         if self.season == '2022-23' and self.gameweek == 7:
@@ -1031,6 +1051,51 @@ class team:
         
         return bought_players
 
+    def initial_team_generator(self):
+        self.fwds = []
+        self.mids = []
+        self.defs = []
+        self.gks = []
+        self.subs = []
+        self.budget = 100
+
+        fwd_budget = self.budget * 0.2
+        fwds = self.get_best_players('FWD', fwd_budget)
+        print(fwds)
+        mid_budget = self.budget * 0.4
+        mids = self.get_best_players('MID', mid_budget)
+        print(mids)
+        def_budget = self.budget * 0.3
+        defs = self.get_best_players('DEF', def_budget)
+        print(defs)
+        gk_budget = self.budget * 0.1
+        gks = self.get_best_players('GK', gk_budget)
+        print(gks)
+
+        print(fwds, mids, defs, gks)
+
+    def get_best_players(self, position, budget):
+        players_by_xp = getattr(self, f"{position.lower()}_xp").Name.tolist()
+        players_by_xp.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=True)
+        players_needed = self.pos_size(position)
+        players_bought = []
+
+        for player in players_by_xp:
+            p_cost = self.player_value(player)
+            # If we have enough players, stop
+            if len(players_bought) == players_needed or p_cost == None:
+                break
+            else:
+                # Else, keep buying players
+                #p_team = self.fpl.get_player_team(player, self.gameweek)
+                if p_cost <= budget / (players_needed - len(players_bought)):
+                    p_allowed = self.add_player(player, position, 0)
+                    if p_allowed:
+                        players_bought.append(player)
+                        budget -= p_cost
+        
+        return players_bought
+
     def id_to_name(self, id):
         return self.fpl.id_to_name[id]
     
@@ -1081,7 +1146,7 @@ class team:
             captain = self.captain
             captain_xp = self.player_xp(captain, self.player_pos(captain))
             #print(f'Captain xP: {captain_xp:.2f}')
-            if captain_xp > 15:
+            if captain_xp > 12:
                 print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp:.2f} xP\n')
                 self.chips_used.append(['Triple Captain', self.gameweek])
                 self.chip_triple_captain_available = False
@@ -1093,10 +1158,27 @@ class team:
             all_xp = self.team_xp(include_subs=True)
             xi_xp = self.team_xp(include_subs=False)
             bench_xp = all_xp - xi_xp
-            
-            if bench_xp > 7:
+            print(f'Bench xP {bench_xp}')
+            if bench_xp > 10:
                 print(f'CHIP: Bench Boost activated on GW{self.gameweek} for {bench_xp:.2f} xP\n')
                 self.chips_used.append(['Bench Boost', self.gameweek])
                 self.chip_bench_boost_available = False
                 self.chip_bench_boost_active = True
+
+        # Wildcard
+        if self.chip_wildcard_available:
+            # do some stuff?
+            xi_xp = self.team_xp(include_subs=True)
+            print(f'Current xP {xi_xp}')
+            if xi_xp < 43:
+                print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
+                self.initial_team_generator()
+                print(f'Current xP {xi_xp} vs New xP {self.team_xp(include_subs=True)}')
+                self.chip_wildcard_available = False
+                self.chips_used.append(['Wildcard', self.gameweek])
+
+        # Freehit
+        if self.chip_free_hit_available:
+            # do some stuff?
+            xi_xp = self.team_xp(include_subs=False)
     

@@ -91,6 +91,7 @@ def main():
         team_p = t.team_p()
         # Week Results
         t.result_summary()
+        
         if team_p != 0:
             p_list.append(team_p)
             xp_list.append(team_xp)
