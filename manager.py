@@ -68,20 +68,13 @@ def my_team_at_gw1():
     return t
 
 def main():
-    if inputs.starting_team == 'custom_one':
+    if inputs.starting_team == 'custom_1':
         t = my_team_at_gw1()
-    elif inputs.starting_team == 'custom_two':
+    elif inputs.starting_team == 'custom_2':
         t = get_team_from_manager_id(1) # 1 is my manager id
     else:
         t = team.team(season, start_gw, 100)
-        if season == '2021-22':
-            t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5) 
-        elif season == '2022-23':
-            t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5)
-        elif season == '2023-24':
-            t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5)
-        else:
-            t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5) 
+        t.initial_team_generator() #t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5) 
 
     p_list = []
     xp_list = []
@@ -105,7 +98,7 @@ def main():
         # Set team to next week
         if i != start_gw + repeat:
             t.return_subs_to_team()
-            #t.auto_transfer() # Make a transfer
+            t.auto_transfer() # Make a transfer
             try:
                 t = team.team(season, i + 1, t.budget, t.transfers_left + 1, t.gks, t.defs, t.mids, t.fwds, t.chips_used, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available)
             except FileNotFoundError:

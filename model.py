@@ -58,7 +58,6 @@ output_files = inputs.save
 # Ensure that the correct location is specified for Vastaav data
 vastaav = fpl_data('data', season)
 
-
 def main():
     count = 0
     total_e = 0
@@ -116,12 +115,12 @@ def main():
             tsv_predictions.set_index('Name', inplace=True)
             clean_predictions.append(tsv_predictions)
 
-        # Now we have our model predictions, lets do some post-weightings
-        weeks_left = 38 - i
-        if weeks_left > 0:
-            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, 1)
-        elif weeks_left < 1 and weeks_left > 0:
-            clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
+        # # Now we have our model predictions, lets do some post-weightings
+        # weeks_left = 38 - i
+        # if weeks_left > 0:
+        #     clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, 1)
+        # elif weeks_left < 1 and weeks_left > 0:
+        #     clean_predictions = vastaav.post_model_weightings(clean_predictions, i-1, min(1, weeks_left))
 
         if output_files:
             eval.export_tsv(clean_predictions, season, i)
