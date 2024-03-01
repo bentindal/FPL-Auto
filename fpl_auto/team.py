@@ -1072,7 +1072,7 @@ class team:
         gks = self.get_best_players('GK', gk_budget)
         print(gks)
 
-        print(fwds, mids, defs, gks)
+        #print(fwds, mids, defs, gks)
 
     def get_best_players(self, position, budget):
         players_by_xp = getattr(self, f"{position.lower()}_xp").Name.tolist()
@@ -1169,7 +1169,8 @@ class team:
         if self.chip_wildcard_available:
             # do some stuff?
             xi_xp = self.team_xp(include_subs=True)
-            print(f'Current xP {xi_xp}')
+            #xi_p = self.team_p()
+            #print(f'Current xP {xi_xp}')
             if xi_xp < 43:
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()
