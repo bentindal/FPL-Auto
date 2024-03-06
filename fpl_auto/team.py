@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, gks=[], defs=[], mids=[], fwds=[], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
+    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], []], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
         """
         Initializes a team object.
 
@@ -23,10 +23,10 @@ class team:
         self.season = season
         self.gameweek = gameweek
         self.budget = budget
-        self.gks = gks
-        self.defs = defs
-        self.mids = mids
-        self.fwds = fwds
+        self.gks = players[0]
+        self.defs = players[1]
+        self.mids = players[2]
+        self.fwds = players[3]
         self.subs = []
 
         self.transfers_left = min(transfers_left, 2)
@@ -1172,6 +1172,7 @@ class team:
                 self.chip_free_hit_active = True
                 self.chips_used.append(['Free Hit', self.gameweek])
                 print(f'CHIP: Free Hit activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
+
 
         # Wildcard
         if self.chip_wildcard_available and not self.any_chip_in_use():
