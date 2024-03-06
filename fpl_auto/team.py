@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], []], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True):
+    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], []], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
         """
         Initializes a team object.
 
@@ -28,6 +28,7 @@ class team:
         self.mids = players[2]
         self.fwds = players[3]
         self.subs = []
+        self.free_hit_team = free_hit_team
 
         self.transfers_left = min(transfers_left, 2)
         self.chips_used = chips_used
@@ -43,6 +44,7 @@ class team:
             print('============== Wildcard Returned! ==============\n')
             self.chip_wildcard_available = True
         
+        self.positions = ['GK', 'DEF', 'MID', 'FWD']
         self.gk_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv', sep='\t')
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
@@ -64,6 +66,9 @@ class team:
 
         self.captain = ''
         self.vice_captain = ''
+
+        if self.free_hit_team is not None:
+            self.load_free_hit_team()
 
         try:
             self.recent_gw = self.fpl.get_recent_gw() - 1
@@ -119,17 +124,21 @@ class team:
         club_counts[player_club] += 1
         # Check if the count is greater than 3
         if club_counts[player_club] > 3 and player_club != 'None':
-            print(f'Cannot add {player}, {player_club} has 3 players already')
+            # Cannot add {player}, {player_club} has 3 players already
             return False
 
+        if self.player_value(player) == None:
+            return False
+        
         position_list = getattr(self, position.lower() + 's')
-        if player in self.player_list and len(position_list) < self.get_max_players(position) and self.budget >= self.player_value(player):
+        if player in self.player_list and len(position_list) < self.get_max_players(position) and self.budget >= self.player_value(player) and self.squad_size() < 15:
             position_list.append(player)
             if custom_price != None:
                 self.budget -= custom_price
             else:
                 self.budget -= self.player_value(player)
 
+            print(f'Added {player} to {position}, {self.squad_size()} players in squad')
             return True
         else:
             return False
@@ -197,7 +206,7 @@ class team:
             self.budget += self.player_value(player)
         else:
             print('Invalid position')
-    
+        print(f'Removed {player} from {position}, {self.squad_size()} players in squad')
     def add_sub(self, player, position):
         """
         Removes a player from the team without affecting the budget
@@ -570,8 +579,8 @@ class team:
             xp_list = self.get_all_xp()
         total_xp = 0
         if self.squad_size() != 15:
-            print(f'Team not complete, squad size {self.squad_size()}')
-            return 0
+           print(f'Team not complete, squad size {self.squad_size()}')
+           quit()
         else:
             for player in xp_list:
                 if player[0] == self.captain:
@@ -730,10 +739,10 @@ class team:
         - str: The position of the player.
         """
         # Get position for player
-        if player in self.prev_pos_list:
-            return self.prev_pos_list[player]
-        elif player in self.positions_list:
+        if player in self.positions_list:
             return self.positions_list[player]
+        elif player in self.prev_pos_list:
+            return self.prev_pos_list[player]
         else:
             return None
     
@@ -1061,18 +1070,12 @@ class team:
 
         fwd_budget = self.budget * 0.2
         fwds = self.get_best_players('FWD', fwd_budget)
-        print(fwds)
         mid_budget = self.budget * 0.4
         mids = self.get_best_players('MID', mid_budget)
-        print(mids)
         def_budget = self.budget * 0.3
         defs = self.get_best_players('DEF', def_budget)
-        print(defs)
         gk_budget = self.budget * 0.1
         gks = self.get_best_players('GK', gk_budget)
-        print(gks)
-
-        #print(fwds, mids, defs, gks)
 
     def get_best_players(self, position, budget):
         players_by_xp = getattr(self, f"{position.lower()}_xp").Name.tolist()
@@ -1167,12 +1170,14 @@ class team:
 
         # Freehit
         if self.chip_free_hit_available and not self.any_chip_in_use():
-            if xi_xp < 30:
+            if xi_xp < 40:
                 self.chip_free_hit_available = False
                 self.chip_free_hit_active = True
                 self.chips_used.append(['Free Hit', self.gameweek])
                 print(f'CHIP: Free Hit activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
-
+                self.return_subs_to_team()
+                self.free_hit_team = [[self.gks, self.defs, self.mids, self.fwds], self.budget, self.gameweek]
+                self.initial_team_generator()
 
         # Wildcard
         if self.chip_wildcard_available and not self.any_chip_in_use():
@@ -1188,3 +1193,33 @@ class team:
             return True
         else:
             return False
+        
+    def load_free_hit_team(self):
+        pos_players = self.free_hit_team[0]
+        budget = self.free_hit_team[1]
+        gw = self.free_hit_team[2]
+        self.return_subs_to_team()
+
+        # Clear Current team
+        self.gks = []
+        self.defs = []
+        self.mids = []
+        self.fwds = []
+
+        print(f'Loading Free Hit team with from GW{gw}')
+        # Load the free hit team
+        for index, pos in enumerate(pos_players):
+            positions = ['GK', 'DEF', 'MID', 'FWD']
+            p_pos = positions[index]
+            for player in pos:
+                #print(f'Player {player} position {p_pos}')
+                self.add_player(player, p_pos, 0)
+
+        # Reset budget
+        self.budget = budget
+
+        print(f'Loaded Free Hit team with budget {self.budget:.2f}!')
+
+        # Clear free hit team
+        self.free_hit_team = None
+        

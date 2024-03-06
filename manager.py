@@ -101,7 +101,7 @@ def main():
             t.return_subs_to_team()
             t.auto_transfer() # Make a transfer
             try:
-                t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds], t.chips_used, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available)
+                t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds], t.chips_used, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
             except FileNotFoundError:
                 print(f'GW{i + 1} not found')
                 break
@@ -125,10 +125,6 @@ def main():
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
         good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
         print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
-    
-    #eval.box_plot_by_season([p_list], [season])
-
-    #print(all_p)
 
 if __name__ == '__main__':
     main()
