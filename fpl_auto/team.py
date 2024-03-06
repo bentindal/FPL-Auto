@@ -67,9 +67,6 @@ class team:
         self.captain = ''
         self.vice_captain = ''
 
-        if self.free_hit_team is not None:
-            self.load_free_hit_team()
-
         try:
             self.recent_gw = self.fpl.get_recent_gw() - 1
         except:
@@ -81,6 +78,11 @@ class team:
         else:
             self.positions_list = self.fpl.position_dict(self.gameweek)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
+        
+        self.player_stop_list = ['Allan Saint-Maximin']
+
+        if self.free_hit_team is not None:
+            self.load_free_hit_team()
 
     def check_violate_club_rule(self, player, club_counts=None):
         player_club = self.fpl.get_player_team(player, self.gameweek)
@@ -107,6 +109,9 @@ class team:
         Returns:
         - None
         """
+        if player in self.player_stop_list:
+            return False
+        
         if position == 'none':
             position = fpl.get_player_position(player)
 
@@ -206,6 +211,7 @@ class team:
             self.budget += self.player_value(player)
         else:
             print('Invalid position')
+
         print(f'Removed {player} from {position}, {self.squad_size()} players in squad')
     def add_sub(self, player, position):
         """
@@ -804,7 +810,7 @@ class team:
         # t1 = dt.datetime.now()
         ranked_player_list = []
         for player in pos_list:
-            if position == self.player_pos(player) and player in player_xp_list:
+            if position == self.player_pos(player) and player in player_xp_list and player not in self.player_stop_list:
                 ranked_player_list.append([player, player_xp_list[player]])
         ranked_player_list.sort(key=lambda x: float(x[1]), reverse=True)
         # t2 = dt.datetime.now()
@@ -1150,7 +1156,7 @@ class team:
             captain = self.captain
             captain_xp = self.player_xp(captain, self.player_pos(captain))
             #print(f'Captain xP: {captain_xp:.2f}')
-            if captain_xp > 12:
+            if captain_xp > 12 and self.gameweek > 10:
                 print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {captain} with {captain_xp:.2f} xP\n')
                 self.chips_used.append(['Triple Captain', self.gameweek])
                 self.chip_triple_captain_available = False
@@ -1161,14 +1167,14 @@ class team:
             # check if its worth using it
             all_xp = self.team_xp(include_subs=True)
             bench_xp = all_xp - xi_xp
-            print(f'Bench xP {bench_xp}')
-            if bench_xp > 10:
+            #print(f'Bench xP {bench_xp}')
+            if bench_xp > 5 and self.gameweek > 1:
                 print(f'CHIP: Bench Boost activated on GW{self.gameweek} for {bench_xp:.2f} xP\n')
                 self.chips_used.append(['Bench Boost', self.gameweek])
                 self.chip_bench_boost_available = False
                 self.chip_bench_boost_active = True
 
-        # Freehit
+        # Free hit
         if self.chip_free_hit_available and not self.any_chip_in_use():
             if xi_xp < 40:
                 self.chip_free_hit_available = False
