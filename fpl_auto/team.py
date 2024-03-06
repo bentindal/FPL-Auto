@@ -1140,6 +1140,7 @@ class team:
         return True
     
     def auto_chips(self):
+        xi_xp = self.team_xp(include_subs=False)
         # Triple Captain
         if self.chip_triple_captain_available and not self.any_chip_in_use():
             # check if its worth using it
@@ -1156,7 +1157,6 @@ class team:
         if self.chip_bench_boost_available and not self.any_chip_in_use():
             # check if its worth using it
             all_xp = self.team_xp(include_subs=True)
-            xi_xp = self.team_xp(include_subs=False)
             bench_xp = all_xp - xi_xp
             print(f'Bench xP {bench_xp}')
             if bench_xp > 10:
@@ -1167,15 +1167,14 @@ class team:
 
         # Freehit
         if self.chip_free_hit_available and not self.any_chip_in_use():
-            # do some stuff?
-            xi_xp = self.team_xp(include_subs=False)
+            if xi_xp < 30:
+                self.chip_free_hit_available = False
+                self.chip_free_hit_active = True
+                self.chips_used.append(['Free Hit', self.gameweek])
+                print(f'CHIP: Free Hit activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
 
         # Wildcard
         if self.chip_wildcard_available and not self.any_chip_in_use():
-            # do some stuff?
-            xi_xp = self.team_xp(include_subs=True)
-            #xi_p = self.team_p()
-            #print(f'Current xP {xi_xp}')
             if xi_xp < 43:
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()

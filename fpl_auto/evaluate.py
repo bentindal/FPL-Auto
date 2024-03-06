@@ -127,7 +127,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
     plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
     chip_colors = {'Triple Captain': 'mediumvioletred', 
                    'Bench Boost': 'steelblue', 
-                   'Freehit': 'blueviolet', 
+                   'Free Hit': 'blueviolet', 
                    'Wildcard': 'lightcoral'}
     for chip, i in chips_usage:
         plt.axvline(i, color=chip_colors[chip], linestyle='-', label=f'{chip} GW{i}', linewidth=2, alpha=0.7)
