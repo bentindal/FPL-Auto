@@ -1141,7 +1141,7 @@ class team:
     
     def auto_chips(self):
         # Triple Captain
-        if self.chip_triple_captain_available:
+        if self.chip_triple_captain_available and not self.any_chip_in_use():
             # check if its worth using it
             captain = self.captain
             captain_xp = self.player_xp(captain, self.player_pos(captain))
@@ -1153,7 +1153,7 @@ class team:
                 self.chip_triple_captain_active = True
 
         # Bench Boost
-        if self.chip_bench_boost_available:
+        if self.chip_bench_boost_available and not self.any_chip_in_use():
             # check if its worth using it
             all_xp = self.team_xp(include_subs=True)
             xi_xp = self.team_xp(include_subs=False)
@@ -1165,8 +1165,13 @@ class team:
                 self.chip_bench_boost_available = False
                 self.chip_bench_boost_active = True
 
+        # Freehit
+        if self.chip_free_hit_available and not self.any_chip_in_use():
+            # do some stuff?
+            xi_xp = self.team_xp(include_subs=False)
+
         # Wildcard
-        if self.chip_wildcard_available:
+        if self.chip_wildcard_available and not self.any_chip_in_use():
             # do some stuff?
             xi_xp = self.team_xp(include_subs=True)
             #xi_p = self.team_p()
@@ -1177,9 +1182,9 @@ class team:
                 print(f'Current xP {xi_xp} vs New xP {self.team_xp(include_subs=True)}')
                 self.chip_wildcard_available = False
                 self.chips_used.append(['Wildcard', self.gameweek])
-
-        # Freehit
-        if self.chip_free_hit_available:
-            # do some stuff?
-            xi_xp = self.team_xp(include_subs=False)
     
+    def any_chip_in_use(self):
+        if self.chip_triple_captain_active or self.chip_bench_boost_active or self.chip_free_hit_active:
+            return True
+        else:
+            return False
