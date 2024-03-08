@@ -89,6 +89,7 @@ def main():
 
         # --- AFTER DEADLINE ---
         team_p = t.team_p()
+        t.display()
         # Week Results
         t.result_summary()
         

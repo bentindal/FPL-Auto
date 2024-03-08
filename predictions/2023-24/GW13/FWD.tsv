@@ -1,45 +1,97 @@
-Name	xP
-Alejo Véliz	1.0
-Alexander Isak	1.05
-Anthony Martial	1.06
-Armando Broja	1.05
-Ben Parkinson	0.83
-Callum Wilson	5.51
-Cameron Archer	1.96
-Carlos Vinícius Alves Morais	1.1
-Carlton Morris	2.02
-Cauley Woodrow	1.1
-Chiedozie Ogbene	2.77
-Chris Wood	1.81
-Danny Welbeck	1.0
-Darwin Núñez Ribeiro	5.37
-Divock Origi	1.12
-Dominic Calvert-Lewin	2.02
-Dominic Solanke	6.89
-Eddie Nketiah	5.51
-Elijah Adebayo	1.08
-Erling Haaland	7.81
-Evan Ferguson	1.08
-Fábio Silva	1.0
-Gabriel Fernando de Jesus	1.06
-Jacob Brown	1.08
-Jean-Philippe Mateta	1.08
-João Pedro Junqueira de Jesus	1.08
-Julián Álvarez	2.02
-Kieffer Moore	1.06
-Lyle Foster	1.12
-Mark O’Mahony	0.01
-Matheus Santos Carneiro Da Cunha	2.75
-Michail Antonio	1.07
-Neal Maupay	1.81
-Nicolas Jackson	7.22
-Norberto Bercique Gomes Betuncal	1.08
-Odsonne Edouard	1.95
-Oliver McBurnie	1.07
-Ollie Watkins	2.71
-Rasmus Højlund	2.03
-Rhian Brewster	1.1
-Rodrigo Muniz Carvalho	1.06
-Sasa Kalajdzic	1.06
-Yoane Wissa	2.77
-Youssef Ramalho Chermiti	0.81
+	Name	xP
+0	Aaron Connolly	0.0
+1	Ademola Ola-Adebomi	0.0
+2	Admiral Muskwe	0.0
+3	Alejo Véliz	1.11
+4	Aleksandar Mitrović	0.0
+5	Alexander Isak	1.16
+6	Andi Zeqiri	0.0
+7	Anthony Martial	1.0
+8	Antoine Semenyo	0.0
+9	Antwoine Hackford	0.0
+10	Aribim Pepple	0.0
+11	Armando Broja	0.87
+12	Ben Parkinson	0.0
+13	Bénie Traoré	0.0
+14	Callum Wilson	6.22
+15	Cameron Archer	2.29
+16	Carlos Vinícius Alves Morais	1.21
+17	Carlton Morris	2.3
+18	Cauley Woodrow	1.22
+19	Chiedozie Ogbene	3.19
+20	Chris Wood	2.06
+21	Christopher Nkunku	0.0
+22	Cody Gakpo	0.0
+23	Dane Scarlett	0.0
+24	Daniel Jebbison	0.0
+25	Danny Ings	0.0
+26	Danny Welbeck	0.96
+27	Darwin Núñez Ribeiro	3.53
+28	David Datro Fofana	0.0
+29	Deivid Washington de Souza Eugênio	0.0
+30	Deniz Undav	0.0
+31	Divin Mubama	0.0
+32	Divock Origi	1.31
+33	Dominic Calvert-Lewin	2.23
+34	Dominic Solanke	6.54
+35	Eddie Nketiah	5.37
+36	Elijah Adebayo	1.21
+37	Ellis Simms	0.0
+38	Emmanuel Dennis	0.0
+39	Erling Haaland	8.28
+40	Evan Ferguson	1.0
+41	Folarin Balogun	0.0
+42	Fábio Silva	0.91
+43	Gabriel Fernando de Jesus	1.0
+44	Gianluca Scamacca	0.0
+45	Halil Dervişoğlu	0.0
+46	Harry Kane	0.0
+47	Hwang Ui-jo	0.0
+48	Iliman Ndiaye	0.0
+49	Ivan Toney	0.0
+50	Jacob Brown	1.21
+51	Jamie Donley	0.0
+52	Jay Rodriguez	0.0
+53	Jay Stansfield	0.0
+54	Jean-Philippe Mateta	1.0
+55	Jhon Durán	0.0
+56	Joe Taylor	0.0
+57	John McAtee	0.0
+58	John-Kymani Gordon	0.0
+59	João Pedro Junqueira de Jesus	1.0
+60	Julián Álvarez	2.14
+61	Keinan Davis	0.0
+62	Kieffer Moore	1.0
+63	Louie Marsh	0.0
+64	Luke Plange	0.0
+65	Lyle Foster	1.22
+66	Mark O’Mahony	0.0
+67	Mason Burstow	0.0
+68	Matheus Santos Carneiro Da Cunha	2.47
+69	Michael Obafemi	0.0
+70	Michail Antonio	1.0
+71	Nathan Fraser	0.0
+72	Neal Maupay	1.61
+73	Nicolas Jackson	6.24
+74	Norberto Bercique Gomes Betuncal	1.17
+75	Odsonne Edouard	1.8
+76	Oliver McBurnie	1.21
+77	Ollie Watkins	2.29
+78	Pierre-Emerick Aubameyang	0.0
+79	Rasmus Højlund	1.88
+80	Raúl Jiménez	0.0
+81	Rhian Brewster	1.21
+82	Rodrigo Muniz Carvalho	1.21
+83	Romelu Lukaku Bolingoli	0.0
+84	Ronnie Stutter	0.0
+85	Sam Surridge	0.0
+86	Sasa Kalajdzic	0.94
+87	Shola Shoretire	0.0
+88	Taiwo Awoniyi	0.0
+89	Thomas Cannon	0.0
+90	Wesley Moraes Ferreira da Silva	0.0
+91	William Osula	0.0
+92	Wout Weghorst	0.0
+93	Yoane Wissa	2.5
+94	Youssef Ramalho Chermiti	0.0
+95	Zeki Amdouni	0.0

@@ -156,16 +156,17 @@ class fpl_data:
         mid_data = mid_data.groupby('name').mean().reset_index().set_index('name')
         fwd_data = fwd_data.groupby('name').mean().reset_index().set_index('name')
 
-        print(f'Before: {len(gk_data)}')
-        # Filter out players who do not play
+        #print(f'Before: {len(gk_data)}')
+        
+        # Set injured players xP to 0
         players_who_didnt_play = self.non_players(season, from_gw)
         players_who_didnt_play = players_who_didnt_play.index
 
-        gk_data = gk_data[~gk_data.index.isin(players_who_didnt_play)]
-        def_data = def_data[~def_data.index.isin(players_who_didnt_play)]
-        mid_data = mid_data[~mid_data.index.isin(players_who_didnt_play)]
-        fwd_data = fwd_data[~fwd_data.index.isin(players_who_didnt_play)]
-        print(f'After: {len(gk_data)}')
+        gk_data.loc[gk_data.index.isin(players_who_didnt_play), :] = 0
+        def_data.loc[def_data.index.isin(players_who_didnt_play), :] = 0
+        mid_data.loc[mid_data.index.isin(players_who_didnt_play), :] = 0
+        fwd_data.loc[fwd_data.index.isin(players_who_didnt_play), :] = 0
+        #print(f'After: {len(gk_data)}')
 
         return gk_data, def_data, mid_data, fwd_data
     
