@@ -430,8 +430,8 @@ class team:
             else:
                 ranked_others.append([player, 0, 'FWD'])
                 
-        ranked_others.sort(key=lambda x: float(x[1]))
-
+        ranked_others.sort(key=lambda x: float(x[1]), reverse=True)
+        print(ranked_others)
         # Suggest subs
         subs = []
         subs.append([ranked_gk[0][0], 'GK'])
