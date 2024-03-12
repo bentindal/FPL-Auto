@@ -441,9 +441,9 @@ class fpl_data:
                 next_gws_p = np.ones(next_num_gws) * xP
                 
                 # Lets cut-off xp below a threshold
-                if xP < 1:
-                    post_predictions.append([name, 0])
-                    continue
+                # if xP < 1:
+                #     post_predictions.append([name, np.zeros(next_num_gws)])
+                #     continue
 
                 try:
                     team_name = self.get_player_team(name, week_num)
@@ -451,7 +451,7 @@ class fpl_data:
                     fixture_list = self.get_future_fixtures_for_player(name, week_num)[0:next_num_gws]
                 except (KeyError, TypeError):
                     #print(f'Player {name} not found in fixtures')
-                    post_predictions.append([name, 0])
+                    post_predictions.append([name, np.zeros(next_num_gws)])
                     continue
 
                 for i, p in enumerate(next_gws_p):
@@ -499,9 +499,7 @@ class fpl_data:
                     p += injuries_p + susp_p + home_away_p + diff_p
                     next_gws_p[i] = p
                     
-                # Sum and average predictions
-                total_p = np.round(np.sum(next_gws_p) / next_num_gws, 2)
-                post_predictions.append([name, total_p])
+                post_predictions.append([name, next_gws_p])
 
             # Convert to dataframe and set index to name
             post_predictions = pd.DataFrame(post_predictions, columns=['Name', 'xP'])
@@ -595,3 +593,20 @@ class fpl_data:
         # export this to json
         with open('fpl_auto/injuries.json', 'w') as f:
             json.dump(fpl_api, f)
+
+    def discount_next_n_gws(self, predictions, gw, n, discount_factor=0.8, sum=True):
+        # Get the next n gameweeks
+        n_next_weeks = self.post_model_weightings(predictions, gw, n)
+
+        # For each player in each position
+        for pos in n_next_weeks:
+            for i, row in pos.iterrows():
+                xp_array = row['xP']
+                for i in range(len(xp_array)):
+                    xp_array[i] *= discount_factor ** i
+                if sum:
+                    row['xP'] = np.sum(xp_array)
+                else:
+                    row['xP'] = xp_array
+
+        return n_next_weeks

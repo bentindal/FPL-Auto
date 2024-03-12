@@ -49,6 +49,7 @@ class team:
         self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
         self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
         self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
+        self.combined_xp = [self.gk_xp, self.def_xp, self.mid_xp, self.fwd_xp]
 
         self.player_list = self.fpl.player_list
         self.gk_player_list = self.generate_player_list('GK')
@@ -431,7 +432,7 @@ class team:
                 ranked_others.append([player, 0, 'FWD'])
                 
         ranked_others.sort(key=lambda x: float(x[1]), reverse=True)
-        print(ranked_others)
+        
         # Suggest subs
         subs = []
         subs.append([ranked_gk[0][0], 'GK'])
@@ -1303,4 +1304,7 @@ class team:
         for player in self.subs:
             value += self.player_value(player[0])
         return value
-    
+
+    def get_n_gws_xp(self, n):
+        results = self.fpl.discount_next_n_gws(self.combined_xp, self.gameweek, n)
+        return results
