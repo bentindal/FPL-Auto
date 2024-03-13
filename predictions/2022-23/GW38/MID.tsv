@@ -1,139 +1,337 @@
 Name	xP
-Abdoulaye Doucouré	7.38
-Adam Forshaw	1.97
-Adama Traoré Diarra	1.05
-Alejandro Garnacho	1.05
-Alex Iwobi	1.97
-Alexis Mac Allister	2.22
-Allan Saint-Maximin	1.05
-Amadou Onana	1.05
-Anthony Gordon	1.03
-Antony Matheus dos Santos	2.33
-Arnaut Danjuma	1.05
-Billy Gilmour	1.05
-Bobby De Cordova-Reid	1.05
-Boubacar Kamara	1.05
-Boubacar Traoré	0.89
-Boubakary Soumaré	1.99
-Brenden Aaronson	1.05
-Bruno Borges Fernandes	3.19
-Bruno Guimarães Rodriguez Moura	1.0
-Bukayo Saka	1.98
-Carlos Alcaraz	1.97
-Carlos Henrique Casimiro	3.22
-Carney Chukwuemeka	1.05
-Cheick Doucouré	1.97
-Cheikhou Kouyaté	1.05
-Christian Eriksen	2.99
-Christian Pulisic	1.05
-Cody Gakpo	3.0
-Cole Palmer	1.05
-Conor Gallagher	1.97
-Crysencio Summerville	0.8
-Curtis Jones	7.69
-Dango Ouattara	1.97
-Daniel Castelo Podence	1.05
-Danilo dos Santos de Oliveira	1.99
-David Brooks	1.05
-Declan Rice	2.35
-Dejan Kulusevski	1.06
-Demarai Gray	1.05
-Douglas Luiz Soares de Paulo	2.24
-Dwight McNeil	10.94
-Eberechi Eze	7.3
-Elliot Anderson	1.05
-Emiliano Buendía Stati	1.0
-Enzo Fernández	1.97
-Fabio Henrique Tavares	2.09
-Facundo Buonanotte	1.05
-Frank Onyeka	1.05
-Frederico Rodrigues de Paula Santos	1.03
-Fábio Ferreira Vieira	1.05
-Granit Xhaka	1.99
-Harrison Reed	4.98
-Harry Wilson	4.99
-Harvey Barnes	5.19
-Harvey Elliott	1.05
-Hwang Hee-chan	1.05
+Abdoulaye Doucouré	1.99
+Adam Forshaw	0.01
+Adam Lallana	0.01
+Adama Traoré Diarra	1.1
+Ainsley Maitland-Niles	1.04
+Albert Sambi Lokonga	1.06
+Alejandro Garnacho	0.01
+Alex Iwobi	1.99
+Alex Mighten	0.01
+Alex Oxlade-Chamberlain	0.01
+Alex Robertson	0.01
+Alexis Mac Allister	1.99
+Alfie Devine	0.01
+Allan Marques Loureiro	0.01
+Allan Saint-Maximin	0.01
+Amad Diallo	0.01
+Amadou Onana	1.14
+Amario Cozier-Duberry	0.01
+Andreas Hoelgebaum Pereira	0.99
+Andrew Moran	0.01
+Andrey Nascimento dos Santos	0.01
+Andros Townsend	0.01
+André Ayew	1.0
+André Tavares Gomes	0.01
+Anthony Elanga	0.01
+Anthony Gordon	1.12
+Anthony Knockaert	0.01
+Antony Matheus dos Santos	2.3
+Anwar El Ghazi	0.01
+Archie Gray	0.01
+Armstrong Oko-Flex	0.01
+Arnaut Danjuma	1.1
+Arthur Henrique Ramos de Oliveira Melo	0.01
+Ayoze Pérez	0.01
+Ben Doak	0.01
+Ben Knight	0.01
+Ben Pearson	0.01
+Bernardo Veiga de Carvalho e Silva	1.1
+Bertrand Traoré	1.12
+Billy Gilmour	0.01
+Bobby Clark	0.01
+Bobby De Cordova-Reid	1.14
+Boubacar Kamara	0.01
+Boubacar Traoré	0.01
+Boubakary Soumaré	0.97
+Braian Ojeda Rodríguez	0.01
+Brenden Aaronson	1.1
+Bruno Borges Fernandes	2.58
+Bruno Guimarães Rodriguez Moura	1.99
+Bryan Gil Salvatierra	0.01
+Bukayo Saka	1.96
+Callum Hudson-Odoi	0.01
+Cameron Peupion	0.7
+Carlos Alcaraz	1.98
+Carlos Henrique Casimiro	2.29
+Carlos Ribeiro Dias	0.01
+Carney Chukwuemeka	0.01
+Cheick Doucouré	0.01
+Cheikhou Kouyaté	1.04
+Chem Campbell	0.01
+Christian Eriksen	2.96
+Christian Nørgaard	0.01
+Christian Pulisic	0.01
+Claudio Gomes	0.01
+Cody Gakpo	2.3
+Cole Palmer	0.01
+Connor Ronan	0.01
+Conor Coventry	0.01
+Conor Gallagher	1.99
+Crysencio Summerville	1.14
+Curtis Jones	2.52
+Dango Ouattara	1.1
+Daniel Castelo Podence	0.01
+Daniel James	1.13
+Danilo dos Santos de Oliveira	7.82
+Darko Gyabi	0.01
+David Brooks	0.01
+David Ozoh	0.01
+Declan Rice	1.98
+Dejan Kulusevski	1.1
+Dele Alli	0.01
+Demarai Gray	0.01
+Denis Zakaria	0.01
+Dennis Praet	1.11
+Donny van de Beek	0.01
+Douglas Luiz Soares de Paulo	1.99
+Dwight McNeil	7.69
+Eberechi Eze	7.69
+Elliot Anderson	1.12
+Emile Smith Rowe	0.97
+Emiliano Buendía Stati	1.99
+Emiliano Marcondes	0.01
+Enock Mwepu	0.01
+Enzo Fernández	1.99
+Ethan Nwaneri	0.01
+Fabio Henrique Tavares	1.99
+Facundo Buonanotte	1.14
+Facundo Pellistri Rebollo	0.01
+Flynn Downes	0.01
+Francisco Jorge Tomás Oliveira	0.01
+Frank Onyeka	1.1
+Frederico Rodrigues de Paula Santos	1.13
+Fábio Ferreira Vieira	0.01
+Fábio Freitas Gouveia Carvalho	0.01
+Gabriel Martinelli Silva	1.14
+Garang Kuol	0.01
+George Abbott	0.01
+Gonçalo Manuel Ganchinho Guedes	0.01
+Granit Xhaka	4.96
+Gustavo Henrique Furtado Scarpa	0.01
+Hakim Ziyech	0.01
+Hamed Traorè	0.01
+Hamza Choudhury	0.01
+Harrison Reed	1.99
+Harry Arter	0.01
+Harry Wilson	4.96
+Harry Winks	0.01
+Harvey Barnes	1.99
+Harvey Elliott	0.01
+Harvey Griffiths	0.01
+Harvey Vale	0.01
+Harvey White	0.01
+Hwang Hee-chan	1.14
+Ibrahima Diallo	0.01
 Idrissa Gueye	1.99
-Jack Harrison	1.97
-Jacob Murphy	1.05
-Jacob Ramsey	7.24
-Jadon Sancho	2.4
-Jaidon Anthony	1.05
-James Garner	1.0
-James Maddison	2.38
-James Milner	1.05
-James Ward-Prowse	5.84
-Jarrod Bowen	2.32
+Ilkay Gündogan	7.06
+Isaac Price	0.01
+Ivan Neves Abreu Cavaleiro	0.01
+Jack Colback	0.01
+Jack Grealish	1.06
+Jack Harrison	1.99
+Jack Hinshelwood	0.01
+Jack Wells-Morrison	0.01
+Jacob Murphy	1.1
+Jacob Ramsey	1.99
+Jaden Philogene-Bidace	0.01
+Jadon Sancho	1.06
+Jaidon Anthony	0.01
+Jairo Riedewald	0.01
+Jakub Moder	0.01
+Jamal Lowe	0.01
+James Garner	1.99
+James Maddison	5.33
+James McArthur	0.01
+James McAtee	0.01
+James Milner	1.13
+James Ward-Prowse	2.28
+Jamie Shackleton	0.01
+Jarrod Bowen	1.95
+Jean-Philippe Gbamin	0.01
+Jeff Hendrick	0.01
 Jefferson Lerma Solís	1.99
-Joe Ayodele-Aribo	1.03
-John McGinn	1.97
-Jordan Ayew	1.97
-Jordan Henderson	1.05
-Jorge Luiz Frello Filho	1.97
-Josh Dasilva	1.05
-João Palhinha Gonçalves	1.97
-João Victor Gomes da Silva	1.05
-Kalvin Phillips	1.05
-Kamaldeen Sulemana	1.05
-Kamari Doyle	0.88
-Kaoru Mitoma	1.95
+Jeffrey Schlupp	1.14
+Jeremy Sarmiento Morante	0.01
+Jesse Lingard	0.01
+Jesurun Rak-Sakyi	0.01
+Joe Ayodele-Aribo	0.01
+Joe Lolley	0.01
+Joe Rothwell	2.08
+Joe Willock	1.99
+Joelinton Cássio Apolinário de Lira	1.99
+John McGinn	1.99
+Jonjo Shelvey	0.01
+Jordan Ayew	1.99
+Jordan Henderson	1.1
+Jorge Luiz Frello Filho	1.99
+Joseph Hodge	0.01
+Josh Dasilva	0.01
+Josh Onomah	0.01
+João Filipe Iria Santos Moutinho	0.01
+João Palhinha Gonçalves	1.99
+João Victor Gomes da Silva	1.14
+Junior Stanislas	0.01
+Kacper Kozłowski	0.01
+Kadan Young	0.01
+Kaden Rodney	0.01
+Kalvin Phillips	0.01
+Kamaldeen Sulemana	1.14
+Kamari Doyle	0.8
+Kaoru Mitoma	1.96
+Kasey McAteer	0.01
+Keane Lewis-Potter	0.01
 Kevin De Bruyne	1.06
-Kevin Schade	2.32
-Leander Dendoncker	0.89
-Leandro Trossard	1.05
-Leon Bailey	1.05
-Lewis Cook	1.03
-Lewis Hall	2.17
-Lucas Rodrigues Moura da Silva	0.9
-Lucas Tolentino Coelho de Lima	2.32
-Luis Díaz	1.06
-Manor Solomon	1.05
-Manuel Lanzini	1.05
-Marc Roca Junqué	1.03
+Kevin Schade	1.1
+Kiernan Dewsbury-Hall	0.01
+Killian Phillips	0.01
+Kobbie Mainoo	0.01
+Kristian Sekularac	0.01
+Leander Dendoncker	0.94
+Leandro Trossard	1.1
+Leon Bailey	0.01
+Lewis Bate	0.01
+Lewis Cook	0.01
+Lewis Hall	0.01
+Lewis Miley	0.01
+Lewis O'Brien	0.01
+Lewis Payne	0.01
+Lewis Warrington	0.01
+Lucas Rodrigues Moura da Silva	0.01
+Lucas Tolentino Coelho de Lima	1.98
+Lucas Torreira di Pascua	0.01
+Luis Díaz	1.1
+Luis Sinisterra Lucumí	1.06
+Luka Milivojevic	1.0
+Luke Cundle	0.01
+Luke Harris	0.01
+Mads Bidstrup	0.01
+Malcolm Ebiowei	0.01
+Manor Solomon	1.12
+Manuel Lanzini	0.01
+Marc Albrighton	0.01
+Marc Roca Junqué	1.1
+Marcel Sabitzer	0.01
+Marcus Oliveira Alencar	0.01
+Marcus Rashford	1.07
+Marcus Tavernier	0.56
 Mario Lemina	1.98
-Martin Ødegaard	1.97
-Matheus Luiz Nunes	1.99
-Mathias Jensen	1.99
-Michael Olise	2.04
-Miguel Almirón Rejala	1.97
-Mikkel Damsgaard	1.05
-Mohamed Elyounoussi	1.05
-Mohamed Salah	7.39
-Moisés Caicedo Corozo	1.97
-Morgan Gibbs-White	4.97
-Mykhailo Mudryk	1.05
+Martial Godo	0.01
+Martin Ødegaard	7.59
+Marvelous Nakamba	0.01
+Mason Mount	0.01
+Mateo Kovacic	1.17
+Mateus Cardoso Lemos Martins	1.14
+Mateusz Klich	0.01
+Matheus Luiz Nunes	1.98
+Mathias Jensen	2.08
+Matthew Craig	0.01
+Matthew Dibley-Dias	0.01
+Matthew Smith	0.01
+Mauro Bandeira	0.01
+Maxwel Cornet	1.13
+Michael Dacosta Gonzalez	0.01
+Michael Olakigbe	0.01
+Michael Olise	1.99
+Miguel Almirón Rejala	2.3
+Mikkel Damsgaard	1.1
+Mislav Orsic	0.01
+Mohamed Elneny	0.01
+Mohamed Elyounoussi	1.08
+Mohamed Salah	5.36
+Moisés Caicedo Corozo	1.99
+Morgan Gibbs-White	5.2
+Morgan Sanson	0.01
+Moussa Djenepo	0.01
+Mykhailo Mudryk	1.1
+Máximo Perrone	0.01
+N'Golo Kanté	1.1
+Naby Keita	0.01
 Nampalys Mendy	0.01
-Noni Madueke	1.97
-Oliver Skipp	1.97
-Orel Mangala	1.96
-Pablo Fornals Malla	1.05
-Pablo Sarabia	1.05
-Pascal Groß	1.99
-Phil Foden	2.34
-Riyad Mahrez	5.16
-Rodrigo Hernandez	1.05
-Rodrigo Moreno	6.27
-Roméo Lavia	1.99
-Ruben Loftus-Cheek	1.05
-Ryan Christie	1.97
-Ryan Yates	1.97
-Rúben da Silva Neves	2.63
-Scott McTominay	1.05
-Sean Longstaff	1.05
-Shandon Baptiste	1.05
-Son Heung-min	1.97
-Stuart Armstrong	1.05
-Theo Walcott	1.99
-Thomas Partey	1.05
-Tom Cairney	7.41
-Tomas Soucek	1.97
-Vitaly Janelt	1.97
+Naouirou Ahamada	0.01
+Nathan Redmond	0.01
+Nathan Tella	0.01
+Nathaniel Chalobah	0.01
+Neeskens Kebano	1.13
+Nico O'Reilly	0.01
+Nicolas Pépé	0.01
+Nikola Vlasic	0.01
+Noni Madueke	1.14
+Oliver Hammond	0.01
+Oliver Skipp	1.98
+Omari Hutchinson	0.01
+Orel Mangala	2.07
+Oriol Romeu Vidal	0.01
+Pablo Fornals Malla	0.01
+Pablo Sarabia	0.01
+Pape Matar Sarr	0.01
+Pascal Groß	2.29
+Pedro Lomba Neto	1.1
+Phil Foden	1.06
+Philip Billing	1.14
+Philippe Coutinho Correia	0.01
+Pierre-Emile Højbjerg	1.98
+Raheem Sterling	1.66
+Raphael Dias Belloli	0.01
+Reiss Nelson	1.1
+Remo Freuler	0.01
+Riyad Mahrez	4.96
+Rodrigo Bentancur	0.01
+Rodrigo Hernandez	2.3
+Rodrigo Moreno	0.86
+Romaine Mundle	0.01
+Roméo Lavia	1.98
+Ross Barkley	0.01
+Ruben Loftus-Cheek	0.01
+Ryan Christie	1.99
+Ryan Finnigan	0.01
+Ryan Fraser	0.01
+Ryan Trevitt	0.01
+Ryan Yates	0.01
+Rúben da Silva Neves	2.87
+Saman Ghoddos	0.01
+Sammy Braybrooke	0.01
+Samuel Edozie	0.01
+Sasa Lukic	0.01
+Saïd Benrahma	1.14
+Scott McTominay	0.01
+Sean Longstaff	1.1
+Sean McAllister	0.01
+Shandon Baptiste	1.13
+Shea Charles	0.01
+Siriki Dembélé	0.01
+Solly March	1.06
+Son Heung-min	1.98
+Stanley Mills	0.01
+Stefan Bajcetic	0.01
+Steven Alzate	0.01
+Steven Bergwijn	0.01
+Stuart Armstrong	1.14
+Taylor Richards	0.01
+Theo Walcott	1.14
+Thiago Alcántara do Nascimento	1.07
+Thomas Partey	1.14
+Tim Iroegbunam	0.01
+Tom Cairney	1.14
+Tom Davies	0.01
+Tomas Soucek	1.98
+Tommi O'Reilly	0.01
+Travis Patterson	0.01
+Tyler Adams	0.01
+Tyler Roberts	0.01
+Tyrese Francois	0.01
+Vitaly Janelt	1.99
+Wanya Marçal-Madivadua	0.01
 Weston McKennie	1.99
-Wilfred Ndidi	1.8
-Will Hughes	1.98
-Willian Borges da Silva	8.11
-Yoane Wissa	6.16
-Youri Tielemans	1.97
-Yves Bissouma	1.05
+Wilfred Ndidi	0.01
+Wilfried Zaha	0.01
+Will Hughes	1.14
+Will Smallbone	0.01
+Willian Borges da Silva	0.01
+Xande Nascimento da Costa Silva	0.01
+Yasin Ayari	0.01
+Yegor Yarmolyuk	0.01
+Yoane Wissa	1.63
+Youri Tielemans	1.99
+Yves Bissouma	0.01
+Zidane Iqbal	0.01

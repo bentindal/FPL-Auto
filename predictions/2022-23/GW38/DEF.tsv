@@ -1,95 +1,262 @@
 Name	xP
-Aaron Hickey	1.77
-Aaron Wan-Bissaka	1.94
-Adam Smith	1.74
-Alexandre Moreno Lopera	2.04
-Andrew Robertson	6.79
-Angelo Ogbonna	1.93
-Antonee Robinson	0.98
-Ashley Young	0.9
-Ben Johnson	0.95
-Ben Mee	2.55
-Benjamin White	2.05
-Clément Lenglet	0.95
-Craig Dawson	0.99
+Aaron Cresswell	1.1
+Aaron Hickey	1.8
+Aaron Wan-Bissaka	1.8
+Adam Smith	1.08
+Adam Webster	0.01
+Alex Telles	0.01
+Alexandre Moreno Lopera	1.8
+Alfie Gilchrist	0.01
+Andrew Robertson	1.8
+Angelo Ogbonna	0.01
+Antonee Robinson	1.86
+Armel Bella-Kotchap	0.01
+Arthur Masuaku	0.01
+Ashley Young	0.97
+Aymeric Laporte	0.01
+Bashir Humphreys	0.01
+Ben Chilwell	1.08
+Ben Davies	0.01
+Ben Godfrey	0.87
+Ben Greenwood	0.01
+Ben Johnson	0.01
+Ben Mee	2.04
+Benjamin White	1.07
+Benoît Badiashile	0.01
+Brandon Williams	0.01
+Calum Chambers	0.96
+Calvin Ramsay	0.01
+Charlie Goode	0.01
+Charlie Robinson	0.01
+Chris Mepham	0.98
+Chris Richards	1.02
+Ciaran Clark	0.01
+Clément Lenglet	1.8
+Cody Drameh	0.01
+Conor Coady	0.01
+Craig Dawson	1.98
+Cristian Romero	1.07
+Cédric Alves Soares	1.02
 César Azpilicueta	1.08
-Dan Burn	2.19
-Davinson Sánchez	0.99
-Emerson Leite de Souza Junior	1.99
-Emerson Palmieri dos Santos	1.77
-Ethan Pinnock	1.87
-Ezri Konsa Ngoyo	1.87
-Fabian Schär	2.12
-Felipe Augusto de Almeida Monteiro	0.93
-Gabriel dos Santos Magalhães	1.77
-Harry Souttar	1.0
-Ibrahima Konaté	5.17
-Illia Zabarnyi	1.67
-Issa Diop	1.87
-Ivan Perišić	1.09
-Jakub Kiwior	1.68
-James Bree	0.99
-James Tarkowski	0.99
-Jan Bednarek	0.91
-Jan Paul van Hecke	0.99
-Joachim Andersen	1.94
-Joe Worrall	1.89
-Joel Ward	2.36
-John Stones	1.04
-Jonny Evans	1.23
-Joël Veltman	1.01
-Kenny Tete	0.98
-Kieran Tierney	0.99
-Kieran Trippier	2.43
-Konstantinos Tsimikas	1.04
-Kurt Zouma	0.79
-Kyle Walker	1.7
-Kyle Walker-Peters	0.93
-Levi Colwill	2.04
-Lloyd Kelly	0.88
-Lucas Digne	0.94
-Luke Ayling	0.8
-Luke Shaw	2.0
-Luke Thomas	1.03
-Lyanco Silveira Neves Vojnovic	1.56
+Dan Burn	1.98
+Daniel Amartey	0.01
+Davinson Sánchez	0.01
+Dexter Lembikisa	0.01
+Diego Carlos Santos Silva	0.01
+Diego Llorente	0.01
+Diogo Dalot Teixeira	1.04
+Diogo Pinheiro Monteiro	0.01
+Djed Spence	0.01
+Dominic Thompson	0.01
+Duje Caleta-Car	0.81
+Ed Turns	0.01
+Emerson Leite de Souza Junior	0.01
+Emerson Palmieri dos Santos	0.01
+Emil Krafth	0.01
+Eric Bailly	0.01
+Eric Dier	0.92
+Ethan Ampadu	0.01
+Ethan Pinnock	1.98
+Ezri Konsa Ngoyo	1.98
+Fabian Schär	1.8
+Federico Fernández	0.01
+Felipe Augusto de Almeida Monteiro	1.0
+Fin Stevens	0.01
+Frédéric Guilbert	0.01
+Gabriel dos Santos Magalhães	1.03
+Giulian Biancone	0.01
+Harrison Ashby	0.01
+Harry Maguire	0.01
+Harry Souttar	0.01
+Harry Toffolo	1.04
+Haydon Roberts	0.01
+Hugo Bueno López	1.1
+Ibrahima Konaté	0.01
+Illia Zabarnyi	1.03
+Imari Samuels	0.01
+Ishé Samuels-Smith	0.01
+Issa Diop	0.01
+Ivan Perišić	1.08
+Jack Stacey	0.01
+Jack Stephens	0.01
+Jakub Kiwior	0.01
+Jamaal Lascelles	0.01
+Jamal Lewis	0.01
+James Bree	0.01
+James Furlong	0.01
+James Hill	0.01
+James Justin	0.01
+James Tarkowski	1.0
+James Tomkins	0.01
+Jan Bednarek	0.95
+Jan Paul van Hecke	0.01
+Jannik Vestergaard	0.01
+Japhet Tanganga	0.81
+Jarrad Branthwaite	0.01
+Javier Manquillo Gaitán	0.01
+Jeremiah Chilokoa-Mullen	0.01
+Joachim Andersen	1.98
+Joe Bryan	0.01
+Joe Rodon	0.01
+Joe Wormleighton	0.01
+Joe Worrall	1.84
+Joel Matip	1.02
+Joel Ward	2.04
+John Stones	1.07
+Jonathan Castro Otto	0.01
+Jonathan Panzo	0.01
+Jonny Evans	0.01
+Jordan Zemura	0.01
+Joseph Gomez	0.01
+Josh Wilson-Esbrand	0.01
+João Cancelo	0.01
+Joël Veltman	0.01
+Juan Larios López	0.01
+Junior Firpo Adames	1.1
+Kaelan Casey	0.01
+Kaine Kesler Hayden	0.01
+Kalidou Koulibaly	0.01
+Kenny Tete	1.98
+Kevin Mbabu	0.01
+Kieran Tierney	0.01
+Kieran Trippier	2.16
+Kofi Balmer	0.01
+Konstantinos Tsimikas	0.01
+Kortney Hause	0.01
+Kristoffer Ajer	0.01
+Kurt Zouma	1.01
+Kyle John	0.01
+Kyle Walker	1.8
+Kyle Walker-Peters	0.98
+Lamare Bogarde	0.01
+Layvin Kurzawa	0.01
+Leo Fuhr Hjelde	0.01
+Levi Colwill	1.12
+Lewis Brunt	0.01
+Lewis Dunk	1.0
+Liam Cooper	1.03
+Lino Sousa	0.01
+Lisandro Martínez	0.01
+Lloyd Kelly	1.84
+Loïc Badé	0.01
+Loïc Mbe Soh	0.01
+Lucas Digne	1.04
+Ludwig Augustinsson	0.01
+Luke Ayling	1.01
+Luke Chambers	0.01
+Luke Mbete-Tabu	0.01
+Luke Shaw	1.98
+Luke Thomas	0.01
+Lyanco Silveira Neves Vojnovic	1.01
+Mads Bech Sørensen	0.01
 Mads Roerslev Rasmussen	1.04
-Marc Guéhi	1.94
-Marcos Senesi	1.67
-Mason Holgate	1.06
-Mathias Jorgensen	0.97
-Matty Cash	0.81
-Matías Viña	0.25
-Maximilian Wöber	0.96
-Michael Keane	1.04
-Moussa Niakhaté	0.96
-Nathan Collins	0.97
-Nathan Patterson	1.98
-Nélson Cabral Semedo	0.86
-Pascal Struijk	1.06
-Pedro Porro	2.1
-Pervis Estupiñán	0.84
-Raphaël Varane	1.7
-Rasmus Kristensen	1.02
-Renan Augusto Lodi dos Santos	1.13
-Rico Henry	0.91
-Rico Lewis	1.71
-Robin Koch	0.84
-Serge Aurier	1.84
-Sergio Gómez	1.04
-Sven Botman	1.99
-Thilo Kehrer	1.0
-Timothy Castagne	0.85
-Tino Livramento	0.81
-Tosin Adarabioyo	0.94
-Toti António Gomes	1.92
-Trent Alexander-Arnold	6.96
-Trevoh Chalobah	0.95
-Tyrick Mitchell	1.93
-Tyrone Mings	1.12
-Victor Lindelöf	2.05
-Virgil van Dijk	7.05
-Vladimir Coufal	1.04
-Wesley Fofana	1.02
-Willy Boly	0.83
-Wout Faes	0.96
-Yerry Mina	1.77
+Malang Sarr	0.01
+Manuel Akanji	1.74
+Marc Cucurella Saseta	0.01
+Marc Guéhi	1.0
+Marc Jurado Gomez	0.01
+Marcos Alonso	0.01
+Marcos Senesi	1.82
+Mason Holgate	0.01
+Mathias Jorgensen	1.02
+Matt Clarke	0.01
+Matt Doherty	0.01
+Matt Ritchie	0.01
+Matt Targett	1.04
+Matty Cash	0.01
+Matías Viña	1.98
+Max Kilman	1.07
+Max Kinsey-Wellings	0.01
+Maximilian Wöber	0.01
+Michael Keane	1.08
+Mohamed Dräger	0.01
+Mohammed Salisu	0.01
+Moussa Niakhaté	1.84
+Nathan Aké	0.01
+Nathan Collins	1.03
+Nathan Ferguson	0.01
+Nathan Patterson	0.01
+Nathaniel Clyne	0.01
+Nathaniel Phillips	0.01
+Nayef Aguerd	1.6
+Neco Williams	0.85
+Niels Nkounkou	0.01
+Nuno Varela Tavares	0.01
+Nélson Cabral Semedo	1.8
+Odeluga Offiah	0.98
+Oleksandr Zinchenko	1.08
+Omar Richards	0.01
+Owen Bevan	0.01
+Pablo Marí Villar	0.01
+Pascal Struijk	0.01
+Paul Dummett	0.01
+Pedro Porro	1.07
+Pervis Estupiñán	1.0
+Phil Jones	0.01
+Pontus Jansson	0.01
+Raphaël Varane	0.01
+Rasmus Kristensen	0.01
+Rayan Aït-Nouri	0.01
+Reece James	0.01
+Reece Welch	0.01
+Renan Augusto Lodi dos Santos	1.8
+Reuell Walters	0.01
+Rhys Bennett	0.01
+Rhys Williams	0.01
+Ricardo Barbosa Pereira	0.01
+Richie Laryea	0.01
+Rico Henry	0.9
+Rico Lewis	0.01
+Rob Holding	1.01
+Robert Kenedy Nunes do Nascimento	0.01
+Robin Koch	1.03
+Romain Perraud	0.81
+Ryan Bertrand	0.01
+Ryan Fredericks	0.01
+Ryan Sessegnon	0.01
+Rúben Gato Alves Dias	1.02
+Rúben Nascimento Vinagre	0.01
+Scott McKenna	0.01
+Seamus Coleman	0.01
+Sebastian Revan	0.01
+Sepp van den Berg	0.01
+Serge Aurier	1.98
+Sergi Canós Tenés	0.01
+Sergio Gómez	0.01
+Sergio Reguilón	0.01
+Shane Duffy	0.01
+Sil Swinkels	0.01
+Stefan Parkes	0.01
+Steve Cook	0.01
+Stuart Dallas	0.01
+Sven Botman	1.8
+Takehiro Tomiyasu	0.01
+Tariq Lamptey	0.01
+Tayo Adaramola	0.01
+Terence Kongolo	0.01
+Thiago Emiliano da Silva	1.98
+Thilo Kehrer	0.01
+Tim Ream	0.98
+Timothy Castagne	1.07
+Tino Livramento	0.01
+Tosin Adarabioyo	1.98
+Toti António Gomes	1.12
+Trent Alexander-Arnold	2.03
+Trevoh Chalobah	1.0
+Tristan Crama	0.01
+Tyrell Malacia	1.02
+Tyrick Mitchell	1.07
+Tyrone Mings	2.04
+Victor Kristiansen	1.1
+Victor Lindelöf	1.98
+Virgil van Dijk	2.04
+Vitalii Mykolenko	1.1
+Vladimir Coufal	1.08
+Wesley Fofana	0.16
+William Saliba	0.01
+Willy Boly	0.01
+Wout Faes	1.0
+Yan Valery	0.01
+Yerry Mina	0.01
+Yerson Mosquera Valdelamar	0.01
+Çaglar Söyüncü	0.13

@@ -394,7 +394,7 @@ class fpl_data:
         return player_names, predictions
     
     def get_price(self, week_num, player):
-        gw_data = self.get_gw_data(self.season, week_num)
+        gw_data = self.get_gw_data(self.season, week_num - 1)
         gw_data = gw_data[['value']]
         gw_data = gw_data / 10
         # Turn gw_data into dictionary (name --> value)
@@ -430,6 +430,7 @@ class fpl_data:
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
         overall_predictions = []
         # For each pos in predictions
+        
         for pos in clean_predictions:
             # change pos into dataframe, skip first header
             pos = pos.reset_index()
@@ -439,19 +440,17 @@ class fpl_data:
                 name = pos.loc[i, 'Name']
                 xP = pos.loc[i, 'xP']
                 next_gws_p = np.ones(next_num_gws) * xP
-                
-                # Lets cut-off xp below a threshold
-                # if xP < 1:
-                #     post_predictions.append([name, np.zeros(next_num_gws)])
-                #     continue
-
                 try:
                     team_name = self.get_player_team(name, week_num)
                     team_id = self.team_to_id[team_name]
                     fixture_list = self.get_future_fixtures_for_player(name, week_num)[0:next_num_gws]
+                    
                 except (KeyError, TypeError):
                     #print(f'Player {name} not found in fixtures')
-                    post_predictions.append([name, np.zeros(next_num_gws)])
+                    if next_num_gws == 1:
+                        post_predictions.append([name, [0]])
+                    else:
+                        post_predictions.append([name, np.zeros(next_num_gws)])
                     continue
 
                 for i, p in enumerate(next_gws_p):
@@ -497,6 +496,7 @@ class fpl_data:
                 
                     # Check for form?
                     p += injuries_p + susp_p + home_away_p + diff_p
+                    p = round(p, 3)
                     next_gws_p[i] = p
                     
                 post_predictions.append([name, next_gws_p])
@@ -595,17 +595,24 @@ class fpl_data:
             json.dump(fpl_api, f)
 
     def discount_next_n_gws(self, predictions, gw, n, discount_factor=0.8, sum=True):
+        if gw + n > 38:
+            n = 38 - gw
+        
         # Get the next n gameweeks
         n_next_weeks = self.post_model_weightings(predictions, gw, n)
-
+        
+        if n == 0 or gw >= 36:
+            return n_next_weeks
+        
         # For each player in each position
         for pos in n_next_weeks:
             for i, row in pos.iterrows():
+                
                 xp_array = row['xP']
                 for i in range(len(xp_array)):
                     xp_array[i] *= discount_factor ** i
                 if sum:
-                    row['xP'] = np.sum(xp_array)
+                    row['xP'] = round(np.sum(xp_array), 2)
                 else:
                     row['xP'] = xp_array
 

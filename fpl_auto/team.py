@@ -19,6 +19,7 @@ class team:
         Returns:
         - None
         """
+                
         self.fpl = fpl.fpl_data('data', season)
         self.season = season
         self.gameweek = gameweek
@@ -50,7 +51,9 @@ class team:
         self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
         self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
         self.combined_xp = [self.gk_xp, self.def_xp, self.mid_xp, self.fwd_xp]
-
+        
+        self.all_xp = self.get_n_gws_xp(2)
+        
         self.player_list = self.fpl.player_list
         self.gk_player_list = self.generate_player_list('GK')
         self.def_player_list = self.generate_player_list('DEF')
@@ -73,14 +76,14 @@ class team:
         except:
             self.recent_gw = 38
         
-        if self.gameweek >= self.recent_gw:
+        if self.gameweek >= self.recent_gw and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.recent_gw)
             self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw)
         else:
-            self.positions_list = self.fpl.position_dict(self.gameweek)
+            self.positions_list = self.fpl.position_dict(self.gameweek - 1)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
         
-        self.player_stop_list = ['Allan Saint-Maximin', 'Rodrigo Moreno', 'Eric Dier']
+        self.player_stop_list = ['Raheem Sterling', 'Joelinton Cássio Apolinário de Lira']
 
         if self.free_hit_team is not None and self.free_hit_team[2] == self.gameweek - 1: 
             self.load_free_hit_team()
@@ -110,14 +113,15 @@ class team:
         Returns:
         - None
         """
-        if self.transfer_in_allowed(player, position, custom_price) or force:
+        if self.transfer_in_allowed(player, position, custom_price) or force and self.squad_size() < 15:
+            print('Adding', player, 'to', position)
             if custom_price == None:
                 p_cost = self.player_value(player)
             else:
                 p_cost = custom_price
 
             if position == 'none':
-                position = fpl.get_player_position(player)
+                position = self.player_pos(player)
 
             position_list = getattr(self, position.lower() + 's')
 
@@ -136,11 +140,11 @@ class team:
         position_list = getattr(self, position.lower() + 's')
         
         if player in self.player_stop_list:
-            print(f'FAILED (player on stoplist) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+            #print(f'FAILED (player on stoplist) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
             return False
         
         if position not in ['GK', 'DEF', 'MID', 'FWD']:
-            print(f'FAILED (invalid pos {position}) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+            #print(f'FAILED (invalid pos {position}) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
             return False
         
         player_club = str(self.fpl.get_player_team(player, self.gameweek))  # Convert player_club to a string
@@ -154,30 +158,34 @@ class team:
         # Check if the count is greater than 3
         if club_counts[player_club] > 3 and player_club != 'None':
             # Cannot add {player}, {player_club} has 3 players already
-            print(f'FAILED (club count > 3) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+            #print(f'FAILED (club count > 3) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
             return False
 
         if p_cost == None:
-            print(f'FAILED (none player value) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+            #print(f'FAILED (none player value) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
             return False
         
         if player in self.player_list:
             if p_cost != None:
                 if len(position_list) < (self.get_max_players(position) + 1):
-                    if self.budget >= self.player_value(player):
+                    if self.budget >= p_cost:
                         if self.squad_size() < 16:
                             return True
                         else:
-                            print(f'FAILED (squad too big) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                            #print(f'FAILED (squad too big) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                            return False
                     else:
-                        print(f'FAILED (cannot afford) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')      
+                        #print(f'FAILED (cannot afford) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')      
+                        return False
                 else:
-                    print(f'FAILED (too many players in pos already) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                    #print(f'FAILED (too many players in pos already) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                    return False
             else:
-                print(f'FAILED (cost is none) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                #print(f'FAILED (cost is none) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+                return False
         else:
-            print(f'FAILED (not on player list?) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
-        return False
+            #print(f'FAILED (not on player list?) {player} to {position} for {p_cost}, Budget {self.budget} {self.squad_size()} players in squad')
+            return False
 
     def get_max_players(self, position):
         """
@@ -484,15 +492,9 @@ class team:
         Returns:
         - float: The expected points for the player.
         """
-        if position == 'GK':
-            xp_dict = self.gk_xp_dict
-        elif position == 'DEF':
-            xp_dict = self.def_xp_dict
-        elif position == 'MID':
-            xp_dict = self.mid_xp_dict
-        elif position == 'FWD':
-            xp_dict = self.fwd_xp_dict
-
+        xp_dict = self.all_xp[self.pos_to_num(position)]
+        xp_dict = dict(zip(xp_dict.Name, xp_dict.xP))
+        
         # return xP for player
         if player in xp_dict:
             return xp_dict[player]
@@ -618,7 +620,8 @@ class team:
            print(f'Team not complete, squad size {self.squad_size()}')
            self.return_subs_to_team()
            self.display()
-           quit()
+           self.remove_excess_players()
+           self.display()
         else:
             for player in xp_list:
                 if player[0] == self.captain:
@@ -628,6 +631,15 @@ class team:
 
         return total_xp
     
+    def remove_excess_players(self):
+        # Find the position that has an excess player
+        for position in self.positions:
+            if len(getattr(self, position.lower() + 's')) > self.get_max_players(position):
+                excess_player = getattr(self, position.lower() + 's')[-1]
+                self.remove_player(excess_player, position)
+                print(f'Removed {excess_player} from {position}')
+                return
+            
     def player_p(self, player, position):
         """
         Returns the actual points scored by a player in a given position.
@@ -721,6 +733,7 @@ class team:
     def team_xp_list(self):
         # Returns a list of points scored by each player in the team (Name, Position, Points)
         xp_list = []
+        self.auto_subs()
         for player in self.gks:
             if player == self.captain:
                 xp_list.append([f'(C) {player}', 'GK', self.player_xp(player, 'GK') * 2])
@@ -760,12 +773,10 @@ class team:
         Returns:
         - int: The price of the player.
         """
-        # Get price for player
-        start_gw = self.gameweek
-        value = None
-        while (value == None and start_gw > 0):
-            value = self.fpl.get_price(start_gw, player)
-            start_gw -= 1
+        
+        value = self.fpl.get_price(self.gameweek, player)
+        if value == None:
+            value = self.fpl.get_price(self.gameweek - 1, player)
 
         return value
         
@@ -783,10 +794,7 @@ class team:
         # Get position for player
         if player in self.positions_list:
             return self.positions_list[player]
-        elif player in self.prev_pos_list:
-            return self.prev_pos_list[player]
-        else:
-            return None
+        return None
     
     def suggest_captaincy(self):
         """
@@ -812,11 +820,11 @@ class team:
     
     def suggest_transfer_out(self):
         # Get xP for each player in team
-        p_list = self.get_all_p(include_subs=True)
+        xp_list = self.get_all_xp(include_subs=True)
         # Sort by xP
-        p_list.sort(key=lambda x: float(x[1]), reverse=False)
+        xp_list.sort(key=lambda x: float(x[1]), reverse=False)
 
-        for potential_player in p_list:
+        for potential_player in xp_list:
             target_name = potential_player[0]
             target_pos = self.player_pos(target_name)
             target_budget = self.fpl.get_price(self.gameweek, target_name)
@@ -826,42 +834,34 @@ class team:
         print('No player found to transfer out')
         return '', '', 0
     
-    def suggest_transfer_in(self, position, budget):
-        if position == 'GK':
-            player_xp_list = self.gk_xp_dict
-            pos_list = self.gk_player_list
-        elif position == 'DEF':
-            player_xp_list = self.def_xp_dict
-            pos_list = self.def_player_list
-        elif position == 'MID':
-            player_xp_list = self.mid_xp_dict
-            pos_list = self.mid_player_list
-        elif position == 'FWD':
-            player_xp_list = self.fwd_xp_dict
-            pos_list = self.fwd_player_list
-        else:
-            return None
+    def suggest_transfer_in(self, position, out_player, budget):
+        player_xp_list = self.all_xp[self.pos_to_num(position)]
         
-        ranked_player_list = []
-        for player in pos_list:
-            p_cost = self.player_value(player)
-            if p_cost != None:
-                if budget >= p_cost and position == self.player_pos(player) and player in player_xp_list and player not in self.player_stop_list:
-                    ranked_player_list.append([player, player_xp_list[player]])
-        ranked_player_list.sort(key=lambda x: float(x[1]), reverse=True)
+        # sort the pandas dataframe by xp
+        player_xp_list = player_xp_list.sort_values(by='xP', ascending=False)
+        player_xp_list = player_xp_list.values.tolist()
+        
+        out_xp = self.player_xp(out_player, position)
 
-        t1 = dt.datetime.now()
-        
-        for player in ranked_player_list:
+        for player in player_xp_list:
             p_cost = self.player_value(player[0])
-            if player[1] >= 1 and p_cost is not None and p_cost <= budget and not self.player_in_squad(player) and not self.check_violate_club_rule(player[0]):
-                print(f'Allowed? {self.transfer_in_allowed(player[0])} for Player {player}')
+            p_xp = player[1]
+            xp_gain = p_xp - out_xp
+            
+            if xp_gain < 2 or p_cost is None or self.player_in_squad(player):
+                continue
+
+            #print(f'Considering - {player[0]} {position}, xP Gain: {xp_gain}, Budget - Cost: {budget - p_cost}, Player in squad: {self.player_in_squad(player)}, Violate club rule: {self.check_violate_club_rule(player[0])}')
+
+            if player == out_player:
+                #print(f'Player {player[0]} is the same as the player being transferred out')
+                continue
+
+            if xp_gain >= 2 and p_cost is not None and p_cost <= budget and not self.player_in_squad(player) and not self.check_violate_club_rule(player[0]):
+                #print(f'Allowed? {self.transfer_in_allowed(player[0])} for Player {player}')
                 if self.transfer_in_allowed(player[0]):
                     return player[0]
-        
-        t2 = dt.datetime.now()
-        print(f'Time taken: {t2 - t1}')
-
+                
         return 'No player found to transfer in'
     
     def player_in_squad(self, player):
@@ -879,11 +879,21 @@ class team:
     def transfer(self, transfer_out, transfer_in, position):
         try:
             self.return_subs_to_team()
+            
             self.add_player(transfer_in, position)
             self.remove_player(transfer_out, position)
             
-            print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position}\n')
-            self.transfers_left -= 1
+            if self.squad_size() == 14:
+                self.add_player(transfer_out, position, force=True)
+            elif self.squad_size() == 16:
+                self.remove_player(transfer_in, position)
+            else:
+                out_xp = self.player_xp(transfer_out, position)
+                in_xp = self.player_xp(transfer_in, position)
+                xp_gain = in_xp - out_xp
+                
+                print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position} | xP Gain: {xp_gain}\n')
+                self.transfers_left -= 1
         except ValueError:
             pass
         
@@ -892,18 +902,29 @@ class team:
             return
         if self.season == '2023-24' and self.gameweek > self.recent_gw:
             return
-        if self.transfers_left > 0 and self.budget > 4.5:
-            min_improvement = 5
+        if self.gameweek > 35:
+            return
+        
+        if self.transfers_left > 0:
+            min_improvement = 4
             out, pos, budget = self.suggest_transfer_out()
-            transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
+
+            if pos == '':
+                return
+            
+            if budget + self.budget < self.pos_price_minimum(pos):
+                print(f'Cannot afford to transfer out {out} {pos} for {budget} + {self.budget} < {self.pos_price_minimum(pos)}')
+                return
+            
+            transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
             if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
                 self.transfer(out, transfer_in, pos)
-            # If theres still another transfer left, go again
-            if self.transfers_left > 0:
-                out, pos, budget = self.suggest_transfer_out()
-                transfer_in = self.suggest_transfer_in(pos, self.budget + budget)
-                if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
-                    self.transfer(out, transfer_in, pos)
+                # If theres still another transfer left, go again
+                if self.transfers_left > 0:
+                    self.auto_transfer()
+            else:
+                print(f'No valid transfer found for {out} {pos} xP {self.player_xp(out, pos)} {budget} + {self.budget} = {self.budget + budget}')
+                
 
     def swap_players_who_didnt_play(self):
         # Get players who didn't play
@@ -1132,8 +1153,8 @@ class team:
         self.get_best_players('GK', gk_budget, 2)
 
     def get_best_players(self, position, budget, fillers):
-        players_by_xp = getattr(self, f"{position.lower()}_xp").Name.tolist()
-        players_by_xp.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=True)
+        players_by_xp = self.all_xp[self.pos_to_num(position)].sort_values(by='xP', ascending=False)
+        players_by_xp = players_by_xp.Name.tolist()
         players_needed = self.pos_size(position)
         players_bought = []
         premium_players = 0
@@ -1142,6 +1163,7 @@ class team:
         original_budget = budget
         for player in players_by_xp:
             p_cost = self.player_value(player)
+            
             # If we have enough players, stop
             if len(players_bought) < players_needed and p_cost != None:
                 if premium_players < players_needed - fillers and p_cost <= budget:
@@ -1162,6 +1184,16 @@ class team:
         print(f'Players bought: {players_bought}, Prem {premium_players}, Budget {budget_players}, Total Spent: {total_spent} / {original_budget}')
         return players_bought
 
+    def pos_to_num(self, position):
+        if position == 'FWD':
+            return 3
+        elif position == 'MID':
+            return 2
+        elif position == 'DEF':
+            return 1
+        elif position == 'GK':
+            return 0
+        
     def id_to_name(self, id):
         return self.fpl.id_to_name[id]
     
@@ -1246,7 +1278,7 @@ class team:
 
         # Wildcard
         if self.chip_wildcard_available and not self.any_chip_in_use():
-            if xi_xp < 43:
+            if xi_xp < 50:
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()
                 print(f'Current xP {xi_xp} vs New xP {self.team_xp(include_subs=True)}')
@@ -1293,18 +1325,60 @@ class team:
         
     def team_value(self):
         value = 0
+        p_count = 0
         for player in self.gks:
-            value += self.player_value(player)
+            val = self.player_value(player)
+            if val != None:
+                value += val
+                p_count += 1
+            else:
+                value += (value / p_count)
+
         for player in self.defs:
-            value += self.player_value(player)
+            val = self.player_value(player)
+            if val != None:
+                value += val
+                p_count += 1
+            else:
+                value += (value / p_count)
         for player in self.mids:
-            value += self.player_value(player)
+            val = self.player_value(player)
+            if val != None:
+                value += val
+                p_count += 1
+            else:
+                value += (value / p_count)
         for player in self.fwds:
-            value += self.player_value(player)
+            val = self.player_value(player)
+            if val != None:
+                value += val
+                p_count += 1
+            else:
+                value += (value / p_count)
         for player in self.subs:
-            value += self.player_value(player[0])
+            val = self.player_value(player[0])
+            if val != None:
+                value += val
+                p_count += 1
+            else:
+                value += (value / p_count)
+            
+        
         return value
 
     def get_n_gws_xp(self, n):
-        results = self.fpl.discount_next_n_gws(self.combined_xp, self.gameweek, n)
+        if self.gameweek < 36:
+            results = self.fpl.discount_next_n_gws(self.combined_xp, self.gameweek, n)
+        else:
+            results = self.combined_xp
+
         return results
+    
+    def pos_price_minimum(self, position):
+        if position == 'GK' or position == 'DEF':
+            return 4.0
+        elif position == 'MID' or position == 'FWD':
+            return 4.5
+        else:
+            print(f'Invalid position: {position}')
+            

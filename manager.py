@@ -7,6 +7,7 @@ import argparse
 import fpl_auto.team as team
 import json
 from fpl_auto import evaluate as eval
+import datetime as dt
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project: Team Manager")
@@ -101,6 +102,7 @@ def main():
         if i != start_gw + repeat:
             t.return_subs_to_team()
             t.auto_transfer() # Make a transfer
+            
             try:
                 t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds], t.chips_used, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
             except FileNotFoundError:

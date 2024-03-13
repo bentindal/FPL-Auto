@@ -1,174 +1,284 @@
 	Name	xP
-0	Aaron Cresswell	0.0
-1	Aaron Hickey	0.0
-2	Adam Smith	3.66
-3	Adam Webster	1.85
-4	Ajibola Alese	0.0
-5	Alex Kirk	0.0
-6	Alex Nicolao Telles	0.0
-7	Andreas Christensen	0.0
-8	Andrew Robertson	1.91
-9	Antonee Robinson	0.0
-10	Antonio Rüdiger	0.0
-11	Axel Tuanzebe	0.0
-12	Ben Chilwell	10.08
-13	Ben Godfrey	0.0
-14	Ben Johnson	0.97
-15	Ben Mee	0.0
-16	Ben Nelson	0.0
-17	Ben White	0.0
-18	Benjamin Chilwell	0.0
-19	Benjamin Mendy	0.0
-20	Benjamin White	6.25
-21	Bernardo Fernandes Da Silva Junior	0.0
-22	Björn Engels	0.0
-23	Charlie Cresswell	0.0
-24	Cheikhou Kouyaté	0.0
-25	Chris Mepham	5.18
-26	Christian Marques	0.0
-27	Clément Lenglet	0.0
-28	Conor Bradley	0.0
-29	Conrad Egan-Riley	0.0
-30	Cristian Romero	0.0
-31	Cédric Soares	0.0
-32	César Azpilicueta	2.52
-33	Dan Burn	5.66
-34	Daniel Amartey	0.91
-35	Diego Carlos Santos Silva	0.0
-36	Diego Llorente	1.55
-37	Diogo Dalot Teixeira	0.97
-38	Dion Sanderson	0.0
-39	Dynel Simeu	0.0
-40	Ed Turns	0.0
-41	Emerson Aparecido Leite de Souza Junior	0.0
-42	Emerson Leite de Souza Junior	4.63
-43	Eric Dier	5.78
-44	Ezri Konsa Ngoyo	0.0
-45	Fabian Schär	1.03
-46	Fernando Marçal	0.0
-47	Finley Stevens	0.0
-48	Frederik Alves	0.0
-49	Gabriel Magalhães	0.0
-50	Gabriel dos Santos Magalhães	7.48
-51	Harry Maguire	1.71
-52	Harry Toffolo	0.0
-53	Hugo Bueno	0.0
-54	Héctor Bellerín	0.0
-55	Héctor Junior Firpo Adames	0.0
-56	Ivan Perišić	0.0
-57	Jack Stephens	0.0
-58	Jamal Baptiste	0.0
-59	James Justin	1.45
-60	James Tarkowski	1.92
-61	Jan Bednarek	1.2
-62	Jarell Quansah	0.0
-63	Jarosław Jach	0.0
-64	Javier Manquillo	0.0
-65	Joachim Andersen	1.61
-66	Joe Worrall	0.0
-67	Joel Matip	2.08
-68	Jonathan Castro Otto	1.27
-69	Jonjoe Kenny	0.0
-70	Jonny Evans	1.52
-71	Jordan Zemura	4.76
-72	Josh Feeney	0.0
-73	Joshua Wilson-Esbrand	0.0
-74	José Diogo Dalot Teixeira	0.0
-75	João Cancelo	6.0
-76	João Pedro Cavaco Cancelo	0.0
-77	Joël Veltman	1.97
-78	Julian Jeanvier	0.0
-79	Kaine Hayden	0.0
-80	Kalidou Koulibaly	7.17
-81	Kenny Tete	3.14
-82	Ki-Jana Hoever	0.0
-83	Kieran Tierney	0.0
-84	Kieran Trippier	2.11
-85	Konstantinos Mavropanos	0.0
-86	Kris Moore	0.0
-87	Kurt Zouma	0.0
-88	Kyle Walker	0.0
-89	Kyle Walker-Peters	0.0
-90	Lamare Bogarde	0.0
-91	Levi Colwill	0.0
-92	Lewis Dunk	1.79
-93	Lisandro Martínez	0.0
-94	Lloyd Kelly	8.65
-95	Lucas Digne	0.0
-96	Luke Mbete	0.0
-97	Luke Shaw	1.17
-98	Lyanco Evangelista Silveira Neves Vojnovic	0.0
-99	Mads Bech Sørensen	1.12
-100	Marc Cucurella	0.0
-101	Marc Cucurella Saseta	0.0
-102	Marc Guéhi	1.58
-103	Marcel Lavinier	0.0
-104	Martin Kelly	0.0
-105	Mason Holgate	0.0
-106	Mathias Jorgensen	0.0
-107	Matt Doherty	0.0
-108	Matt Targett	6.04
-109	Matthew Cash	0.0
-110	Matty Cash	0.0
-111	Max Kilman	0.0
-112	Mazeed Ogungbo	0.0
-113	Michal Karbownik	0.0
-114	Mohammed Salisu	0.0
-115	Moussa Niakhaté	0.0
-116	Nathan Aké	0.0
-117	Nathan Collins	0.0
-118	Nathan Patterson	0.0
-119	Nathaniel Clyne	1.43
-120	Neco Williams	1.2
-121	Odeluga Offiah	0.0
-122	Oleksandr Zinchenko	5.4
-123	Owen Beck	0.0
-124	Pablo Marí	0.0
-125	Pascal Struijk	1.09
-126	Pierre Ekwah	0.0
-127	Pontus Jansson	1.1
-128	Rasmus Kristensen	1.75
-129	Rayan Ait Nouri	0.0
-130	Rayan Aït-Nouri	0.0
-131	Reece Hannam	0.0
-132	Reece James	5.7
-133	Reece Welch	0.0
-134	Ricardo Domingos Barbosa Pereira	0.0
-135	Rico Henry	1.29
-136	Robin Koch	1.6
-137	Romain Perraud	1.24
-138	Romain Saïss	0.0
-139	Ryan Alebiosu	0.0
-140	Ryan Sessegnon	5.73
-141	Rúben Gato Alves Dias	7.6
-142	Rúben Nascimento Vinagre	0.0
-143	Rúben Santos Gato Alves Dias	0.0
-144	Scott McKenna	0.0
-145	Sead Kolasinac	0.0
-146	Serge Aurier	0.0
-147	Shane Duffy	0.0
-148	Sven Botman	0.0
-149	Tariq Lamptey	0.0
-150	Tayo Adaramola	0.0
-151	Thiago Emiliano da Silva	2.05
-152	Thierry Small	0.0
-153	Tim Ream	0.0
-154	Timothy Castagne	1.61
-155	Tobi Omole	0.0
-156	Toby Alderweireld	0.0
-157	Tosin Adarabioyo	0.98
-158	Trent Alexander-Arnold	1.91
-159	Tyrell Malacia	0.0
-160	Tyrick Mitchell	1.43
-161	Virgil van Dijk	0.0
-162	Vitalii Mykolenko	1.64
-163	Vladimir Coufal	0.0
-164	Vontae Daley-Campbell	0.0
-165	Wesley Fofana	1.43
-166	William Saliba	0.0
-167	Winston Reid	0.0
-168	Yan Valery	1.17
-169	Yerry Mina	0.0
-170	Zach Awe	0.0
-171	Zak Swanson	0.0
-172	Álvaro Fernández	0.0
+0	Aaron Cresswell	0.884
+1	Aaron Hickey	0.924
+2	Aaron Wan-Bissaka	0.009
+3	Adam Smith	3.843
+4	Adam Webster	1.221
+5	Ajibola Alese	0.0
+6	Alex Kirk	0.0
+7	Alex Nicolao Telles	0.0
+8	Alex Telles	0.009
+9	Andreas Christensen	0.0
+10	Andrew Robertson	1.277
+11	Angelo Ogbonna	0.01
+12	Antonee Robinson	0.826
+13	Antonio Rüdiger	0.0
+14	Armel Bella-Kotchap	0.012
+15	Arthur Masuaku	0.01
+16	Ashley Young	0.012
+17	Axel Tuanzebe	0.0
+18	Aymeric Laporte	2.139
+19	Ben Chilwell	10.384
+20	Ben Davies	0.0
+21	Ben Godfrey	0.01
+22	Ben Johnson	0.01
+23	Ben Mee	0.011
+24	Ben Nelson	0.0
+25	Ben White	0.0
+26	Benjamin Chilwell	0.0
+27	Benjamin Mendy	0.0
+28	Benjamin White	5.896
+29	Bernardo Fernandes Da Silva Junior	0.0
+30	Björn Engels	0.0
+31	Brandon Williams	0.009
+32	Calum Chambers	1.208
+33	Calvin Ramsay	0.012
+34	Charlie Cresswell	0.0
+35	Charlie Goode	0.011
+36	Cheikhou Kouyaté	0.0
+37	Chris Mepham	5.299
+38	Chris Richards	0.008
+39	Christian Marques	0.0
+40	Ciaran Clark	0.009
+41	Clément Lenglet	0.765
+42	Cody Drameh	0.01
+43	Conor Bradley	0.0
+44	Conor Coady	1.116
+45	Conrad Egan-Riley	0.0
+46	Craig Dawson	0.01
+47	Cristian Romero	0.867
+48	Cédric Alves Soares	0.011
+49	Cédric Soares	0.0
+50	César Azpilicueta	2.695
+51	Dan Burn	1.602
+52	Daniel Amartey	1.479
+53	Davinson Sánchez	0.008
+54	Diego Carlos Santos Silva	1.138
+55	Diego Llorente	0.01
+56	Diogo Dalot Teixeira	1.071
+57	Dion Sanderson	0.0
+58	Djed Spence	0.008
+59	Dominic Thompson	0.011
+60	Dynel Simeu	0.0
+61	Ed Turns	0.0
+62	Emerson Aparecido Leite de Souza Junior	0.0
+63	Emerson Leite de Souza Junior	7.132
+64	Emerson Palmieri dos Santos	0.011
+65	Emil Krafth	0.945
+66	Eric Bailly	0.009
+67	Eric Dier	2.252
+68	Ethan Ampadu	0.011
+69	Ethan Pinnock	0.011
+70	Ezri Konsa Ngoyo	0.012
+71	Fabian Schär	0.909
+72	Federico Fernández	0.009
+73	Fernando Marçal	0.0
+74	Fin Stevens	0.011
+75	Finley Stevens	0.0
+76	Frederik Alves	0.0
+77	Frédéric Guilbert	0.012
+78	Gabriel Magalhães	0.0
+79	Gabriel dos Santos Magalhães	7.337
+80	Giulian Biancone	0.012
+81	Harrison Ashby	0.01
+82	Harry Maguire	0.009
+83	Harry Toffolo	1.035
+84	Haydon Roberts	0.011
+85	Hugo Bueno	0.0
+86	Hugo Bueno López	0.012
+87	Héctor Bellerín	0.0
+88	Héctor Junior Firpo Adames	0.0
+89	Ibrahima Konaté	0.012
+90	Issa Diop	0.01
+91	Ivan Perišić	0.884
+92	Jack Stacey	0.007
+93	Jack Stephens	0.012
+94	Jamaal Lascelles	0.873
+95	Jamal Baptiste	0.0
+96	Jamal Lewis	0.009
+97	James Hill	0.007
+98	James Justin	0.008
+99	James Tarkowski	2.014
+100	James Tomkins	0.008
+101	Jan Bednarek	0.126
+102	Jan Paul van Hecke	0.011
+103	Jannik Vestergaard	0.008
+104	Japhet Tanganga	0.008
+105	Jarell Quansah	0.0
+106	Jarosław Jach	0.0
+107	Jarrad Branthwaite	0.01
+108	Javier Manquillo	0.0
+109	Javier Manquillo Gaitán	0.009
+110	Joachim Andersen	1.581
+111	Joe Bryan	0.01
+112	Joe Rodon	0.008
+113	Joe Worrall	-0.023
+114	Joel Matip	2.128
+115	Joel Ward	0.756
+116	John Stones	0.012
+117	Jonathan Castro Otto	1.138
+118	Jonathan Panzo	0.012
+119	Jonjoe Kenny	0.0
+120	Jonny Evans	0.008
+121	Jordan Zemura	4.697
+122	Joseph Gomez	1.242
+123	Josh Feeney	0.0
+124	Josh Wilson-Esbrand	0.012
+125	Joshua Wilson-Esbrand	0.0
+126	José Diogo Dalot Teixeira	0.0
+127	João Cancelo	6.727
+128	João Pedro Cavaco Cancelo	0.0
+129	Joël Veltman	1.914
+130	Julian Jeanvier	0.0
+131	Junior Firpo Adames	0.01
+132	Kaine Hayden	0.0
+133	Kaine Kesler Hayden	0.012
+134	Kalidou Koulibaly	7.128
+135	Kenny Tete	3.696
+136	Kevin Mbabu	0.01
+137	Ki-Jana Hoever	0.0
+138	Kieran Tierney	0.011
+139	Kieran Trippier	0.009
+140	Konstantinos Mavropanos	0.0
+141	Konstantinos Tsimikas	0.012
+142	Kortney Hause	0.012
+143	Kris Moore	0.0
+144	Kristoffer Ajer	1.958
+145	Kurt Zouma	1.045
+146	Kyle Walker	0.012
+147	Kyle Walker-Peters	1.092
+148	Lamare Bogarde	0.0
+149	Leo Fuhr Hjelde	0.01
+150	Levi Colwill	0.99
+151	Lewis Brunt	0.008
+152	Lewis Dunk	1.914
+153	Liam Cooper	0.01
+154	Lisandro Martínez	0.09
+155	Lloyd Kelly	8.337
+156	Loïc Mbe Soh	0.012
+157	Lucas Digne	2.196
+158	Ludwig Augustinsson	0.012
+159	Luke Ayling	0.978
+160	Luke Chambers	0.012
+161	Luke Mbete	0.0
+162	Luke Mbete-Tabu	0.012
+163	Luke Shaw	0.009
+164	Luke Thomas	0.952
+165	Lyanco Evangelista Silveira Neves Vojnovic	0.0
+166	Lyanco Silveira Neves Vojnovic	0.012
+167	Mads Bech Sørensen	1.914
+168	Mads Roerslev Rasmussen	1.232
+169	Malang Sarr	0.011
+170	Marc Cucurella	0.0
+171	Marc Cucurella Saseta	0.297
+172	Marc Guéhi	1.581
+173	Marcel Lavinier	0.0
+174	Marcos Alonso	1.067
+175	Martin Kelly	0.0
+176	Mason Holgate	0.922
+177	Mathias Jorgensen	0.0
+178	Matt Clarke	0.011
+179	Matt Doherty	0.008
+180	Matt Ritchie	0.009
+181	Matt Targett	1.566
+182	Matthew Cash	0.0
+183	Matty Cash	1.092
+184	Max Kilman	0.012
+185	Mazeed Ogungbo	0.0
+186	Michael Keane	0.01
+187	Michal Karbownik	0.0
+188	Mohamed Dräger	0.012
+189	Mohammed Salisu	1.162
+190	Moussa Niakhaté	1.162
+191	Nathan Aké	1.127
+192	Nathan Collins	1.138
+193	Nathan Ferguson	0.008
+194	Nathan Patterson	0.01
+195	Nathaniel Clyne	1.479
+196	Nathaniel Phillips	0.012
+197	Nayef Aguerd	0.01
+198	Neco Williams	0.012
+199	Niels Nkounkou	0.01
+200	Nuno Varela Tavares	1.067
+201	Nélson Cabral Semedo	1.035
+202	Odeluga Offiah	0.0
+203	Oleksandr Zinchenko	2.409
+204	Omar Richards	0.012
+205	Owen Beck	0.0
+206	Pablo Marí	0.0
+207	Pablo Marí Villar	0.011
+208	Pascal Struijk	1.358
+209	Paul Dummett	0.009
+210	Phil Jones	0.531
+211	Pierre Ekwah	0.0
+212	Pontus Jansson	1.111
+213	Raphaël Varane	0.981
+214	Rasmus Kristensen	1.814
+215	Rayan Ait Nouri	0.0
+216	Rayan Aït-Nouri	-0.782
+217	Reece Hannam	0.0
+218	Reece James	2.376
+219	Reece Welch	0.0
+220	Rhys Williams	0.012
+221	Ricardo Barbosa Pereira	0.008
+222	Ricardo Domingos Barbosa Pereira	0.0
+223	Richie Laryea	0.012
+224	Rico Henry	1.023
+225	Rico Lewis	0.012
+226	Rob Holding	1.221
+227	Robert Kenedy Nunes do Nascimento	0.011
+228	Robin Koch	0.902
+229	Romain Perraud	1.311
+230	Romain Saïss	0.0
+231	Ryan Alebiosu	0.0
+232	Ryan Bertrand	0.008
+233	Ryan Fredericks	0.672
+234	Ryan Sessegnon	2.38
+235	Rúben Gato Alves Dias	7.556
+236	Rúben Nascimento Vinagre	0.94
+237	Rúben Santos Gato Alves Dias	0.0
+238	Scott McKenna	1.299
+239	Sead Kolasinac	0.0
+240	Seamus Coleman	1.653
+241	Sepp van den Berg	0.012
+242	Serge Aurier	0.0
+243	Sergi Canós Tenés	0.011
+244	Sergio Reguilón	0.008
+245	Shane Duffy	0.01
+246	Steve Cook	0.012
+247	Stuart Dallas	0.01
+248	Sven Botman	0.531
+249	Takehiro Tomiyasu	1.254
+250	Tariq Lamptey	1.089
+251	Tayo Adaramola	0.0
+252	Terence Kongolo	0.01
+253	Thiago Emiliano da Silva	2.046
+254	Thierry Small	0.0
+255	Tim Ream	0.96
+256	Timothy Castagne	1.649
+257	Tino Livramento	0.012
+258	Tobi Omole	0.0
+259	Toby Alderweireld	0.0
+260	Tosin Adarabioyo	0.96
+261	Toti António Gomes	0.012
+262	Trent Alexander-Arnold	0.012
+263	Trevoh Chalobah	0.011
+264	Tyrell Malacia	0.531
+265	Tyrick Mitchell	0.008
+266	Tyrone Mings	2.001
+267	Victor Lindelöf	1.485
+268	Virgil van Dijk	2.369
+269	Vitalii Mykolenko	1.691
+270	Vladimir Coufal	0.855
+271	Vontae Daley-Campbell	0.0
+272	Wesley Fofana	0.008
+273	William Saliba	0.011
+274	Willy Boly	1.138
+275	Winston Reid	0.0
+276	Yan Valery	0.012
+277	Yerry Mina	0.94
+278	Yerson Mosquera Valdelamar	0.012
+279	Zach Awe	0.0
+280	Zak Swanson	0.0
+281	Álvaro Fernández	0.0
+282	Çaglar Söyüncü	0.816
