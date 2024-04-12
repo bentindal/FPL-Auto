@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('-plot_p_minus_xp',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
     parser.add_argument('-plot_score_comparison',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
+                        action=argparse.BooleanOptionalAction, default=True, help='Plot P each week categorised by performance, default: True')
     parser.add_argument('-plot_average_comparison',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
     args = parser.parse_args()
@@ -98,15 +98,16 @@ def main():
             p_list.append(team_p)
             xp_list.append(team_xp)
             all_p.append(t.p_list())
+        
         # Set team to next week
         if i != start_gw + repeat:
             t.return_subs_to_team()
             t.auto_transfer() # Make a transfer
             
             try:
-                t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds], t.chips_used, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
+                t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds], t.chips_used, t.transfer_history, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
             except FileNotFoundError:
-                print(f'GW{i + 1} not found')
+                print(f'GW{i} | End Reached')
                 break
     
     # Sum the p_list and xp_list and report results
@@ -118,6 +119,8 @@ def main():
     print(f'xp_sum: {xp_sum:.0f}')
     print(f'avg_xp: {xp_sum / len(p_list):.2f}')
     print(t.chips_used)
+
+    eval.export_results(season, p_list, xp_list, t.chips_used, t.transfer_history)
 
     # Plots
     if inputs.plot_p_minus_xp:

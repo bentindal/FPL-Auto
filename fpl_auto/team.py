@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 import datetime as dt
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], []], chips_used=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
+    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], []], chips_used=[], transfer_history=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
         """
         Initializes a team object.
 
@@ -33,6 +33,7 @@ class team:
 
         self.transfers_left = min(transfers_left, 2)
         self.chips_used = chips_used
+        self.transfer_history = transfer_history
         self.chip_triple_captain_available = triple_captain_available
         self.chip_triple_captain_active = False
         self.chip_bench_boost_available = bench_boost_available
@@ -894,6 +895,7 @@ class team:
                 
                 print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position} | xP Gain: {xp_gain}\n')
                 self.transfers_left -= 1
+                self.transfer_history.append([self.gameweek, [transfer_out, transfer_in]])
         except ValueError:
             pass
         
@@ -1134,6 +1136,20 @@ class team:
         else:
             self.budget = self.team_value() + self.budget
 
+        spending_budget = self.budget
+        
+        fwd_min = 3 * self.pos_price_minimum('FWD')
+        mid_min = 5 * self.pos_price_minimum('MID')
+        def_min = 5 * self.pos_price_minimum('DEF')
+        gk_min = 2 * self.pos_price_minimum('GK')
+
+        spending_budget -= fwd_min
+        spending_budget -= mid_min
+        spending_budget -= def_min
+        spending_budget -= gk_min
+
+        print('Spending Budget:', spending_budget)
+
         self.fwds = []
         self.mids = []
         self.defs = []
@@ -1142,15 +1158,22 @@ class team:
 
         print(f'Initial budget: {self.budget}')
         
-        fwd_budget = self.budget * 0.25
-        mid_budget = self.budget * 0.35
-        def_budget = self.budget * 0.44
-        gk_budget = self.budget * 0.1
+        # Work out maximum I can spend
+        ratio_split = [0.25, 0.35, 0.44, 0.10]
+        budget_p = [1, 2, 2, 2]
+        fwd_budget = spending_budget * ratio_split[0] + fwd_min
+        mid_budget = spending_budget * ratio_split[1] + mid_min
+        def_budget = spending_budget * ratio_split[2] + def_min
+        gk_budget = spending_budget * ratio_split[3] + gk_min
 
-        self.get_best_players('FWD', fwd_budget, 1)
-        self.get_best_players('MID', mid_budget, 3)
-        self.get_best_players('DEF', def_budget, 3)
-        self.get_best_players('GK', gk_budget, 2)
+        print(f'FWD Budget: {fwd_budget}, MID Budget: {mid_budget}, DEF Budget: {def_budget}, GK Budget: {gk_budget}')
+
+        self.get_best_players('FWD', fwd_budget, budget_p[0])
+        self.get_best_players('MID', mid_budget, budget_p[1])
+        self.get_best_players('DEF', def_budget, budget_p[2])
+        self.get_best_players('GK', gk_budget, budget_p[3])
+
+        print(f'Leftover Budget: {self.budget}, xP: {self.team_xp()}')
 
     def get_best_players(self, position, budget, fillers):
         players_by_xp = self.all_xp[self.pos_to_num(position)].sort_values(by='xP', ascending=False)
@@ -1278,7 +1301,7 @@ class team:
 
         # Wildcard
         if self.chip_wildcard_available and not self.any_chip_in_use():
-            if xi_xp < 50:
+            if xi_xp < 42:
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()
                 print(f'Current xP {xi_xp} vs New xP {self.team_xp(include_subs=True)}')

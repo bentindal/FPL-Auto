@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import os
 import math
 import numpy as np
 from scipy import stats
+import json
+import os
 
 def score_model(predictions, labels):
     """
@@ -119,7 +120,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
             good[i] = p
 
     # Plot the data
-    plt.title(f'{season} Performance - {total_p} points total')
+    plt.title(f'{season} Performance - {round(total_p)} points total')
     plt.bar(week_count, poor, label='Poor', color='red')
     plt.bar(week_count, good, label='Good', color='olivedrab')
     
@@ -137,7 +138,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
     plt.legend()
 
     # save the plot as png in results folder
-    plt.savefig(f'results/{season}_{total_p}_score_comparison.png')
+    plt.savefig(f'results/{season}/{season}_{round(total_p)}_score_comparison.png')
     plt.show()
 
 def plot_average_comparison(p_list, avg_list, from_week, to_week):
@@ -233,3 +234,28 @@ def point_distribution(points, season):
     plt.plot(x, p, 'k', linewidth=2)
     plt.title(f'Point Distribution for {season} Season, mu = {mu:.2f}, std = {std:.2f}')
     plt.show()
+
+def export_results(season, points, xpoints, chip_usage, transfers):
+    avg_p = round(sum(points) / len(points), 0)
+    if len(points) < 38 and season != '2023-24':
+        points.append(avg_p)
+
+    # Combine the data into a dictionary
+    data = {
+        "season": season,
+        "points": points,
+        "xpoints": xpoints,
+        "chip_usage": chip_usage,
+        "transfers": transfers
+    }
+
+    # Export the data as a JSON file
+    # Create the directory if it doesn't exist
+    directory = f"results/{season}"
+    os.makedirs(directory, exist_ok=True)
+
+    # Write the JSON file
+    with open(f"{directory}/{season}_{sum(points)}_results.json", "w+") as file:
+        json.dump(data, file)
+
+    print(f'Results saved!')
