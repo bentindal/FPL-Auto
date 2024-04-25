@@ -16,12 +16,12 @@ def parse_args():
     parser.add_argument('-model', type=str, default="gradientboost",
                         choices=[
                             "linear", "randomforest", "gradientboost", "neuralnetwork"], 
-                        help='Model type to use')
+                        help='Model type to use, default: gradientboost')
     parser.add_argument('-season', type=str, required=True, choices=['2021-22', '2022-23', '2023-24'], help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
-    parser.add_argument('-training_prev_weeks', type=int, default=19, help='How many past weeks of data to use for training, default: 19')
-    parser.add_argument('-predict_weeks', type=int, default=5, help='How many past weeks of data to use for predicting, default: 5')
+    parser.add_argument('-training_prev_weeks', type=int, default=38, help='How many past weeks of data to use for training, default: 19')
+    parser.add_argument('-predict_weeks', type=int, default=4, help='How many past weeks of data to use for predicting, default: 4')
     parser.add_argument('-display_weights',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to display feature weights, default: False')
     parser.add_argument('-plot_predictions',
