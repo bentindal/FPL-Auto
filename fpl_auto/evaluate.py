@@ -36,7 +36,7 @@ def score_model(predictions, labels):
 def display_weights(week_num, weights, feature_names, pos):
     plt.figure(figsize=(15, 6))
     # big title
-    plt.suptitle(f'GW{week_num} feature importances')
+    #plt.suptitle(f'GW{week_num} feature importances')
     # 4 subplots
     for i in range(4):
         plt.subplot(1, 4, i + 1)
@@ -102,36 +102,27 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_score_comparison(p_list, chips_usage, from_week, to_week, season):
+def plot_score_comparison(p_list, global_avg, chips_usage, from_week, to_week, season):
     # Categorise each week as above or below average, where the average is 50 points
-    week_count = range(from_week, to_week + 1)
-    # poor = 0-49, okay = 50-59, good = 60-69, excellent = 70+
-    poor = np.zeros(len(week_count))
-    good = np.zeros(len(week_count))
-    
+    week_count = range(from_week, from_week + len(p_list))
     # Categorise each week
     total_p = sum(p_list)
-    fpl_avg = 46.54 # sourced from https://www.livefpl.net/Overall | 28/02/24
     avg_p = sum(p_list) / len(p_list)
-    for i, p in enumerate(p_list):
-        if p < fpl_avg:
-            poor[i] = p
-        else:
-            good[i] = p
 
     # Plot the data
     plt.title(f'{season} Performance - {round(total_p)} points total')
-    plt.bar(week_count, poor, label='Poor', color='red')
-    plt.bar(week_count, good, label='Good', color='olivedrab')
+    plt.bar(week_count, p_list, label='Points Scored')
     
-    plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
+    #plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
     plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
+    if season == '2023-24':
+        plt.axhline(global_avg, color='limegreen', linestyle='--', label=f'Global Avg {global_avg:.2f}')
     chip_colors = {'Triple Captain': 'mediumvioletred', 
-                   'Bench Boost': 'steelblue', 
+                   'Bench Boost': 'orange', 
                    'Free Hit': 'blueviolet', 
                    'Wildcard': 'lightcoral'}
     for chip, i in chips_usage:
-        plt.axvline(i, color=chip_colors[chip], linestyle='-', label=f'{chip} GW{i}', linewidth=2, alpha=0.7)
+        plt.bar(i, p_list[i-from_week], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
 
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
@@ -146,13 +137,11 @@ def plot_average_comparison(p_list, avg_list, from_week, to_week):
     x_axis = np.arange(from_week, to_week + 1)[:len(p_list)]
     y_axis_one = p_list
     y_axis_two = avg_list[:len(p_list)]
-    width = 0.35  # Width of each bar
+    y_axis = y_axis_two - y_axis_one
 
-    plt.bar(x_axis - width/2, y_axis_one, width=width, label='Actual P')
-    plt.bar(x_axis + width/2, y_axis_two, width=width, label='Average P')
+    plt.bar(x_axis, y_axis)
     plt.xlabel('Gameweek')
-    plt.ylabel('Points')
-    plt.legend()
+    plt.ylabel('Points Difference')
     plt.show()
 
 def plot_cumulative_points(p_list, season):
@@ -258,4 +247,19 @@ def export_results(season, points, xpoints, chip_usage, transfers):
     with open(f"{directory}/{season}_{sum(points)}_results.json", "w+") as file:
         json.dump(data, file)
 
-    print(f'Results saved!')
+    print('Results saved!')
+
+def plotxp(season, xp_list, start_gw, end_gw):
+    x_axis = range(start_gw, end_gw)
+    plt.bar(x_axis, xp_list[:len(x_axis)])
+    plt.xticks(x_axis)
+    plt.xlabel('Gameweek')
+    plt.ylabel('Expected Points')
+    plt.title(f'Expected Points over the {season} season | Total xP: {sum(xp_list):.2f}')
+    
+    # Plot the average line
+    average = sum(xp_list) / len(xp_list)
+    plt.axhline(average, color='red', linestyle='--', label='Average xP')
+    
+    plt.legend()
+    plt.show()

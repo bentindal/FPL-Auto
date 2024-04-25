@@ -15,9 +15,9 @@ def parse_args():
                         help='Location of Vastaav Dataset, default: data/')
     parser.add_argument('-model', type=str, default="gradientboost",
                         choices=[
-                            "linear", "randomforest", "gradientboost"], 
+                            "linear", "randomforest", "gradientboost", "neuralnetwork"], 
                         help='Model type to use')
-    parser.add_argument('-season', type=str, required=True, help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
+    parser.add_argument('-season', type=str, required=True, choices=['2021-22', '2022-23', '2023-24'], help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
     parser.add_argument('-training_prev_weeks', type=int, default=19, help='How many past weeks of data to use for training, default: 19')
@@ -27,8 +27,9 @@ def parse_args():
     parser.add_argument('-plot_predictions',
                         action=argparse.BooleanOptionalAction, default=False, help='Whether to plot predictions vs actual points, default: False')
     parser.add_argument('-save', '-s',
-                        action=argparse.BooleanOptionalAction, default=True, help='Whether to export predictions to tsv, default: True')
-    
+                        action=argparse.BooleanOptionalAction, default=False, help='Whether to export predictions to tsv, default: False')
+    parser.add_argument('-score_train_vs_test',
+                        action=argparse.BooleanOptionalAction, default=False, help='Print RMSE, AE etc.. of model on training and test data, default: False')
     args = parser.parse_args()
     
     return args
@@ -77,33 +78,55 @@ def main():
             feature_list = training_data[0][0].columns
             importances = [gk_model.feature_importances_, def_model.feature_importances_, mid_model.feature_importances_, fwd_model.feature_importances_]
             eval.display_weights(i, importances, feature_list, ['GK', 'DEF', 'MID', 'FWD'])
+        
+        test_gk_predictions = np.round(gk_model.predict(test_data[0][0]), 5)
+        test_def_predictions = np.round(def_model.predict(test_data[1][0]), 5)
+        test_mid_predictions = np.round(mid_model.predict(test_data[2][0]), 5)
+        test_fwd_predictions = np.round(fwd_model.predict(test_data[3][0]), 5)
 
-        gk_predictions = np.round(gk_model.predict(test_data[0][0]), 5)
-        def_predictions = np.round(def_model.predict(test_data[1][0]), 5)
-        mid_predictions = np.round(mid_model.predict(test_data[2][0]), 5)
-        fwd_predictions = np.round(fwd_model.predict(test_data[3][0]), 5)
+        test_gk_error, test_gk_square_error, test_gk_accuracy = eval.score_model(test_gk_predictions, test_data[0][1])
+        test_def_error, test_def_square_error, test_def_accuracy = eval.score_model(test_def_predictions, test_data[1][1])
+        test_mid_error, test_mid_square_error, test_mid_accuracy = eval.score_model(test_mid_predictions, test_data[2][1])
+        test_fwd_error, test_fwd_square_error, test_fwd_accuracy = eval.score_model(test_fwd_predictions, test_data[3][1])
+        
+        if inputs.score_train_vs_test:
+            training_gk_predictions = np.round(gk_model.predict(training_data[0][0]), 5)
+            training_def_predictions = np.round(def_model.predict(training_data[1][0]), 5)
+            training_mid_predictions = np.round(mid_model.predict(training_data[2][0]), 5)
+            training_fwd_predictions = np.round(fwd_model.predict(training_data[3][0]), 5)
 
-        """ gk_error, gk_square_error, gk_accuracy = eval.score_model(gk_predictions, test_data[0][1])
-        def_error, def_square_error, def_accuracy = eval.score_model(def_predictions, test_data[1][1])
-        mid_error, mid_square_error, mid_accuracy = eval.score_model(mid_predictions, test_data[2][1])
-        fwd_error, fwd_square_error, fwd_accuracy = eval.score_model(fwd_predictions, test_data[3][1])
+            training_gk_error, training_gk_square_error, training_gk_accuracy = eval.score_model(training_gk_predictions, training_data[0][1])
+            training_def_error, training_def_square_error, training_def_accuracy = eval.score_model(training_def_predictions, training_data[1][1])
+            training_mid_error, training_mid_square_error, training_mid_accuracy = eval.score_model(training_mid_predictions, training_data[2][1])
+            training_fwd_error, training_fwd_square_error, training_fwd_accuracy = eval.score_model(training_fwd_predictions, training_data[3][1])
 
+            print(f'GW{i} Test: GK: AE: {test_gk_error:.3f}, RMSE: {np.sqrt(test_gk_square_error):.3f}, ACC: {test_gk_accuracy*100:.2f}%')
+            print(f'GW{i} Train: GK: AE: {training_gk_error:.3f}, RMSE: {np.sqrt(training_gk_square_error):.3f}, ACC: {training_gk_accuracy*100:.2f}%')
+            
+            print(f'GW{i} Test: DEF: AE: {test_def_error:.3f}, RMSE: {np.sqrt(test_def_square_error):.3f}, ACC: {test_def_accuracy*100:.2f}%')
+            print(f'GW{i} Train: DEF: AE: {training_def_error:.3f}, RMSE: {np.sqrt(training_def_square_error):.3f}, ACC: {training_def_accuracy*100:.2f}%')
+
+            print(f'GW{i} Test: MID: AE: {test_mid_error:.3f}, RMSE: {np.sqrt(test_mid_square_error):.3f}, ACC: {test_mid_accuracy*100:.2f}%')
+            print(f'GW{i} Train: MID: AE: {training_mid_error:.3f}, RMSE: {np.sqrt(training_mid_square_error):.3f}, ACC: {training_mid_accuracy*100:.2f}%')
+
+            print(f'GW{i} Test: FWD: AE: {test_fwd_error:.3f}, RMSE: {np.sqrt(test_fwd_square_error):.3f}, ACC: {test_fwd_accuracy*100:.2f}%')
+            print(f'GW{i} Train: FWD: AE: {training_fwd_error:.3f}, RMSE: {np.sqrt(training_fwd_square_error):.3f}, ACC: {training_fwd_accuracy*100:.2f}%')
+        
+        
         # Average the errors
-        error = (gk_error + def_error + mid_error + fwd_error) / 4
-        rmse = (gk_square_error + def_square_error + mid_square_error + fwd_square_error) / 4
-        aa = (gk_accuracy + def_accuracy + mid_accuracy + fwd_accuracy) / 4"""
-        print(f'Predicting GW{i}') #: AE: {error:.3f}, RMSE: {rmse:.3f}, ACC: {aa*100:.2f}%')
-
-        if plot_predictions:
-            all_predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
-            eval.plot_predictions(all_predictions, test_data, i)
+        error = (test_gk_error + test_def_error + test_mid_error + test_fwd_error) / 4
+        rmse = (test_gk_square_error + test_def_square_error + test_mid_square_error + test_fwd_square_error) / 4
+        aa = (test_gk_accuracy + test_def_accuracy + test_mid_accuracy + test_fwd_accuracy) / 4
 
         count += 1
-        """ total_e += error
+        total_e += error
         total_rmse += rmse
-        total_aa += aa """
+        total_aa += aa
+
+        print(f'Count: {count}, AE: {error:.2f}, RMSE: {np.sqrt(rmse):.2f}, Accuracy: {aa*100:.2f}%')
 
         # Lets use these models to predict the next gameweek
+        print(f'Generating {season} GW{i} Predictions...', end='\r')
         models = gk_model, def_model, mid_model, fwd_model
         player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, models)
         clean_predictions = []
@@ -125,10 +148,10 @@ def main():
             eval.export_tsv(clean_predictions, season, i)
         
     if repeat > 1:
-        """ total_e /= count
+        total_e /= count
         total_rmse /= count
-        total_aa /= count"""
+        total_aa /= count
     
-        print(f'Count: {count}')#, Average AE: {total_e:.2f}, Average RMSE: {math.sqrt(total_rmse):.2f}, Average ACC: {total_aa*100:.2f}%')
+        print(f'Total Count: {count}, Average AE: {total_e:.2f}, Average RMSE: {np.sqrt(total_rmse):.2f}, Average ACC: {total_aa*100:.2f}%')
 if __name__ == "__main__":
     main()

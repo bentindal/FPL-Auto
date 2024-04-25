@@ -6,8 +6,8 @@ Author: Benjamin Tindal
 import argparse
 import fpl_auto.team as team
 import json
+import numpy as np
 from fpl_auto import evaluate as eval
-import datetime as dt
 
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project: Team Manager")
@@ -25,6 +25,8 @@ def parse_args():
                         action=argparse.BooleanOptionalAction, default=True, help='Plot P each week categorised by performance, default: True')
     parser.add_argument('-plot_average_comparison',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
+    parser.add_argument('-plot_xp',
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot XP each week, default: False')
     args = parser.parse_args()
     
     return args
@@ -94,13 +96,13 @@ def main():
         # Week Results
         t.result_summary()
         
-        if team_p != 0:
-            p_list.append(team_p)
-            xp_list.append(team_xp)
-            all_p.append(t.p_list())
-        
+        p_list.append(team_p)
+        xp_list.append(team_xp)
         # Set team to next week
-        if i != start_gw + repeat:
+        if i != start_gw + repeat and i != inputs.repeat_until:
+            if team_p != 0:
+                all_p.append(t.p_list())
+
             t.return_subs_to_team()
             t.auto_transfer() # Make a transfer
             
@@ -126,11 +128,13 @@ def main():
     if inputs.plot_p_minus_xp:
         eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
     if inputs.plot_score_comparison:
-        eval.plot_score_comparison(p_list, t.chips_used, start_gw, start_gw + repeat, season)
+        eval.plot_score_comparison(p_list, np.mean(t.get_avg_score()), t.chips_used, start_gw, start_gw + repeat, season)
     if inputs.plot_average_comparison:
         eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
         good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
         print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
+    if inputs.plot_xp:
+        eval.plotxp(season, xp_list, start_gw, start_gw + repeat + 1)
 
 if __name__ == '__main__':
     main()

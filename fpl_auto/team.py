@@ -115,7 +115,7 @@ class team:
         - None
         """
         if self.transfer_in_allowed(player, position, custom_price) or force and self.squad_size() < 15:
-            print('Adding', player, 'to', position)
+            #print('Adding', player, 'to', position)
             if custom_price == None:
                 p_cost = self.player_value(player)
             else:
@@ -252,7 +252,7 @@ class team:
         else:
             print('Invalid position')
 
-        print(f'Removed {player} from {position}, {self.squad_size()} players in squad')
+        #print(f'Removed {player} from {position}, {self.squad_size()} players in squad')
     def add_sub(self, player, position):
         """
         Removes a player from the team without affecting the budget
@@ -638,7 +638,7 @@ class team:
             if len(getattr(self, position.lower() + 's')) > self.get_max_players(position):
                 excess_player = getattr(self, position.lower() + 's')[-1]
                 self.remove_player(excess_player, position)
-                print(f'Removed {excess_player} from {position}')
+                #print(f'Removed {excess_player} from {position}')
                 return
             
     def player_p(self, player, position):
@@ -879,23 +879,24 @@ class team:
         
     def transfer(self, transfer_out, transfer_in, position):
         try:
-            self.return_subs_to_team()
-            
-            self.add_player(transfer_in, position)
-            self.remove_player(transfer_out, position)
-            
-            if self.squad_size() == 14:
-                self.add_player(transfer_out, position, force=True)
-            elif self.squad_size() == 16:
-                self.remove_player(transfer_in, position)
-            else:
-                out_xp = self.player_xp(transfer_out, position)
-                in_xp = self.player_xp(transfer_in, position)
-                xp_gain = in_xp - out_xp
+            out_xp = self.player_xp(transfer_out, position)
+            in_xp = self.player_xp(transfer_in, position)
+            xp_gain = in_xp - out_xp
+
+            if xp_gain > 4:
+                self.return_subs_to_team()
                 
-                print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position} | xP Gain: {xp_gain}\n')
-                self.transfers_left -= 1
-                self.transfer_history.append([self.gameweek, [transfer_out, transfer_in]])
+                self.add_player(transfer_in, position)
+                self.remove_player(transfer_out, position)
+                
+                if self.squad_size() == 14:
+                    self.add_player(transfer_out, position, force=True)
+                elif self.squad_size() == 16:
+                    self.remove_player(transfer_in, position)
+                else:
+                    print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position} | xP Gain: {xp_gain:.2f}\n')
+                    self.transfers_left -= 1
+                    self.transfer_history.append([self.gameweek, [transfer_out, transfer_in], round(xp_gain, 2)])
         except ValueError:
             pass
         
@@ -915,7 +916,7 @@ class team:
                 return
             
             if budget + self.budget < self.pos_price_minimum(pos):
-                print(f'Cannot afford to transfer out {out} {pos} for {budget} + {self.budget} < {self.pos_price_minimum(pos)}')
+                #print(f'Cannot afford to transfer out {out} {pos} for {budget} + {self.budget} < {self.pos_price_minimum(pos)}')
                 return
             
             transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
@@ -924,8 +925,8 @@ class team:
                 # If theres still another transfer left, go again
                 if self.transfers_left > 0:
                     self.auto_transfer()
-            else:
-                print(f'No valid transfer found for {out} {pos} xP {self.player_xp(out, pos)} {budget} + {self.budget} = {self.budget + budget}')
+            #else:
+                #print(f'No valid transfer found for {out} {pos} xP {self.player_xp(out, pos)} {budget} + {self.budget} = {self.budget + budget}')
                 
 
     def swap_players_who_didnt_play(self):
@@ -1067,7 +1068,7 @@ class team:
         # Sort by P all_p[x][2]
         all_p = sorted(p_list, key=lambda x: x[2], reverse=True)
         # Display best 3 players
-        print(f'''GW{self.gameweek} - {self.season} | P: {self.team_p()} | B: {self.budget:.1f} | C: {self.captain} | VC: {self.vice_captain}
+        print(f'''GW{self.gameweek} - {self.season} | P: {self.team_p()} | xP: {self.team_xp():.2f} | B: {self.budget:.1f} | C: {self.captain} | VC: {self.vice_captain}
     Top 3: {all_p[0][0]} {all_p[0][1]} {all_p[0][2]}, {all_p[1][0]} {all_p[1][1]} {all_p[1][2]}, {all_p[2][0]} {all_p[2][1]} {all_p[2][2]}
     Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2][1]} {all_p[-2][2]}, {all_p[-3][0]} {all_p[-3][1]} {all_p[-3][2]}\n''')
 
@@ -1119,7 +1120,7 @@ class team:
         for player in worst_players:
             if self.name_in_list(player, bought_players):
                 print(f'Player {player} already in list')
-                print(bought_players)
+                #print(bought_players)
             if len(bought_players) == n_low + n or self.name_in_list(player, bought_players):
                 break
 
@@ -1204,7 +1205,7 @@ class team:
                         budget_players += 1
                         total_spent += p_cost
 
-        print(f'Players bought: {players_bought}, Prem {premium_players}, Budget {budget_players}, Total Spent: {total_spent} / {original_budget}')
+        print(f'Players bought: {players_bought}, Prem {premium_players}, Budget {budget_players}, Total Spent: {total_spent} / {original_budget:.1f}')
         return players_bought
 
     def pos_to_num(self, position):
@@ -1255,7 +1256,7 @@ class team:
         # Check if any club has more than 3 players
         for club in club_counts:
             if club_counts[club] > 3:
-                print(f'Club {club} has {club_counts[club]} players from the same team')
+                #print(f'Club {club} has {club_counts[club]} players from the same team')
                 return False
             
         return True

@@ -4,6 +4,7 @@ from sklearn import linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.neural_network import MLPRegressor
 import datetime
 import requests 
 import json
@@ -181,7 +182,7 @@ class fpl_data:
             pandas.DataFrame: The pruned features.
         """
         # Drop the remaining columns that are not features
-        features = features.drop(['total_points', 'bps', 'selected', 'was_home'], axis=1)
+        features = features.drop(['total_points', 'id', 'bps', 'was_home'], axis=1)
 
         return features
     
@@ -244,12 +245,10 @@ class fpl_data:
         Returns:
             tuple: The training data for each position.
         """
-        try:
-            features = self.get_all_pos_data(season, week_num)
-        except FileNotFoundError:
-            print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
-            exit()
+        # Grab the relevant data per position
+        features = self.get_all_pos_data(season, week_num)
         
+        # Extract the labels
         feature_labels = self.extract_all_labels(features)
 
         # Drop the remaining columns that are not features
@@ -330,21 +329,28 @@ class fpl_data:
             fwd_model = linear_model.LinearRegression()
             
         elif model_type == 'randomforest':
-            gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
-            def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
-            mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
-            fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 5)
+            gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
+            def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
+            mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
+            fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
+
+        elif model_type == 'neuralnetwork':
+            gk_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
+            def_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
+            mid_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
+            fwd_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
 
         elif model_type == 'gradientboost':
             loss_function = 'squared_error'
-            n_est = 50 # keep at 100 whilst in development for speed
+            n_est = 1000 # keep at 100 whilst in development for speed
             l_rate = 0.2
-            max_f = 10
-            max_leaf = 20
-            gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
-            def_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
-            mid_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
-            fwd_model = GradientBoostingRegressor(max_features=max_f,n_estimators=n_est, max_leaf_nodes=max_leaf, learning_rate=l_rate, criterion='squared_error', loss=loss_function, random_state=42)
+            max_depth=4
+            max_f = 100
+            
+            gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
+            def_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
+            mid_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
+            fwd_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
 
         # Fit training data to model
         gk_model.fit(training_data[0][0], training_data[0][1])
@@ -464,12 +470,10 @@ class fpl_data:
             post_predictions = pd.DataFrame(post_predictions, columns=['Name', 'xP'])
             overall_predictions.append(post_predictions)
         return overall_predictions
+    
     def post_model_weightings_for_next_gw(self, clean_predictions, week_num):
         overall_predictions = []
         next_num_gws = 1
-
-        # Get future fixtures for the specified week
-        future_fixtures = self.get_future_fixtures(self.season, week_num)
         
         # For each pos in predictions
         for pos in clean_predictions:
@@ -483,7 +487,7 @@ class fpl_data:
             for i in range(len(pos)):
                 name = pos.loc[i, 'Name']
                 xP = pos.loc[i, 'xP']
-                p = 1 * xP
+                p = xP
                 
                 try:
                     team_name = self.get_player_team(name, week_num)
@@ -496,15 +500,7 @@ class fpl_data:
 
                 fixture = fixture_list.iloc[0]
 
-                # Check for injuries
-                injuries_p = 0
-                # If significant injury, xP = 0
-                # Slight injury, xP *= 0.8
-
-                # Check for suspension
-                susp_p = 0
-                # If player is suspended, xP = 0
-
+                # Home Advantage
                 home_away_p = 0
                 home_fixture = False
                 if fixture['team_h'] == team_id:
@@ -534,7 +530,7 @@ class fpl_data:
                     diff_p = p * -0.2
             
                 # Check for form?
-                p += injuries_p + susp_p + home_away_p + diff_p
+                p += home_away_p + diff_p
                 p = round(p, 3)
                 
                 post_predictions.append([name, p])
@@ -542,7 +538,9 @@ class fpl_data:
             # Convert to dataframe and set index to name
             post_predictions = pd.DataFrame(post_predictions, columns=['Name', 'xP'])
             overall_predictions.append(post_predictions)
-        return overall_predictions #[gk_predictions, def_predictions, mid_predictions, fwd_predictions]
+
+        return overall_predictions
+        
     def id_to_name_dict(self):
         """
         Get the id to name dictionary.
@@ -654,3 +652,5 @@ class fpl_data:
                     row['xP'] = xp_array
 
         return n_next_weeks
+    
+    
