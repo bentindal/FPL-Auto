@@ -78,9 +78,11 @@ def export_tsv(clean_predictions, season, week_num):
 
     positions = ['GK', 'DEF', 'MID', 'FWD']
     for i, position in enumerate(positions):
+        # sort by xP
+        clean_predictions[i] = clean_predictions[i].sort_values(by='xP', ascending=False)
         clean_predictions[i].to_csv(f'{directory}{position}.tsv', sep='\t')
 
-    print(f'- Saved to {directory}[POS].tsv')
+    print(f'- Saved predictions to {directory}[POS].tsv')
 
 def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     # X-axis is Gameweeks

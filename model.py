@@ -136,6 +136,7 @@ def main():
             tsv_predictions = np.concatenate((np.array([['Name', 'xP']]), tsv_predictions), axis=0)
             tsv_predictions = pd.DataFrame(tsv_predictions[1:], columns=tsv_predictions[0])
             tsv_predictions.set_index('Name', inplace=True)
+
             clean_predictions.append(tsv_predictions)
 
         # Now we have our model predictions, lets do some post-weightings

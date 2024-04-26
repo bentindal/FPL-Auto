@@ -79,7 +79,6 @@ class fpl_data:
                 gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         except FileNotFoundError:
             print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
-            exit()
             
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
         return gw_data.set_index('name')
@@ -399,14 +398,10 @@ class fpl_data:
         predictions = [gk_predictions, def_predictions, mid_predictions, fwd_predictions]
         return player_names, predictions
     
-    def get_price(self, week_num, player):
-        gw_data = self.get_gw_data(self.season, week_num - 1)
-        gw_data = gw_data[['value']]
-        gw_data = gw_data / 10
-        # Turn gw_data into dictionary (name --> value)
-        gw_data = gw_data.to_dict()['value']
+    def get_price(self, week_num, player, gw_data):
+        gw_data = gw_data[['value']].to_dict()['value']
         if player in gw_data:
-            return gw_data[player]
+            return gw_data[player] / 10
         else:
             return None
     
@@ -435,6 +430,7 @@ class fpl_data:
 
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
         overall_predictions = []
+        gw_data = self.get_gw_data(self.season, week_num)
         # For each pos in predictions
         for pos in clean_predictions:
             # change pos into dataframe, skip first header
@@ -446,9 +442,9 @@ class fpl_data:
                 xP = pos.loc[i, 'xP']
                 next_gws_p = np.ones(next_num_gws) * xP
                 try:
-                    team_name = self.get_player_team(name, week_num)
+                    team_name = self.get_player_team(name, week_num, gw_data)
                     team_id = self.team_to_id[team_name]
-                    fixture_list = self.get_future_fixtures_for_player(name, week_num)[0:next_num_gws]
+                    fixture_list = self.get_future_fixtures_for_player(name, week_num, gw_data)[0:next_num_gws]
                 except (KeyError, TypeError):
                     if next_num_gws == 1:
                         post_predictions.append([name, [0]])
@@ -474,7 +470,7 @@ class fpl_data:
     def post_model_weightings_for_next_gw(self, clean_predictions, week_num):
         overall_predictions = []
         next_num_gws = 1
-        
+        gw_data = self.get_gw_data(self.season, week_num)
         # For each pos in predictions
         for pos in clean_predictions:
             # Change pos into dataframe, skip first header
@@ -490,13 +486,12 @@ class fpl_data:
                 p = xP
                 
                 try:
-                    team_name = self.get_player_team(name, week_num)
+                    team_name = self.get_player_team(name, week_num, gw_data)
                     team_id = self.team_to_id[team_name]
-                    fixture_list = self.get_future_fixtures_for_player(name, week_num)[0:next_num_gws]
-                    
+                    fixture_list = self.get_future_fixtures_for_player(name, week_num, gw_data)[0:next_num_gws]
                 except (KeyError, TypeError):
-                    post_predictions.append([name, 0])
-                    continue
+                   post_predictions.append([name, 0])
+                   continue
 
                 fixture = fixture_list.iloc[0]
 
@@ -605,13 +600,12 @@ class fpl_data:
         team_fixtures = team_fixtures[['event', 'team_h', 'team_a', 'team_h_difficulty', 'team_a_difficulty']]
         return team_fixtures
     
-    def get_future_fixtures_for_player(self, player_name, week_num):
-        team_name = self.get_player_team(player_name, week_num)
+    def get_future_fixtures_for_player(self, player_name, week_num, gw_data):
+        team_name = self.get_player_team(player_name, week_num, gw_data)
         player_fixtures = self.get_future_fixtures_for_team(team_name, week_num)
         return player_fixtures
     
-    def get_player_team(self, player_name, week_num):
-        gw_data = self.get_gw_data(self.season, week_num)
+    def get_player_team(self, player_name, week_num, gw_data):
         try:
             return gw_data.loc[player_name]['team']
         except KeyError:
@@ -647,10 +641,10 @@ class fpl_data:
                 for i in range(len(xp_array)):
                     xp_array[i] *= discount_factor ** i
                 if sum:
-                    row['xP'] = round(np.sum(xp_array), 2)
+                    row['xP'] = round(np.mean(xp_array), 2)
                 else:
                     row['xP'] = xp_array
-
+        
         return n_next_weeks
     
     

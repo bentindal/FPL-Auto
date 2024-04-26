@@ -18,11 +18,12 @@ def parse_args():
                         choices=[
                             "auto", "custom_1", "custom_2"], 
                         help='Initial team to use: auto = generate own team, custom_1 = use my team at GW1, custom_2 = use my team at GW18, default: auto')
-    
+    parser.add_argument('-save', '-s',
+                        action=argparse.BooleanOptionalAction, default=False, help='Whether to export results to json alongside score plot')
     parser.add_argument('-plot_p_minus_xp',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
     parser.add_argument('-plot_score_comparison',
-                        action=argparse.BooleanOptionalAction, default=True, help='Plot P each week categorised by performance, default: True')
+                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
     parser.add_argument('-plot_average_comparison',
                         action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
     parser.add_argument('-plot_xp',
@@ -92,12 +93,12 @@ def main():
 
         # --- AFTER DEADLINE ---
         team_p = t.team_p()
-        t.display()
+
         # Week Results
         t.result_summary()
-        
         p_list.append(team_p)
         xp_list.append(team_xp)
+
         # Set team to next week
         if i != start_gw + repeat and i != inputs.repeat_until:
             if team_p != 0:
@@ -122,7 +123,8 @@ def main():
     print(f'avg_xp: {xp_sum / len(p_list):.2f}')
     print(t.chips_used)
 
-    eval.export_results(season, p_list, xp_list, t.chips_used, t.transfer_history)
+    if inputs.save:
+        eval.export_results(season, p_list, xp_list, t.chips_used, t.transfer_history)
 
     # Plots
     if inputs.plot_p_minus_xp:
