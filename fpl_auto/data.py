@@ -166,6 +166,15 @@ class fpl_data:
         def_data.loc[def_data.index.isin(players_who_didnt_play), :] = 0
         mid_data.loc[mid_data.index.isin(players_who_didnt_play), :] = 0
         fwd_data.loc[fwd_data.index.isin(players_who_didnt_play), :] = 0
+        
+        # Set injured players xP to 0
+        players_who_didnt_play = self.non_players(season, from_gw + 1)
+        players_who_didnt_play = players_who_didnt_play.index
+
+        gk_data.loc[gk_data.index.isin(players_who_didnt_play), :] = 0
+        def_data.loc[def_data.index.isin(players_who_didnt_play), :] = 0
+        mid_data.loc[mid_data.index.isin(players_who_didnt_play), :] = 0
+        fwd_data.loc[fwd_data.index.isin(players_who_didnt_play), :] = 0
         #print(f'After: {len(gk_data)}')
 
         return gk_data, def_data, mid_data, fwd_data
@@ -419,13 +428,14 @@ class fpl_data:
     def get_players_who_didnt_play(self, gameweek):
         gw_data = self.get_gw_data(self.season, gameweek)
         gw_data = gw_data[gw_data['minutes'] == 0]
-        # conver to dict (name --> id)
+        # conver to dict (name -> id)
         gw_data = gw_data.to_dict()['minutes']
         return gw_data
     
     def non_players(self, season, gameweek):
-        gw_data = self.get_gw_data(season, gameweek)
-        gw_data = gw_data[gw_data['minutes'] == 0]
+        if gameweek < self.get_recent_gw():
+            gw_data = self.get_gw_data(season, gameweek)
+            gw_data = gw_data[gw_data['minutes'] == 0]
         return gw_data
 
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
@@ -636,7 +646,6 @@ class fpl_data:
         # For each player in each position
         for pos in n_next_weeks:
             for i, row in pos.iterrows():
-                
                 xp_array = row['xP']
                 for i in range(len(xp_array)):
                     xp_array[i] *= discount_factor ** i

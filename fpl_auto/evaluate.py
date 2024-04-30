@@ -117,8 +117,7 @@ def plot_score_comparison(p_list, global_avg, chips_usage, from_week, to_week, s
     
     #plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
     plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
-    if season == '2023-24':
-        plt.axhline(global_avg, color='limegreen', linestyle='--', label=f'Global Avg {global_avg:.2f}')
+    
     chip_colors = {'Triple Captain': 'mediumvioletred', 
                    'Bench Boost': 'orange', 
                    'Free Hit': 'blueviolet', 
