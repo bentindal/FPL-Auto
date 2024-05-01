@@ -1221,8 +1221,6 @@ class team:
         spending_budget -= def_min
         spending_budget -= gk_min
 
-        #print('Spending Budget:', spending_budget)
-
         self.fwds = []
         self.mids = []
         self.defs = []
@@ -1230,7 +1228,8 @@ class team:
         self.subs = []
         
         # Work out maximum I can spend
-        ratio_split = [0.2, 0.4, 0.30, 0.10]
+        # FWD, MID, DEF, GK
+        ratio_split = [0.2, 0.4, 0.3, 0.1]
         budget_p = [1, 2, 2, 1]
 
         gk_budget = spending_budget * ratio_split[3] + gk_min

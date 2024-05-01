@@ -185,6 +185,10 @@ def box_plot_by_season(points, seasons):
     plt.title('Points Box Plot by Season')
     plt.yticks(range(1, len(y_axis) + 1), y_axis)
     plt.tight_layout()
+
+    # label the mean line
+    # for i, mean in enumerate([np.mean(p) for p in points]):
+    #     plt.text(mean, i + 1, f'{mean:.2f}', color='black', fontsize=8, ha='center')
     plt.show()
 
 def box_plot_by_week(points, start_gw, end_gw, season):    
