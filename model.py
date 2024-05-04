@@ -60,6 +60,7 @@ output_files = inputs.save
 vastaav = fpl_data('data', season)
 
 def main():
+    simulation_finished = False
     count = 0
     total_e = 0
     total_rmse = 0
@@ -69,8 +70,12 @@ def main():
     for i in range(target_gameweek, min(target_gameweek + repeat, 39)):
         # Retrain model each time
         # Lets sum up the last 10 gameweeks to get a more accurate representation of player performance
-        training_data, test_data = vastaav.get_training_data_all(
-            season, i - training_prev_weeks, i)
+        try:
+            training_data, test_data = vastaav.get_training_data_all(
+                season, i - training_prev_weeks, i)
+        except UnboundLocalError:
+            print(f'Reached Prediction Limit for {season} GW{i}, can only predict 1 week beyond data.')
+            quit()
 
         gk_model, def_model, mid_model, fwd_model = vastaav.get_model(modelType, training_data)
 
@@ -148,6 +153,9 @@ def main():
         if output_files:
             eval.export_tsv(clean_predictions, season, i)
         
+        if simulation_finished:
+            break
+
     if repeat > 1:
         total_e /= count
         total_rmse /= count

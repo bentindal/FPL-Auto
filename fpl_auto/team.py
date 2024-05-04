@@ -974,8 +974,7 @@ class team:
                 self.transfer(out, transfer_in, pos)
                 if self.squad_size() != 15:
                     self.remove_excess_players()
-                print(f'Transferred {out} {pos} --> {transfer_in} {pos}')
-                self.display()
+                
                 # If theres still another transfer left, go again
                 if self.transfers_left > 0:
                     out, pos, budget = self.suggest_transfer_out()
@@ -988,8 +987,7 @@ class team:
                     transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
                     if transfer_in != None and self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= min_improvement:
                         self.transfer(out, transfer_in, pos)
-                        print(f'Transferred {out} {pos} --> {transfer_in} {pos}')
-                        self.display()
+                        
                         if self.squad_size() != 15:
                             self.remove_excess_players()
             #else:
@@ -1337,10 +1335,11 @@ class team:
         # 10,5,30,30 got 1704 on 22_23
         # 10,5,20,15 got ?? on 22_23 - error on 23
         # 10,5,10,10 got ?? on 22_23 - error on 23
-        triple_captain_threshold = 8
+        triple_captain_threshold = 5
         bench_threshold = 5
         free_hit_threshold = 16
         wildcard_threshold = 24
+        
         print('Checking for any chips...' , end='\r')
         if self.season == '2022-23' and (self.gameweek == 7 or self.gameweek == 8):
             return

@@ -1,94 +1,62 @@
 	Name	xP
-76	Robert Sánchez	5.795
-36	Hugo Lloris	5.58
-37	Illan Meslier	3.507
-49	José Malheiro de Sá	2.859
-23	Edouard Mendy	2.631
-70	Nick Pope	2.508
-32	Gavin Bazunu	2.244
-0	Aaron Ramsdale	2.208
-58	Lukasz Fabianski	2.178
-86	Vicente Guaita	2.178
-4	Alisson Ramses Becker	2.167
-22	Ederson Santana de Moraes	2.139
-19	David Raya Martin	1.815
-18	David De Gea Quintana	1.764
-27	Emiliano Martínez Romero	1.692
-2	Alex McCarthy	1.133
-53	Kasper Schmeichel	1.012
-61	Marek Rodák	1.001
-9	Asmir Begović	0.941
-77	Robin Olsen	0.875
-64	Martin Dubravka	0.756
-63	Mark Travers	0.725
-79	Rúnar Alex Rúnarsson	0.0
-60	Marcus Bettinelli	0.0
-65	Mateusz Lis	-0.0
-62	Mark Gillespie	0.0
-59	Marcelo de Araújo Pitaluga Filho	0.0
-88	Wayne Hennessey	0.0
-90	Willy Caballero	0.0
-57	Louie Moulden	0.0
-56	Kristoffer Klaesson	0.0
-55	Kjell Scherpen	0.0
-91	Zack Steffen	0.0
-54	Kepa Arrizabalaga	0.0
-89	Will Dennis	-0.0
-67	Matija Šarkić	0.0
-66	Mathew Ryan	0.0
-80	Sam Johnstone	-0.0
-68	Matt Turner	0.0
-87	Viljami Sinisalo	0.0
-69	Matthew Cox	0.0
-71	Norberto Murara Neto	0.0
-72	Patrik Gunnarsson	0.0
-85	Tom Heaton	0.0
-52	Karl Hein	0.0
-75	Remi Matthews	0.0
-84	Thomas Strakosha	0.0
-83	Thomas McGill	0.0
-82	Stefan Ortega Moreno	0.0
-78	Rui Pedro dos Santos Patrício	0.0
-81	Scott Carson	0.0
-74	Pierluigi Gollini	0.0
-46	Jonas Lössl	0.0
-51	Karl Darlow	0.0
-50	João Virgínia	0.0
-25	Ellery Balcombe	0.0
-24	Eldin Jakupovic	0.0
-21	Dean Henderson	0.0
-20	David de Gea	0.0
-17	Darren Randolph	0.0
-16	Danny Ward	0.0
-15	Daniel Iversen	-0.0
-14	Cieran Slicker	0.0
-13	Caoimhin Kelleher	0.0
-12	Brice Samba	0.0
-11	Brandon Austin	0.0
-10	Bernd Leno	0.0
-8	Arthur Okonkwo	0.0
-7	Andy Lonergan	0.0
-6	Andreas Söndergaard	0.0
-5	Alphonse Areola	0.0
-3	Alex Smithies	-0.0
-26	Emiliano Martínez	0.0
-92	Álvaro Fernández	0.0
-28	Filip Marschall	0.0
-41	Jason Steele	0.0
-48	Joseph Whitworth	-0.0
-47	Jordan Pickford	0.0
-1	Adrián San Miguel del Castillo	0.0
-45	John Ruddy	0.0
-44	Joel Robles	-0.0
-43	Joe Hart	0.0
-42	Jed Steer	0.0
-40	James Storer	0.0
-29	Francisco Casilla Cortés	0.0
-39	Jackson Smith	0.0
-38	Jack Butland	0.0
-35	Harvey Davies	-0.0
-34	Harry Tyrer	0.0
-33	Harry Lewis	0.0
-31	Freddie Woodman	0.0
-30	Fraser Forster	0.0
-73	Paulo Gazzaniga Farias	-0.033
+49	Robert Sánchez	7.381
+25	Illan Meslier	3.105
+16	Dean Henderson	3.073
+30	Jordan Pickford	3.04
+15	David Raya Martin	2.974
+32	José Malheiro de Sá	2.926
+18	Edouard Mendy	2.878
+45	Nick Pope	2.677
+0	Aaron Ramsdale	2.173
+22	Gavin Bazunu	2.156
+17	Ederson Santana de Moraes	2.116
+4	Alisson Ramses Becker	2.013
+38	Lukasz Fabianski	1.925
+14	David De Gea Quintana	1.773
+20	Emiliano Martínez Romero	1.742
+24	Hugo Lloris	1.701
+56	Vicente Guaita	1.254
+39	Marek Rodák	1.111
+12	Danny Ward	0.99
+40	Mark Travers	0.587
+31	Joseph Whitworth	0.0
+23	Harvey Davies	0.0
+3	Alex Smithies	-0.011
+57	Wayne Hennessey	-0.014
+9	Brice Samba	-0.014
+41	Martin Dubravka	-0.017
+33	Karl Darlow	-0.017
+50	Robin Olsen	-0.017
+55	Tom Heaton	-0.018
+8	Brandon Austin	-0.018
+21	Fraser Forster	-0.018
+43	Matija Šarkić	-0.019
+36	Kjell Scherpen	-0.019
+54	Thomas Strakosha	-0.019
+35	Kepa Arrizabalaga	-0.019
+28	Jason Steele	-0.019
+27	Jackson Smith	-0.019
+6	Asmir Begović	-0.019
+19	Ellery Balcombe	-0.019
+10	Caoimhin Kelleher	-0.022
+34	Kasper Schmeichel	-0.022
+59	Willy Caballero	-0.022
+11	Daniel Iversen	-0.022
+13	Darren Randolph	-0.022
+7	Bernd Leno	-0.022
+51	Sam Johnstone	-0.022
+2	Alex McCarthy	-0.022
+48	Remi Matthews	-0.022
+47	Paulo Gazzaniga Farias	-0.022
+5	Alphonse Areola	-0.022
+26	Jack Butland	-0.022
+42	Mateusz Lis	-0.022
+1	Adrián San Miguel del Castillo	-0.022
+46	Norberto Murara Neto	-0.023
+44	Matt Turner	-0.023
+52	Scott Carson	-0.023
+53	Stefan Ortega Moreno	-0.023
+29	Joel Robles	-0.023
+58	Will Dennis	-0.023
+37	Kristoffer Klaesson	-0.023
+60	Zack Steffen	-0.023

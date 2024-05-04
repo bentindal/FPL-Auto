@@ -1,87 +1,87 @@
 	Name	xP
-7	André Onana	8.041
-24	Emiliano Martínez Romero	2.691
-61	Nick Pope	2.688
-53	Mark Flekken	2.664
-4	Alisson Ramses Becker	2.252
-39	Jordan Pickford	2.211
-12	Bernd Leno	2.208
-67	Robert Sánchez	2.167
-84	Wes Foderingham	2.142
-17	David Raya Martin	1.871
-35	James Trafford	1.833
-74	Thomas Kaminski	1.746
-5	Alphonse Areola	1.615
-30	Guglielmo Vicario	1.277
-70	Sam Johnstone	1.161
-41	José Malheiro de Sá	1.093
-36	Jason Steele	1.012
-59	Matt Turner	0.792
-22	Ederson Santana de Moraes	0.671
-32	Ionuț Radu	0.484
-62	Norberto Murara Neto	0.0
-58	Matt Macey	0.0
-60	Matthew Cox	0.0
-57	Matija Šarkić	0.0
-56	Martin Dubravka	0.0
-55	Mark Travers	0.0
-54	Mark Gillespie	0.0
-52	Marek Rodák	0.0
-63	Odysseas Vlachodimos	0.0
-0	Aaron Ramsdale	0.0
-64	Oliwier Zych	0.0
-76	Tim Krul	0.0
-83	Wayne Hennessey	0.0
+7	André Onana	8.404
+4	Alisson Ramses Becker	3.316
+24	Emiliano Martínez Romero	2.889
+74	Thomas Kaminski	2.772
+61	Nick Pope	2.565
+70	Sam Johnstone	2.495
+12	Bernd Leno	2.473
+39	Jordan Pickford	2.387
+84	Wes Foderingham	2.194
+67	Robert Sánchez	1.861
+17	David Raya Martin	1.72
+53	Mark Flekken	1.53
+30	Guglielmo Vicario	1.518
+63	Odysseas Vlachodimos	1.179
+41	José Malheiro de Sá	1.081
+22	Ederson Santana de Moraes	1.046
+5	Alphonse Areola	1.02
+35	James Trafford	1.007
+1	Adam Davies	0.011
+73	Steven Benda	0.011
+36	Jason Steele	0.011
+31	Hugo Lloris	0.011
+37	Joe Whitworth	0.011
+38	Jordan Amissah	0.011
+57	Matija Šarkić	0.011
+27	Fraser Forster	0.011
+46	Kjell Scherpen	0.011
+66	Remi Matthews	0.011
+42	João Neves Virgínia	0.011
+77	Tom Heaton	0.011
+78	Tom King	0.011
+18	Dean Henderson	0.011
+79	Tom McGill	0.011
+15	Daniel Bentley	0.011
+80	Vicente Guaita	0.011
+13	Brandon Austin	0.011
+11	Bart Verbruggen	0.011
+65	Radek Vítek	0.011
+8	Andy Lonergan	0.011
+6	Altay Bayindir	0.011
+3	Alfie Whiteman	0.011
+52	Marek Rodák	0.011
+0	Aaron Ramsdale	0.009
+62	Norberto Murara Neto	0.009
+64	Oliwier Zych	0.009
+59	Matt Turner	0.009
+60	Matthew Cox	0.009
+72	Stefan Ortega Moreno	0.009
+68	Robin Olsen	0.009
+69	Rúnar Alex Rúnarsson	0.009
+71	Scott Carson	0.009
+75	Thomas Strakosha	0.009
+76	Tim Krul	0.009
+81	Viljami Sinisalo	0.009
+83	Wayne Hennessey	0.009
+58	Matt Macey	0.009
+43	Karl Darlow	0.009
+56	Martin Dubravka	0.009
+55	Mark Travers	0.009
+2	Adrián San Miguel del Castillo	0.009
+9	Arijanet Muric	0.009
+10	Bailey Peacock-Farrell	0.009
+14	Caoimhin Kelleher	0.009
+16	Darren Randolph	0.009
+19	Denis Franchi	0.009
+20	Djordje Petrovic	0.009
+21	Eddie Beach	0.009
+23	Ellery Balcombe	0.009
+25	Ethan Horvath	0.009
+26	Filip Marschall	0.009
+28	Gabriel Słonina	0.009
+29	George Shelvey	0.009
+32	Ionuț Radu	0.009
+33	Jack Walton	0.009
+34	James Shea	0.009
+40	Joseph Anang	0.009
+44	Karl Hein	0.009
+45	Kepa Arrizabalaga	0.009
+47	Lawrence Vigouroux	0.009
+48	Loris Karius	0.009
+49	Lucas Bergström	0.009
+50	Lukasz Fabianski	0.009
+51	Marcus Bettinelli	0.009
+54	Mark Gillespie	0.009
+85	Zack Steffen	0.009
 82	Vincent Angelini	0.0
-81	Viljami Sinisalo	0.0
-80	Vicente Guaita	0.0
-79	Tom McGill	0.0
-78	Tom King	0.0
-77	Tom Heaton	0.0
-75	Thomas Strakosha	0.0
-65	Radek Vítek	0.0
-73	Steven Benda	0.0
-72	Stefan Ortega Moreno	0.0
-71	Scott Carson	0.0
-69	Rúnar Alex Rúnarsson	0.0
-50	Lukasz Fabianski	0.0
-68	Robin Olsen	0.0
-66	Remi Matthews	0.0
-51	Marcus Bettinelli	0.0
-43	Karl Darlow	0.0
-49	Lucas Bergström	0.0
-48	Loris Karius	0.0
-21	Eddie Beach	0.0
-20	Djordje Petrovic	0.0
-19	Denis Franchi	0.0
-18	Dean Henderson	0.0
-16	Darren Randolph	0.0
-15	Daniel Bentley	0.0
-14	Caoimhin Kelleher	0.0
-13	Brandon Austin	0.0
-11	Bart Verbruggen	0.0
-10	Bailey Peacock-Farrell	0.0
-9	Arijanet Muric	0.0
-8	Andy Lonergan	0.0
-6	Altay Bayindir	0.0
-3	Alfie Whiteman	0.0
-2	Adrián San Miguel del Castillo	0.0
-23	Ellery Balcombe	0.0
-25	Ethan Horvath	0.0
-26	Filip Marschall	0.0
-40	Joseph Anang	0.0
-47	Lawrence Vigouroux	0.0
-46	Kjell Scherpen	0.0
-45	Kepa Arrizabalaga	0.0
-44	Karl Hein	0.0
-1	Adam Davies	0.0
-42	João Neves Virgínia	0.0
-38	Jordan Amissah	0.0
-27	Fraser Forster	0.0
-37	Joe Whitworth	0.0
-34	James Shea	0.0
-33	Jack Walton	0.0
-31	Hugo Lloris	0.0
-29	George Shelvey	0.0
-28	Gabriel Słonina	0.0
-85	Zack Steffen	0.0

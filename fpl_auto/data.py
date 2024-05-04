@@ -78,8 +78,8 @@ class fpl_data:
             else:
                 gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         except FileNotFoundError:
-            print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
-            
+            #print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
+            pass
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
         return gw_data.set_index('name')
 
@@ -349,16 +349,12 @@ class fpl_data:
             fwd_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
 
         elif model_type == 'gradientboost':
-            loss_function = 'squared_error'
-            n_est = 1000 # keep at 100 whilst in development for speed
-            l_rate = 0.2
-            max_depth=4
-            max_f = 100
-            
-            gk_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
-            def_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
-            mid_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
-            fwd_model = GradientBoostingRegressor(max_features=max_f, n_estimators=n_est, learning_rate=l_rate, criterion='squared_error', loss=loss_function, max_depth=max_depth)
+            n_est = 110
+
+            gk_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=5) # Goalkeeper
+            def_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=10) # Defender
+            mid_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=20) # Midfielder
+            fwd_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=10) # Forward
 
         # Fit training data to model
         gk_model.fit(training_data[0][0], training_data[0][1])
