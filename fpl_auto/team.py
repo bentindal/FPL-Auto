@@ -2,7 +2,7 @@ import pandas as pd
 import fpl_auto.data as fpl
 import datetime as dt
 class team:
-    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=1, players=[[], [], [], [], []], chips_used=[], transfer_history=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
+    def __init__(self, season, gameweek=1, budget=100.0, transfers_left=0, players=[[], [], [], [], []], chips_used=[], transfer_history=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
         """
         Initializes a team object.
 
@@ -81,7 +81,7 @@ class team:
         if self.gameweek >= self.recent_gw and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.recent_gw)
             self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw - 1)
-        elif self.gameweek == 8 and self.season == '2023-24':
+        elif self.gameweek == 7 and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.gameweek)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
         else:
@@ -840,7 +840,7 @@ class team:
             return self.positions_list[player]
         elif player in self.prev_pos_list:
             return self.prev_pos_list[player]
-        next_pos_list = self.fpl.position_dict(self.gameweek + 1)
+        next_pos_list = self.fpl.position_dict(self.gameweek)
         if player in next_pos_list:
             return next_pos_list[player]
     
@@ -1335,8 +1335,9 @@ class team:
         # 10,5,30,30 got 1704 on 22_23
         # 10,5,20,15 got ?? on 22_23 - error on 23
         # 10,5,10,10 got ?? on 22_23 - error on 23
-        triple_captain_threshold = 5
-        bench_threshold = 5
+
+        triple_captain_threshold = 8
+        bench_threshold = 4
         free_hit_threshold = 16
         wildcard_threshold = 24
         
@@ -1388,7 +1389,7 @@ class team:
             if xi_xp < wildcard_threshold:
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()
-                print(f'Current xP {xi_xp} vs New xP {self.team_xp(include_subs=True)}')
+                print(f'Current Team xP {xi_xp:.2f} vs New xP {self.team_xp(include_subs=True):.2f}')
                 self.chip_wildcard_available = False
                 self.chips_used.append(['Wildcard', self.gameweek])
     

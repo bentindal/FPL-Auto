@@ -86,6 +86,7 @@ def main():
 
     for i in range(start_gw, start_gw + repeat + 1):
         # --- BEFORE DEADLINE ---
+        t.auto_transfer() # Optionally make a transfer
         t.auto_subs()
         t.auto_captain()
         t.auto_chips()
@@ -105,7 +106,6 @@ def main():
                 all_p.append(t.p_list())
 
             t.return_subs_to_team()
-            t.auto_transfer() # Make a transfer
             
             try:
                 t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds, t.subs], t.chips_used, t.transfer_history, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
