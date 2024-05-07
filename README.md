@@ -1,7 +1,5 @@
 # Automating FPL Through the Use of Machine Learning and Strategy
 
-## Please Note this is a Work In Progress! Due to be Completed in May
-
 Created by Benjamin Tindal as part of my dissertation project "Transforming Fantasy Football Management
 with Data-Driven Machine Learning" at the University of Sheffield.
 
