@@ -81,7 +81,7 @@ class team:
         if self.gameweek >= self.recent_gw and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.recent_gw)
             self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw - 1)
-        elif self.gameweek == 7 and self.season == '2023-24':
+        elif self.gameweek == 8 and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.gameweek)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek)
         else:
@@ -960,7 +960,7 @@ class team:
             return
         
         if self.transfers_left > 0:
-            min_improvement = 6
+            min_improvement = 4
             out, pos, budget = self.suggest_transfer_out()
 
             if pos == '':
@@ -1332,14 +1332,11 @@ class team:
         return True
     
     def auto_chips(self):
-        # 10,5,30,30 got 1704 on 22_23
-        # 10,5,20,15 got ?? on 22_23 - error on 23
-        # 10,5,10,10 got ?? on 22_23 - error on 23
 
         triple_captain_threshold = 8
         bench_threshold = 4
-        free_hit_threshold = 16
-        wildcard_threshold = 24
+        free_hit_threshold = 35
+        wildcard_threshold = 30
         
         print('Checking for any chips...' , end='\r')
         if self.season == '2022-23' and (self.gameweek == 7 or self.gameweek == 8):
