@@ -1,6 +1,6 @@
 import pandas as pd
 import fpl_auto.data as fpl
-import datetime as dt
+
 class team:
     def __init__(self, season, gameweek=1, budget=100.0, transfers_left=0, players=[[], [], [], [], []], chips_used=[], transfer_history=[], triple_captain_available=True, bench_boost_available=True, free_hit_available=True, wildcard_available=True, free_hit_team=None):
         """
