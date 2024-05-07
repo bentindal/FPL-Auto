@@ -7,17 +7,17 @@ class team:
         Initializes a team object.
 
         Parameters:
-        - season (str): The season of the team.
-        - gameweek (int): The current gameweek.
-        - budget (int): The budget for the team (default: 100).
-        - gks (list): List of goalkeepers in the team (default: []).
-        - defs (list): List of defenders in the team (default: []).
-        - mids (list): List of midfielders in the team (default: []).
-        - fwds (list): List of forwards in the team (default: []).
-        - subs (list): List of substitutes in the team (default: []).
+            - season (str): The season of the team.
+            - gameweek (int): The current gameweek.
+            - budget (int): The budget for the team (default: 100).
+            - gks (list): List of goalkeepers in the team (default: []).
+            - defs (list): List of defenders in the team (default: []).
+            - mids (list): List of midfielders in the team (default: []).
+            - fwds (list): List of forwards in the team (default: []).
+            - subs (list): List of substitutes in the team (default: []).
 
         Returns:
-        - None
+            - None
         """
                 
         self.fpl = fpl.fpl_data('data', season)
@@ -88,12 +88,19 @@ class team:
             self.positions_list = self.fpl.position_dict(self.gameweek - 1)
             self.points_scored = self.fpl.actual_points_dict(season, gameweek - 1)
         
-        self.player_stop_list = ['Raheem Sterling', 'Joelinton Cássio Apolinário de Lira']
+        # Optional stop list for players
+        self.player_stop_list = []
 
         if self.free_hit_team is not None and self.free_hit_team[2] == self.gameweek - 1: 
             self.load_free_hit_team()
 
     def check_violate_club_rule(self, player, club_counts=None):
+        """
+        Checks if adding a player would violate the club rule.
+        
+        Parameters:
+            - player (str): The name of the player.
+            - club_counts (dict): A dictionary containing the number of players from each club in the team (default: None)."""
         player_club = self.fpl.get_player_team(player, self.gameweek, self.gw_data)
         if club_counts is None:
             club_counts = self.get_club_counts(self.gw_data)
@@ -112,11 +119,11 @@ class team:
         Adds a player to the team.
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - None
+            - None
         """
         force = False
         if self.transfer_in_allowed(player, position, custom_price) or force and self.squad_size() < 15:
@@ -135,6 +142,16 @@ class team:
             self.budget -= p_cost        
 
     def transfer_in_allowed(self, player, position='none', custom_price=None):
+        """
+        Checks if a transfer in is allowed for a player.
+
+        Parameters:
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+
+        Returns:
+            - bool: True if the transfer in is allowed, False otherwise.
+        """
         if custom_price == None:
             p_cost = self.player_value(player, self.gw_data)
         else:
@@ -198,10 +215,10 @@ class team:
         Returns the maximum number of players allowed for a given position.
 
         Parameters:
-        - position (str): The position ('GK', 'DEF', 'MID', 'FWD').
+            - position (str): The position ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - int: The maximum number of players allowed for the given position.
+            - int: The maximum number of players allowed for the given position.
         """
         if position == 'GK':
             return 2
@@ -213,6 +230,15 @@ class team:
             return 3
     
     def generate_player_list(self, position):
+        """
+        Generates a list of players for a given position.
+
+        Parameters:
+            - position (str): The position ('GK', 'DEF', 'MID', 'FWD').
+
+        Returns:
+            - list: A list of players for the given position.
+        """
         player_to_pos = self.player_list
         player_list = []
         for player in player_to_pos:
@@ -221,6 +247,15 @@ class team:
         return player_list
     
     def get_player_list(self, position):
+        """
+        Returns the list of players for a given position.
+
+        Parameters:
+            - position (str): The position ('GK', 'DEF', 'MID', 'FWD').
+
+        Returns:
+            - list: A list of players for the given position.
+        """
         if position == 'GK':
             return self.gk_player_list
         elif position == 'DEF':
@@ -235,11 +270,11 @@ class team:
         Removes a player from the team.
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - None
+            - None
         """
         self.return_subs_to_team()
         if position == 'GK':
@@ -263,11 +298,8 @@ class team:
         Removes a player from the team without affecting the budget
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
-
-        Returns:
-        - None
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
         """
         try:
             if position == 'GK':
@@ -290,9 +322,6 @@ class team:
         Parameters:
         - player (str): The name of the player.
         - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
-
-        Returns:
-        - None
         """
         if position == 'GK':
             self.gks.append(player)
@@ -308,9 +337,6 @@ class team:
     def display(self):
         """
         Displays the current team lineup.
-
-        Returns:
-        - None
         """
         print(f'GK: {self.gks}')
         print(f'DEF: {self.defs}')
@@ -325,7 +351,7 @@ class team:
         Returns the current team lineup.
 
         Returns:
-        - tuple: A tuple containing the lists of goalkeepers, defenders, midfielders, and forwards in the team.
+            - tuple: A tuple containing the lists of goalkeepers, defenders, midfielders, and forwards in the team.
         """
         return self.gks, self.defs, self.mids, self.fwds
     
@@ -334,7 +360,7 @@ class team:
         Returns the list of goalkeepers in the team.
 
         Returns:
-        - list: The list of goalkeepers in the team.
+            - list: The list of goalkeepers in the team.
         """
         return self.gks
     
@@ -343,7 +369,7 @@ class team:
         Returns the list of defenders in the team.
 
         Returns:
-        - list: The list of defenders in the team.
+            - list: The list of defenders in the team.
         """
         return self.defs
     
@@ -352,7 +378,7 @@ class team:
         Returns the list of midfielders in the team.
 
         Returns:
-        - list: The list of midfielders in the team.
+            - list: The list of midfielders in the team.
         """
         return self.mids
     
@@ -361,7 +387,7 @@ class team:
         Returns the list of forwards in the team.
 
         Returns:
-        - list: The list of forwards in the team.
+            - list: The list of forwards in the team.
         """
         return self.fwds
     
@@ -370,7 +396,7 @@ class team:
         Returns the list of substitutes in the team.
 
         Returns:
-        - list: The list of substitutes in the team.
+            - list: The list of substitutes in the team.
         """
         return self.subs
     
@@ -379,7 +405,7 @@ class team:
         Returns the substitutes to the team.
 
         Returns:
-        - None
+            - None
         """
         for sub in self.subs:
             self.return_player_to_team(sub[0], sub[1])
@@ -390,11 +416,11 @@ class team:
         Returns a player from the substitutes to the team.
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - None
+            - None
         """
         if position == 'GK':
             self.gks.append(player)
@@ -412,7 +438,7 @@ class team:
         Suggests the substitutions to be made in the team.
 
         Returns:
-        - list: A list of suggested substitutions, each containing the name of the player and their position.
+            - list: A list of suggested substitutions, each containing the name of the player and their position.
         """
         if self.squad_size() != 15:
             print(f'Error: Squad has not been filled up (Size {self.squad_size()})')
@@ -466,10 +492,10 @@ class team:
         Makes the substitutions in the team.
 
         Parameters:
-        - subs (list): A list of substitutions, each containing the name of the player and their position.
+            - subs (list): A list of substitutions, each containing the name of the player and their position.
 
         Returns:
-        - None
+            - None
         """
         # Add subs to list
         self.subs = subs
@@ -482,7 +508,7 @@ class team:
         Automatically makes substitutions in the team.
 
         Returns:
-        - None
+            - None
         """
         self.return_subs_to_team()
         suggested_subs = self.suggest_subs()
@@ -493,11 +519,11 @@ class team:
         Returns the expected points (xP) for a player in a given position.
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - float: The expected points for the player.
+            - float: The expected points for the player.
         """
         if position == None:
             position = self.player_pos(player)
@@ -517,10 +543,10 @@ class team:
         Returns the expected points (xP) for all players in the team.
 
         Parameters:
-        - include_subs (bool): Whether to include the expected points for substitutes (default: False).
+            - include_subs (bool): Whether to include the expected points for substitutes (default: False).
 
         Returns:
-        - list: A list of player names and their expected points.
+            - list: A list of player names and their expected points.
         """
         # List of players and their xP
         team_xp = []
@@ -557,10 +583,10 @@ class team:
         Returns the expected points (p) for all players in the team.
 
         Parameters:
-        - include_subs (bool): Whether to include the expected points for substitutes (default: False).
+            - include_subs (bool): Whether to include the expected points for substitutes (default: False).
 
         Returns:
-        - list: A list of player names and their expected points.
+            - list: A list of player names and their expected points.
         """
         # List of players and their p
         team_p = []
@@ -601,6 +627,12 @@ class team:
         return team_p
     
     def squad_size(self):
+        """
+        Returns the size of the team squad.
+
+        Returns:
+            - int: The size of the team squad.
+        """
         return len(self.gks) + len(self.defs) + len(self.mids) + len(self.fwds) + len(self.subs)
     
     def xi_size(self):
@@ -611,7 +643,7 @@ class team:
         Calculates the expected points (xP) for the entire team.
 
         Returns:
-        - float: The total expected points for the team.
+            - float: The total expected points for the team.
         """
         if self.season == '2022-23' and self.gameweek == 7:
             return 0
@@ -643,6 +675,12 @@ class team:
         return total_xp
     
     def remove_excess_players(self):
+        """
+        Removes excess players from the team.
+
+        Returns:
+            - None
+        """
         # Find the position that has an excess player
         for position in self.positions:
             if len(getattr(self, position.lower() + 's')) > self.get_max_players(position):
@@ -662,11 +700,11 @@ class team:
         Returns the actual points scored by a player in a given position.
 
         Parameters:
-        - player (str): The name of the player.
-        - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+            - player (str): The name of the player.
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
 
         Returns:
-        - int: The actual points scored by the player.
+            - int: The actual points scored by the player.
         """
         if player in self.points_scored:
             captain_played = self.captain_played()
@@ -690,6 +728,12 @@ class team:
             return 0
     
     def captain_played(self):
+        """
+        Checks if the captain has played in the current gameweek.
+
+        Returns:
+            - bool: True if the captain has played, False otherwise.
+        """
         # Captain and Vice-Captain points
         try:
             captain_p = self.player_p(self.captain, self.player_pos(self.captain))
@@ -705,7 +749,7 @@ class team:
         Calculates the actual points scored by the team.
 
         Returns:
-        - int: The total actual points scored by the team.
+            - int: The total actual points scored by the team.
         """
         if self.season == '2022-23' and self.gameweek == 7:
             return 0
@@ -741,7 +785,15 @@ class team:
         return all_p
     
     def team_p_list(self, include_subs=False):
-        # Returns a list of points scored by each player in the team (Name, Position, Points)
+        """
+        Returns a list of points scored by each player in the team (Name, Position, Points).
+
+        Parameters:
+            - include_subs (bool): Whether to include the points scored by substitutes (default: False).
+
+        Returns:
+            - list: A list of points scored by each player in the team.
+        """
         p_list = []
         captain_played = self.captain_played()
         for player in self.gks:
@@ -779,7 +831,12 @@ class team:
         return p_list
     
     def team_xp_list(self):
-        # Returns a list of points scored by each player in the team (Name, Position, Points)
+        """
+        Returns a list of points scored by each player in the team (Name, Position, Points).
+
+        Returns:
+            - list: A list of points scored by each player in the team.
+        """
         xp_list = []
         self.auto_subs()
         for player in self.gks:
@@ -806,6 +863,12 @@ class team:
         return xp_list
     
     def p_list(self):
+        """
+        Returns a list of points scored by each player in the team.
+
+        Returns:
+        - list: A list of points scored by each player in the team.
+        """
         entire_list = self.team_p_list()
         points_list = [item[2] for item in entire_list]
 
@@ -816,10 +879,10 @@ class team:
         Returns the price of a player.
 
         Parameters:
-        - player (str): The name of the player.
+            - player (str): The name of the player.
 
         Returns:
-        - int: The price of the player.
+            - int: The price of the player.
         """
         value = self.fpl.get_price(self.gameweek, player, gw_data)
         return value
@@ -830,10 +893,10 @@ class team:
         Returns the position of a player.
 
         Parameters:
-        - player (str): The name of the player.
+            - player (str): The name of the player.
 
         Returns:
-        - str: The position of the player.
+            - str: The position of the player.
         """
         # Get position for player
         if player in self.positions_list:
@@ -849,7 +912,7 @@ class team:
         Suggests the captain and vice-captain for the team.
 
         Returns:
-        - None
+            - None
         """
         # Get xP for each player in team
         xp_list = self.get_all_xp()
@@ -859,14 +922,32 @@ class team:
         return xp_list[0], xp_list[1]
     
     def update_captain(self, captain, vice_captain):
+        """
+        Updates the captain and vice-captain for the team.
+        
+        Parameters:
+            - captain (str): The name of the captain.
+            - vice_captain (str): The name of the vice-captain.
+        """
         self.captain = captain
         self.vice_captain = vice_captain
     
     def auto_captain(self):
+        """
+        Automatically selects the captain and vice-captain for the team.
+        """
         captain, vice_captain = self.suggest_captaincy()
         self.update_captain(captain[0], vice_captain[0])
     
     def suggest_transfer_out(self):
+        """
+        Suggests a player to transfer out of the team.
+
+        Returns:
+            - str: The name of the player to transfer out.
+            - str: The position of the player to transfer out.
+            - int: The price of the player to transfer out.
+        """
         # Get xP for each player in team
         xp_list = self.get_all_xp(include_subs=True)
         # Sort by xP
@@ -883,6 +964,17 @@ class team:
         return '', '', 0
     
     def suggest_transfer_in(self, position, out_player, budget):
+        """
+        Suggests a player to transfer in for a given position.
+        
+        Parameters:
+            - position (str): The position of the player to transfer in.
+            - out_player (str): The name of the player to transfer out.
+            - budget (int): The budget available for the transfer.
+
+        Returns:
+            - str: The name of the player to transfer in.
+        """
         player_xp_list = self.all_xp[self.pos_to_num(position)]
         
         # sort the pandas dataframe by xp
@@ -915,6 +1007,15 @@ class team:
         return 'No player found to transfer in'
     
     def player_in_squad(self, player):
+        """
+        Checks if a player is already in the team.
+
+        Parameters:
+            - player (str): The name of the player.
+
+        Returns:
+            - bool: True if the player is in the team, False otherwise.
+        """
         if player[0] in self.gks:
             return True
         elif player[0] in self.defs:
@@ -926,14 +1027,22 @@ class team:
         else:
             return False
         
-    def transfer(self, transfer_out, transfer_in, position):
-        
+    def transfer(self, transfer_out, transfer_in, position, threshold=4):
+        """
+        Makes a transfer in the team, as long as it improves the expected points (xP) by at least the threshold.
+
+        Parameters:
+            - transfer_out (str): The name of the player to transfer out.
+            - transfer_in (str): The name of the player to transfer in.
+            - position (str): The position of the players ('GK', 'DEF', 'MID', 'FWD').
+            - threshold (int): The minimum improvement in xP required for the transfer (default: 4).
+        """
         try:
             out_xp = self.player_xp(transfer_out, position)
             in_xp = self.player_xp(transfer_in, position)
             xp_gain = in_xp - out_xp
             
-            if xp_gain >= 4:
+            if xp_gain >= threshold:
                 self.return_subs_to_team()
                 
                 self.add_player(transfer_in, position)
@@ -950,7 +1059,13 @@ class team:
         except ValueError:
             pass
         
-    def auto_transfer(self):
+    def auto_transfer(self, threshold=4):
+        """
+        Automatically makes transfers in the team.
+
+        Returns:
+            - None
+        """
         print('Checking for any transfers...' , end='\r')
         if self.season == '2022-23' and self.gameweek == 7:
             return
@@ -960,7 +1075,7 @@ class team:
             return
         
         if self.transfers_left > 0:
-            min_improvement = 4
+            min_improvement = threshold
             out, pos, budget = self.suggest_transfer_out()
 
             if pos == '':
@@ -995,6 +1110,9 @@ class team:
                 
 
     def swap_players_who_didnt_play(self):
+        """
+        Swaps players who didn't play with substitutes in the team.
+        """
         # Get players who didn't play
         players_who_didnt_play = self.fpl.get_players_who_didnt_play(self.gameweek)
 
@@ -1078,6 +1196,22 @@ class team:
                             break
                             
     def select_ideal_team(self, fwd_n, fwd_budget, mid_n, mid_budget, def_n, def_budget, gk_n, gk_budget):
+        """
+        Selects the ideal team based on the budget allocation.
+
+        Parameters:
+            - fwd_n (int): The number of forwards to select.
+            - fwd_budget (int): The budget allocated for forwards.
+            - mid_n (int): The number of midfielders to select.
+            - mid_budget (int): The budget allocated for midfielders.
+            - def_n (int): The number of defenders to select.
+            - def_budget (int): The budget allocated for defenders.
+            - gk_n (int): The number of goalkeepers to select.
+            - gk_budget (int): The budget allocated for goalkeepers.
+
+        Returns:
+            - team: The ideal team.
+        """
         temp_t = team(self.season, self.gameweek, self.budget, self.transfers_left, self.gks, self.defs, self.mids, self.fwds)
         counts = {}
         new_fwds = self.initial_players('FWD', fwd_n, fwd_budget, counts)
@@ -1134,6 +1268,15 @@ class team:
         self.list_to_summary(all_p)
     
     def list_to_summary(self, p_list):
+        """
+        Displays the result summary for the team based on a list of points scored by each player.
+
+        Parameters:
+            - p_list (list): A list of points scored by each player in the team.
+
+        Returns:
+            - None
+        """
         # Sort by P all_p[x][2]
         all_p = sorted(p_list, key=lambda x: x[2], reverse=True)
         # Display best 3 players
@@ -1142,12 +1285,24 @@ class team:
     Worst 3: {all_p[-1][0]} {all_p[-1][1]} {all_p[-1][2]}, {all_p[-2][0]} {all_p[-2][1]} {all_p[-2][2]}, {all_p[-3][0]} {all_p[-3][1]} {all_p[-3][2]}\n''')
 
     def name_in_list(self, name, list):
+        """
+        Checks if a name is in a list (of names).
+        """
         for player in list:
             if name in player:
                 return True
         return False
     
     def pos_size(self, position):
+        """
+        Returns the number of players required for a given position.
+
+        Parameters:
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+
+        Returns:
+            - int: The number of players required for the position.
+        """
         if position == 'FWD': 
             return 3
         elif position == 'MID' or position == 'DEF':
@@ -1156,51 +1311,15 @@ class team:
             return 2
         else:
             print(f'Invalid position: {position}')
-
             return 0
-        
-    def initial_players(self, position, n, budget, counts={}):
-        n_low = self.pos_size(position) - n 
-        # Get a list of all players for the given position
-        best_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
-        best_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=True)
-
-        # n = Number of players to 'buy'
-        bought_players = []
-        
-        for player in best_players:
-            #print(player, bought_players, self.name_in_list(player, bought_players))
-
-            if len(bought_players) == n:
-                break
-            # check player is not already in bought players
-            if len(bought_players) < n and self.player_value(player) <= budget and player in self.positions_list and not self.check_violate_club_rule(player, counts) and not self.name_in_list(player, bought_players):
-                if self.positions_list[player] == position:
-                    bought_players.append(player)
-                    p_team = self.fpl.get_player_team(player, self.gameweek)
-                    if p_team not in counts:
-                        counts[p_team] = 0
-                    
-                    counts[p_team] += 1
-            
-        worst_players = getattr(self, f"{position.lower()}_xp").Name.tolist()
-        worst_players.sort(key=lambda x: float(getattr(self, f"{position.lower()}_xp_dict")[x]), reverse=False)
-
-        for player in worst_players:
-            if self.name_in_list(player, bought_players):
-                print(f'Player {player} already in list')
-                #print(bought_players)
-            if len(bought_players) == n_low + n or self.name_in_list(player, bought_players):
-                break
-
-            # player must be expected to score at least 1 point
-            if len(bought_players) < n_low + n and player in self.positions_list and self.player_xp(player, position) >= 1 and not self.name_in_list(player, bought_players) and not self.check_violate_club_rule(player):
-                if self.positions_list[player] == position:
-                    bought_players.append(player)
-        
-        return bought_players
 
     def initial_team_generator(self):
+        """
+        Generates a fresh team from scratch that attempts to maximise xP.
+
+        Returns:
+            - None
+        """
         print('Selecting fresh team...')
         if self.gameweek == 1:
             self.budget = 100
@@ -1245,6 +1364,18 @@ class team:
         print('Complete!\n')
 
     def get_best_players(self, position, budget, fillers):
+        """
+        Selects the best players for a given position based on the budget and number of fillers.
+
+        Parameters:
+            - position (str): The position of the players ('GK', 'DEF', 'MID', 'FWD').
+            - budget (int): The budget available for the players.
+            - fillers (int): The number of fillers to select.
+
+        Returns:
+            - list: The list of players selected for the position.
+            - int: The budget remaining after selecting the players.
+        """
         players_by_xp = self.all_xp[self.pos_to_num(position)].sort_values(by='xP', ascending=False)
         players_by_xp = players_by_xp.Name.tolist()
         players_needed = self.pos_size(position)
@@ -1279,6 +1410,15 @@ class team:
         return players_bought, budget_remaining
 
     def pos_to_num(self, position):
+        """
+        Converts a position to a number.
+
+        Parameters:
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+        
+        Returns:
+            - int: The number corresponding to the position.
+        """
         if position == 'FWD':
             return 3
         elif position == 'MID':
@@ -1289,12 +1429,36 @@ class team:
             return 0
         
     def id_to_name(self, id):
+        """
+        Converts a player ID to a player name.
+
+        Parameters:
+            - id (int): The ID of the player.
+        
+        Returns:
+            - str: The name of the player.
+        """
         return self.fpl.id_to_name[id]
     
     def get_avg_score(self):
+        """
+        Returns the average score of the team.
+
+        Returns:
+            - float: The average score of the team.
+        """
         return self.fpl.get_avg_score_list()
     
     def get_club_counts(self, gw_data):
+        """
+        Returns the counts of each player's club in the team.
+
+        Parameters:
+            - gw_data (dict): The data for the gameweek.
+
+        Returns:
+            - dict: The counts of each player's club in the team.
+        """
         # Get counts of each player's club
         club_counts = {}
         players = self.gks + self.defs + self.mids + self.fwds + [player[0] for player in self.subs]
@@ -1306,6 +1470,15 @@ class team:
         return club_counts
     
     def counts_from_list(self, player_list):
+        """
+        Returns the counts of each player's club in a list of players.
+
+        Parameters:
+            - player_list (list): A list of players.
+
+        Returns:
+            - dict: The counts of each player's club in the list.
+        """
         # Get counts of each player's club
         club_counts = {}
         for player in player_list:
@@ -1331,12 +1504,16 @@ class team:
             
         return True
     
-    def auto_chips(self):
+    def auto_chips(self, triple_captain_threshold=8, bench_threshold=4, free_hit_threshold=35, wildcard_threshold=30):
+        """
+        Automatically activates chips based on the team's performance.
 
-        triple_captain_threshold = 8
-        bench_threshold = 4
-        free_hit_threshold = 35
-        wildcard_threshold = 30
+        Parameters:
+            - triple_captain_threshold (int): The threshold for activating the Triple Captain chip (default: 8).
+            - bench_threshold (int): The threshold for activating the Bench Boost chip (default: 4).
+            - free_hit_threshold (int): The threshold for activating the Free Hit chip (default: 35).
+            - wildcard_threshold (int): The threshold for activating the Wildcard chip (default: 30).
+        """
         
         print('Checking for any chips...' , end='\r')
         if self.season == '2022-23' and (self.gameweek == 7 or self.gameweek == 8):
@@ -1391,12 +1568,21 @@ class team:
                 self.chips_used.append(['Wildcard', self.gameweek])
     
     def any_chip_in_use(self):
+        """
+        Checks if any chip is currently in use.
+
+        Returns:
+            - bool: True if any chip is in use, False otherwise.
+        """
         if self.chip_triple_captain_active or self.chip_bench_boost_active or self.chip_free_hit_active:
             return True
         else:
             return False
         
     def load_free_hit_team(self):
+        """
+        Loads the team from the Free Hit chip.
+        """
         pos_players = self.free_hit_team[0]
         budget = self.free_hit_team[1]
         gw = self.free_hit_team[2]
@@ -1418,7 +1604,7 @@ class team:
             p_pos = positions[index]
             for player in pos:
                 #print(f'Player {player} position {p_pos}')
-                worked = self.add_player(player, p_pos, 0, force=True)
+                self.add_player(player, p_pos, 0, force=True)
                 
         # Reset budget
         self.budget = budget
@@ -1429,6 +1615,12 @@ class team:
         self.free_hit_team = None
         
     def team_value(self):
+        """
+        Returns the total value of the team.
+
+        Returns:
+            - float: The total value of the team.
+        """
         value = 0
         p_count = 0
         for player in self.gks:
@@ -1472,6 +1664,16 @@ class team:
         return value
 
     def get_n_gws_xp(self, n, discount_factor):
+        """
+        Returns the expected points (xP) for the next n gameweeks.
+
+        Parameters:
+            - n (int): The number of gameweeks.
+            - discount_factor (float): The discount factor for the expected points.
+
+        Returns:
+            - float: The expected points for the next n gameweeks.
+        """
         if self.gameweek < 36:
             results = self.fpl.discount_next_n_gws(self.combined_xp, self.gameweek, n, discount_factor=discount_factor)
         else:
@@ -1479,6 +1681,15 @@ class team:
         return results
     
     def pos_price_minimum(self, position):
+        """
+        Returns the minimum price for a player in a given position.
+
+        Parameters:
+            - position (str): The position of the player ('GK', 'DEF', 'MID', 'FWD').
+
+        Returns:
+            - float: The minimum price for a player in the position.
+        """
         if position == 'GK' or position == 'DEF':
             return 4.0
         elif position == 'MID' or position == 'FWD':
