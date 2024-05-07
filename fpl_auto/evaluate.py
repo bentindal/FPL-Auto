@@ -3,7 +3,6 @@ import numpy as np
 import os
 import math
 import numpy as np
-from scipy import stats
 import json
 import os
 
@@ -34,9 +33,17 @@ def score_model(predictions, labels):
     return error, math.sqrt(mse), accuracy
 
 def display_weights(week_num, weights, feature_names, pos):
+    """
+    Display the feature importances for each position.
+
+    Args:
+        week_num (int): The gameweek number.
+        weights (list): A list of lists containing the feature importances for each position.
+        feature_names (list): A list of feature names.
+        pos (list): A list of positions.
+    """
     plt.figure(figsize=(15, 6))
-    # big title
-    #plt.suptitle(f'GW{week_num} feature importances')
+    plt.suptitle(f'GW{week_num} feature importances')
     # 4 subplots
     for i in range(4):
         plt.subplot(1, 4, i + 1)
@@ -54,9 +61,17 @@ def display_weights(week_num, weights, feature_names, pos):
     plt.show()
 
 def plot_predictions(predictions, test_data, week_num):
+    """
+    Plots the predictions against the actual points for each position.
+
+    Args:
+        predictions (list): A list of predictions for each position.
+        test_data (list): A list of tuples containing the test features and labels for each position.
+        week_num (int): The gameweek number.
+    """
     # Plot predictions vs actual points
-    # Plot predictions vs actual points for GWi
     gk_predictions, def_predictions, mid_predictions, fwd_predictions = predictions
+
     # Colour code by position
     plt.title(f'GW{week_num} predictions vs actual points')
     plt.xlabel('Predicted points')
@@ -72,6 +87,14 @@ def plot_predictions(predictions, test_data, week_num):
     plt.show()
 
 def export_tsv(clean_predictions, season, week_num):
+    """
+    Export the predictions to a TSV file for each position.
+
+    Args:
+        clean_predictions (list): A list of DataFrames containing the predictions for each position.
+        season (str): The season for which the predictions were made.
+        week_num (int): The gameweek number.
+    """
     # Create predictions/{season}/gw{week_num}/ directory
     directory = f'predictions/{season}/GW{week_num}/'
     os.makedirs(directory, exist_ok=True)
@@ -85,6 +108,16 @@ def export_tsv(clean_predictions, season, week_num):
     print(f'- Saved predictions to {directory}[POS].tsv')
 
 def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
+    """
+    Plots the difference between the actual points and expected points for each gameweek.
+    
+    Args:
+        p_list (list): A list of points scored in each gameweek.
+        xp_list (list): A list of expected points for each gameweek.
+        from_week (int): The starting gameweek index.
+        to_week (int): The ending gameweek index.
+    
+    """
     # X-axis is Gameweeks
     x_data = range(from_week, to_week + 1)[:len(p_list)]
     # Y-axis is P - xP
@@ -104,15 +137,23 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_score_comparison(p_list, global_avg, chips_usage, from_week, to_week, season):
+def plot_score_comparison(p_list, chips_usage, from_week, season):
+    """
+    Plots a comparison of the points scored in each gameweek with the average points scored.
+
+    Args:
+        p_list (list): A list of points scored in each gameweek.
+        chips_usage (list): A list of tuples containing the chip used and the corresponding gameweek index.
+        from_week (int): The starting gameweek index.
+        season (str): The season for which the performance is being evaluated.
+    """
     # Categorise each week as above or below average, where the average is 50 points
     week_count = range(from_week, from_week + len(p_list))
     # Categorise each week
-    total_p = sum(p_list)
     avg_p = sum(p_list) / len(p_list)
+    total_p = sum(p_list) + avg_p * (38 - len(p_list))
 
     # Plot the data
-    plt.title(f'{season} Performance - {round(total_p)} points total')
     plt.bar(week_count, p_list, label='Points Scored')
     
     #plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
@@ -125,6 +166,13 @@ def plot_score_comparison(p_list, global_avg, chips_usage, from_week, to_week, s
     for chip, i in chips_usage:
         plt.bar(i, p_list[i-from_week], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
 
+    # For the weeks that remain in the season, plot the global average
+    if len(p_list) < 38:
+        plt.title(f'{season} Projected Performance - {round(total_p)} points total')
+        for i in range(len(p_list) + 1, 39):
+            plt.bar(i, avg_p, color='grey', label=f'Averaged GW{i}', alpha=0.7)
+    else:
+        plt.title(f'{season} Performance - {round(total_p)} points total')
     plt.xlabel('Gameweek')
     plt.ylabel('Points')
     plt.legend()
@@ -134,18 +182,35 @@ def plot_score_comparison(p_list, global_avg, chips_usage, from_week, to_week, s
     plt.show()
 
 def plot_average_comparison(p_list, avg_list, from_week, to_week):
+    """
+    Plots the difference between the actual points and the global average points for each gameweek.
+
+    Args:
+        p_list (list): A list of points scored in each gameweek.
+        avg_list (list): A list of the global average points for each gameweek.
+        from_week (int): The starting gameweek index.
+        to_week (int): The ending gameweek index.
+    """
     # Categorise each week as above or below average, where the average is 50 points
     x_axis = np.arange(from_week, to_week + 1)[:len(p_list)]
     y_axis_one = p_list
     y_axis_two = avg_list[:len(p_list)]
-    y_axis = y_axis_two - y_axis_one
+    y_axis =  y_axis_one - y_axis_two
 
     plt.bar(x_axis, y_axis)
     plt.xlabel('Gameweek')
     plt.ylabel('Points Difference')
+    plt.title('Points Difference from Global Average')
     plt.show()
 
 def plot_cumulative_points(p_list, season):
+    """
+    Plots the cumulative points scored over the course of the season.
+
+    Args:
+        p_list (list): A list of points scored in each gameweek.
+        season (str): The season for which the performance is being evaluated.
+    """
     # Calculate the cumulative points
     cumulative_points = np.cumsum(p_list)
     x_axis = np.arange(1, len(p_list) + 1)
@@ -158,7 +223,15 @@ def plot_cumulative_points(p_list, season):
 
 def score_model_against_list(p_list, avg_list):
     """
-    Categorise each week as above or below average, where the average in avg_list"""
+    Compares the model's predictions against the global average.
+
+    Args:
+        p_list (list): A list of points scored in each gameweek.
+        avg_list (list): A list of the global average points for each gameweek.
+
+    Returns:
+        tuple: A tuple containing the number of weeks where the model performed better than the global average and the number of weeks where the model performed worse.
+    """
     bad = 0
     good = 0
     for i, p in enumerate(p_list):
@@ -169,6 +242,13 @@ def score_model_against_list(p_list, avg_list):
     return good, bad
 
 def box_plot_by_season(points, seasons):
+    """
+    Creates a box plot of the points scored in each season.
+
+    Args:
+        points (list): A list of lists containing the points scored in each gameweek for each season.
+        seasons (list): A list of the seasons for which the points are being plotted.
+    """
     # Creating dataset    
     fig = plt.figure(figsize=(10, 7))
 
@@ -176,7 +256,7 @@ def box_plot_by_season(points, seasons):
     box = plt.boxplot(points, patch_artist=True, vert=False)
 
     # Set the color of the boxes
-    colors = ['lightblue', 'lightgreen', 'lightpink']
+    colors = ['lightblue', 'lightgreen', 'lightpink', 'lightyellow']
     for patch, color in zip(box['boxes'], colors):
         patch.set_facecolor(color)
 
@@ -186,54 +266,19 @@ def box_plot_by_season(points, seasons):
     plt.yticks(range(1, len(y_axis) + 1), y_axis)
     plt.tight_layout()
 
-    # label the mean line
-    # for i, mean in enumerate([np.mean(p) for p in points]):
-    #     plt.text(mean, i + 1, f'{mean:.2f}', color='black', fontsize=8, ha='center')
-    plt.show()
-
-def box_plot_by_week(points, start_gw, end_gw, season):    
-    fig = plt.figure(figsize=(10, 7))
-    x_axis = np.arange(start_gw, end_gw)
-
-    # Creating plot
-    box = plt.boxplot(points, positions=x_axis, patch_artist=True)
-
-    # Set the color of the boxes
-    
-    for patch in box['boxes']:
-        patch.set_facecolor('lightblue')
-
-    plt.xlabel('Gameweek')
-    plt.ylabel('Points')
-    plt.title(f'Box Plot of {season} Points')
-    plt.show()
-
-def point_distribution(points, season):
-    sorted_points = np.sort(points)
-    plt.hist(sorted_points, density=True)
-
-    plt.xlabel('Team Points per Gameweek')
-    plt.ylabel('Probability')
-
-    # Generate random data
-    data = sorted_points
-
-    # Fit a normal distribution to the data
-    mu, std = stats.norm.fit(data)
-
-    # Plot the PDF.
-    xmin, xmax = plt.xlim()
-    x = np.linspace(xmin, xmax, 150)
-    p = stats.norm.pdf(x, mu, std)
-    plt.plot(x, p, 'k', linewidth=2)
-    plt.title(f'Point Distribution for {season} Season, mu = {mu:.2f}, std = {std:.2f}')
     plt.show()
 
 def export_results(season, points, xpoints, chip_usage, transfers):
-    avg_p = round(sum(points) / len(points), 0)
-    if len(points) < 38 and season != '2023-24':
-        points.append(avg_p)
+    """
+    Export the results of the model to a JSON file.
 
+    Args:
+        season (str): The season for which the results are being exported.
+        points (list): A list of points scored in each gameweek.
+        xpoints (list): A list of expected points for each gameweek.
+        chip_usage (list): A list of tuples containing the chip used and the corresponding gameweek index.
+        transfers (list): A list of tuples containing the transfer made and the corresponding gameweek index.
+    """
     # Combine the data into a dictionary
     data = {
         "season": season,
@@ -254,8 +299,19 @@ def export_results(season, points, xpoints, chip_usage, transfers):
 
     print('Results saved!')
 
-def plotxp(season, xp_list, start_gw, end_gw):
+def plotxp(season, xp_list, start_gw, end_gw, chips_usage):
+    """
+    Plots the expected points for each gameweek.
+
+    Args:
+        season (str): The season for which the expected points are being plotted.
+        xp_list (list): A list of expected points for each gameweek.
+        start_gw (int): The starting gameweek index.
+        end_gw (int): The ending gameweek index.
+        chips_usage (list): A list of tuples containing the chip used and the corresponding gameweek index.
+    """
     x_axis = range(start_gw, end_gw)
+    plt.figure(figsize=(20, 5))
     plt.bar(x_axis, xp_list[:len(x_axis)])
     plt.xticks(x_axis)
     plt.xlabel('Gameweek')
@@ -265,6 +321,13 @@ def plotxp(season, xp_list, start_gw, end_gw):
     # Plot the average line
     average = sum(xp_list) / len(xp_list)
     plt.axhline(average, color='red', linestyle='--', label='Average xP')
+
+    chip_colors = {'Triple Captain': 'mediumvioletred', 
+                   'Bench Boost': 'orange', 
+                   'Free Hit': 'blueviolet', 
+                   'Wildcard': 'lightcoral'}
+    for chip, i in chips_usage:
+        plt.bar(i, xp_list[i-start_gw], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
     
     plt.legend()
     plt.show()
