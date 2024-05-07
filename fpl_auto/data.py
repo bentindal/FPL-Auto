@@ -404,6 +404,17 @@ class fpl_data:
         return player_names, predictions
     
     def get_price(self, week_num, player, gw_data):
+        """
+        Get the price of a player for a given week.
+        
+        Args:
+            week_num (int): The week number.
+            player (str): The player name.
+            gw_data (pandas.DataFrame): The game week data.
+            
+        Returns:
+            float: The price of the player.
+        """
         gw_data = gw_data[['value']].to_dict()['value']
         if player in gw_data:
             return gw_data[player] / 10
@@ -411,6 +422,16 @@ class fpl_data:
             return None
     
     def actual_points_dict(self, season, week_num):
+        """
+        Get the actual points for a given season and week.
+
+        Args:
+            season (str): The season of the data.
+            week_num (int): The week number of the data.
+
+        Returns:
+            dict: The actual points for the specified season and week.
+        """
         gw_data = self.get_gw_data(season, week_num)
         # Name --> Actual Points (Dictionary)
         gw_data = gw_data[['total_points']]
@@ -418,10 +439,28 @@ class fpl_data:
         return gw_data
     
     def position_dict(self, week_num):
+        """
+        Get the position for a given week.
+
+        Args:
+            week_num (int): The week number.
+
+        Returns:
+            dict: The position for the specified week.
+        """
         pos_data = self.get_gw_data(self.season, week_num)
         return pos_data.to_dict()['position']
     
     def get_players_who_didnt_play(self, gameweek):
+        """
+        Get the players who didn't play for a given gameweek.
+
+        Args:
+            gameweek (int): The gameweek.
+        
+        Returns:
+            pandas.DataFrame: The players who didn't play.
+        """
         gw_data = self.get_gw_data(self.season, gameweek)
         gw_data = gw_data[gw_data['minutes'] == 0]
         # conver to dict (name -> id)
@@ -429,12 +468,33 @@ class fpl_data:
         return gw_data
     
     def non_players(self, season, gameweek):
+        """
+        Get the players who didn't play for a given gameweek.
+
+        Args:
+            season (str): The season of the data.
+            gameweek (int): The gameweek.
+        
+        Returns:
+            pandas.DataFrame: The players who didn't play.
+        """
         if gameweek < self.get_recent_gw():
             gw_data = self.get_gw_data(season, gameweek)
             gw_data = gw_data[gw_data['minutes'] == 0]
         return gw_data
 
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
+        """
+        Apply post-model weightings to the predictions.
+
+        Args:
+            clean_predictions (list): The clean predictions.
+            week_num (int): The week number.
+            next_num_gws (int): The number of future gameweeks to predict.
+
+        Returns:
+            list: The post-model weightings.
+        """
         overall_predictions = []
         gw_data = self.get_gw_data(self.season, week_num)
         # For each pos in predictions
@@ -474,6 +534,16 @@ class fpl_data:
         return overall_predictions
     
     def post_model_weightings_for_next_gw(self, clean_predictions, week_num):
+        """
+        Apply post-model weightings to the predictions for the next gameweek.
+
+        Args:
+            clean_predictions (list): The clean predictions.
+            week_num (int): The week number.
+
+        Returns:
+            list: The post-model weightings for the next gameweek.
+        """
         overall_predictions = []
         next_num_gws = 1
         gw_data = self.get_gw_data(self.season, week_num)
@@ -561,6 +631,9 @@ class fpl_data:
     def get_recent_gw(self):
         """
         Get's the most recent gameweek's ID.
+
+        Returns:
+            int: The most recent gameweek's ID.
         """
 
         data = requests.get('https://fantasy.premierleague.com/api/bootstrap-static/')
@@ -591,6 +664,16 @@ class fpl_data:
         return avg_scores
     
     def get_future_fixtures(self, season, week_num):
+        """
+        Get the future fixtures for a given season and week.
+
+        Args:
+            season (str): The season of the data.
+            week_num (int): The week number of the data.
+
+        Returns:
+            pandas.DataFrame: The future fixtures for the specified season and week.
+        """
         # load fixtures.csv
         all_fixtures = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
 
@@ -599,6 +682,16 @@ class fpl_data:
         return future_fixtures
         
     def get_future_fixtures_for_team(self, team_name, week_num):
+        """
+        Get the future fixtures for a given team and week.
+
+        Args:
+            team_name (str): The team name.
+            week_num (int): The week number of the data.
+
+        Returns:
+            pandas.DataFrame: The future fixtures for the specified team and week.
+        """
         # convert team_name to id
         team_id = self.team_to_id[team_name]
         upcoming_fixtures = self.get_future_fixtures(self.season, week_num)
@@ -607,22 +700,56 @@ class fpl_data:
         return team_fixtures
     
     def get_future_fixtures_for_player(self, player_name, week_num, gw_data):
+        """
+        Get the future fixtures for a given player and week.
+
+        Args:
+            player_name (str): The player name.
+            week_num (int): The week number of the data.
+            gw_data (pandas.DataFrame): The game week data.
+
+        Returns:
+            pandas.DataFrame: The future fixtures for the specified player and week.
+        """
         team_name = self.get_player_team(player_name, week_num, gw_data)
         player_fixtures = self.get_future_fixtures_for_team(team_name, week_num)
         return player_fixtures
     
     def get_player_team(self, player_name, week_num, gw_data):
+        """
+        Get the team of a player for a given week.
+
+        Args:
+            player_name (str): The player name.
+            week_num (int): The week number.
+            gw_data (pandas.DataFrame): The game week data.
+
+        Returns:
+            str: The team of the player.
+        """
         try:
             return gw_data.loc[player_name]['team']
         except KeyError:
             return None
     
     def api_to_json(self):
+        """
+        Convert the FPL API to JSON.
+
+        Returns:
+            dict: The FPL API as JSON.
+        """
         res = requests.get(f'https://fantasy.premierleague.com/api/bootstrap-static/')
         res = json.loads(res.content)
         return res
     
     def get_injuries(self):
+        """
+        Get the injuries from the FPL API.
+
+        Returns:
+            dict: The injuries from the FPL API.
+        """
         fpl_api = requests.get(f'https://fantasy.premierleague.com/api/bootstrap-static/')
         fpl_api = json.loads(fpl_api.content)
         # export this to json
@@ -630,6 +757,19 @@ class fpl_data:
             json.dump(fpl_api, f)
 
     def discount_next_n_gws(self, predictions, gw, n, discount_factor=0.8, sum=True):
+        """
+        Discount the next n gameweeks.
+
+        Args:
+            predictions (list): The predictions.
+            gw (int): The week number.
+            n (int): The number of future gameweeks to predict.
+            discount_factor (float): The discount factor.
+            sum (bool): Whether to sum the predictions.
+
+        Returns:
+            list: The discounted predictions.
+        """
         if gw + n > 38:
             n = 38 - gw
         
@@ -651,5 +791,3 @@ class fpl_data:
                     row['xP'] = xp_array
         
         return n_next_weeks
-    
-    
