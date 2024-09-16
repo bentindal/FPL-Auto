@@ -151,7 +151,11 @@ def plot_score_comparison(p_list, chips_usage, from_week, season, project=False)
     week_count = range(from_week, from_week + len(p_list))
     # Categorise each week
     avg_p = sum(p_list) / len(p_list)
-    total_p = sum(p_list) + avg_p * (38 - len(p_list))
+    
+    if project:
+        total_p = sum(p_list) + avg_p * (38 - len(p_list))
+    else:
+        total_p = sum(p_list)
 
     # Plot the data
     plt.bar(week_count, p_list, label='Points Scored')
