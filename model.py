@@ -17,7 +17,7 @@ def parse_args():
                         choices=[
                             "linear", "randomforest", "gradientboost", "neuralnetwork"], 
                         help='Model type to use, default: gradientboost')
-    parser.add_argument('-season', type=str, required=True, choices=['2021-22', '2022-23', '2023-24'], help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
+    parser.add_argument('-season', type=str, required=True, choices=['2021-22', '2022-23', '2023-24', '2024-25'], help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
     parser.add_argument('-target_gw', type=int, default=1, help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
     parser.add_argument('-training_prev_weeks', type=int, default=19, help='How many past weeks of data to use for training, default: 19')

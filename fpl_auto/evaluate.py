@@ -137,7 +137,7 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     plt.legend()
     plt.show()
 
-def plot_score_comparison(p_list, chips_usage, from_week, season):
+def plot_score_comparison(p_list, chips_usage, from_week, season, project=False):
     """
     Plots a comparison of the points scored in each gameweek with the average points scored.
 
@@ -167,7 +167,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, season):
         plt.bar(i, p_list[i-from_week], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
 
     # For the weeks that remain in the season, plot the global average
-    if len(p_list) < 38:
+    if len(p_list) < 38 and project:
         plt.title(f'{season} Projected Performance - {round(total_p)} points total')
         for i in range(len(p_list) + 1, 39):
             plt.bar(i, avg_p, color='grey', label=f'Averaged GW{i}', alpha=0.7)
@@ -178,7 +178,10 @@ def plot_score_comparison(p_list, chips_usage, from_week, season):
     plt.legend()
 
     # save the plot as png in results folder
-    plt.savefig(f'results/{season}/{season}_{round(total_p)}_score_comparison.png')
+    # Create the directory if it doesn't exist
+    directory = f"results/{season}"
+    os.makedirs(directory, exist_ok=True)
+    plt.savefig(f'{directory}/{season}_{round(total_p)}_score_comparison.png')
     plt.show()
 
 def plot_average_comparison(p_list, avg_list, from_week, to_week):
