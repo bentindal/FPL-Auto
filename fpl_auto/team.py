@@ -31,7 +31,12 @@ class team:
         self.subs = players[4]
         self.free_hit_team = free_hit_team
 
-        self.transfers_left = min(transfers_left, 2)
+        # From 2024-25 season, the number of transfers allowed is no longer capped
+        if self.season == '2024-25':
+            self.transfers_left = transfers_left
+        else:
+            self.transfers_left = min(transfers_left, 2)
+        
         self.chips_used = chips_used
         self.transfer_history = transfer_history
         self.chip_triple_captain_available = triple_captain_available
