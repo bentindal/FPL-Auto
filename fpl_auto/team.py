@@ -88,10 +88,10 @@ class team:
             self.points_scored = self.fpl.actual_points_dict(season, self.recent_gw - 1)
         elif self.gameweek == 8 and self.season == '2023-24':
             self.positions_list = self.fpl.position_dict(self.gameweek)
-            self.points_scored = self.fpl.actual_points_dict(season, gameweek)
+            self.points_scored = self.fpl.actual_points_dict(season, self.gameweek)
         else:
             self.positions_list = self.fpl.position_dict(self.gameweek - 1)
-            self.points_scored = self.fpl.actual_points_dict(season, gameweek - 1)
+            self.points_scored = self.fpl.actual_points_dict(season, self.gameweek)
         
         # Optional stop list for players
         self.player_stop_list = []
@@ -105,7 +105,9 @@ class team:
         
         Parameters:
             - player (str): The name of the player.
-            - club_counts (dict): A dictionary containing the number of players from each club in the team (default: None)."""
+            - club_counts (dict): A dictionary containing the number of players from each club in the team (default: None).
+        
+        """
         player_club = self.fpl.get_player_team(player, self.gameweek, self.gw_data)
         if club_counts is None:
             club_counts = self.get_club_counts(self.gw_data)
