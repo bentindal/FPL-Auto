@@ -4,58 +4,43 @@ Author: Benjamin Tindal
 '''
 
 import argparse
-import fpl_auto.team as team
 import json
+import os
+import sys
+from multiprocessing import Pool
+
 import numpy as np
+
+import fpl_auto.team as team_module
 from fpl_auto import evaluate as eval
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="FPL Automation Project: Team Manager")
-    parser.add_argument('-season', type=str, required=True, help='Season to simulate. Format: YYYY-YY e.g 2021-22')
-    parser.add_argument('-start_gw', type=int, default=1, help='Gameweek to start on, default 1')
-    parser.add_argument('-repeat_until', type=int, default=38, help='How many weeks to repeat testing over, default: 38')
-    parser.add_argument('-starting_team', type=str, default="auto",
-                        choices=[
-                            "auto", "custom_1", "custom_2"], 
-                        help='Initial team to use: auto = generate own team, custom_1 = use my team at GW1, custom_2 = use my team at GW18, default: auto')
-    parser.add_argument('-save', '-s',
-                        action=argparse.BooleanOptionalAction, default=False, help='Whether to export results to json alongside score plot')
-    parser.add_argument('-plot_p_minus_xp',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot P minus XP graph for each GW, default: False')
-    parser.add_argument('-plot_score_comparison',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot P each week categorised by performance, default: False')
-    parser.add_argument('-plot_average_comparison',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot P vs AVG P, IMPORTANT: only works for current season, default: False')
-    parser.add_argument('-plot_xp',
-                        action=argparse.BooleanOptionalAction, default=False, help='Plot XP each week, default: False')
-    parser.add_argument('-project_score', 
-                        action=argparse.BooleanOptionalAction, default=False, help='If you are simulating part of a season, this will project your score for the rest of the season, use this with plot_score_comparison, default: false')
-    args = parser.parse_args()
-    
-    return args
+    parser = argparse.ArgumentParser(description='FPL Automation Project: Team Manager')
+    season_group = parser.add_mutually_exclusive_group(required=True)
+    season_group.add_argument('-season', type=str,
+                              help='Single season to simulate. Format: YYYY-YY e.g. 2021-22')
+    season_group.add_argument('-seasons', type=str, nargs='+',
+                              help='Multiple seasons to simulate in parallel. e.g. 2021-22 2022-23 2023-24')
+    parser.add_argument('-start_gw', type=int, default=1,
+                        help='Gameweek to start on, default 1')
+    parser.add_argument('-repeat_until', type=int, default=38,
+                        help='Last gameweek to simulate (inclusive), default 38')
+    parser.add_argument('-starting_team', type=str, default='auto',
+                        choices=['auto', 'custom_1'],
+                        help='Initial team: auto = generate own team, default: auto')
+    parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
+                        help='Export results to JSON + score plot')
+    parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('-plot_score_comparison', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('-plot_average_comparison', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('-plot_xp', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('-project_score', action=argparse.BooleanOptionalAction, default=False)
+    return parser.parse_args()
 
-inputs = parse_args()
-season = inputs.season
-start_gw = inputs.start_gw
-repeat = inputs.repeat_until - 1
-project_score = inputs.project_score
 
-def get_team_from_manager_id(manager_id):
-    target_url = f'https://fantasy.premierleague.com/api/my-team/{manager_id}/'
-    print(f'First, sign in on the official FPL website, then go to the following url and copy the response and set it as var r: {target_url}')
-    r = input(':') #'{"picks":[{"element":409,"position":1,"selling_price":40,"multiplier":1,"purchase_price":39,"is_captain":false,"is_vice_captain":false},{"element":430,"position":2,"selling_price":67,"multiplier":1,"purchase_price":68,"is_captain":false,"is_vice_captain":false},{"element":506,"position":3,"selling_price":56,"multiplier":1,"purchase_price":55,"is_captain":false,"is_vice_captain":false},{"element":220,"position":4,"selling_price":47,"multiplier":1,"purchase_price":46,"is_captain":false,"is_vice_captain":false},{"element":353,"position":5,"selling_price":77,"multiplier":1,"purchase_price":75,"is_captain":false,"is_vice_captain":false},{"element":526,"position":6,"selling_price":80,"multiplier":1,"purchase_price":79,"is_captain":false,"is_vice_captain":false},{"element":362,"position":7,"selling_price":56,"multiplier":1,"purchase_price":56,"is_captain":false,"is_vice_captain":true},{"element":19,"position":8,"selling_price":88,"multiplier":2,"purchase_price":87,"is_captain":true,"is_vice_captain":false},{"element":343,"position":9,"selling_price":68,"multiplier":1,"purchase_price":67,"is_captain":false,"is_vice_captain":false},{"element":60,"position":10,"selling_price":86,"multiplier":1,"purchase_price":83,"is_captain":false,"is_vice_captain":false},{"element":85,"position":11,"selling_price":70,"multiplier":1,"purchase_price":69,"is_captain":false,"is_vice_captain":false},{"element":597,"position":12,"selling_price":48,"multiplier":0,"purchase_price":50,"is_captain":false,"is_vice_captain":false},{"element":5,"position":13,"selling_price":49,"multiplier":0,"purchase_price":49,"is_captain":false,"is_vice_captain":false},{"element":92,"position":14,"selling_price":43,"multiplier":0,"purchase_price":43,"is_captain":false,"is_vice_captain":false},{"element":473,"position":15,"selling_price":38,"multiplier":0,"purchase_price":38,"is_captain":false,"is_vice_captain":false}],"chips":[{"status_for_entry":"available","played_by_entry":[],"name":"wildcard","number":1,"start_event":21,"stop_event":38,"chip_type":"transfer"},{"status_for_entry":"available","played_by_entry":[],"name":"freehit","number":1,"start_event":2,"stop_event":38,"chip_type":"transfer"},{"status_for_entry":"available","played_by_entry":[],"name":"bboost","number":1,"start_event":1,"stop_event":38,"chip_type":"team"},{"status_for_entry":"available","played_by_entry":[],"name":"3xc","number":1,"start_event":1,"stop_event":38,"chip_type":"team"}],"transfers":{"cost":4,"status":"cost","limit":1,"made":1,"bank":99,"value":931}}'
-    # Convert r to pds object
-    r = json.loads(r)
-    r = r['picks']
-    t = team.team(season, start_gw, 100)
-    for player in r:
-        player_name = t.id_to_name(player['element'])
-        t.add_player(player_name, t.positions_list[player_name], (player['purchase_price'] / 10))
-    
-    return t
-
-def my_team_at_gw1():
-    t = team.team(season, start_gw)
+def _make_team_at_gw1(season, start_gw):
+    t = team_module.team(season, start_gw)
     t.add_player('Aaron Ramsdale', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Luke Shaw', 'DEF')
@@ -67,79 +52,148 @@ def my_team_at_gw1():
     t.add_player('Erling Haaland', 'FWD')
     t.add_player('João Pedro Junqueira de Jesus', 'FWD')
     t.add_player('Julián Álvarez', 'FWD')
-    
     t.add_player('Alphonse Areola', 'GK')
     t.add_player("Amari'i Bell", 'DEF')
     t.add_player('George Baldock', 'DEF')
     t.add_player('Alexis Mac Allister', 'MID')
     return t
 
-def main():
-    if inputs.starting_team == 'custom_1':
-        t = my_team_at_gw1()
-    elif inputs.starting_team == 'custom_2':
-        t = get_team_from_manager_id(1) # 1 is my manager id
-    else:
-        t = team.team(season, start_gw, 100)
-        t.initial_team_generator() #t = t.select_ideal_team(2, 12, 3, 12, 2, 7, 2, 5.5) 
 
-    p_list = []
-    xp_list = []
-    all_p = []
+def run_season(config: dict) -> dict:
+    """
+    Simulate a full season. Designed to be called from a worker process.
 
-    for i in range(start_gw, start_gw + repeat + 1):
-        # --- BEFORE DEADLINE ---
-        t.auto_transfer() # Optionally make a transfer
-        t.auto_subs()
-        t.auto_captain()
-        t.auto_chips()
-        team_xp = t.team_xp()
+    Args:
+        config: dict with keys season, start_gw, repeat, starting_team, quiet
 
-        # --- AFTER DEADLINE ---
-        team_p = t.team_p()
+    Returns:
+        dict with season results suitable for printing/saving.
+    """
+    season = config['season']
+    start_gw = config['start_gw']
+    repeat = config['repeat']
+    starting_team = config.get('starting_team', 'auto')
+    quiet = config.get('quiet', False)
 
-        # Week Results
-        t.result_summary()
-        p_list.append(team_p)
-        xp_list.append(team_xp)
+    # Suppress stdout in worker processes so output doesn't interleave
+    if quiet:
+        sys.stdout = open(os.devnull, 'w')
 
-        # Set team to next week
-        if i != start_gw + repeat and i != inputs.repeat_until:
-            if team_p != 0:
-                all_p.append(t.p_list())
+    try:
+        if starting_team == 'custom_1':
+            t = _make_team_at_gw1(season, start_gw)
+        else:
+            t = team_module.team(season, start_gw, 100)
+            t.initial_team_generator()
 
-            t.return_subs_to_team()
-            
-            try:
-                t = team.team(season, i + 1, t.budget, t.transfers_left + 1, [t.gks, t.defs, t.mids, t.fwds, t.subs], t.chips_used, t.transfer_history, t.chip_triple_captain_available, t.chip_bench_boost_available, t.chip_free_hit_available, t.chip_wildcard_available, t.free_hit_team)
-            except FileNotFoundError:
-                print(f'GW{i} | End Reached')
-                break
-    
-    # Sum the p_list and xp_list and report results
-    print('==============================')
+        p_list = []
+        xp_list = []
+        all_p = []
+
+        for i in range(start_gw, start_gw + repeat + 1):
+            t.auto_transfer()
+            t.auto_subs()
+            t.auto_captain()
+            t.auto_chips()
+            team_xp = t.team_xp()
+            team_p = t.team_p()
+
+            t.result_summary()
+            p_list.append(team_p)
+            xp_list.append(team_xp)
+
+            if i != start_gw + repeat and i != start_gw + repeat:
+                if team_p != 0:
+                    all_p.append(t.p_list())
+                t.return_subs_to_team()
+                try:
+                    t = team_module.team(
+                        season, i + 1, t.budget, t.transfers_left + 1,
+                        [t.gks, t.defs, t.mids, t.fwds, t.subs],
+                        t.chips_used, t.transfer_history,
+                        t.chip_triple_captain_available, t.chip_bench_boost_available,
+                        t.chip_free_hit_available, t.chip_wildcard_available,
+                        t.free_hit_team,
+                    )
+                except FileNotFoundError:
+                    break
+
+        return {
+            'season': season,
+            'p_list': p_list,
+            'xp_list': xp_list,
+            'chips_used': t.chips_used,
+            'transfer_history': t.transfer_history,
+        }
+    finally:
+        if quiet:
+            sys.stdout = sys.__stdout__
+
+
+def _print_season_summary(result: dict):
+    season = result['season']
+    p_list = result['p_list']
+    xp_list = result['xp_list']
     p_sum = sum(p_list)
     xp_sum = sum(xp_list)
-    print(f'p_sum: {p_sum}')
-    print(f'avg_p: {p_sum / len(p_list):.2f}')
-    print(f'xp_sum: {xp_sum:.0f}')
-    print(f'avg_xp: {xp_sum / len(p_list):.2f}')
-    print(t.chips_used)
+    n = len(p_list)
+    print(f'\n{"=" * 40}')
+    print(f'Season: {season}')
+    print(f'  Total P:  {p_sum}  |  Avg P/GW:  {p_sum / n:.2f}')
+    print(f'  Total xP: {xp_sum:.0f}  |  Avg xP/GW: {xp_sum / n:.2f}')
+    print(f'  Chips: {result["chips_used"]}')
 
-    if inputs.save:
-        eval.export_results(season, p_list, xp_list, t.chips_used, t.transfer_history)
 
-    # Plots
-    if inputs.plot_p_minus_xp:
-        eval.plot_p_minus_xp(p_list, xp_list, start_gw, start_gw + repeat)
-    if inputs.plot_score_comparison:
-        eval.plot_score_comparison(p_list, t.chips_used, start_gw, season, project_score)
-    if inputs.plot_average_comparison:
-        eval.plot_average_comparison(p_list, t.get_avg_score(), start_gw, start_gw + repeat)
-        good, bad = eval.score_model_against_list(p_list, t.get_avg_score())
-        print(f'Good: {good}, Poor: {bad} = {good / (good + bad) * 100:.2f}%')
-    if inputs.plot_xp:
-        eval.plotxp(season, xp_list, start_gw, start_gw + repeat + 1, t.chips_used)
+def main():
+    inputs = parse_args()
+
+    seasons = inputs.seasons if inputs.seasons else [inputs.season]
+    parallel = len(seasons) > 1
+
+    configs = [
+        {
+            'season': s,
+            'start_gw': inputs.start_gw,
+            'repeat': inputs.repeat_until - 1,
+            'starting_team': inputs.starting_team,
+            'quiet': parallel,
+        }
+        for s in seasons
+    ]
+
+    if parallel:
+        print(f'Running {len(seasons)} seasons in parallel: {", ".join(seasons)}')
+        with Pool(processes=len(seasons)) as pool:
+            results = pool.map(run_season, configs)
+    else:
+        results = [run_season(configs[0])]
+
+    for result in results:
+        _print_season_summary(result)
+
+        if inputs.save:
+            eval.export_results(
+                result['season'], result['p_list'], result['xp_list'],
+                result['chips_used'], result['transfer_history'],
+            )
+
+        if inputs.plot_p_minus_xp:
+            eval.plot_p_minus_xp(result['p_list'], result['xp_list'],
+                                 inputs.start_gw, inputs.repeat_until)
+        if inputs.plot_score_comparison:
+            eval.plot_score_comparison(result['p_list'], result['chips_used'],
+                                       inputs.start_gw, result['season'], inputs.project_score)
+        if inputs.plot_average_comparison:
+            t = team_module.team(result['season'], inputs.start_gw)
+            avg = t.get_avg_score()
+            eval.plot_average_comparison(result['p_list'], avg,
+                                         inputs.start_gw, inputs.repeat_until)
+            good, bad = eval.score_model_against_list(result['p_list'], avg)
+            print(f'  vs avg: {good} good, {bad} poor = {good/(good+bad)*100:.1f}%')
+        if inputs.plot_xp:
+            eval.plotxp(result['season'], result['xp_list'],
+                        inputs.start_gw, inputs.repeat_until, result['chips_used'])
+
 
 if __name__ == '__main__':
     main()
