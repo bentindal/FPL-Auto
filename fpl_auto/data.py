@@ -1,12 +1,8 @@
 import numpy as np
 import pandas as pd
-from sklearn import linear_model
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.neural_network import MLPRegressor
 import datetime
-import requests 
+import requests
 import json
 
 class fpl_data:
@@ -25,6 +21,8 @@ class fpl_data:
         self.team_list = self.get_team_list(season)
         self.team_to_id = self.team_list.reset_index().set_index('name').to_dict()['id']
         self.id_to_name = self.id_to_name_dict()
+        self._gw_cache: dict = {}        # (season, week_num) -> DataFrame
+        self._fixtures_cache: dict = {}  # season -> DataFrame (full fixtures.csv)
 
     def get_player_list(self, season):
         """
@@ -72,16 +70,21 @@ class fpl_data:
         Returns:
             pandas.DataFrame: The game week data for the specified season and week.
         """
+        cache_key = (season, week_num)
+        if cache_key in self._gw_cache:
+            return self._gw_cache[cache_key]
+
         try:
             if week_num < 1:
                 gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
             else:
                 gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         except FileNotFoundError:
-            #print(f'File not found: {self.data_location}/{season}/gws/gw{week_num}.csv, Either the gameweek has not happened yet, or the data is not available.')
             pass
         gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
-        return gw_data.set_index('name')
+        gw_data = gw_data.set_index('name')
+        self._gw_cache[cache_key] = gw_data
+        return gw_data
 
     def get_pos_data(self, season, week_num, position):
         """
@@ -318,52 +321,6 @@ class fpl_data:
 
         return training_data, test_data
 
-    def get_model(self, model_type, training_data):
-        """
-        Get the model for a given model type and training data.
-
-        Args:
-            model_type (str): The type of model to use.
-            training_data (tuple): The training data for each position.
-
-        Returns:
-            tuple: The models for each position.
-        """
-        # Pick a model type
-        if model_type == 'linear':
-            gk_model = linear_model.LinearRegression()
-            def_model = linear_model.LinearRegression()
-            mid_model = linear_model.LinearRegression()
-            fwd_model = linear_model.LinearRegression()
-            
-        elif model_type == 'randomforest':
-            gk_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
-            def_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
-            mid_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
-            fwd_model = RandomForestRegressor(oob_score = True, n_estimators = 1000, max_features = 100)
-
-        elif model_type == 'neuralnetwork':
-            gk_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
-            def_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
-            mid_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
-            fwd_model = MLPRegressor(hidden_layer_sizes  = (100,100,100,100))
-
-        elif model_type == 'gradientboost':
-            n_est = 110
-
-            gk_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=5) # Goalkeeper
-            def_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=10) # Defender
-            mid_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=20) # Midfielder
-            fwd_model = GradientBoostingRegressor(criterion='squared_error', n_estimators=n_est, learning_rate=0.1, max_depth=3, max_features=10) # Forward
-
-        # Fit training data to model
-        gk_model.fit(training_data[0][0], training_data[0][1])
-        def_model.fit(training_data[1][0], training_data[1][1])
-        mid_model.fit(training_data[2][0], training_data[2][1])
-        fwd_model.fit(training_data[3][0], training_data[3][1])
-
-        return gk_model, def_model, mid_model, fwd_model
-    
     def get_player_predictions(self, season, from_gw, to_gw, models):
         """
         Get the player predictions for a given season, range of game weeks, and models.
@@ -674,12 +631,10 @@ class fpl_data:
         Returns:
             pandas.DataFrame: The future fixtures for the specified season and week.
         """
-        # load fixtures.csv
-        all_fixtures = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
-
-        # Get fixtures where event > current gw
-        future_fixtures = all_fixtures[all_fixtures['event'] > week_num]
-        return future_fixtures
+        if season not in self._fixtures_cache:
+            self._fixtures_cache[season] = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
+        future_fixtures = self._fixtures_cache[season]
+        return future_fixtures[future_fixtures['event'] > week_num]
         
     def get_future_fixtures_for_team(self, team_name, week_num):
         """
