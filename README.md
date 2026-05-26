@@ -21,6 +21,33 @@ The machine learning makes use of a Gradient Boosting tree regression model from
 
 The project fully aims to abide by the rules of the FPL game, so the team selection process, chip usage, transfers, captaincy and substituions are all fully automated.
 
+## Setup
+
+### Requirements
+- Python 3.7+
+
+### Installation
+
+1. **Create a virtual environment:**
+   ```bash
+   python3 -m venv venv
+   ```
+
+2. **Activate the virtual environment:**
+   - On macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+   - On Windows:
+     ```bash
+     venv\Scripts\activate
+     ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## Running the Project
 
 The evaluate.py, team.py, and data.py classes are self-contained in the fpl auto folder. You can
