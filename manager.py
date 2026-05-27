@@ -114,6 +114,7 @@ def run_season(config: dict) -> dict:
                         t.chip_triple_captain_available, t.chip_bench_boost_available,
                         t.chip_free_hit_available, t.chip_wildcard_available,
                         t.free_hit_team,
+                        t.purchase_prices,
                     )
                 except FileNotFoundError:
                     break

@@ -14,6 +14,7 @@ class Team:
         players=None, chips_used=None, transfer_history=None,
         triple_captain_available=True, bench_boost_available=True,
         free_hit_available=True, wildcard_available=True, free_hit_team=None,
+        purchase_prices=None,
     ):
         players = players if players is not None else [[], [], [], [], []]
         chips_used = chips_used if chips_used is not None else []
@@ -23,6 +24,7 @@ class Team:
         self.season = season
         self.gameweek = gameweek
         self.budget = budget
+        self.purchase_prices = dict(purchase_prices) if purchase_prices is not None else {}
 
         self.gks  = list(players[0])
         self.defs = list(players[1])
@@ -182,11 +184,13 @@ class Team:
             position = self.player_pos(player)
         self._pos_squad_list(position).append(player)
         self.budget -= p_cost
+        self.purchase_prices[player] = p_cost
 
     def remove_player(self, player, position):
         self.return_subs_to_team()
         self._pos_squad_list(position).remove(player)
-        self.budget += self.player_value(player, self.gw_data)
+        self.budget += self.selling_price(player)
+        self.purchase_prices.pop(player, None)
 
     def add_sub(self, player, position):
         try:
@@ -370,8 +374,8 @@ class Team:
         xp_list = sorted(self.get_all_xp(include_subs=True), key=lambda x: float(x[1]))
         for name, _ in xp_list:
             pos = self.player_pos(name)
-            budget = self.fpl.get_price(self.gameweek, name, self.gw_data)
-            if pos is not None and budget is not None:
+            budget = self.selling_price(name)
+            if pos is not None and budget:
                 return name, pos, budget
         print('No player found to transfer out')
         return '', '', 0
@@ -496,7 +500,7 @@ class Team:
                 self.chips_used.append(['Free Hit', self.gameweek])
                 print(f'CHIP: Free Hit activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.return_subs_to_team()
-                self.free_hit_team = [[self.gks, self.defs, self.mids, self.fwds], self.budget, self.gameweek]
+                self.free_hit_team = [[self.gks, self.defs, self.mids, self.fwds], self.budget, self.gameweek, dict(self.purchase_prices)]
                 self.initial_team_generator()
 
         if self.chip_wildcard_available and not self.any_chip_in_use():
@@ -508,7 +512,7 @@ class Team:
                 self.chips_used.append(['Wildcard', self.gameweek])
 
     def _load_free_hit_team(self):
-        pos_players, budget, gw = self.free_hit_team
+        pos_players, budget, gw, saved_prices = self.free_hit_team
         self.return_subs_to_team()
         for pos in POSITIONS:
             self._pos_squad_list(pos).clear()
@@ -520,6 +524,7 @@ class Team:
                 self.add_player(player, pos, 0)
 
         self.budget = budget
+        self.purchase_prices = saved_prices
         self.free_hit_team = None
         print(f'Loaded pre-Free Hit team {self.budget:.2f} budget remaining', end='\r')
 
@@ -650,6 +655,16 @@ class Team:
 
     def player_value(self, player, gw_data):
         return self.fpl.get_price(self.gameweek, player, gw_data)
+
+    def selling_price(self, player):
+        current = self.player_value(player, self.gw_data)
+        if current is None:
+            return 0
+        bought_at = self.purchase_prices.get(player, current)
+        if current > bought_at:
+            profit = current - bought_at
+            return round(bought_at + int(round(profit * 10)) // 2 / 10, 1)
+        return current
 
     def player_pos(self, player):
         cached = self._pos_cache.get(player)
