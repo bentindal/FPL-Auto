@@ -1471,5 +1471,126 @@ class TestStrategyConfigTransferParameters(unittest.TestCase):
         self.assertEqual(AGGRESSIVE_FULL.transfer_xp_threshold_mode, 'relative')
 
 
+class TestTransferVariantIntegration(unittest.TestCase):
+    """Integration tests for Phase 6 transfer variants.
+
+    Tests that strategy_config wiring works end-to-end with manager.py
+    and that single-season runs complete without error.
+    """
+
+    def test_baseline_mid_runs_single_season(self):
+        """BASELINE_MID variant should run 2021-22 without error."""
+        from fpl_auto.strategies import BASELINE_MID
+        import manager
+
+        # Create config dict as manager.py would
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 37,  # 38 GWs total
+            'starting_team': 'auto',
+            'quiet': False,
+            'strategy': BASELINE_MID,
+        }
+
+        results = manager.run_season(config)
+
+        # Verify results structure
+        self.assertIsNotNone(results)
+        self.assertIn('p_list', results)
+        self.assertIn('xp_list', results)
+        self.assertIn('season', results)
+        self.assertEqual(results['season'], '2021-22')
+
+        # Check that season completed
+        self.assertGreater(len(results['p_list']), 0)
+        total_points = sum(results['p_list'])
+        self.assertGreater(total_points, 0)
+
+    def test_conservative_early_runs_single_season(self):
+        """CONSERVATIVE_EARLY variant should run 2021-22 without error."""
+        from fpl_auto.strategies import CONSERVATIVE_EARLY
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 37,
+            'starting_team': 'auto',
+            'quiet': False,
+            'strategy': CONSERVATIVE_EARLY,
+        }
+
+        results = manager.run_season(config)
+
+        self.assertIsNotNone(results)
+        self.assertIn('p_list', results)
+        self.assertGreater(len(results['p_list']), 0)
+        total_points = sum(results['p_list'])
+        self.assertGreater(total_points, 0)
+
+    def test_aggressive_full_runs_single_season(self):
+        """AGGRESSIVE_FULL variant should run 2021-22 without error."""
+        from fpl_auto.strategies import AGGRESSIVE_FULL
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 37,
+            'starting_team': 'auto',
+            'quiet': False,
+            'strategy': AGGRESSIVE_FULL,
+        }
+
+        results = manager.run_season(config)
+
+        self.assertIsNotNone(results)
+        self.assertIn('p_list', results)
+        self.assertGreater(len(results['p_list']), 0)
+        total_points = sum(results['p_list'])
+        self.assertGreater(total_points, 0)
+
+    def test_baseline_mid_with_none_strategy_defaults(self):
+        """run_season should handle None strategy_config gracefully."""
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 37,
+            'starting_team': 'auto',
+            'quiet': False,
+            'strategy': None,  # No strategy provided
+        }
+
+        results = manager.run_season(config)
+
+        # Should still run with default (BASELINE_CURRENT)
+        self.assertIsNotNone(results)
+        self.assertGreater(len(results['p_list']), 0)
+
+    def test_variant_produces_transfer_history(self):
+        """run_season should capture transfer history."""
+        from fpl_auto.strategies import BASELINE_MID
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 37,
+            'starting_team': 'auto',
+            'quiet': False,
+            'strategy': BASELINE_MID,
+        }
+
+        results = manager.run_season(config)
+
+        # Check transfer history is present
+        self.assertIn('transfer_history', results)
+        # Transfer history should be a list (could be empty)
+        self.assertIsInstance(results['transfer_history'], list)
+
+
 if __name__ == '__main__':
     unittest.main()
