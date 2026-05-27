@@ -15,6 +15,7 @@ import numpy as np
 
 import manager
 from fpl_auto.strategies import StrategyConfig
+from evaluation.metrics import compute_season_metrics
 
 
 def run_strategy_on_seasons(
@@ -88,79 +89,6 @@ def run_strategy_on_seasons(
     return results
 
 
-def compute_season_metrics(
-    weekly_points: List[float],
-    season: Optional[str] = None,
-) -> Dict[str, float]:
-    """
-    Compute key metrics for a single season's performance.
-
-    Args:
-        weekly_points: List of 38 (or fewer) weekly points
-        season: Optional season string for reference (not used in computation)
-
-    Returns:
-        Dict with metrics:
-            {
-                'total_points': int,
-                'mean_gw_points': float,
-                'std_gw_points': float,
-                'sharpe_ratio': float,
-                'sortino_ratio': float,
-                'coefficient_variation': float,
-                'max_drawdown': float,
-                'best_week': int,
-                'worst_week': int,
-            }
-    """
-    if not weekly_points or len(weekly_points) == 0:
-        return {
-            'total_points': 0,
-            'mean_gw_points': 0.0,
-            'std_gw_points': 0.0,
-            'sharpe_ratio': 0.0,
-            'sortino_ratio': 0.0,
-            'coefficient_variation': 0.0,
-            'max_drawdown': 0.0,
-            'best_week': 0,
-            'worst_week': 0,
-        }
-
-    points_array = np.array(weekly_points, dtype=float)
-    total = np.sum(points_array)
-    mean = np.mean(points_array)
-    std = np.std(points_array)
-
-    # Sharpe ratio (risk-free rate = 0 for FPL)
-    sharpe = mean / std if std > 0 else 0.0
-
-    # Sortino ratio (penalize only downside)
-    downside_points = [p for p in points_array if p < mean]
-    downside_std = np.std(downside_points) if downside_points else 0.0
-    sortino = mean / downside_std if downside_std > 0 else 0.0
-
-    # Coefficient of variation
-    cv = std / mean if mean > 0 else 0.0
-
-    # Max drawdown
-    cumsum = np.cumsum(points_array)
-    running_max = np.maximum.accumulate(cumsum)
-    drawdown = running_max - cumsum
-    max_drawdown = float(np.max(drawdown)) if len(drawdown) > 0 else 0.0
-
-    return {
-        'total_points': int(total),
-        'mean_gw_points': float(mean),
-        'std_gw_points': float(std),
-        'sharpe_ratio': float(sharpe),
-        'sortino_ratio': float(sortino),
-        'coefficient_variation': float(cv),
-        'max_drawdown': float(max_drawdown),
-        'best_week': int(np.max(points_array)) if len(points_array) > 0 else 0,
-        'worst_week': int(np.min(points_array)) if len(points_array) > 0 else 0,
-    }
-
-
 def aggregate_season_results(
     results: List[Dict[str, Any]]
 ) -> Dict[str, float]:
@@ -199,7 +127,7 @@ def aggregate_season_results(
         }
 
     all_metrics = [
-        compute_season_metrics(r.get('p_list', []), r.get('season'))
+        compute_season_metrics(r.get('p_list', []))
         for r in results
     ]
 
@@ -315,8 +243,7 @@ def nested_walk_forward_evaluation(
 
         test_results = test_results_raw[0]
         test_metrics = compute_season_metrics(
-            test_results.get('p_list', []),
-            test_season
+            test_results.get('p_list', [])
         )
         print(f"    Test complete. Test points: {test_metrics['total_points']}")
 

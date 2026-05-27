@@ -5,16 +5,17 @@ Provides walk-forward validation, baseline execution, and result aggregation
 for systematic strategy comparison across multiple seasons.
 """
 
-from evaluation.walk_forward import (
-    run_strategy_on_seasons,
-    nested_walk_forward_evaluation,
-    aggregate_season_results,
+# Import metrics utilities from metrics.py
+from evaluation.metrics import (
     compute_season_metrics,
+    bootstrap_ci,
+    apply_bonferroni_correction,
+    format_metrics_table,
 )
 
 __all__ = [
-    'run_strategy_on_seasons',
-    'nested_walk_forward_evaluation',
-    'aggregate_season_results',
     'compute_season_metrics',
+    'bootstrap_ci',
+    'apply_bonferroni_correction',
+    'format_metrics_table',
 ]
