@@ -26,6 +26,7 @@ class Team:
         self.budget = budget
         self.purchase_prices = dict(purchase_prices) if purchase_prices is not None else {}
         self.hits_taken = 0
+        self.transfer_budget_spent = 0  # Reset per GW: tracks cumulative xP gain budget used
 
         self.gks  = list(players[0])
         self.defs = list(players[1])
@@ -444,7 +445,14 @@ class Team:
         except ValueError:
             pass
 
-    def auto_transfer(self, threshold=4):
+    def auto_transfer(self, strategy_config=None, threshold=None):
+        """Apply transfer heuristic with optional strategy config constraints.
+
+        Args:
+            strategy_config: Optional StrategyConfig instance with transfer constraints.
+                If None, uses backward-compatible defaults (threshold=4, no budget/window constraints).
+            threshold: Optional xP improvement threshold (ignored if strategy_config provided).
+        """
         print('Checking for any transfers...', end='\r')
         if self.season == '2022-23' and self.gameweek == 7:
             return
@@ -455,20 +463,81 @@ class Team:
         if self.transfers_left <= 0:
             return
 
-        for _ in range(self.transfers_left):
+        # Initialize or extract strategy config
+        if strategy_config is None:
+            # Backward compat: use old default threshold, no constraints
+            use_budget_constraint = False
+            use_window_constraint = False
+            xp_threshold = threshold or 4
+            threshold_mode = 'absolute'
+        else:
+            # New path: use config
+            use_budget_constraint = True
+            use_window_constraint = strategy_config.transfer_window_gw_range is not None
+            xp_threshold = strategy_config.transfer_xp_threshold
+            threshold_mode = strategy_config.transfer_xp_threshold_mode
+
+        # Add window gate (early return if outside window)
+        if use_window_constraint:
+            gw_min, gw_max = strategy_config.transfer_window_gw_range
+            if not (gw_min <= self.gameweek <= gw_max):
+                # Log diagnostic
+                print(f"[GW{self.gameweek}] Transfer window inactive (window={gw_min}-{gw_max}); skipping auto_transfer()")
+                return
+
+        # Loop over available transfers with budget check
+        for transfer_num in range(self.transfers_left):
+            # Check budget constraint
+            if use_budget_constraint:
+                transfer_budget_remaining = strategy_config.transfer_budget_per_gw - self.transfer_budget_spent
+                if transfer_budget_remaining <= 0:
+                    print(f"[GW{self.gameweek}] Transfer budget exhausted ({self.transfer_budget_spent:.1f}/{strategy_config.transfer_budget_per_gw:.1f}); stopping transfers")
+                    break
+
             out, pos, budget = self.suggest_transfer_out()
             if pos == '':
                 return
             if budget + self.budget < MIN_PRICE[pos]:
                 return
             transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
-            if transfer_in != 'No player found to transfer in' and \
-               self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= threshold:
-                self.transfer(out, transfer_in, pos)
-                if self.squad_size() != SQUAD_SIZE:
-                    self.remove_excess_players()
-            else:
+
+            if transfer_in == 'No player found to transfer in':
                 break
+
+            xp_in = self.player_xp(transfer_in, pos)
+            xp_out = self.player_xp(out, pos)
+            xp_gain = xp_in - xp_out
+
+            # Apply threshold logic (relative or absolute)
+            if threshold_mode == 'relative':
+                # Relative improvement: (new - old) / old > threshold
+                # Safeguard: if xp_out near 0, lower bar
+                xp_out_safe = max(xp_out, 0.1)
+                passes_threshold = (xp_gain / xp_out_safe) > xp_threshold
+            else:
+                # Absolute: new - old >= threshold
+                passes_threshold = xp_gain >= xp_threshold
+
+            # Also enforce xp_gain >= 2 (minimum gain, from suggest_transfer_in logic)
+            if xp_gain < 2:
+                print(f"[GW{self.gameweek}] Skipped transfer {transfer_in} → {out} (xp_gain={xp_gain:.1f} < 2)")
+                break
+
+            if not passes_threshold:
+                pct_improve = (xp_gain / max(xp_out, 0.1)) * 100
+                print(f"[GW{self.gameweek}] Skipped transfer {transfer_in} → {out} (xp improvement {pct_improve:.1f}% < {xp_threshold * 100:.0f}% threshold)")
+                break
+
+            # Execute transfer
+            self.transfer(out, transfer_in, pos)
+            if self.squad_size() != SQUAD_SIZE:
+                self.remove_excess_players()
+
+            # Update budget tracking
+            if use_budget_constraint:
+                self.transfer_budget_spent += xp_gain
+                transfer_budget_remaining = strategy_config.transfer_budget_per_gw - self.transfer_budget_spent
+                print(f"[GW{self.gameweek}] Transferred {transfer_in} for {out}; budget used: {xp_gain:.1f}, remaining: {transfer_budget_remaining:.1f}")
 
     # ------------------------------------------------------------------
     # Chips
