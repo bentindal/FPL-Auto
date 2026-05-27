@@ -1021,5 +1021,278 @@ class TestFeatureEngineering(unittest.TestCase):
             # Note: This might not always pass due to randomness, but with seed=42 it should
 
 
+    def test_seasonal_bucket_feature_computes(self):
+        """Test that seasonal bucket features are computed correctly for each phase of season."""
+        players = ['Player A', 'Player B']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['GK', 'DEF'],
+            'team': ['Team1', 'Team2'],
+            'minutes': [90, 90],
+            'influence': [10.0, 20.0],
+            'assists': [0, 0],
+            'goals_scored': [0, 0],
+            'creativity': [0.0, 5.0],
+            'threat': [0.0, 10.0],
+            'clean_sheets': [1, 1],
+            'goals_conceded': [0, 0],
+            'saves': [5, 0],
+            'bps': [40, 40],
+            'total_points': [10, 10],
+            'was_home': [True, False],
+            'value': [50, 50],
+            'selected': [10.0, 20.0],
+            'own_goals': [0, 0],
+            'penalties_missed': [0, 0],
+            'penalties_saved': [0, 0],
+            'red_cards': [0, 0],
+            'yellow_cards': [0, 0],
+            'ict_index': [10.0, 25.0],
+        }).set_index('name')
+
+        # Test GW 5 (early season)
+        engineered_early = self.fpl_data.engineer_features_on_gw_data(
+            gw_data.copy(), self.season, 5, 'GK'
+        )
+        self.assertEqual(engineered_early['gw_bucket_early'].iloc[0], 1.0)
+        self.assertEqual(engineered_early['gw_bucket_mid'].iloc[0], 0.0)
+
+        # Test GW 15 (mid season)
+        engineered_mid = self.fpl_data.engineer_features_on_gw_data(
+            gw_data.copy(), self.season, 15, 'GK'
+        )
+        self.assertEqual(engineered_mid['gw_bucket_mid'].iloc[0], 1.0)
+        self.assertEqual(engineered_mid['gw_bucket_early'].iloc[0], 0.0)
+
+        # Test GW 25 (late season)
+        engineered_late = self.fpl_data.engineer_features_on_gw_data(
+            gw_data.copy(), self.season, 25, 'GK'
+        )
+        self.assertEqual(engineered_late['gw_bucket_late'].iloc[0], 1.0)
+        self.assertEqual(engineered_late['gw_bucket_final'].iloc[0], 0.0)
+
+        # Test GW 35 (final)
+        engineered_final = self.fpl_data.engineer_features_on_gw_data(
+            gw_data.copy(), self.season, 35, 'GK'
+        )
+        self.assertEqual(engineered_final['gw_bucket_final'].iloc[0], 1.0)
+        self.assertEqual(engineered_final['gw_bucket_early'].iloc[0], 0.0)
+
+    def test_form_momentum_feature_bounds(self):
+        """Test that form momentum is bounded and handles edge cases."""
+        players = ['Player A']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['MID'],
+            'team': ['Team1'],
+            'minutes': [90],
+            'influence': [50.0],
+            'assists': [1],
+            'goals_scored': [1],
+            'creativity': [20.0],
+            'threat': [50.0],
+            'clean_sheets': [0],
+            'goals_conceded': [0],
+            'saves': [0],
+            'bps': [40],
+            'total_points': [10],
+            'was_home': [True],
+            'value': [50],
+            'selected': [10.0],
+            'own_goals': [0],
+            'penalties_missed': [0],
+            'penalties_saved': [0],
+            'red_cards': [0],
+            'yellow_cards': [0],
+            'ict_index': [70.0],
+        }).set_index('name')
+
+        engineered = self.fpl_data.engineer_features_on_gw_data(
+            gw_data, self.season, 5, 'MID'
+        )
+
+        # Verify form_momentum exists and is finite
+        self.assertIn('form_momentum', engineered.columns)
+        self.assertTrue(np.isfinite(engineered['form_momentum'].iloc[0]))
+        # Should be bounded reasonably (influence range is typically 0-100)
+        self.assertLess(abs(engineered['form_momentum'].iloc[0]), 200)
+
+    def test_ownership_signal_feature_bounds(self):
+        """Test that ownership signal is normalized to [0, 1]."""
+        players = ['Popular', 'Differential']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['FWD', 'FWD'],
+            'team': ['Team1', 'Team2'],
+            'minutes': [90, 90],
+            'influence': [50.0, 30.0],
+            'assists': [1, 0],
+            'goals_scored': [1, 0],
+            'creativity': [20.0, 5.0],
+            'threat': [50.0, 30.0],
+            'clean_sheets': [0, 0],
+            'goals_conceded': [0, 0],
+            'saves': [0, 0],
+            'bps': [40, 20],
+            'total_points': [10, 5],
+            'was_home': [True, False],
+            'value': [90, 70],
+            'selected': [80.0, 10.0],  # Popular vs Differential
+            'own_goals': [0, 0],
+            'penalties_missed': [0, 0],
+            'penalties_saved': [0, 0],
+            'red_cards': [0, 0],
+            'yellow_cards': [0, 0],
+            'ict_index': [70.0, 40.0],
+        }).set_index('name')
+
+        engineered = self.fpl_data.engineer_features_on_gw_data(
+            gw_data, self.season, 10, 'FWD'
+        )
+
+        # Verify ownership_signal is in [0, 1]
+        self.assertIn('ownership_signal', engineered.columns)
+        for val in engineered['ownership_signal']:
+            self.assertGreaterEqual(val, 0.0)
+            self.assertLessEqual(val, 1.0)
+
+        # Popular player should have higher ownership signal than differential
+        popular_ownership = engineered.loc['Popular', 'ownership_signal']
+        differential_ownership = engineered.loc['Differential', 'ownership_signal']
+        self.assertGreater(popular_ownership, differential_ownership)
+
+    def test_injury_risk_flag_logic(self):
+        """Test that injury risk flag feature exists and is computed."""
+        players = ['Player A', 'Player B']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['DEF', 'DEF'],
+            'team': ['Team1', 'Team2'],
+            'minutes': [90, 30],
+            'influence': [30.0, 20.0],
+            'assists': [0, 0],
+            'goals_scored': [0, 0],
+            'creativity': [5.0, 3.0],
+            'threat': [10.0, 5.0],
+            'clean_sheets': [1, 0],
+            'goals_conceded': [0, 2],
+            'saves': [0, 0],
+            'bps': [40, 10],
+            'total_points': [10, 2],
+            'was_home': [True, False],
+            'value': [50, 45],
+            'selected': [30.0, 10.0],
+            'own_goals': [0, 0],
+            'penalties_missed': [0, 0],
+            'penalties_saved': [0, 0],
+            'red_cards': [0, 0],
+            'yellow_cards': [0, 0],
+            'ict_index': [35.0, 25.0],
+        }).set_index('name')
+
+        engineered = self.fpl_data.engineer_features_on_gw_data(
+            gw_data, self.season, 5, 'DEF'
+        )
+
+        # Verify injury_risk_flag exists and is numeric
+        self.assertIn('injury_risk_flag', engineered.columns)
+        # Should be 0 or 1 (binary flag)
+        for val in engineered['injury_risk_flag']:
+            self.assertIn(val, [0.0, 1.0])
+        # All values should be finite
+        self.assertTrue(np.isfinite(engineered['injury_risk_flag']).all())
+
+    def test_strength_form_interaction_feature(self):
+        """Test that strength × form interaction computes correctly."""
+        players = ['Strong Form', 'Weak Form']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['FWD', 'FWD'],
+            'team': ['Team1', 'Team2'],
+            'minutes': [90, 90],
+            'influence': [80.0, 20.0],  # Strong form vs weak form
+            'assists': [1, 0],
+            'goals_scored': [2, 0],
+            'creativity': [30.0, 5.0],
+            'threat': [70.0, 20.0],
+            'clean_sheets': [0, 0],
+            'goals_conceded': [0, 0],
+            'saves': [0, 0],
+            'bps': [50, 10],
+            'total_points': [15, 2],
+            'was_home': [True, False],
+            'value': [100, 70],
+            'selected': [50.0, 20.0],
+            'own_goals': [0, 0],
+            'penalties_missed': [0, 0],
+            'penalties_saved': [0, 0],
+            'red_cards': [0, 0],
+            'yellow_cards': [0, 0],
+            'ict_index': [80.0, 25.0],
+            'strength_attack_home': [1400, 1100],  # Team strength values
+            'strength_attack_away': [1300, 1000],
+            'strength_defence_home': [1200, 1100],
+            'strength_defence_away': [1100, 1000],
+        }).set_index('name')
+
+        engineered = self.fpl_data.engineer_features_on_gw_data(
+            gw_data, self.season, 10, 'FWD'
+        )
+
+        # Verify strength_form_interaction exists and is bounded [0, 1]
+        self.assertIn('strength_form_interaction', engineered.columns)
+        for val in engineered['strength_form_interaction']:
+            self.assertGreaterEqual(val, 0.0)
+            self.assertLessEqual(val, 1.0)
+
+        # Strong form player should have higher interaction than weak form
+        strong_interaction = engineered.loc['Strong Form', 'strength_form_interaction']
+        weak_interaction = engineered.loc['Weak Form', 'strength_form_interaction']
+        self.assertGreater(strong_interaction, weak_interaction)
+
+    def test_transfers_in_signal_feature(self):
+        """Test that transfers_in signal feature computes correctly."""
+        players = ['Popular', 'Unpopular']
+        gw_data = pd.DataFrame({
+            'name': players,
+            'position': ['MID', 'MID'],
+            'team': ['Team1', 'Team2'],
+            'minutes': [90, 90],
+            'influence': [60.0, 30.0],
+            'assists': [1, 0],
+            'goals_scored': [1, 0],
+            'creativity': [25.0, 10.0],
+            'threat': [50.0, 20.0],
+            'clean_sheets': [0, 0],
+            'goals_conceded': [0, 0],
+            'saves': [0, 0],
+            'bps': [40, 20],
+            'total_points': [12, 5],
+            'was_home': [True, False],
+            'value': [80, 60],
+            'selected': [60.0, 15.0],
+            'own_goals': [0, 0],
+            'penalties_missed': [0, 0],
+            'penalties_saved': [0, 0],
+            'red_cards': [0, 0],
+            'yellow_cards': [0, 0],
+            'ict_index': [75.0, 40.0],
+            'transfers_in': [50000, 5000],  # Popular vs unpopular
+            'transfers_out': [10000, 20000],
+        }).set_index('name')
+
+        engineered = self.fpl_data.engineer_features_on_gw_data(
+            gw_data, self.season, 10, 'MID'
+        )
+
+        # Verify transfers_in_signal feature
+        self.assertIn('transfers_in_signal', engineered.columns)
+
+        # All values should be bounded [0, 1]
+        for val in engineered['transfers_in_signal']:
+            self.assertGreaterEqual(val, 0.0)
+            self.assertLessEqual(val, 1.0)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,400 @@
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+GW1 Test:  GK: AE: 0.132, RMSE: 0.399, ACC: 93.39%
+GW1 Train: GK: AE: 0.060, RMSE: 0.174, ACC: 97.27%, Gap: +129.5%
+GW1 Test:  DEF: AE: 0.141, RMSE: 0.369, ACC: 92.84%
+GW1 Train: DEF: AE: 0.109, RMSE: 0.272, ACC: 94.36%, Gap: +35.4%
+GW1 Test:  MID: AE: 0.099, RMSE: 0.327, ACC: 94.74%
+GW1 Train: MID: AE: 0.077, RMSE: 0.222, ACC: 95.89%, Gap: +46.9%
+GW1 Test:  FWD: AE: 0.163, RMSE: 0.587, ACC: 91.43%
+GW1 Train: FWD: AE: 0.077, RMSE: 0.179, ACC: 96.51%, Gap: +228.5%
+Count: 1, AE: 0.13, RMSE: 0.65, Accuracy: 93.10%
+Generating 2021-22 GW1 Predictions...GW2 Test:  GK: AE: 0.108, RMSE: 0.345, ACC: 94.80%
+GW2 Train: GK: AE: 0.077, RMSE: 0.198, ACC: 96.18%, Gap: +74.1%
+GW2 Test:  DEF: AE: 0.146, RMSE: 0.345, ACC: 91.03%
+GW2 Train: DEF: AE: 0.112, RMSE: 0.278, ACC: 93.18%, Gap: +23.9%
+GW2 Test:  MID: AE: 0.123, RMSE: 0.405, ACC: 92.99%
+GW2 Train: MID: AE: 0.069, RMSE: 0.223, ACC: 96.21%, Gap: +81.8%
+GW2 Test:  FWD: AE: 0.150, RMSE: 0.394, ACC: 91.78%
+GW2 Train: FWD: AE: 0.088, RMSE: 0.209, ACC: 95.71%, Gap: +88.9%
+Count: 2, AE: 0.13, RMSE: 0.61, Accuracy: 92.65%
+Generating 2021-22 GW2 Predictions...GW3 Test:  GK: AE: 0.114, RMSE: 0.322, ACC: 92.75%
+GW3 Train: GK: AE: 0.077, RMSE: 0.210, ACC: 96.55%, Gap: +53.2%
+GW3 Test:  DEF: AE: 0.165, RMSE: 0.477, ACC: 91.20%
+GW3 Train: DEF: AE: 0.096, RMSE: 0.254, ACC: 95.18%, Gap: +88.3%
+GW3 Test:  MID: AE: 0.125, RMSE: 0.410, ACC: 93.07%
+GW3 Train: MID: AE: 0.077, RMSE: 0.233, ACC: 95.57%, Gap: +75.8%
+GW3 Test:  FWD: AE: 0.180, RMSE: 0.500, ACC: 90.94%
+GW3 Train: FWD: AE: 0.087, RMSE: 0.187, ACC: 96.69%, Gap: +167.3%
+Count: 3, AE: 0.15, RMSE: 0.65, Accuracy: 91.99%
+Generating 2021-22 GW3 Predictions...GW4 Test:  GK: AE: 0.112, RMSE: 0.298, ACC: 93.49%
+GW4 Train: GK: AE: 0.084, RMSE: 0.217, ACC: 96.25%, Gap: +37.4%
+GW4 Test:  DEF: AE: 0.140, RMSE: 0.383, ACC: 91.84%
+GW4 Train: DEF: AE: 0.104, RMSE: 0.274, ACC: 94.67%, Gap: +39.9%
+GW4 Test:  MID: AE: 0.119, RMSE: 0.390, ACC: 93.82%
+GW4 Train: MID: AE: 0.073, RMSE: 0.230, ACC: 95.90%, Gap: +69.7%
+GW4 Test:  FWD: AE: 0.135, RMSE: 0.371, ACC: 92.01%
+GW4 Train: FWD: AE: 0.081, RMSE: 0.194, ACC: 96.26%, Gap: +91.0%
+Count: 4, AE: 0.13, RMSE: 0.60, Accuracy: 92.79%
+Generating 2021-22 GW4 Predictions...GW5 Test:  GK: AE: 0.128, RMSE: 0.344, ACC: 92.34%
+GW5 Train: GK: AE: 0.073, RMSE: 0.202, ACC: 96.83%, Gap: +70.3%
+GW5 Test:  DEF: AE: 0.138, RMSE: 0.409, ACC: 92.48%
+GW5 Train: DEF: AE: 0.106, RMSE: 0.274, ACC: 94.01%, Gap: +49.5%
+GW5 Test:  MID: AE: 0.143, RMSE: 0.547, ACC: 93.52%
+GW5 Train: MID: AE: 0.074, RMSE: 0.223, ACC: 96.28%, Gap: +145.3%
+GW5 Test:  FWD: AE: 0.118, RMSE: 0.358, ACC: 93.77%
+GW5 Train: FWD: AE: 0.082, RMSE: 0.187, ACC: 96.11%, Gap: +91.6%
+Count: 5, AE: 0.13, RMSE: 0.64, Accuracy: 93.03%
+Generating 2021-22 GW5 Predictions...GW6 Test:  GK: AE: 0.092, RMSE: 0.327, ACC: 95.37%
+GW6 Train: GK: AE: 0.074, RMSE: 0.205, ACC: 96.81%, Gap: +59.6%
+GW6 Test:  DEF: AE: 0.148, RMSE: 0.414, ACC: 91.53%
+GW6 Train: DEF: AE: 0.110, RMSE: 0.277, ACC: 93.00%, Gap: +49.4%
+GW6 Test:  MID: AE: 0.085, RMSE: 0.303, ACC: 95.62%
+GW6 Train: MID: AE: 0.073, RMSE: 0.230, ACC: 95.70%, Gap: +31.9%
+GW6 Test:  FWD: AE: 0.187, RMSE: 0.502, ACC: 88.93%
+GW6 Train: FWD: AE: 0.065, RMSE: 0.157, ACC: 97.14%, Gap: +218.9%
+Count: 6, AE: 0.13, RMSE: 0.62, Accuracy: 92.86%
+Generating 2021-22 GW6 Predictions...GW7 Test:  GK: AE: 0.111, RMSE: 0.432, ACC: 94.62%
+GW7 Train: GK: AE: 0.081, RMSE: 0.220, ACC: 96.15%, Gap: +96.1%
+GW7 Test:  DEF: AE: 0.146, RMSE: 0.354, ACC: 91.19%
+GW7 Train: DEF: AE: 0.120, RMSE: 0.284, ACC: 93.71%, Gap: +24.7%
+GW7 Test:  MID: AE: 0.107, RMSE: 0.367, ACC: 94.58%
+GW7 Train: MID: AE: 0.072, RMSE: 0.221, ACC: 96.20%, Gap: +66.4%
+GW7 Test:  FWD: AE: 0.151, RMSE: 0.375, ACC: 90.41%
+GW7 Train: FWD: AE: 0.086, RMSE: 0.200, ACC: 95.37%, Gap: +87.8%
+Count: 7, AE: 0.13, RMSE: 0.62, Accuracy: 92.70%
+Generating 2021-22 GW7 Predictions...GW8 Test:  GK: AE: 0.129, RMSE: 0.406, ACC: 93.63%
+GW8 Train: GK: AE: 0.081, RMSE: 0.201, ACC: 96.31%, Gap: +101.8%
+GW8 Test:  DEF: AE: 0.112, RMSE: 0.299, ACC: 94.57%
+GW8 Train: DEF: AE: 0.110, RMSE: 0.278, ACC: 94.63%, Gap: +7.6%
+GW8 Test:  MID: AE: 0.120, RMSE: 0.394, ACC: 92.99%
+GW8 Train: MID: AE: 0.069, RMSE: 0.218, ACC: 95.92%, Gap: +80.2%
+GW8 Test:  FWD: AE: 0.194, RMSE: 0.503, ACC: 89.79%
+GW8 Train: FWD: AE: 0.087, RMSE: 0.196, ACC: 96.03%, Gap: +156.5%
+Count: 8, AE: 0.14, RMSE: 0.63, Accuracy: 92.74%
+Generating 2021-22 GW8 Predictions...GW9 Test:  GK: AE: 0.113, RMSE: 0.283, ACC: 93.00%
+GW9 Train: GK: AE: 0.077, RMSE: 0.210, ACC: 95.91%, Gap: +34.8%
+GW9 Test:  DEF: AE: 0.139, RMSE: 0.387, ACC: 92.52%
+GW9 Train: DEF: AE: 0.114, RMSE: 0.269, ACC: 94.13%, Gap: +43.9%
+GW9 Test:  MID: AE: 0.101, RMSE: 0.338, ACC: 94.75%
+GW9 Train: MID: AE: 0.078, RMSE: 0.234, ACC: 95.61%, Gap: +44.2%
+GW9 Test:  FWD: AE: 0.181, RMSE: 0.468, ACC: 89.04%
+GW9 Train: FWD: AE: 0.080, RMSE: 0.187, ACC: 96.14%, Gap: +149.7%
+Count: 9, AE: 0.13, RMSE: 0.61, Accuracy: 92.33%
+Generating 2021-22 GW9 Predictions...GW10 Test:  GK: AE: 0.124, RMSE: 0.533, ACC: 94.40%
+GW10 Train: GK: AE: 0.073, RMSE: 0.193, ACC: 96.80%, Gap: +175.9%
+GW10 Test:  DEF: AE: 0.148, RMSE: 0.487, ACC: 92.04%
+GW10 Train: DEF: AE: 0.099, RMSE: 0.247, ACC: 95.79%, Gap: +97.5%
+GW10 Test:  MID: AE: 0.117, RMSE: 0.381, ACC: 92.55%
+GW10 Train: MID: AE: 0.072, RMSE: 0.224, ACC: 95.95%, Gap: +70.0%
+GW10 Test:  FWD: AE: 0.196, RMSE: 0.574, ACC: 91.29%
+GW10 Train: FWD: AE: 0.080, RMSE: 0.187, ACC: 96.51%, Gap: +206.6%
+Count: 10, AE: 0.15, RMSE: 0.70, Accuracy: 92.57%
+Generating 2021-22 GW10 Predictions...GW11 Test:  GK: AE: 0.101, RMSE: 0.279, ACC: 94.94%
+GW11 Train: GK: AE: 0.073, RMSE: 0.195, ACC: 96.59%, Gap: +42.8%
+GW11 Test:  DEF: AE: 0.133, RMSE: 0.377, ACC: 92.53%
+GW11 Train: DEF: AE: 0.100, RMSE: 0.257, ACC: 95.52%, Gap: +46.5%
+GW11 Test:  MID: AE: 0.091, RMSE: 0.336, ACC: 95.30%
+GW11 Train: MID: AE: 0.078, RMSE: 0.240, ACC: 95.19%, Gap: +40.3%
+GW11 Test:  FWD: AE: 0.149, RMSE: 0.385, ACC: 90.20%
+GW11 Train: FWD: AE: 0.082, RMSE: 0.190, ACC: 95.69%, Gap: +103.0%
+Count: 11, AE: 0.12, RMSE: 0.59, Accuracy: 93.24%
+Generating 2021-22 GW11 Predictions...GW12 Test:  GK: AE: 0.090, RMSE: 0.274, ACC: 94.80%
+GW12 Train: GK: AE: 0.070, RMSE: 0.186, ACC: 96.79%, Gap: +47.8%
+GW12 Test:  DEF: AE: 0.136, RMSE: 0.427, ACC: 93.89%
+GW12 Train: DEF: AE: 0.112, RMSE: 0.267, ACC: 94.65%, Gap: +60.1%
+GW12 Test:  MID: AE: 0.117, RMSE: 0.375, ACC: 93.09%
+GW12 Train: MID: AE: 0.080, RMSE: 0.233, ACC: 95.64%, Gap: +60.7%
+GW12 Test:  FWD: AE: 0.180, RMSE: 0.519, ACC: 90.00%
+GW12 Train: FWD: AE: 0.089, RMSE: 0.194, ACC: 95.52%, Gap: +167.1%
+Count: 12, AE: 0.13, RMSE: 0.63, Accuracy: 92.95%
+Generating 2021-22 GW12 Predictions...GW13 Test:  GK: AE: 0.126, RMSE: 0.362, ACC: 93.02%
+GW13 Train: GK: AE: 0.078, RMSE: 0.193, ACC: 96.90%, Gap: +87.8%
+GW13 Test:  DEF: AE: 0.154, RMSE: 0.433, ACC: 92.81%
+GW13 Train: DEF: AE: 0.104, RMSE: 0.258, ACC: 95.73%, Gap: +67.8%
+GW13 Test:  MID: AE: 0.102, RMSE: 0.321, ACC: 93.95%
+GW13 Train: MID: AE: 0.082, RMSE: 0.244, ACC: 95.25%, Gap: +31.2%
+GW13 Test:  FWD: AE: 0.170, RMSE: 0.434, ACC: 89.07%
+GW13 Train: FWD: AE: 0.081, RMSE: 0.185, ACC: 96.10%, Gap: +134.5%
+Count: 13, AE: 0.14, RMSE: 0.62, Accuracy: 92.21%
+Generating 2021-22 GW13 Predictions...GW14 Test:  GK: AE: 0.150, RMSE: 0.414, ACC: 91.89%
+GW14 Train: GK: AE: 0.069, RMSE: 0.180, ACC: 96.23%, Gap: +129.9%
+GW14 Test:  DEF: AE: 0.166, RMSE: 0.445, ACC: 92.32%
+GW14 Train: DEF: AE: 0.107, RMSE: 0.258, ACC: 95.07%, Gap: +72.7%
+GW14 Test:  MID: AE: 0.105, RMSE: 0.347, ACC: 94.29%
+GW14 Train: MID: AE: 0.084, RMSE: 0.246, ACC: 95.00%, Gap: +41.0%
+GW14 Test:  FWD: AE: 0.180, RMSE: 0.564, ACC: 90.82%
+GW14 Train: FWD: AE: 0.084, RMSE: 0.186, ACC: 96.71%, Gap: +202.9%
+Count: 14, AE: 0.15, RMSE: 0.67, Accuracy: 92.33%
+Generating 2021-22 GW14 Predictions...GW15 Test:  GK: AE: 0.164, RMSE: 0.541, ACC: 92.34%
+GW15 Train: GK: AE: 0.074, RMSE: 0.167, ACC: 96.83%, Gap: +223.5%
+GW15 Test:  DEF: AE: 0.145, RMSE: 0.367, ACC: 93.00%
+GW15 Train: DEF: AE: 0.118, RMSE: 0.272, ACC: 94.15%, Gap: +34.9%
+GW15 Test:  MID: AE: 0.103, RMSE: 0.347, ACC: 94.44%
+GW15 Train: MID: AE: 0.077, RMSE: 0.238, ACC: 95.36%, Gap: +45.7%
+GW15 Test:  FWD: AE: 0.117, RMSE: 0.295, ACC: 93.49%
+GW15 Train: FWD: AE: 0.077, RMSE: 0.179, ACC: 96.58%, Gap: +64.2%
+Count: 15, AE: 0.13, RMSE: 0.62, Accuracy: 93.32%
+Generating 2021-22 GW15 Predictions...GW16 Test:  GK: AE: 0.128, RMSE: 0.325, ACC: 92.34%
+GW16 Train: GK: AE: 0.076, RMSE: 0.185, ACC: 96.35%, Gap: +75.7%
+GW16 Test:  DEF: AE: 0.145, RMSE: 0.391, ACC: 93.13%
+GW16 Train: DEF: AE: 0.115, RMSE: 0.278, ACC: 94.53%, Gap: +40.5%
+GW16 Test:  MID: AE: 0.114, RMSE: 0.387, ACC: 93.82%
+GW16 Train: MID: AE: 0.080, RMSE: 0.230, ACC: 95.44%, Gap: +68.3%
+GW16 Test:  FWD: AE: 0.131, RMSE: 0.349, ACC: 92.88%
+GW16 Train: FWD: AE: 0.090, RMSE: 0.202, ACC: 95.87%, Gap: +72.9%
+Count: 16, AE: 0.13, RMSE: 0.60, Accuracy: 93.04%
+Generating 2021-22 GW16 Predictions...GW17 Test:  GK: AE: 0.146, RMSE: 0.440, ACC: 91.73%
+GW17 Train: GK: AE: 0.073, RMSE: 0.184, ACC: 96.84%, Gap: +139.8%
+GW17 Test:  DEF: AE: 0.150, RMSE: 0.422, ACC: 92.18%
+GW17 Train: DEF: AE: 0.115, RMSE: 0.272, ACC: 94.72%, Gap: +55.1%
+GW17 Test:  MID: AE: 0.105, RMSE: 0.343, ACC: 94.19%
+GW17 Train: MID: AE: 0.076, RMSE: 0.234, ACC: 96.01%, Gap: +46.4%
+GW17 Test:  FWD: AE: 0.150, RMSE: 0.422, ACC: 92.81%
+GW17 Train: FWD: AE: 0.081, RMSE: 0.179, ACC: 96.39%, Gap: +135.9%
+Count: 17, AE: 0.14, RMSE: 0.64, Accuracy: 92.73%
+Generating 2021-22 GW17 Predictions...GW18 Test:  GK: AE: 0.094, RMSE: 0.256, ACC: 94.38%
+GW18 Train: GK: AE: 0.073, RMSE: 0.181, ACC: 97.00%, Gap: +41.2%
+GW18 Test:  DEF: AE: 0.148, RMSE: 0.362, ACC: 92.41%
+GW18 Train: DEF: AE: 0.124, RMSE: 0.288, ACC: 94.03%, Gap: +25.8%
+GW18 Test:  MID: AE: 0.101, RMSE: 0.344, ACC: 94.68%
+GW18 Train: MID: AE: 0.078, RMSE: 0.239, ACC: 95.75%, Gap: +44.2%
+GW18 Test:  FWD: AE: 0.145, RMSE: 0.423, ACC: 92.74%
+GW18 Train: FWD: AE: 0.085, RMSE: 0.187, ACC: 96.21%, Gap: +126.6%
+Count: 18, AE: 0.12, RMSE: 0.59, Accuracy: 93.55%
+Generating 2021-22 GW18 Predictions...GW19 Test:  GK: AE: 0.156, RMSE: 0.464, ACC: 91.70%
+GW19 Train: GK: AE: 0.070, RMSE: 0.188, ACC: 97.13%, Gap: +146.8%
+GW19 Test:  DEF: AE: 0.175, RMSE: 0.498, ACC: 91.18%
+GW19 Train: DEF: AE: 0.124, RMSE: 0.288, ACC: 93.91%, Gap: +72.9%
+GW19 Test:  MID: AE: 0.105, RMSE: 0.381, ACC: 95.34%
+GW19 Train: MID: AE: 0.076, RMSE: 0.221, ACC: 96.04%, Gap: +72.4%
+GW19 Test:  FWD: AE: 0.169, RMSE: 0.565, ACC: 91.80%
+GW19 Train: FWD: AE: 0.087, RMSE: 0.205, ACC: 95.41%, Gap: +176.2%
+Count: 19, AE: 0.15, RMSE: 0.69, Accuracy: 92.51%
+Generating 2021-22 GW19 Predictions...Total Count: 19, Average AE: 0.13, Average RMSE: 0.63, Average ACC: 92.77%

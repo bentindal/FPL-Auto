@@ -268,32 +268,33 @@ def main():
             return
 
         # Use evaluate_with_nested_cv for consistency with baseline metrics
-        # Note: VIF filtering disabled for main loop to keep models compatible with prediction phase
-        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=False)
+        # Apply VIF filtering (drop features with VIF >= 5) to remove multicollinearity
+        # This requires using filtered data for both training and prediction
+        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=True)
 
         if inputs.display_weights:
-            feature_list = training_data[0][0].columns
+            feature_list = vif_training_data[0][0].columns
             eval.display_weights(i, predictor.feature_importances(), feature_list, POSITIONS)
 
         if inputs.display_permutation_importance:
-            feature_list = list(training_data[0][0].columns)
+            feature_list = list(vif_training_data[0][0].columns)
             for j, pos in enumerate(POSITIONS):
                 importance_df = eval.display_permutation_importance(
-                    predictor, test_data[j][0], test_data[j][1],
+                    predictor, vif_test_data[j][0], vif_test_data[j][1],
                     feature_list, pos, top_n=10
                 )
                 if i == target_gameweek:  # Only display top 10 on first GW
                     print(f"\nTop 10 Permutation Importance for {pos}:")
                     print(importance_df.head(10).to_string())
 
-        errors = [eval.score_model(test_preds[j], test_data[j][1]) for j in range(4)]
+        errors = [eval.score_model(test_preds[j], vif_test_data[j][1]) for j in range(4)]
 
         if inputs.score_train_vs_test:
             train_preds = [
-                np.round(predictor.models[j].predict(training_data[j][0]), 5)
+                np.round(predictor.models[j].predict(vif_training_data[j][0]), 5)
                 for j in range(4)
             ]
-            train_errors = [eval.score_model(train_preds[j], training_data[j][1]) for j in range(4)]
+            train_errors = [eval.score_model(train_preds[j], vif_training_data[j][1]) for j in range(4)]
             for j, pos in enumerate(POSITIONS):
                 ae_t, rmse_t, acc_t = errors[j]
                 ae_tr, rmse_tr, acc_tr = train_errors[j]

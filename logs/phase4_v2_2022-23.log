@@ -1,0 +1,576 @@
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:214: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_gk = (pd.concat((training_gk[0], training_gk_new[0])), pd.concat((training_gk[1], training_gk_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:215: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_def = (pd.concat((training_def[0], training_def_new[0])), pd.concat((training_def[1], training_def_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:216: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_mid = (pd.concat((training_mid[0], training_mid_new[0])), pd.concat((training_mid[1], training_mid_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/data.py:217: FutureWarning: The behavior of array concatenation with empty entries is deprecated. In a future version, this will no longer exclude empty items when determining the result dtype. To retain the old behavior, exclude the empty entries before the concat operation.
+  training_fwd = (pd.concat((training_fwd[0], training_fwd_new[0])), pd.concat((training_fwd[1], training_fwd_new[1])))
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:26: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  error += abs(predictions[i] - labels[i])
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:27: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  mse += (predictions[i] - labels[i]) ** 2
+/Users/bentindal/Desktop/coding/FPL-Auto/fpl_auto/evaluate.py:28: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  if round(predictions[i]) == labels[i]:
+GW1 Test:  GK: AE: 0.114, RMSE: 0.322, ACC: 92.64%
+GW1 Train: GK: AE: 0.058, RMSE: 0.158, ACC: 97.67%, Gap: +103.5%
+GW1 Test:  DEF: AE: 0.149, RMSE: 0.362, ACC: 91.64%
+GW1 Train: DEF: AE: 0.122, RMSE: 0.284, ACC: 93.56%, Gap: +27.5%
+GW1 Test:  MID: AE: 0.097, RMSE: 0.355, ACC: 94.88%
+GW1 Train: MID: AE: 0.066, RMSE: 0.210, ACC: 95.83%, Gap: +69.0%
+GW1 Test:  FWD: AE: 0.113, RMSE: 0.316, ACC: 94.01%
+GW1 Train: FWD: AE: 0.070, RMSE: 0.170, ACC: 97.27%, Gap: +86.3%
+Count: 1, AE: 0.12, RMSE: 0.58, Accuracy: 93.29%
+Generating 2022-23 GW1 Predictions...GW2 Test:  GK: AE: 0.102, RMSE: 0.355, ACC: 95.51%
+GW2 Train: GK: AE: 0.072, RMSE: 0.169, ACC: 97.47%, Gap: +109.8%
+GW2 Test:  DEF: AE: 0.149, RMSE: 0.406, ACC: 91.54%
+GW2 Train: DEF: AE: 0.104, RMSE: 0.260, ACC: 95.19%, Gap: +56.1%
+GW2 Test:  MID: AE: 0.101, RMSE: 0.351, ACC: 93.79%
+GW2 Train: MID: AE: 0.067, RMSE: 0.208, ACC: 96.05%, Gap: +69.2%
+GW2 Test:  FWD: AE: 0.177, RMSE: 0.501, ACC: 91.55%
+GW2 Train: FWD: AE: 0.054, RMSE: 0.129, ACC: 98.56%, Gap: +289.7%
+Count: 2, AE: 0.13, RMSE: 0.64, Accuracy: 93.10%
+Generating 2022-23 GW2 Predictions...GW3 Test:  GK: AE: 0.105, RMSE: 0.294, ACC: 93.92%
+GW3 Train: GK: AE: 0.067, RMSE: 0.181, ACC: 97.33%, Gap: +62.1%
+GW3 Test:  DEF: AE: 0.164, RMSE: 0.393, ACC: 89.83%
+GW3 Train: DEF: AE: 0.115, RMSE: 0.277, ACC: 93.64%, Gap: +41.8%
+GW3 Test:  MID: AE: 0.113, RMSE: 0.444, ACC: 94.16%
+GW3 Train: MID: AE: 0.069, RMSE: 0.211, ACC: 95.79%, Gap: +109.9%
+GW3 Test:  FWD: AE: 0.123, RMSE: 0.355, ACC: 92.47%
+GW3 Train: FWD: AE: 0.072, RMSE: 0.179, ACC: 97.26%, Gap: +98.4%
+Count: 3, AE: 0.13, RMSE: 0.61, Accuracy: 92.59%
+Generating 2022-23 GW3 Predictions...GW4 Test:  GK: AE: 0.103, RMSE: 0.309, ACC: 93.56%
+GW4 Train: GK: AE: 0.070, RMSE: 0.181, ACC: 97.44%, Gap: +70.8%
+GW4 Test:  DEF: AE: 0.153, RMSE: 0.367, ACC: 92.11%
+GW4 Train: DEF: AE: 0.116, RMSE: 0.278, ACC: 93.82%, Gap: +31.9%
+GW4 Test:  MID: AE: 0.119, RMSE: 0.516, ACC: 94.14%
+GW4 Train: MID: AE: 0.063, RMSE: 0.193, ACC: 96.32%, Gap: +167.5%
+GW4 Test:  FWD: AE: 0.137, RMSE: 0.392, ACC: 92.81%
+GW4 Train: FWD: AE: 0.076, RMSE: 0.177, ACC: 96.92%, Gap: +121.5%
+Count: 4, AE: 0.13, RMSE: 0.63, Accuracy: 93.16%
+Generating 2022-23 GW4 Predictions...GW5 Test:  GK: AE: 0.102, RMSE: 0.302, ACC: 94.72%
+GW5 Train: GK: AE: 0.075, RMSE: 0.188, ACC: 97.54%, Gap: +60.2%
+GW5 Test:  DEF: AE: 0.134, RMSE: 0.351, ACC: 91.84%
+GW5 Train: DEF: AE: 0.113, RMSE: 0.271, ACC: 93.73%, Gap: +29.8%
+GW5 Test:  MID: AE: 0.107, RMSE: 0.394, ACC: 94.86%
+GW5 Train: MID: AE: 0.071, RMSE: 0.215, ACC: 96.05%, Gap: +83.0%
+GW5 Test:  FWD: AE: 0.183, RMSE: 0.610, ACC: 90.82%
+GW5 Train: FWD: AE: 0.066, RMSE: 0.162, ACC: 97.79%, Gap: +276.0%
+Count: 5, AE: 0.13, RMSE: 0.64, Accuracy: 93.06%
+Generating 2022-23 GW5 Predictions...GW6 Test:  GK: AE: 0.114, RMSE: 0.328, ACC: 91.98%
+GW6 Train: GK: AE: 0.079, RMSE: 0.205, ACC: 96.47%, Gap: +59.6%
+GW6 Test:  DEF: AE: 0.151, RMSE: 0.381, ACC: 91.50%
+GW6 Train: DEF: AE: 0.111, RMSE: 0.274, ACC: 94.63%, Gap: +39.1%
+GW6 Test:  MID: AE: 0.094, RMSE: 0.319, ACC: 94.67%
+GW6 Train: MID: AE: 0.068, RMSE: 0.212, ACC: 96.17%, Gap: +50.8%
+GW6 Test:  FWD: AE: 0.170, RMSE: 0.487, ACC: 90.75%
+GW6 Train: FWD: AE: 0.070, RMSE: 0.167, ACC: 97.26%, Gap: +192.1%
+Count: 6, AE: 0.13, RMSE: 0.62, Accuracy: 92.23%
+Generating 2022-23 GW6 Predictions...GW7 Test:  GK: AE: 0.101, RMSE: 0.347, ACC: 95.75%
+GW7 Train: GK: AE: 0.070, RMSE: 0.177, ACC: 97.29%, Gap: +95.9%
+GW7 Test:  DEF: AE: 0.133, RMSE: 0.348, ACC: 92.45%
+GW7 Train: DEF: AE: 0.120, RMSE: 0.290, ACC: 93.89%, Gap: +20.1%
+GW7 Test:  MID: AE: 0.093, RMSE: 0.394, ACC: 95.14%
+GW7 Train: MID: AE: 0.068, RMSE: 0.214, ACC: 95.92%, Gap: +84.0%
+GW7 Test:  FWD: AE: 0.173, RMSE: 0.512, ACC: 90.97%
+GW7 Train: FWD: AE: 0.078, RMSE: 0.181, ACC: 96.70%, Gap: +182.8%
+Count: 7, AE: 0.13, RMSE: 0.63, Accuracy: 93.58%
+Generating 2022-23 GW7 Predictions...GW8 Test:  GK: AE: 0.155, RMSE: 0.384, ACC: 89.37%
+GW8 Train: GK: AE: 0.071, RMSE: 0.190, ACC: 97.73%, Gap: +102.1%
+GW8 Test:  DEF: AE: 0.131, RMSE: 0.326, ACC: 92.97%
+GW8 Train: DEF: AE: 0.121, RMSE: 0.293, ACC: 93.53%, Gap: +11.1%
+GW8 Test:  MID: AE: 0.086, RMSE: 0.293, ACC: 95.49%
+GW8 Train: MID: AE: 0.072, RMSE: 0.217, ACC: 95.65%, Gap: +35.0%
+GW8 Test:  FWD: AE: 0.148, RMSE: 0.468, ACC: 93.33%
+GW8 Train: FWD: AE: 0.078, RMSE: 0.186, ACC: 96.93%, Gap: +151.9%
+Count: 8, AE: 0.13, RMSE: 0.61, Accuracy: 92.79%
+Generating 2022-23 GW8 Predictions...GW9 Test:  GK: AE: 0.154, RMSE: 0.390, ACC: 90.28%
+GW9 Train: GK: AE: 0.075, RMSE: 0.185, ACC: 96.66%, Gap: +110.8%
+GW9 Test:  DEF: AE: 0.151, RMSE: 0.394, ACC: 91.63%
+GW9 Train: DEF: AE: 0.116, RMSE: 0.276, ACC: 94.05%, Gap: +42.8%
+GW9 Test:  MID: AE: 0.098, RMSE: 0.384, ACC: 93.71%
+GW9 Train: MID: AE: 0.071, RMSE: 0.219, ACC: 95.72%, Gap: +75.4%
+GW9 Test:  FWD: AE: 0.180, RMSE: 0.506, ACC: 89.93%
+GW9 Train: FWD: AE: 0.075, RMSE: 0.169, ACC: 97.11%, Gap: +200.2%
+Count: 9, AE: 0.15, RMSE: 0.65, Accuracy: 91.39%
+Generating 2022-23 GW9 Predictions...GW10 Test:  GK: AE: 0.142, RMSE: 0.380, ACC: 89.57%
+GW10 Train: GK: AE: 0.068, RMSE: 0.181, ACC: 97.05%, Gap: +110.6%
+GW10 Test:  DEF: AE: 0.142, RMSE: 0.372, ACC: 92.29%
+GW10 Train: DEF: AE: 0.125, RMSE: 0.291, ACC: 93.11%, Gap: +27.9%
+GW10 Test:  MID: AE: 0.108, RMSE: 0.395, ACC: 94.17%
+GW10 Train: MID: AE: 0.076, RMSE: 0.224, ACC: 95.73%, Gap: +76.7%
+GW10 Test:  FWD: AE: 0.161, RMSE: 0.464, ACC: 91.54%
+GW10 Train: FWD: AE: 0.085, RMSE: 0.195, ACC: 96.63%, Gap: +138.7%
+Count: 10, AE: 0.14, RMSE: 0.63, Accuracy: 91.89%
+Generating 2022-23 GW10 Predictions...GW11 Test:  GK: AE: 0.143, RMSE: 0.342, ACC: 90.91%
+GW11 Train: GK: AE: 0.065, RMSE: 0.169, ACC: 97.72%, Gap: +102.1%
+GW11 Test:  DEF: AE: 0.152, RMSE: 0.388, ACC: 91.00%
+GW11 Train: DEF: AE: 0.107, RMSE: 0.264, ACC: 94.36%, Gap: +46.9%
+GW11 Test:  MID: AE: 0.097, RMSE: 0.335, ACC: 94.34%
+GW11 Train: MID: AE: 0.073, RMSE: 0.223, ACC: 95.70%, Gap: +50.2%
+GW11 Test:  FWD: AE: 0.227, RMSE: 0.690, ACC: 89.31%
+GW11 Train: FWD: AE: 0.075, RMSE: 0.176, ACC: 96.75%, Gap: +292.9%
+Count: 11, AE: 0.16, RMSE: 0.66, Accuracy: 91.39%
+Generating 2022-23 GW11 Predictions...GW12 Test:  GK: AE: 0.075, RMSE: 0.211, ACC: 97.89%
+GW12 Train: GK: AE: 0.077, RMSE: 0.200, ACC: 96.73%, Gap: +5.2%
+GW12 Test:  DEF: AE: 0.127, RMSE: 0.336, ACC: 92.77%
+GW12 Train: DEF: AE: 0.112, RMSE: 0.281, ACC: 93.81%, Gap: +19.6%
+GW12 Test:  MID: AE: 0.103, RMSE: 0.369, ACC: 94.52%
+GW12 Train: MID: AE: 0.076, RMSE: 0.224, ACC: 95.68%, Gap: +64.8%
+GW12 Test:  FWD: AE: 0.176, RMSE: 0.564, ACC: 91.48%
+GW12 Train: FWD: AE: 0.088, RMSE: 0.195, ACC: 96.20%, Gap: +189.3%
+Count: 12, AE: 0.12, RMSE: 0.61, Accuracy: 94.16%
+Generating 2022-23 GW12 Predictions...GW13 Test:  GK: AE: 0.140, RMSE: 0.346, ACC: 91.48%
+GW13 Train: GK: AE: 0.081, RMSE: 0.203, ACC: 96.86%, Gap: +70.1%
+GW13 Test:  DEF: AE: 0.120, RMSE: 0.320, ACC: 93.49%
+GW13 Train: DEF: AE: 0.113, RMSE: 0.278, ACC: 93.64%, Gap: +15.4%
+GW13 Test:  MID: AE: 0.095, RMSE: 0.356, ACC: 95.09%
+GW13 Train: MID: AE: 0.068, RMSE: 0.211, ACC: 95.88%, Gap: +68.6%
+GW13 Test:  FWD: AE: 0.197, RMSE: 0.602, ACC: 90.16%
+GW13 Train: FWD: AE: 0.084, RMSE: 0.193, ACC: 95.76%, Gap: +212.4%
+Count: 13, AE: 0.14, RMSE: 0.64, Accuracy: 92.55%
+Generating 2022-23 GW13 Predictions...GW14 Test:  GK: AE: 0.159, RMSE: 0.429, ACC: 90.83%
+GW14 Train: GK: AE: 0.069, RMSE: 0.189, ACC: 96.83%, Gap: +126.8%
+GW14 Test:  DEF: AE: 0.137, RMSE: 0.345, ACC: 92.57%
+GW14 Train: DEF: AE: 0.118, RMSE: 0.282, ACC: 94.14%, Gap: +22.4%
+GW14 Test:  MID: AE: 0.082, RMSE: 0.274, ACC: 95.33%
+GW14 Train: MID: AE: 0.071, RMSE: 0.223, ACC: 95.92%, Gap: +23.1%
+GW14 Test:  FWD: AE: 0.231, RMSE: 0.702, ACC: 90.49%
+GW14 Train: FWD: AE: 0.091, RMSE: 0.186, ACC: 96.76%, Gap: +277.3%
+Count: 14, AE: 0.15, RMSE: 0.66, Accuracy: 92.31%
+Generating 2022-23 GW14 Predictions...GW15 Test:  GK: AE: 0.201, RMSE: 0.533, ACC: 88.05%
+GW15 Train: GK: AE: 0.091, RMSE: 0.228, ACC: 95.89%, Gap: +133.4%
+GW15 Test:  DEF: AE: 0.149, RMSE: 0.372, ACC: 90.41%
+GW15 Train: DEF: AE: 0.117, RMSE: 0.283, ACC: 93.33%, Gap: +31.4%
+GW15 Test:  MID: AE: 0.121, RMSE: 0.372, ACC: 93.67%
+GW15 Train: MID: AE: 0.069, RMSE: 0.195, ACC: 96.40%, Gap: +90.4%
+GW15 Test:  FWD: AE: 0.179, RMSE: 0.479, ACC: 91.09%
+GW15 Train: FWD: AE: 0.091, RMSE: 0.194, ACC: 95.92%, Gap: +146.2%
+Count: 15, AE: 0.16, RMSE: 0.66, Accuracy: 90.80%
+Generating 2022-23 GW15 Predictions...GW16 Test:  GK: AE: 0.161, RMSE: 0.470, ACC: 92.07%
+GW16 Train: GK: AE: 0.087, RMSE: 0.217, ACC: 96.13%, Gap: +116.7%
+GW16 Test:  DEF: AE: 0.143, RMSE: 0.406, ACC: 93.33%
+GW16 Train: DEF: AE: 0.111, RMSE: 0.263, ACC: 94.38%, Gap: +54.7%
+GW16 Test:  MID: AE: 0.083, RMSE: 0.251, ACC: 95.53%
+GW16 Train: MID: AE: 0.079, RMSE: 0.224, ACC: 95.63%, Gap: +12.0%
+GW16 Test:  FWD: AE: 0.139, RMSE: 0.377, ACC: 92.28%
+GW16 Train: FWD: AE: 0.082, RMSE: 0.187, ACC: 96.22%, Gap: +101.3%
+Count: 16, AE: 0.13, RMSE: 0.61, Accuracy: 93.30%
+Generating 2022-23 GW16 Predictions...GW17 Test:  GK: AE: 0.113, RMSE: 0.310, ACC: 93.81%
+GW17 Train: GK: AE: 0.073, RMSE: 0.190, ACC: 96.67%, Gap: +63.6%
+GW17 Test:  DEF: AE: 0.141, RMSE: 0.337, ACC: 92.62%
+GW17 Train: DEF: AE: 0.124, RMSE: 0.288, ACC: 93.69%, Gap: +16.9%
+GW17 Test:  MID: AE: 0.099, RMSE: 0.323, ACC: 94.23%
+GW17 Train: MID: AE: 0.072, RMSE: 0.216, ACC: 96.05%, Gap: +49.2%
+GW17 Test:  FWD: AE: 0.171, RMSE: 0.419, ACC: 91.09%
+GW17 Train: FWD: AE: 0.093, RMSE: 0.193, ACC: 95.91%, Gap: +117.4%
+Count: 17, AE: 0.13, RMSE: 0.59, Accuracy: 92.94%
+Generating 2022-23 GW17 Predictions...GW18 Test:  GK: AE: 0.136, RMSE: 0.348, ACC: 92.13%
+GW18 Train: GK: AE: 0.089, RMSE: 0.227, ACC: 95.48%, Gap: +53.7%
+GW18 Test:  DEF: AE: 0.141, RMSE: 0.390, ACC: 91.62%
+GW18 Train: DEF: AE: 0.106, RMSE: 0.258, ACC: 94.73%, Gap: +51.0%
+GW18 Test:  MID: AE: 0.103, RMSE: 0.309, ACC: 94.35%
+GW18 Train: MID: AE: 0.077, RMSE: 0.217, ACC: 96.04%, Gap: +42.4%
+GW18 Test:  FWD: AE: 0.161, RMSE: 0.460, ACC: 92.34%
+GW18 Train: FWD: AE: 0.090, RMSE: 0.193, ACC: 95.46%, Gap: +138.5%
+Count: 18, AE: 0.14, RMSE: 0.61, Accuracy: 92.61%
+Generating 2022-23 GW18 Predictions...GW19 Test:  GK: AE: 0.177, RMSE: 0.472, ACC: 89.54%
+GW19 Train: GK: AE: 0.079, RMSE: 0.197, ACC: 96.86%, Gap: +139.2%
+GW19 Test:  DEF: AE: 0.116, RMSE: 0.327, ACC: 93.72%
+GW19 Train: DEF: AE: 0.105, RMSE: 0.264, ACC: 94.33%, Gap: +23.9%
+GW19 Test:  MID: AE: 0.095, RMSE: 0.327, ACC: 94.41%
+GW19 Train: MID: AE: 0.075, RMSE: 0.228, ACC: 95.58%, Gap: +43.1%
+GW19 Test:  FWD: AE: 0.202, RMSE: 0.500, ACC: 89.76%
+GW19 Train: FWD: AE: 0.082, RMSE: 0.188, ACC: 96.26%, Gap: +166.1%
+Count: 19, AE: 0.15, RMSE: 0.64, Accuracy: 91.86%
+Generating 2022-23 GW19 Predictions...Total Count: 19, Average AE: 0.14, Average RMSE: 0.63, Average ACC: 92.58%

@@ -130,7 +130,7 @@ class FplData:
         )
 
     def avg_player_data(self, season, from_gw, to_gw):
-        """Aggregate per-player stats across a GW range, averaged by player name."""
+        """Aggregate per-player stats across a GW range, averaged by player name. Includes feature engineering."""
         if self.season == '2022-23' and from_gw == 7:
             from_gw = 8
 
@@ -146,6 +146,12 @@ class FplData:
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
+
+        # === NEW: Apply feature engineering per position before averaging ===
+        gk_data = self.engineer_features_on_gw_data(gk_data, season, to_gw, 'GK')
+        def_data = self.engineer_features_on_gw_data(def_data, season, to_gw, 'DEF')
+        mid_data = self.engineer_features_on_gw_data(mid_data, season, to_gw, 'MID')
+        fwd_data = self.engineer_features_on_gw_data(fwd_data, season, to_gw, 'FWD')
 
         gk_data = gk_data.groupby('name').mean().reset_index().set_index('name')
         def_data = def_data.groupby('name').mean().reset_index().set_index('name')
@@ -179,6 +185,14 @@ class FplData:
 
     def get_training_data(self, season, week_num):
         features = self.get_all_pos_data(season, week_num)
+
+        # === NEW: Apply feature engineering to training data ===
+        features_engineered = []
+        for j, pos in enumerate(['GK', 'DEF', 'MID', 'FWD']):
+            engineered = self.engineer_features_on_gw_data(features[j], season, week_num, pos)
+            features_engineered.append(engineered)
+        features = tuple(features_engineered)
+
         feature_labels = self.extract_all_labels(features)
         features = self.prune_all_features(features)
         return tuple(zip(features, feature_labels))
@@ -518,6 +532,101 @@ class FplData:
         for col in ['efficiency_goals_per_90', 'efficiency_assists_per_90',
                     'efficiency_creativity_per_min', 'efficiency_threat_per_min']:
             gw_data[col] = gw_data[col].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        # === ADVANCED FEATURES (Plan 04-03): Seasonal, momentum, ownership, interactions, lag ===
+
+        # Feature 1: Seasonal bucket (encode season phase: early/mid/late/final)
+        if week_num <= 10:
+            gw_data['gw_bucket_early'] = 1.0
+            gw_data['gw_bucket_mid'] = 0.0
+            gw_data['gw_bucket_late'] = 0.0
+            gw_data['gw_bucket_final'] = 0.0
+        elif week_num <= 20:
+            gw_data['gw_bucket_early'] = 0.0
+            gw_data['gw_bucket_mid'] = 1.0
+            gw_data['gw_bucket_late'] = 0.0
+            gw_data['gw_bucket_final'] = 0.0
+        elif week_num <= 30:
+            gw_data['gw_bucket_early'] = 0.0
+            gw_data['gw_bucket_mid'] = 0.0
+            gw_data['gw_bucket_late'] = 1.0
+            gw_data['gw_bucket_final'] = 0.0
+        else:  # GW 31-38
+            gw_data['gw_bucket_early'] = 0.0
+            gw_data['gw_bucket_mid'] = 0.0
+            gw_data['gw_bucket_late'] = 0.0
+            gw_data['gw_bucket_final'] = 1.0
+
+        # Feature 2: Form momentum (trend: recent form vs longer-term)
+        # Compute influence_rolling_3gw (very recent) and compare to rolling_10gw (longer trend)
+        influence_3gw_values = np.zeros(len(gw_data), dtype=float)
+        count_3gw = 0
+        for offset in range(1, 4):  # 3 most recent GWs
+            if week_num - offset < 1:
+                continue
+            past_gw = self.get_gw_data(season, week_num - offset)
+            if past_gw.empty:
+                continue
+            past_vals = (
+                pd.to_numeric(past_gw['influence'], errors='coerce')
+                .fillna(0).groupby(level=0).sum().to_dict()
+            )
+            influence_3gw_values += np.array([past_vals.get(n, 0.0) for n in gw_data.index])
+            count_3gw += 1
+
+        if count_3gw > 0:
+            influence_3gw = influence_3gw_values / count_3gw
+        else:
+            influence_3gw = np.zeros(len(gw_data))
+
+        # Form momentum = recent form (3GW) - longer term form (10GW)
+        # Positive momentum: recently improving; Negative: recently declining
+        influence_10gw = gw_data['influence_rolling_10gw'].values if 'influence_rolling_10gw' in gw_data.columns else np.zeros(len(gw_data))
+        gw_data['form_momentum'] = influence_3gw - influence_10gw
+        gw_data['form_momentum'] = gw_data['form_momentum'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        # Feature 3: Ownership signal (selected% as a proxy for popularity/differential)
+        # High selection = popular/safe; Low selection = differential/risky
+        gw_data['ownership_signal'] = pd.to_numeric(gw_data['selected'], errors='coerce').fillna(0)
+        # Normalize to [0, 1] range (FPL selected is 0-100)
+        gw_data['ownership_signal'] = np.clip(gw_data['ownership_signal'] / 100.0, 0.0, 1.0)
+
+        # Feature 4: Injury risk flag (minutes drop indicator)
+        # If recent minutes < 50% of longer-term average, flag as potential injury/benching
+        minutes_5gw = gw_data['minutes_rolling_5gw'].values if 'minutes_rolling_5gw' in gw_data.columns else np.zeros(len(gw_data))
+        minutes_10gw = gw_data['minutes_rolling_10gw'].values if 'minutes_rolling_10gw' in gw_data.columns else np.zeros(len(gw_data))
+
+        # Injury risk: 1 if recent minutes < 50% of longer-term, else 0
+        gw_data['injury_risk_flag'] = np.where(
+            (minutes_10gw > 0) & (minutes_5gw < 0.5 * minutes_10gw),
+            1.0,
+            0.0
+        )
+
+        # Feature 5: Interactions - strength_attack × form (team strength combined with player form)
+        # For FWD priority: strong attacking teams with good form players should score more
+        if 'strength_attack_home' in gw_data.columns:
+            strength_attack = pd.to_numeric(gw_data['strength_attack_home'], errors='coerce').fillna(0)
+            influence_current = pd.to_numeric(gw_data['influence'], errors='coerce').fillna(0)
+            # Normalize strength (typically 1000-1500 scale in FPL) and influence (0-100 scale)
+            strength_attack_norm = np.clip(strength_attack / 1500.0, 0.0, 1.0)
+            influence_norm = np.clip(influence_current / 100.0, 0.0, 1.0)
+            gw_data['strength_form_interaction'] = strength_attack_norm * influence_norm
+        else:
+            # If team strength data not available (e.g., in tests), set to 0
+            gw_data['strength_form_interaction'] = 0.0
+
+        gw_data['strength_form_interaction'] = gw_data['strength_form_interaction'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        # Feature 6: Transfers signal (popularity trend, if available)
+        # High transfers_in signals increasing popularity
+        if 'transfers_in' in gw_data.columns:
+            transfers_in = pd.to_numeric(gw_data['transfers_in'], errors='coerce').fillna(0)
+            gw_data['transfers_in_signal'] = np.clip(transfers_in / 50000.0, 0.0, 1.0)
+        else:
+            gw_data['transfers_in_signal'] = 0.0
+
+        # === END ADVANCED FEATURES ===
 
         # Position-specific features
         if position == 'GK':

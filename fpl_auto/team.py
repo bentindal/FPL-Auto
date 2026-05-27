@@ -458,8 +458,11 @@ class Team:
             if budget + self.budget < MIN_PRICE[pos]:
                 return
             transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
+            out_xp = self.player_xp(out, pos)
+            in_xp = self.player_xp(transfer_in, pos) if transfer_in != 'No player found to transfer in' else 0
+            print(f'[DEBUG] GW{self.gameweek} out={out}({out_xp:.1f}) in={transfer_in}({in_xp:.1f}) budget={self.budget + budget:.1f}')
             if transfer_in != 'No player found to transfer in' and \
-               self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= threshold:
+               in_xp - out_xp >= threshold:
                 self.transfer(out, transfer_in, pos)
                 if self.squad_size() != SQUAD_SIZE:
                     self.remove_excess_players()

@@ -1,0 +1,162 @@
+# Phase 2: Model Diagnostics - Context
+
+**Gathered:** 2026-05-27  
+**Status:** Ready for planning  
+**Source:** Phase transition from Phase 1 (Temporal Integrity foundation)
+
+---
+
+## Phase Boundary
+
+**Goal**: Identify specific prediction gaps by comparing model predictions to top 100 FPL manager squad choices, measure variance and ROI, and use findings to guide feature engineering priorities.
+
+**Deliverables**:
+1. Squad comparison notebook (Jupyter) analyzing top 100 manager squads vs model predictions at GW1 and mid-season
+2. Computed metrics: total squad xP, points-per-player variance, ROI (points per pound), Sharpe ratio
+3. Gap analysis: which player attributes are systematically undervalued by current model
+4. Feature engineering priorities document for Phase 4
+
+**Dependencies**: Phase 1 (Temporal Integrity) must be complete — Phase 2 uses temporally-validated data flows
+
+**Constraints**:
+- Must use only data available at each gameweek (temporal integrity from Phase 1)
+- Analysis limited to historical data (2021-22, 2022-23, 2023-24, 2024-25 seasons)
+- Top 100 manager data must be complete and traceable (document lineage)
+
+---
+
+## Implementation Decisions
+
+### Data Source & Validation
+
+**Decision**: Use top 100 manager historical squad data from FPL API/Fantasy Football Scout historical records
+- Why: Public, reproducible, represents expert-level play for benchmarking
+- How: Load squad selections week-by-week, match against model predictions at decision point
+- Fallback: If incomplete data, focus on available seasons and document gaps
+
+### Metrics Framework
+
+**Decision**: Compute multi-dimensional metrics to understand gaps (not just accuracy)
+- **xP metrics**: Total squad xP, per-player xP, position-wise breakdown
+- **Variance metrics**: Points-per-player distribution, risk measures (CV, Sharpe, Sortino)
+- **ROI metrics**: Points per £1M spent, cost-efficiency by position
+- Why: Single-number accuracy masks specific failure modes (e.g., model overvalues cheap defenders)
+
+### Comparison Windows
+
+**Decision**: Compare at GW1 (setup phase) and mid-season (GW19, tactical phase)
+- Why: Different decision constraints (fresh squad vs. mid-season transfers/chips)
+- GW1: Best-drafted squads, tests transfer-selection logic
+- GW19: Squad adaptability to form, tests in-season rebalancing
+- Other GWs: Analyze if time permits, but focus on GW1 + GW19
+
+### Gap Analysis Method
+
+**Decision**: Identify systematic gaps using residual analysis + position-specific breakdowns
+- Player-level: Which players does model systematically under/overvalue?
+- Position-level: Where are prediction errors largest (GK, DEF, MID, FWD)?
+- Club-level: Are biases toward/against certain clubs?
+- Outcome: List top 10 "surprises" (high-selection players with low xP, and vice versa)
+
+### Output Format
+
+**Decision**: Jupyter notebook with interactive exploration + markdown summary report
+- Notebook: Live code, charts, drill-down by position/club/season
+- Summary: Top findings, feature engineering hypotheses, confidence levels
+
+---
+
+## Specific Implementation Details
+
+### Data Pipeline
+
+```
+Top 100 manager squad history (external source or scraped from FPL)
+    ↓
+Clean, match to player IDs in model training data
+    ↓
+At GW1 and GW19: extract top 100 squad composition
+    ↓
+Pull model predictions for same players/week from model.py TSVs
+    ↓
+Compute xP, points, variance metrics
+    ↓
+Gap analysis: identify undervalued/overvalued players
+```
+
+### Notebook Structure
+
+1. **Setup**: Load top 100 data, model predictions, merge
+2. **GW1 Analysis**: Squad compositions, xP gaps, variance breakdown
+3. **GW19 Analysis**: Mid-season squads, transfer logic gaps
+4. **Position Breakdown**: Per-position prediction accuracy
+5. **Club Analysis**: Biases toward/against certain teams
+6. **Gap Summary**: Top 10 surprises, hypotheses for Phase 4
+7. **Appendix**: Data lineage, data quality notes
+
+### Metrics to Compute
+
+**For each squad (top 100 vs model-selected):**
+- Total xP (sum of all 15 players' xP)
+- Squad variance (std dev of xP across squad)
+- Cost efficiency: total xP per £1M budget
+- Position-wise: xP by GK, DEF (5), MID (5), FWD (3)
+- Risk metrics: Sharpe ratio (if points data available), Sortino ratio
+
+**Gap metrics:**
+- Per-player: (top100_xP - model_xP) grouped by position, club, price
+- Residuals: Player-level prediction error distribution
+- Largest gaps: Top 10 over/undervalued players
+
+---
+
+## Data Sources & Lineage
+
+### Required Data
+
+1. **Top 100 Manager Squads**: 
+   - Source: FPL API historical data or Fantasy Football Scout
+   - Content: Squad composition by GW for top 100 managers (2021-22 through 2024-25)
+   - Availability: Check data/2*/GW*/ for completeness
+   - Fallback: If incomplete, note gaps in report
+
+2. **Model Predictions**:
+   - Source: `predictions/{season}/GW{n}/{GK|DEF|MID|FWD}.tsv` (generated by model.py)
+   - Content: Player ID, expected points (xP), position
+   - Requirement: Phase 1 (Temporal Integrity) must have validated these are lookahead-free
+
+3. **Fixture Data**:
+   - Source: `data/{season}/` CSV files (existing)
+   - Content: Player info (ID, name, club, position, price), match schedule
+
+### Data Validation
+
+- Document any missing weeks/seasons
+- Flag any data quality issues (duplicate entries, mismatched IDs)
+- Report data lineage for reproducibility
+
+---
+
+## Success Criteria
+
+1. ✓ Notebook runs without errors, loads top 100 squads and model predictions
+2. ✓ GW1 and GW19 analyses complete with xP + variance metrics
+3. ✓ Gap analysis identifies top 10 over/undervalued players with explanations
+4. ✓ Position-wise breakdown shows which positions have largest prediction gaps
+5. ✓ Feature engineering hypotheses derived from gaps (e.g., "undervalued young defenders suggest missing 'potential for improvement' feature")
+6. ✓ Report documents data lineage and any gaps in top 100 completeness
+7. ✓ Results reproducible: notebook can re-run on any season, produces same metrics
+
+---
+
+## Deferred / Out of Scope
+
+- Real-time top 100 data (focus on historical)
+- Causal analysis (why do gaps exist) — save for Phase 4 hypothesis testing
+- Interactive dashboard (notebook + markdown sufficient)
+- Top 1000 manager comparison (scope limited to top 100)
+
+---
+
+*Phase: 02-model-diagnostics*  
+*Context gathered: 2026-05-27 after Phase 1 Temporal Integrity completion*
