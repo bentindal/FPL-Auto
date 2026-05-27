@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import os
 import math
-import numpy as np
 import json
-import os
+from sklearn.inspection import permutation_importance
 
 def score_model(predictions, labels):
     """
@@ -32,6 +32,45 @@ def score_model(predictions, labels):
 
     return error, math.sqrt(mse), accuracy
 
+def compute_permutation_importance(model_pipeline, X_test, y_test, feature_names, n_repeats=10):
+    """Compute permutation importance for a trained Pipeline.
+
+    Permutation importance measures feature contribution by shuffling each feature
+    and observing how much the model's error increases. Higher values indicate
+    features that the model relies on more heavily.
+
+    Args:
+        model_pipeline: Fitted sklearn.pipeline.Pipeline
+        X_test: Test features (DataFrame or array, not pre-scaled)
+        y_test: Test targets
+        feature_names: List of feature column names
+        n_repeats: Number of times to shuffle each feature (default 10)
+
+    Returns:
+        DataFrame with columns [feature, importance_mean, importance_std]
+        Sorted by importance_mean descending
+
+    Note:
+        The Pipeline's StandardScaler is automatically applied by the model,
+        so X_test should be raw unscaled features.
+    """
+    result = permutation_importance(
+        model_pipeline,
+        X_test, y_test,
+        n_repeats=n_repeats,
+        random_state=42,
+        n_jobs=-1
+    )
+
+    importance_df = pd.DataFrame({
+        'feature': feature_names,
+        'importance_mean': result.importances_mean,
+        'importance_std': result.importances_std
+    }).sort_values('importance_mean', ascending=False)
+
+    return importance_df
+
+
 def display_weights(week_num, weights, feature_names, pos):
     """
     Display the feature importances for each position.
@@ -48,12 +87,17 @@ def display_weights(week_num, weights, feature_names, pos):
     for i in range(4):
         plt.subplot(1, 4, i + 1)
         plt.title(pos[i])
-        plt.barh(feature_names, weights[i])
-        plt.xlabel('Importance')
+        # Skip display if feature importances are None (e.g., linear models)
+        if weights[i] is not None:
+            plt.barh(feature_names, weights[i])
+            plt.xlabel('Importance')
+        else:
+            plt.text(0.5, 0.5, f'Feature importance\nnot available\n({pos[i]})',
+                    ha='center', va='center', transform=plt.gca().transAxes)
         # Hide y axis labels for all but first subplot
         if i != 0:
             plt.yticks([])
-        if i == 0:
+        if i == 0 and weights[i] is not None:
             plt.ylabel('Feature')
         plt.gca().invert_yaxis()
 

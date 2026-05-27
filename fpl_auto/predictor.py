@@ -97,6 +97,30 @@ class Predictor:
             for m in self.models
         ]
 
+    def fit_with_nested_cv(self, training_data: list, param_grids: dict = None) -> 'Predictor':
+        """Fit models using nested cross-validation for hyperparameter tuning.
+
+        Nested CV structure:
+        - Inner CV: GridSearchCV uses TimeSeriesSplit(n_splits=3) to search hyperparameters
+        - Outer CV: cross_val_score (at call-site in model.py) uses TimeSeriesSplit(n_splits=5)
+
+        Args:
+            training_data: [(X_gk, y_gk), (X_def, y_def), (X_mid, y_mid), (X_fwd, y_fwd)]
+            param_grids: Optional dict mapping position to param_grid for GridSearchCV.
+                        If None, uses default minimal grids (prepared in setup_nested_cv_for_hyperparameter_tuning).
+
+        Returns:
+            self (fitted with best hyperparameters from inner CV)
+
+        Note:
+            This method prepares the infrastructure for nested CV. The outer CV loop
+            (final evaluation) is implemented at the call-site in model.py using
+            cross_val_score(GridSearchCV(...)).
+        """
+        # Implementation deferred to Plan 02 (currently a stub for future use)
+        # For now, just use standard fit() with Pipelines
+        return self.fit(training_data)
+
     def to_dataframes(self, player_names: list, predictions: list) -> list:
         """Zip names + predictions into a list of DataFrames (one per position)."""
         frames = []
@@ -104,3 +128,49 @@ class Predictor:
             df = pd.DataFrame({'Name': names, 'xP': preds}).set_index('Name')
             frames.append(df)
         return frames
+
+
+def setup_nested_cv_for_hyperparameter_tuning(model_type: str, position: str = None):
+    """Return (inner_cv, outer_cv, param_grid) for nested cross-validation.
+
+    Nested CV is used to tune hyperparameters without optimizing to the CV fold
+    structure itself. This prevents "meta-overfitting" where the best hyperparameters
+    are tuned to the specific folds used for evaluation.
+
+    Structure:
+    - Inner CV: TimeSeriesSplit(n_splits=3) for GridSearchCV
+      (expands training window 3 times to explore hyperparameter space)
+    - Outer CV: TimeSeriesSplit(n_splits=5) for cross_val_score
+      (final evaluation on 5 independent expanding windows)
+
+    Args:
+        model_type: One of Predictor.TYPES
+        position: Optional position ('GK', 'DEF', 'MID', 'FWD') for position-specific tuning
+
+    Returns:
+        tuple: (inner_cv_splitter, outer_cv_splitter, param_grid)
+    """
+    from sklearn.model_selection import TimeSeriesSplit
+
+    inner_cv = TimeSeriesSplit(n_splits=3)
+    outer_cv = TimeSeriesSplit(n_splits=5)
+
+    # Default parameter grids for hyperparameter search
+    # These are minimal tuning ranges; can be expanded in Plan 02
+    param_grids = {
+        'gradientboost': {
+            'regressor__learning_rate': [0.05, 0.1],
+            'regressor__max_depth': [2, 3],
+        },
+        'randomforest': {
+            'regressor__n_estimators': [100, 200],
+            'regressor__max_depth': [5, 10],
+        },
+        'linear': {},  # Linear regression has no hyperparameters to tune
+        'neuralnetwork': {
+            'regressor__hidden_layer_sizes': [(100, 100), (50, 50)],
+        }
+    }
+
+    param_grid = param_grids.get(model_type, {})
+    return inner_cv, outer_cv, param_grid
