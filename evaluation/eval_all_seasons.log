@@ -1,0 +1,92 @@
+
+================================================================================
+COMPREHENSIVE TRANSFER STRATEGY EVALUATION
+================================================================================
+
+Variants: ['CONSERVATIVE_EARLY', 'CONSERVATIVE_FULL', 'BASELINE_MID', 'AGGRESSIVE_LATE', 'AGGRESSIVE_FULL']
+Seasons: ['2021-22', '2022-23', '2023-24', '2024-25']
+Total runs: 20
+
+Starting parallel evaluation (this will take 10-20 minutes)...
+
+Results saved to /Users/bentindal/Desktop/coding/FPL-Auto/evaluation/all_seasons_results.json
+
+================================================================================
+PER-SEASON RESULTS
+================================================================================
+
+2021-22
+----------------------------------------------------------------------------------------------------
+Variant                  Points     Sharpe    Sortino   Drawdown  Transfers
+----------------------------------------------------------------------------------------------------
+CONSERVATIVE_FULL          1595       2.94       6.42        0.0         34 ← BEST
+AGGRESSIVE_FULL            1595       2.94       6.42        0.0         34
+CONSERVATIVE_EARLY         1499       3.13       6.88        0.0          9
+AGGRESSIVE_LATE            1480       2.14       5.80        0.0         11
+BASELINE_MID               1422       2.71       4.67        0.0         14
+
+2022-23
+----------------------------------------------------------------------------------------------------
+Variant                  Points     Sharpe    Sortino   Drawdown  Transfers
+----------------------------------------------------------------------------------------------------
+CONSERVATIVE_FULL          1970       3.27       4.74        0.0         32 ← BEST
+AGGRESSIVE_FULL            1970       3.27       4.74        0.0         32
+BASELINE_MID               1743       3.00       4.30        0.0         14
+CONSERVATIVE_EARLY         1635       2.75       4.43        0.0          7
+AGGRESSIVE_LATE            1594       2.92       4.42        0.0         11
+
+2023-24
+----------------------------------------------------------------------------------------------------
+Variant                  Points     Sharpe    Sortino   Drawdown  Transfers
+----------------------------------------------------------------------------------------------------
+CONSERVATIVE_FULL          1805       2.99       5.36        0.0         34 ← BEST
+AGGRESSIVE_FULL            1805       2.99       5.36        0.0         34
+CONSERVATIVE_EARLY         1660       2.65       4.65        0.0          9
+BASELINE_MID               1600       2.65       5.21        0.0         14
+AGGRESSIVE_LATE            1469       2.41       4.49        0.0         11
+
+2024-25
+----------------------------------------------------------------------------------------------------
+Variant                  Points     Sharpe    Sortino   Drawdown  Transfers
+----------------------------------------------------------------------------------------------------
+CONSERVATIVE_EARLY            0       0.00       0.00        0.0          0 ← BEST
+CONSERVATIVE_FULL             0       0.00       0.00        0.0          0
+BASELINE_MID                  0       0.00       0.00        0.0          0
+AGGRESSIVE_LATE               0       0.00       0.00        0.0          0
+AGGRESSIVE_FULL               0       0.00       0.00        0.0          0
+
+================================================================================
+REGIME ANALYSIS AND CONSISTENCY
+================================================================================
+
+BEST VARIANT PER SEASON:
+--------------------------------------------------
+  2021-22: CONSERVATIVE_FULL
+  2022-23: CONSERVATIVE_FULL
+  2023-24: CONSERVATIVE_FULL
+  2024-25: CONSERVATIVE_EARLY
+
+REGIME CHANGES: 2 different best variants across 4 seasons
+  Strategies show regime-dependent performance (not universally best)
+
+CONSISTENCY METRICS (Std Dev of Total Points Across Seasons):
+--------------------------------------------------
+Variant                    Mean     StdDev       CV        Min        Max
+----------------------------------------------------------------------
+AGGRESSIVE_LATE            1136      657.5    0.579          0       1594
+CONSERVATIVE_EARLY         1198      694.7    0.580          0       1660
+BASELINE_MID               1191      697.1    0.585          0       1743
+CONSERVATIVE_FULL          1342      786.4    0.586          0       1970
+AGGRESSIVE_FULL            1342      786.4    0.586          0       1970
+
+KEY FINDINGS:
+--------------------------------------------------
+Most consistent variant: AGGRESSIVE_LATE (StdDev: 657.5)
+Least consistent variant: AGGRESSIVE_FULL (StdDev: 786.4)
+
+Top-2 frequency (robustness across seasons):
+  CONSERVATIVE_FULL: 4/4 seasons
+  AGGRESSIVE_FULL: 3/4 seasons
+  CONSERVATIVE_EARLY: 1/4 seasons
+
+================================================================================

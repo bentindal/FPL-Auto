@@ -1,0 +1,255 @@
+{
+  "2021-22": {
+    "CONSERVATIVE_EARLY": {
+      "total_points": 1499.0,
+      "sharpe": 3.1254,
+      "sortino": 6.8815,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 39.45,
+      "std_gw_points": 12.62,
+      "best_week": 66.0,
+      "worst_week": 16.0,
+      "transfers_made": 9,
+      "gw_count": 38
+    },
+    "CONSERVATIVE_FULL": {
+      "total_points": 1595.0,
+      "sharpe": 2.9408,
+      "sortino": 6.4238,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 41.97,
+      "std_gw_points": 14.27,
+      "best_week": 76.0,
+      "worst_week": 14.0,
+      "transfers_made": 34,
+      "gw_count": 38
+    },
+    "BASELINE_MID": {
+      "total_points": 1422.0,
+      "sharpe": 2.7119,
+      "sortino": 4.673,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 37.42,
+      "std_gw_points": 13.8,
+      "best_week": 69.0,
+      "worst_week": 11.0,
+      "transfers_made": 14,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_LATE": {
+      "total_points": 1480.0,
+      "sharpe": 2.1352,
+      "sortino": 5.7969,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 38.95,
+      "std_gw_points": 18.24,
+      "best_week": 86.0,
+      "worst_week": 15.0,
+      "transfers_made": 11,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_FULL": {
+      "total_points": 1595.0,
+      "sharpe": 2.9408,
+      "sortino": 6.4238,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 41.97,
+      "std_gw_points": 14.27,
+      "best_week": 76.0,
+      "worst_week": 14.0,
+      "transfers_made": 34,
+      "gw_count": 38
+    }
+  },
+  "2022-23": {
+    "CONSERVATIVE_EARLY": {
+      "total_points": 1635.0,
+      "sharpe": 2.7517,
+      "sortino": 4.4346,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 43.03,
+      "std_gw_points": 15.64,
+      "best_week": 73.0,
+      "worst_week": 0.0,
+      "transfers_made": 7,
+      "gw_count": 38
+    },
+    "CONSERVATIVE_FULL": {
+      "total_points": 1970.0,
+      "sharpe": 3.2721,
+      "sortino": 4.7362,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 51.84,
+      "std_gw_points": 15.84,
+      "best_week": 79.0,
+      "worst_week": 0.0,
+      "transfers_made": 32,
+      "gw_count": 38
+    },
+    "BASELINE_MID": {
+      "total_points": 1743.0,
+      "sharpe": 2.9964,
+      "sortino": 4.297,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 45.87,
+      "std_gw_points": 15.31,
+      "best_week": 81.0,
+      "worst_week": 0.0,
+      "transfers_made": 14,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_LATE": {
+      "total_points": 1594.0,
+      "sharpe": 2.9215,
+      "sortino": 4.4237,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 41.95,
+      "std_gw_points": 14.36,
+      "best_week": 70.0,
+      "worst_week": 0.0,
+      "transfers_made": 11,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_FULL": {
+      "total_points": 1970.0,
+      "sharpe": 3.2721,
+      "sortino": 4.7362,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 51.84,
+      "std_gw_points": 15.84,
+      "best_week": 79.0,
+      "worst_week": 0.0,
+      "transfers_made": 32,
+      "gw_count": 38
+    }
+  },
+  "2023-24": {
+    "CONSERVATIVE_EARLY": {
+      "total_points": 1660.0,
+      "sharpe": 2.6523,
+      "sortino": 4.6504,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 43.68,
+      "std_gw_points": 16.47,
+      "best_week": 84.0,
+      "worst_week": 6.0,
+      "transfers_made": 9,
+      "gw_count": 38
+    },
+    "CONSERVATIVE_FULL": {
+      "total_points": 1805.0,
+      "sharpe": 2.9926,
+      "sortino": 5.3616,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 47.5,
+      "std_gw_points": 15.87,
+      "best_week": 92.0,
+      "worst_week": 10.0,
+      "transfers_made": 34,
+      "gw_count": 38
+    },
+    "BASELINE_MID": {
+      "total_points": 1600.0,
+      "sharpe": 2.6502,
+      "sortino": 5.2101,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 42.11,
+      "std_gw_points": 15.89,
+      "best_week": 84.0,
+      "worst_week": 14.0,
+      "transfers_made": 14,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_LATE": {
+      "total_points": 1469.0,
+      "sharpe": 2.4136,
+      "sortino": 4.4935,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 38.66,
+      "std_gw_points": 16.02,
+      "best_week": 84.0,
+      "worst_week": 6.0,
+      "transfers_made": 11,
+      "gw_count": 38
+    },
+    "AGGRESSIVE_FULL": {
+      "total_points": 1805.0,
+      "sharpe": 2.9926,
+      "sortino": 5.3616,
+      "max_drawdown": 0.0,
+      "mean_gw_points": 47.5,
+      "std_gw_points": 15.87,
+      "best_week": 92.0,
+      "worst_week": 10.0,
+      "transfers_made": 34,
+      "gw_count": 38
+    }
+  },
+  "2024-25": {
+    "CONSERVATIVE_EARLY": {
+      "total_points": 0,
+      "sharpe": 0,
+      "sortino": 0,
+      "max_drawdown": 0,
+      "mean_gw_points": 0,
+      "std_gw_points": 0,
+      "best_week": 0,
+      "worst_week": 0,
+      "transfers_made": 0,
+      "gw_count": 0,
+      "error": "Need at least 2 players to suggest captaincy, squad has 0"
+    },
+    "CONSERVATIVE_FULL": {
+      "total_points": 0,
+      "sharpe": 0,
+      "sortino": 0,
+      "max_drawdown": 0,
+      "mean_gw_points": 0,
+      "std_gw_points": 0,
+      "best_week": 0,
+      "worst_week": 0,
+      "transfers_made": 0,
+      "gw_count": 0,
+      "error": "Need at least 2 players to suggest captaincy, squad has 0"
+    },
+    "BASELINE_MID": {
+      "total_points": 0,
+      "sharpe": 0,
+      "sortino": 0,
+      "max_drawdown": 0,
+      "mean_gw_points": 0,
+      "std_gw_points": 0,
+      "best_week": 0,
+      "worst_week": 0,
+      "transfers_made": 0,
+      "gw_count": 0,
+      "error": "Need at least 2 players to suggest captaincy, squad has 0"
+    },
+    "AGGRESSIVE_LATE": {
+      "total_points": 0,
+      "sharpe": 0,
+      "sortino": 0,
+      "max_drawdown": 0,
+      "mean_gw_points": 0,
+      "std_gw_points": 0,
+      "best_week": 0,
+      "worst_week": 0,
+      "transfers_made": 0,
+      "gw_count": 0,
+      "error": "Need at least 2 players to suggest captaincy, squad has 0"
+    },
+    "AGGRESSIVE_FULL": {
+      "total_points": 0,
+      "sharpe": 0,
+      "sortino": 0,
+      "max_drawdown": 0,
+      "mean_gw_points": 0,
+      "std_gw_points": 0,
+      "best_week": 0,
+      "worst_week": 0,
+      "transfers_made": 0,
+      "gw_count": 0,
+      "error": "Need at least 2 players to suggest captaincy, squad has 0"
+    }
+  }
+}
