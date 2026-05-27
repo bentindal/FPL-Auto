@@ -139,7 +139,11 @@
 4. Results compare each variant against both baselines; winners have non-overlapping 95% CIs with baselines
 5. Per-season breakdown shows regime changes (e.g., variant works 2021-22 but fails 2023-24)
 
-**Plans**: TBD
+**Plans**: 
+- [ ] 06-01-PLAN.md — Extend StrategyConfig + implement 5 transfer variants (TS-01, TS-02)
+- [ ] 06-02-PLAN.md — Integrate with manager.py + single-season testing (TS-01, TS-02)
+- [ ] 06-03-PLAN.md — Run walk-forward evaluation + compute CIs (TS-03, TS-04)
+- [ ] 06-04-PLAN.md — Results report + visualization (TS-04)
 
 ---
 
@@ -205,7 +209,7 @@
 | 3. Model Infrastructure | Proper validation | 6 | 3 | Execution complete |
 | 4. Feature Engineering | Expand features | 4 | 3 | Execution complete |
 | 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | 4 | Planning complete |
-| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | TBD | Not started |
+| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | 4 | Planning complete |
 | 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | TBD | Not started |
 | 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | TBD | Not started |
 | 9. Performance Validation | Final validation | 4 | TBD | Not started |
@@ -221,4 +225,4 @@
 
 ---
 
-*Roadmap updated: 2026-05-27 - Phase 4 execution complete, Phase 5 planning complete*
+*Roadmap updated: 2026-05-27 - Phase 5 complete, Phase 6 planning complete*
