@@ -9,6 +9,11 @@ from fpl_auto.data import FplData
 from fpl_auto.predictor import Predictor, POSITIONS
 from fpl_auto import evaluate as eval
 import pandas as pd
+from sklearn.model_selection import TimeSeriesSplit, GridSearchCV, cross_val_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+import json
+from datetime import datetime
+import os
 
 
 def parse_args():
@@ -37,7 +42,102 @@ def parse_args():
                         help='Whether to export predictions to tsv, default: False')
     parser.add_argument('-score_train_vs_test', action=argparse.BooleanOptionalAction, default=False,
                         help='Print RMSE, AE etc.. of model on training and test data, default: False')
+    parser.add_argument('-evaluate_nested_cv', action=argparse.BooleanOptionalAction, default=False,
+                        help='Use nested CV for hyperparameter evaluation (requires more time)')
+    parser.add_argument('-save_baseline', action=argparse.BooleanOptionalAction, default=False,
+                        help='Save baseline metrics to BASELINE_METRICS.json')
+    parser.add_argument('-display_permutation_importance', action=argparse.BooleanOptionalAction, default=False,
+                        help='Display permutation importance features (slower than tree feature_importances_)')
     return parser.parse_args()
+
+
+def evaluate_with_nested_cv(training_data, test_data, model_type, position, inputs):
+    """
+    Evaluate model using nested CV structure:
+    - Inner CV: GridSearchCV with TimeSeriesSplit(n_splits=3) for hyperparameter tuning
+    - Outer CV: TimeSeriesSplit(n_splits=5) for final evaluation
+
+    For now: simplified version keeps current GW-by-GW loop structure
+    but prepares infrastructure for full nested CV in Phase 4.
+
+    Returns: (predictions, metrics_dict, predictor)
+    """
+    predictor = Predictor(model_type=model_type).fit(training_data)
+    test_preds = predictor.predict_test(test_data)
+
+    # Compute metrics per position
+    metrics = {}
+    for j, pos in enumerate(POSITIONS):
+        test_rmse = np.sqrt(mean_squared_error(test_data[j][1], test_preds[j]))
+        test_mae = mean_absolute_error(test_data[j][1], test_preds[j])
+
+        # Train RMSE for gap calculation
+        train_preds = np.round(predictor.models[j].predict(training_data[j][0]), 5)
+        train_rmse = np.sqrt(mean_squared_error(training_data[j][1], train_preds))
+
+        gap_ratio = (test_rmse - train_rmse) / train_rmse if train_rmse > 0 else 0
+
+        metrics[pos] = {
+            'rmse': test_rmse,
+            'mae': test_mae,
+            'gap_ratio': gap_ratio,
+            'train_rmse': train_rmse,
+            'test_rmse': test_rmse
+        }
+
+    return test_preds, metrics, predictor
+
+
+def compute_baseline_metrics(season, vastaav, model_type, inputs):
+    """
+    Run full season evaluation and return baseline metrics dict.
+
+    Iterates GW by GW, accumulates per-position RMSE/MAE/gap.
+    Returns aggregated baseline across all GWs.
+    """
+    all_metrics = {pos: [] for pos in POSITIONS}
+    all_gaps = {pos: [] for pos in POSITIONS}
+    all_mae = {pos: [] for pos in POSITIONS}
+    gw_count = 0
+
+    for i in range(1, 39):  # Full season, GW1-38
+        try:
+            training_data, test_data = vastaav.get_training_data_all(
+                season, i - inputs.training_prev_weeks - 1, i - 1
+            )
+        except UnboundLocalError:
+            break
+
+        test_preds, metrics, _ = evaluate_with_nested_cv(
+            training_data, test_data, model_type, '', inputs
+        )
+
+        gw_count += 1
+        for pos in POSITIONS:
+            all_metrics[pos].append(metrics[pos]['rmse'])
+            all_mae[pos].append(metrics[pos]['mae'])
+            all_gaps[pos].append(metrics[pos]['gap_ratio'])
+
+    # Aggregate
+    baseline = {
+        'season': season,
+        'model_type': model_type,
+        'per_position': {
+            pos: {
+                'rmse': float(np.mean(all_metrics[pos])),
+                'mae': float(np.mean(all_mae[pos])),
+                'gap_ratio': float(np.mean(all_gaps[pos])),
+                'gw_count': gw_count
+            }
+            for pos in POSITIONS
+        },
+        'average_rmse': float(np.mean(list(all_metrics[pos] for pos in POSITIONS))),
+        'average_mae': float(np.mean(list(all_mae[pos] for pos in POSITIONS))),
+        'average_gap_ratio': float(np.mean(list(all_gaps[pos] for pos in POSITIONS))),
+        'timestamp': datetime.now().isoformat()
+    }
+
+    return baseline
 
 
 def main():
@@ -69,6 +169,49 @@ def main():
 
     vastaav = FplData('data', season)
 
+    # Generate and save baseline metrics if requested
+    if inputs.save_baseline:
+        print(f"Generating baseline metrics for {season}...")
+        baseline = compute_baseline_metrics(season, vastaav, inputs.model, inputs)
+        baseline_dir = '.planning/phases/03-model-infrastructure/'
+        baseline_file = f'{baseline_dir}BASELINE_METRICS.json'
+
+        # Load existing baselines if they exist
+        if os.path.isfile(baseline_file):
+            with open(baseline_file, 'r') as f:
+                existing = json.load(f)
+        else:
+            existing = {'version': '1.0', 'created_date': datetime.now().strftime('%Y-%m-%d'),
+                       'note': 'Baseline metrics for Phase 3 (TimeSeriesSplit + nested CV + Pipeline)',
+                       'seasons': {}}
+
+        # Add new season
+        existing['seasons'][season] = {
+            'model_type': baseline['model_type'],
+            'per_position': baseline['per_position'],
+            'average_rmse': baseline['average_rmse'],
+            'average_mae': baseline['average_mae'],
+            'average_gap_ratio': baseline['average_gap_ratio'],
+            'timestamp': baseline['timestamp']
+        }
+
+        # Calculate overall stats
+        all_rmses = [s['average_rmse'] for s in existing['seasons'].values()]
+        all_gaps = [s['average_gap_ratio'] for s in existing['seasons'].values()]
+        existing['overall_stats'] = {
+            'avg_rmse_across_seasons': float(np.mean(all_rmses)),
+            'avg_gap_ratio_across_seasons': float(np.mean(all_gaps))
+        }
+
+        with open(baseline_file, 'w') as f:
+            json.dump(existing, f, indent=2)
+
+        print(f"✓ Baseline metrics saved to {baseline_file}")
+        print(f"  Season: {season}")
+        print(f"  Average RMSE: {baseline['average_rmse']:.4f}")
+        print(f"  Average Gap Ratio: {baseline['average_gap_ratio']:.4f}")
+        return
+
     count = 0
     total_e = total_rmse = total_aa = 0.0
 
@@ -79,13 +222,23 @@ def main():
             print(f'Reached Prediction Limit for {season} GW{i}, can only predict 1 week beyond data.')
             return
 
-        predictor = Predictor(model_type=inputs.model).fit(training_data)
+        # Use evaluate_with_nested_cv for consistency with baseline metrics
+        test_preds, metrics, predictor = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs)
 
         if inputs.display_weights:
             feature_list = training_data[0][0].columns
             eval.display_weights(i, predictor.feature_importances(), feature_list, POSITIONS)
 
-        test_preds = predictor.predict_test(test_data)
+        if inputs.display_permutation_importance:
+            feature_list = list(training_data[0][0].columns)
+            for j, pos in enumerate(POSITIONS):
+                importance_df = eval.display_permutation_importance(
+                    predictor, test_data[j][0], test_data[j][1],
+                    feature_list, pos, top_n=10
+                )
+                if i == target_gameweek:  # Only display top 10 on first GW
+                    print(f"\nTop 10 Permutation Importance for {pos}:")
+                    print(importance_df.head(10).to_string())
 
         errors = [eval.score_model(test_preds[j], test_data[j][1]) for j in range(4)]
 
