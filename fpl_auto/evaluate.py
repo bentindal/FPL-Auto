@@ -5,6 +5,7 @@ import os
 import math
 import json
 from sklearn.inspection import permutation_importance
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 def score_model(predictions, labels):
     """
@@ -206,13 +207,13 @@ def export_tsv(clean_predictions, season, week_num):
 def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     """
     Plots the difference between the actual points and expected points for each gameweek.
-    
+
     Args:
         p_list (list): A list of points scored in each gameweek.
         xp_list (list): A list of expected points for each gameweek.
         from_week (int): The starting gameweek index.
         to_week (int): The ending gameweek index.
-    
+
     """
     # X-axis is Gameweeks
     x_data = range(from_week, to_week + 1)[:len(p_list)]
@@ -220,16 +221,16 @@ def plot_p_minus_xp(p_list, xp_list, from_week, to_week):
     differences = [p - xp for p, xp in zip(p_list, xp_list)]
     plt.title('Actual Points minus Expected Points')
     plt.bar(x_data, differences, label='P - xP')
-    
+
     # Calculate the average
     if len(differences) == 0:
         average = 0
     else:
         average = sum(differences) / len(differences)
-    
+
     # Plot the average line
     plt.axhline(average, color='red', linestyle='--', label='Average = {:.2f}'.format(average))
-    
+
     plt.legend()
     plt.show()
 
@@ -247,7 +248,7 @@ def plot_score_comparison(p_list, chips_usage, from_week, season, project=False)
     week_count = range(from_week, from_week + len(p_list))
     # Categorise each week
     avg_p = sum(p_list) / len(p_list)
-    
+
     if project:
         total_p = sum(p_list) + avg_p * (38 - len(p_list))
     else:
@@ -255,13 +256,13 @@ def plot_score_comparison(p_list, chips_usage, from_week, season, project=False)
 
     # Plot the data
     plt.bar(week_count, p_list, label='Points Scored')
-    
+
     #plt.axhline(fpl_avg, color='black', linestyle='--', label=f'FPL Avg {fpl_avg:.2f}')
     plt.axhline(avg_p, color='red', linestyle='--', label=f'Model Avg {avg_p:.2f}')
-    
-    chip_colors = {'Triple Captain': 'mediumvioletred', 
-                   'Bench Boost': 'orange', 
-                   'Free Hit': 'blueviolet', 
+
+    chip_colors = {'Triple Captain': 'mediumvioletred',
+                   'Bench Boost': 'orange',
+                   'Free Hit': 'blueviolet',
                    'Wildcard': 'lightcoral'}
     for chip, i in chips_usage:
         plt.bar(i, p_list[i-from_week], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
@@ -352,7 +353,7 @@ def box_plot_by_season(points, seasons):
         points (list): A list of lists containing the points scored in each gameweek for each season.
         seasons (list): A list of the seasons for which the points are being plotted.
     """
-    # Creating dataset    
+    # Creating dataset
     fig = plt.figure(figsize=(10, 7))
 
     y_axis = seasons
@@ -420,17 +421,73 @@ def plotxp(season, xp_list, start_gw, end_gw, chips_usage):
     plt.xlabel('Gameweek')
     plt.ylabel('Expected Points')
     plt.title(f'Expected Points over the {season} season | Total xP: {sum(xp_list):.2f}')
-    
+
     # Plot the average line
     average = sum(xp_list) / len(xp_list)
     plt.axhline(average, color='red', linestyle='--', label='Average xP')
 
-    chip_colors = {'Triple Captain': 'mediumvioletred', 
-                   'Bench Boost': 'orange', 
-                   'Free Hit': 'blueviolet', 
+    chip_colors = {'Triple Captain': 'mediumvioletred',
+                   'Bench Boost': 'orange',
+                   'Free Hit': 'blueviolet',
                    'Wildcard': 'lightcoral'}
     for chip, i in chips_usage:
         plt.bar(i, xp_list[i-start_gw], color=chip_colors[chip], label=f'{chip} GW{i}', alpha=0.7)
-    
+
     plt.legend()
     plt.show()
+
+
+def display_feature_vif(X_matrix, feature_names, position, threshold=5.0):
+    """
+    Compute Variance Inflation Factor (VIF) for each feature and identify multicollinear features.
+
+    VIF measures how much the variance of a feature's coefficient is inflated due to
+    correlation with other features. VIF >= 5 indicates high multicollinearity.
+
+    Args:
+        X_matrix: Feature matrix (numpy array or DataFrame shape: n_samples × n_features)
+        feature_names: List of feature column names (length must match X_matrix.shape[1])
+        position: Position code for logging ('GK', 'DEF', 'MID', 'FWD', or 'test')
+        threshold: VIF threshold above which to mark features for dropping (default 5.0)
+
+    Returns:
+        Tuple of (vif_df, features_to_drop)
+        - vif_df: DataFrame with columns [feature_name, vif_value] sorted by VIF descending
+        - features_to_drop: List of feature names with VIF >= threshold
+    """
+    # Convert to DataFrame if numpy array
+    if isinstance(X_matrix, np.ndarray):
+        X_df = pd.DataFrame(X_matrix, columns=feature_names)
+    else:
+        X_df = X_matrix.copy()
+
+    # Compute VIF for each feature
+    vif_values = []
+    for i, col in enumerate(X_df.columns):
+        try:
+            vif = variance_inflation_factor(X_df.values, i)
+            vif_values.append(vif)
+        except Exception as e:
+            # If VIF computation fails (e.g., singular matrix), set to 0
+            vif_values.append(0.0)
+
+    # Build results DataFrame
+    vif_df = pd.DataFrame({
+        'feature_name': feature_names,
+        'vif_value': vif_values
+    }).sort_values('vif_value', ascending=False).reset_index(drop=True)
+
+    # Identify features to drop
+    features_to_drop = vif_df[vif_df['vif_value'] >= threshold]['feature_name'].tolist()
+
+    # Print summary
+    print(f"\n===== VIF Analysis for {position} =====")
+    print(f"{'Feature':<35} {'VIF':<10} {'Status'}")
+    print("-" * 55)
+    for _, row in vif_df.iterrows():
+        status = f"DROP (VIF >= {threshold})" if row['vif_value'] >= threshold else "KEEP"
+        print(f"{row['feature_name']:<35} {row['vif_value']:>8.2f}  {status}")
+
+    print(f"\nRecommended action: Drop {len(features_to_drop)} features (VIF >= {threshold})")
+
+    return vif_df, features_to_drop

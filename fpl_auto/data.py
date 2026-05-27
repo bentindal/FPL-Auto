@@ -440,3 +440,126 @@ class FplData:
             result.append(df)
 
         return result
+
+    def engineer_features_on_gw_data(self, gw_data, season, week_num, position):
+        """
+        Add engineered features to gameweek data: rolling averages, efficiency ratios,
+        and position-specific metrics.
+
+        Temporal rule: Rolling stats use only past data relative to prediction GW.
+        No future data access. For GW 1-5, rolling_10gw uses actual available history.
+
+        Args:
+            gw_data: DataFrame with position-filtered data (from get_pos_data)
+            season: Season code
+            week_num: Current gameweek number (1-38)
+            position: Position code ('GK', 'DEF', 'MID', 'FWD')
+
+        Returns:
+            DataFrame with original columns + engineered features (35-40 columns total)
+        """
+        gw_data = gw_data.copy()
+
+        # Rolling averages: 5-GW and 10-GW windows
+        rolling_windows = [5, 10]
+        rolling_columns = ['minutes', 'influence', 'assists', 'goals_scored', 'creativity', 'threat']
+
+        for window in rolling_windows:
+            for col in rolling_columns:
+                feature_name = f'{col}_rolling_{window}gw'
+                rolling_values = np.zeros(len(gw_data), dtype=float)
+                actual_window_count = 0
+
+                # Temporal boundary: never access future GWs
+                for offset in range(1, window + 1):
+                    if week_num - offset < 1:
+                        # No past data available
+                        continue
+                    past_gw = self.get_gw_data(season, week_num - offset)
+                    if past_gw.empty:
+                        continue
+
+                    # Get column values as numeric, fill NaN with 0
+                    past_vals = (
+                        pd.to_numeric(past_gw[col], errors='coerce')
+                        .fillna(0).groupby(level=0).sum().to_dict()
+                    )
+                    rolling_values += np.array([past_vals.get(n, 0.0) for n in gw_data.index])
+                    actual_window_count += 1
+
+                # Average over the actual number of gameweeks processed
+                if actual_window_count > 0:
+                    gw_data[feature_name] = rolling_values / actual_window_count
+                else:
+                    gw_data[feature_name] = 0.0
+
+                # Fill NaN and Inf with 0
+                gw_data[feature_name] = gw_data[feature_name].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        # Efficiency ratios (always computed if minutes > 0)
+        gw_data['efficiency_goals_per_90'] = (
+            (pd.to_numeric(gw_data['goals_scored'], errors='coerce').fillna(0) + 1) /
+            (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) / 90.0 + 1)
+        )
+        gw_data['efficiency_assists_per_90'] = (
+            (pd.to_numeric(gw_data['assists'], errors='coerce').fillna(0) + 1) /
+            (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) / 90.0 + 1)
+        )
+        gw_data['efficiency_creativity_per_min'] = (
+            pd.to_numeric(gw_data['creativity'], errors='coerce').fillna(0) /
+            (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) + 1)
+        )
+        gw_data['efficiency_threat_per_min'] = (
+            pd.to_numeric(gw_data['threat'], errors='coerce').fillna(0) /
+            (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) + 1)
+        )
+
+        # Fill NaN and Inf with 0
+        for col in ['efficiency_goals_per_90', 'efficiency_assists_per_90',
+                    'efficiency_creativity_per_min', 'efficiency_threat_per_min']:
+            gw_data[col] = gw_data[col].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        # Position-specific features
+        if position == 'GK':
+            gw_data['saves_per_90'] = (
+                pd.to_numeric(gw_data['saves'], errors='coerce').fillna(0) /
+                (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) / 90.0 + 1)
+            )
+            gw_data['save_percentage_safe'] = (
+                pd.to_numeric(gw_data['saves'], errors='coerce').fillna(0) /
+                (pd.to_numeric(gw_data['saves'], errors='coerce').fillna(0) +
+                 pd.to_numeric(gw_data['goals_conceded'], errors='coerce').fillna(0) + 1)
+            )
+            # Fill NaN and Inf with 0
+            gw_data['saves_per_90'] = gw_data['saves_per_90'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+            gw_data['save_percentage_safe'] = gw_data['save_percentage_safe'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        elif position == 'DEF':
+            gw_data['clean_sheets_per_90'] = (
+                pd.to_numeric(gw_data['clean_sheets'], errors='coerce').fillna(0) /
+                (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) / 90.0 + 1)
+            )
+            # Defensive actions proxy: use recent clean sheets ratio as proxy
+            gw_data['defensive_actions_per_90'] = (
+                pd.to_numeric(gw_data['clean_sheets'], errors='coerce').fillna(0) /
+                (pd.to_numeric(gw_data['minutes'], errors='coerce').fillna(0) / 90.0 + 1)
+            )
+            # Fill NaN and Inf with 0
+            gw_data['clean_sheets_per_90'] = gw_data['clean_sheets_per_90'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+            gw_data['defensive_actions_per_90'] = gw_data['defensive_actions_per_90'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        elif position == 'MID':
+            gw_data['key_passes_proxy'] = (
+                pd.to_numeric(gw_data['assists'], errors='coerce').fillna(0) * 2 +
+                pd.to_numeric(gw_data['creativity'], errors='coerce').fillna(0) * 0.5
+            )
+            gw_data['key_passes_proxy'] = gw_data['key_passes_proxy'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        elif position == 'FWD':
+            gw_data['shots_on_target_proxy'] = (
+                pd.to_numeric(gw_data['goals_scored'], errors='coerce').fillna(0) * 2 +
+                pd.to_numeric(gw_data['threat'], errors='coerce').fillna(0) * 0.3
+            )
+            gw_data['shots_on_target_proxy'] = gw_data['shots_on_target_proxy'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
+
+        return gw_data
