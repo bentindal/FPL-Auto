@@ -560,6 +560,8 @@ class Team:
         original_budget = budget
 
         last_gw_data = self.fpl.get_gw_data(self.season, self.gameweek + 1)
+        if last_gw_data.empty:
+            last_gw_data = self.gw_data
         for player in players_by_xp:
             if len(bought) >= needed:
                 break

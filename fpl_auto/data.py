@@ -107,16 +107,17 @@ class FplData:
         gw_data = gw_data.join(self.team_list, on='team')
         gw_data = gw_data.dropna()
         lookback = 3
-        recent_minutes = pd.Series(0.0, index=gw_data.index, dtype=float)
+        recent_minutes = np.zeros(len(gw_data), dtype=float)
         for offset in range(1, lookback + 1):
             past = self.get_gw_data(season, week_num - offset)
             if past.empty:
                 continue
-            past_mins = pd.to_numeric(past['minutes'], errors='coerce').fillna(0)
-            recent_minutes = recent_minutes.add(
-                past_mins.reindex(gw_data.index).fillna(0)
+            past_mins = (
+                pd.to_numeric(past['minutes'], errors='coerce')
+                .fillna(0).groupby(level=0).sum().to_dict()
             )
-        gw_data['recent_minutes_ratio'] = (recent_minutes / (lookback * 90)).clip(upper=1.0)
+            recent_minutes += np.array([past_mins.get(n, 0.0) for n in gw_data.index])
+        gw_data['recent_minutes_ratio'] = np.clip(recent_minutes / (lookback * 90), 0.0, 1.0)
         gw_data = gw_data.drop(['position', 'team', 'ict_index'], axis=1)
         return gw_data
 
