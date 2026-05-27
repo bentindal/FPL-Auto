@@ -1,6 +1,6 @@
 import unittest
 from fpl_auto import team as team_module
-from fpl_auto.team import team, POSITIONS, MAX_PER_POS, MIN_PRICE
+from fpl_auto.team import Team, POSITIONS, MAX_PER_POS, MIN_PRICE
 
 
 SEASON = '2021-22'
@@ -8,7 +8,7 @@ GW = 1
 
 
 def make_team(**kwargs):
-    return team(SEASON, GW, **kwargs)
+    return Team(SEASON, GW, **kwargs)
 
 
 class TestTransferInAllowed(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestTransferInAllowed(unittest.TestCase):
         t = make_team(budget=1000)
         # Fill squad to 15 via a known-good path
         players = [[], [], [], [], []]
-        t2 = team(SEASON, GW, 1000, players=players)
+        t2 = Team(SEASON, GW, 1000, players=players)
         # Manually stuff the squad to 15 by adding cheap real players
         cheap = {
             'GK': ['Hugo Lloris', 'Ederson Santana de Moraes'],

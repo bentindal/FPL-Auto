@@ -40,7 +40,7 @@ def parse_args():
 
 
 def _make_team_at_gw1(season, start_gw):
-    t = team_module.team(season, start_gw)
+    t = team_module.Team(season, start_gw)
     t.add_player('Aaron Ramsdale', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Luke Shaw', 'DEF')
@@ -83,7 +83,7 @@ def run_season(config: dict) -> dict:
         if starting_team == 'custom_1':
             t = _make_team_at_gw1(season, start_gw)
         else:
-            t = team_module.team(season, start_gw, 100)
+            t = team_module.Team(season, start_gw, 100)
             t.initial_team_generator()
 
         p_list = []
@@ -107,7 +107,7 @@ def run_season(config: dict) -> dict:
                     all_p.append(t.p_list())
                 t.return_subs_to_team()
                 try:
-                    t = team_module.team(
+                    t = team_module.Team(
                         season, i + 1, t.budget, t.transfers_left + 1,
                         [t.gks, t.defs, t.mids, t.fwds, t.subs],
                         t.chips_used, t.transfer_history,
@@ -184,7 +184,7 @@ def main():
             eval.plot_score_comparison(result['p_list'], result['chips_used'],
                                        inputs.start_gw, result['season'], inputs.project_score)
         if inputs.plot_average_comparison:
-            t = team_module.team(result['season'], inputs.start_gw)
+            t = team_module.Team(result['season'], inputs.start_gw)
             avg = t.get_avg_score()
             eval.plot_average_comparison(result['p_list'], avg,
                                          inputs.start_gw, inputs.repeat_until)

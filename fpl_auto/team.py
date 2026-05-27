@@ -8,7 +8,7 @@ SQUAD_SIZE = 15
 XI_SIZE = 11
 
 
-class team:
+class Team:
     def __init__(
         self, season, gameweek=1, budget=100.0, transfers_left=0,
         players=None, chips_used=None, transfer_history=None,
@@ -302,10 +302,7 @@ class team:
         return raw
 
     def captain_played(self):
-        try:
-            return self.player_p(self.captain, self.player_pos(self.captain)) != 0
-        except Exception:
-            return False
+        return self.points_scored.get(self.captain, 0) != 0
 
     def team_p(self, include_subs=False):
         if self.season == '2022-23' and self.gameweek == 7:
@@ -587,20 +584,6 @@ class team:
         print(f'{len(bought)} players bought for {position}')
         return bought, original_budget - total_spent
 
-    def select_ideal_team(self, fwd_n, fwd_budget, mid_n, mid_budget, def_n, def_budget, gk_n, gk_budget):
-        temp_t = team(self.season, self.gameweek, self.budget, self.transfers_left,
-                      [self.gks, self.defs, self.mids, self.fwds, self.subs])
-        counts = {}
-        for pos, n, b in [('FWD', fwd_n, fwd_budget), ('MID', mid_n, mid_budget),
-                           ('DEF', def_n, def_budget), ('GK', gk_n, gk_budget)]:
-            new_players = self._initial_players(pos, n, b, counts)
-            counts = self._counts_from_list(counts.get('all', []) + new_players)
-
-        if temp_t.squad_size() != SQUAD_SIZE or temp_t.budget < 0:
-            print(f'Error: Could not select ideal team.')
-            return None
-        return temp_t
-
     # ------------------------------------------------------------------
     # Squad info / display
     # ------------------------------------------------------------------
@@ -632,12 +615,6 @@ class team:
 
     def get_team(self):
         return self.gks, self.defs, self.mids, self.fwds
-
-    def get_gks(self):  return self.gks
-    def get_defs(self): return self.defs
-    def get_mids(self): return self.mids
-    def get_fwds(self): return self.fwds
-    def get_subs(self): return self.subs
 
     def result_summary(self):
         if self.squad_size() != SQUAD_SIZE:

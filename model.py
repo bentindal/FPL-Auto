@@ -5,7 +5,7 @@ Author: Benjamin Tindal
 
 import argparse
 import numpy as np
-from fpl_auto.data import fpl_data
+from fpl_auto.data import FplData
 from fpl_auto.predictor import Predictor, POSITIONS
 from fpl_auto import evaluate as eval
 import pandas as pd
@@ -48,7 +48,7 @@ def main():
     training_prev_weeks = inputs.training_prev_weeks
     predict_weeks = inputs.predict_weeks
 
-    vastaav = fpl_data('data', season)
+    vastaav = FplData('data', season)
 
     count = 0
     total_e = total_rmse = total_aa = 0.0
