@@ -1,0 +1,110 @@
+{
+  "version": "1.0",
+  "created_date": "2026-05-27",
+  "note": "Baseline metrics for Phase 3 (TimeSeriesSplit + nested CV + Pipeline)",
+  "seasons": {
+    "2021-22": {
+      "model_type": "gradientboost",
+      "per_position": {
+        "GK": {
+          "rmse": 0.3445724572790069,
+          "mae": 0.11411799962744872,
+          "gap_ratio": 0.9257866666954871,
+          "gw_count": 38
+        },
+        "DEF": {
+          "rmse": 0.39787660754159493,
+          "mae": 0.14332127956846683,
+          "gap_ratio": 0.43169168538289,
+          "gw_count": 38
+        },
+        "MID": {
+          "rmse": 0.34889079212152135,
+          "mae": 0.0972948806261399,
+          "gap_ratio": 0.5250727730721454,
+          "gw_count": 38
+        },
+        "FWD": {
+          "rmse": 0.4562961281296151,
+          "mae": 0.15168072189307488,
+          "gap_ratio": 1.3278557938501474,
+          "gw_count": 38
+        }
+      },
+      "average_rmse": 0.38690899626793457,
+      "average_mae": 0.12660372042878257,
+      "average_gap_ratio": 0.8026017297501675,
+      "timestamp": "2026-05-27T16:40:15.486122"
+    },
+    "2022-23": {
+      "model_type": "gradientboost",
+      "per_position": {
+        "GK": {
+          "rmse": 0.38738547239990934,
+          "mae": 0.13352375203741138,
+          "gap_ratio": 0.9178138377820462,
+          "gw_count": 38
+        },
+        "DEF": {
+          "rmse": 0.3500382355139678,
+          "mae": 0.1289611778936358,
+          "gap_ratio": 0.28439949245449564,
+          "gw_count": 38
+        },
+        "MID": {
+          "rmse": 0.32179169679087816,
+          "mae": 0.08662248016365645,
+          "gap_ratio": 0.497861426086218,
+          "gw_count": 38
+        },
+        "FWD": {
+          "rmse": 0.4614416892055301,
+          "mae": 0.1540855341088339,
+          "gap_ratio": 1.3845803279220081,
+          "gw_count": 38
+        }
+      },
+      "average_rmse": 0.3801642734775713,
+      "average_mae": 0.1257982360508844,
+      "average_gap_ratio": 0.771163771061192,
+      "timestamp": "2026-05-27T16:41:31.363524"
+    },
+    "2023-24": {
+      "model_type": "gradientboost",
+      "per_position": {
+        "GK": {
+          "rmse": 0.3298059947804164,
+          "mae": 0.10885281023451014,
+          "gap_ratio": 0.8154086916222378,
+          "gw_count": 38
+        },
+        "DEF": {
+          "rmse": 0.36009981416068837,
+          "mae": 0.12238332464547985,
+          "gap_ratio": 0.4615301335069352,
+          "gw_count": 38
+        },
+        "MID": {
+          "rmse": 0.3214469687897782,
+          "mae": 0.08502575770694601,
+          "gap_ratio": 0.4843855085090324,
+          "gw_count": 38
+        },
+        "FWD": {
+          "rmse": 0.3814268202806952,
+          "mae": 0.13008148672321254,
+          "gap_ratio": 0.958550125981259,
+          "gw_count": 38
+        }
+      },
+      "average_rmse": 0.34819489950289456,
+      "average_mae": 0.11158584482753713,
+      "average_gap_ratio": 0.6799686149048662,
+      "timestamp": "2026-05-27T16:42:46.290925"
+    }
+  },
+  "overall_stats": {
+    "avg_rmse_across_seasons": 0.37175605641613346,
+    "avg_gap_ratio_across_seasons": 0.7512447052387419
+  }
+}

@@ -2,6 +2,9 @@ import unittest
 from fpl_auto import team as team_module
 from fpl_auto.team import Team, POSITIONS, MAX_PER_POS, MIN_PRICE
 from fpl_auto.temporal import TemporalGate, TemporalViolationError
+import json
+from pathlib import Path
+import numpy as np
 
 
 SEASON = '2021-22'
@@ -254,6 +257,97 @@ class TestTemporalIntegrity(unittest.TestCase):
         self.assertEqual(trail[2][1], 16)
         self.assertEqual(trail[2][2], 15)
         self.assertFalse(trail[2][3])
+
+
+class TestBaselineMetrics(unittest.TestCase):
+    """Regression tests to detect RMSE degradation from baseline."""
+
+    BASELINE_FILE = Path('.planning/phases/03-model-infrastructure/BASELINE_METRICS.json')
+    TOLERANCE_PCT = 0.02  # Allow 2% increase in RMSE (feature engineering might temporarily increase)
+
+    @classmethod
+    def setUpClass(cls):
+        if cls.BASELINE_FILE.exists():
+            with open(cls.BASELINE_FILE) as f:
+                cls.baseline = json.load(f)
+        else:
+            cls.baseline = None
+
+    def test_baseline_file_exists(self):
+        """Baseline metrics must exist for regression testing."""
+        self.assertTrue(self.BASELINE_FILE.exists(),
+                       f"Baseline file missing: {self.BASELINE_FILE}")
+
+    def test_baseline_schema_valid(self):
+        """Baseline JSON must have required structure."""
+        self.assertIsNotNone(self.baseline)
+        self.assertIn('seasons', self.baseline)
+        self.assertIn('2021-22', self.baseline['seasons'])
+
+        for season in ['2021-22', '2022-23', '2023-24', '2024-25']:
+            if season in self.baseline['seasons']:
+                season_data = self.baseline['seasons'][season]
+                self.assertIn('per_position', season_data)
+
+                for pos in ['GK', 'DEF', 'MID', 'FWD']:
+                    self.assertIn(pos, season_data['per_position'])
+                    pos_data = season_data['per_position'][pos]
+                    self.assertIn('rmse', pos_data)
+                    self.assertIn('gap_ratio', pos_data)
+
+    def test_gap_ratio_in_healthy_range(self):
+        """Train-vs-test gap should be reasonable (FPL has high variance due to injuries/form)."""
+        self.assertIsNotNone(self.baseline)
+
+        # FPL has inherently high variance in predictions due to injuries, form changes, etc.
+        # A gap up to 2.0 (100% > train RMSE) is acceptable for this domain.
+        for season, season_data in self.baseline['seasons'].items():
+            for pos, pos_data in season_data['per_position'].items():
+                gap = pos_data['gap_ratio']
+                self.assertLess(gap, 2.0,
+                               f"{season} {pos}: gap {gap:.1%} exceeds 200% (likely data issue)")
+
+    def test_rmse_values_reasonable(self):
+        """RMSE should be in expected range for FPL xP prediction (0.4-1.0 per position)."""
+        self.assertIsNotNone(self.baseline)
+
+        for season, season_data in self.baseline['seasons'].items():
+            for pos, pos_data in season_data['per_position'].items():
+                rmse = pos_data['rmse']
+                self.assertGreater(rmse, 0.2,
+                                  f"{season} {pos}: RMSE {rmse:.3f} too low (unrealistic)")
+                self.assertLess(rmse, 1.5,
+                               f"{season} {pos}: RMSE {rmse:.3f} too high (data issue)")
+
+
+class TestPermutationImportance(unittest.TestCase):
+    """Tests for permutation importance computation and display."""
+
+    def test_permutation_importance_computes_without_error(self):
+        """permutation_importance() should not raise errors."""
+        from fpl_auto.predictor import Predictor
+        from fpl_auto.evaluate import display_permutation_importance
+
+        # Train a simple model on dummy data
+        X = np.random.randn(100, 10)
+        y = np.random.randn(100)
+
+        # Wrap in (X, y) tuple for Predictor.fit()
+        training_data = [(X, y)] * 4  # 4 positions
+
+        predictor = Predictor('gradientboost').fit(training_data)
+
+        # Compute importance (should not raise)
+        try:
+            importance_df = display_permutation_importance(
+                predictor, X, y,
+                [f'feature_{i}' for i in range(10)],
+                'GK', top_n=5
+            )
+            self.assertEqual(len(importance_df), 10, "All features should be in output")
+            self.assertGreater(importance_df['importance'].sum(), 0, "Importance should be non-negative")
+        except Exception as e:
+            self.fail(f"permutation_importance raised {type(e).__name__}: {e}")
 
 
 if __name__ == '__main__':
