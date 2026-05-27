@@ -63,8 +63,21 @@ def run_strategy_on_seasons(
 
     # Run seasons in parallel using multiprocessing
     results = []
-    with Pool(processes=min(4, len(configs))) as pool:
-        raw_results = pool.map(manager.run_season, configs)
+
+    # Try with multiprocessing first; fall back to serial if it fails
+    try:
+        with Pool(processes=min(4, len(configs))) as pool:
+            raw_results = pool.map(manager.run_season, configs)
+    except Exception as e:
+        # If multiprocessing fails, run serially
+        print(f"  [Multiprocessing error, falling back to serial: {type(e).__name__}]")
+        raw_results = []
+        for config in configs:
+            try:
+                raw_results.append(manager.run_season(config))
+            except Exception as ex:
+                print(f"  [Error running season {config['season']}: {ex}]")
+                raw_results.append(None)
 
     # Enrich results with aggregated metrics
     for result in raw_results:

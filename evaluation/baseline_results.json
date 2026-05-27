@@ -1,0 +1,84 @@
+{
+  "static": {
+    "strategy_config": {
+      "transfer_mode": "never",
+      "captain_mode": "highest_value",
+      "chip_schedule": "never",
+      "bench_mode": "static"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_metrics": {
+          "total_points": 1805,
+          "mean_gw_points": 47.5,
+          "std_gw_points": 15.87243555747875,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0,
+          "best_week": 92,
+          "worst_week": 10
+        },
+        "train_metrics": {
+          "avg_total_points": 1760.0,
+          "avg_mean_gw_points": 46.315789473684205,
+          "avg_std_gw_points": 14.41128332295951,
+          "avg_sharpe": 3.2112555021940508,
+          "avg_sortino": 5.283835914008716,
+          "avg_cv": 0.31362868780578407,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T19:02:42.962470"
+      }
+    ]
+  },
+  "current": {
+    "strategy_config": {
+      "transfer_mode": "flexible",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative",
+      "bench_mode": "rotate_low_xp"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_metrics": {
+          "total_points": 1805,
+          "mean_gw_points": 47.5,
+          "std_gw_points": 15.87243555747875,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0,
+          "best_week": 92,
+          "worst_week": 10
+        },
+        "train_metrics": {
+          "avg_total_points": 1760.0,
+          "avg_mean_gw_points": 46.315789473684205,
+          "avg_std_gw_points": 14.41128332295951,
+          "avg_sharpe": 3.2112555021940508,
+          "avg_sortino": 5.283835914008716,
+          "avg_cv": 0.31362868780578407,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T19:03:40.962033"
+      }
+    ]
+  }
+}
