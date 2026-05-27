@@ -1357,5 +1357,119 @@ class TestPhase5Integration(unittest.TestCase):
         self.assertGreater(metrics['sharpe_ratio'], 0)
 
 
+class TestStrategyConfigTransferParameters(unittest.TestCase):
+    """Test StrategyConfig transfer parameters and validation."""
+
+    def test_default_transfer_parameters(self):
+        """Default StrategyConfig should have sensible transfer params."""
+        from fpl_auto.strategies import StrategyConfig
+        c = StrategyConfig()
+        self.assertEqual(c.transfer_budget_per_gw, 1.5)
+        self.assertIsNone(c.transfer_window_gw_range)
+        self.assertEqual(c.transfer_xp_threshold, 0.15)
+        self.assertEqual(c.transfer_xp_threshold_mode, 'relative')
+
+    def test_reject_negative_budget(self):
+        """Should raise ValueError if transfer_budget_per_gw <= 0."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_budget_per_gw=-1.0)
+
+    def test_reject_zero_budget(self):
+        """Should raise ValueError if transfer_budget_per_gw == 0."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_budget_per_gw=0.0)
+
+    def test_accept_positive_budget(self):
+        """Should accept any transfer_budget_per_gw > 0."""
+        from fpl_auto.strategies import StrategyConfig
+        c = StrategyConfig(transfer_budget_per_gw=0.1)
+        self.assertEqual(c.transfer_budget_per_gw, 0.1)
+        c = StrategyConfig(transfer_budget_per_gw=10.0)
+        self.assertEqual(c.transfer_budget_per_gw, 10.0)
+
+    def test_reject_invalid_window_start_greater_than_end(self):
+        """Should raise ValueError if window start > end."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_window_gw_range=(25, 10))
+
+    def test_reject_window_bounds_below_1(self):
+        """Should raise ValueError if window start < 1."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_window_gw_range=(0, 10))
+
+    def test_reject_window_bounds_above_38(self):
+        """Should raise ValueError if window end > 38."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_window_gw_range=(10, 39))
+
+    def test_accept_valid_window_early(self):
+        """Should accept valid early window (1, 10)."""
+        from fpl_auto.strategies import StrategyConfig
+        c = StrategyConfig(transfer_window_gw_range=(1, 10))
+        self.assertEqual(c.transfer_window_gw_range, (1, 10))
+
+    def test_accept_valid_window_full(self):
+        """Should accept valid full season window (1, 38)."""
+        from fpl_auto.strategies import StrategyConfig
+        c = StrategyConfig(transfer_window_gw_range=(1, 38))
+        self.assertEqual(c.transfer_window_gw_range, (1, 38))
+
+    def test_reject_relative_threshold_below_zero(self):
+        """Should raise ValueError if relative threshold < 0."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_xp_threshold=-0.1, transfer_xp_threshold_mode='relative')
+
+    def test_reject_relative_threshold_above_one(self):
+        """Should raise ValueError if relative threshold > 1."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_xp_threshold=1.5, transfer_xp_threshold_mode='relative')
+
+    def test_accept_valid_relative_threshold(self):
+        """Should accept relative threshold in [0.0, 1.0]."""
+        from fpl_auto.strategies import StrategyConfig
+        c = StrategyConfig(transfer_xp_threshold=0.0, transfer_xp_threshold_mode='relative')
+        self.assertEqual(c.transfer_xp_threshold, 0.0)
+        c = StrategyConfig(transfer_xp_threshold=0.5, transfer_xp_threshold_mode='relative')
+        self.assertEqual(c.transfer_xp_threshold, 0.5)
+        c = StrategyConfig(transfer_xp_threshold=1.0, transfer_xp_threshold_mode='relative')
+        self.assertEqual(c.transfer_xp_threshold, 1.0)
+
+    def test_reject_invalid_threshold_mode(self):
+        """Should raise ValueError if threshold_mode not in ('relative', 'absolute')."""
+        from fpl_auto.strategies import StrategyConfig
+        with self.assertRaises(ValueError):
+            StrategyConfig(transfer_xp_threshold_mode='invalid')
+
+    def test_all_five_variants_instantiate(self):
+        """All 5 phase 6 variants should instantiate without error."""
+        from fpl_auto.strategies import CONSERVATIVE_EARLY, CONSERVATIVE_FULL, BASELINE_MID, AGGRESSIVE_LATE, AGGRESSIVE_FULL, StrategyConfig
+        variants = [CONSERVATIVE_EARLY, CONSERVATIVE_FULL, BASELINE_MID, AGGRESSIVE_LATE, AGGRESSIVE_FULL]
+        for v in variants:
+            self.assertIsInstance(v, StrategyConfig)
+
+    def test_variant_conservative_early_values(self):
+        """CONSERVATIVE_EARLY should have correct transfer params."""
+        from fpl_auto.strategies import CONSERVATIVE_EARLY
+        self.assertEqual(CONSERVATIVE_EARLY.transfer_budget_per_gw, 0.5)
+        self.assertEqual(CONSERVATIVE_EARLY.transfer_window_gw_range, (1, 10))
+        self.assertEqual(CONSERVATIVE_EARLY.transfer_xp_threshold, 0.20)
+        self.assertEqual(CONSERVATIVE_EARLY.transfer_xp_threshold_mode, 'relative')
+
+    def test_variant_aggressive_full_values(self):
+        """AGGRESSIVE_FULL should have correct transfer params."""
+        from fpl_auto.strategies import AGGRESSIVE_FULL
+        self.assertEqual(AGGRESSIVE_FULL.transfer_budget_per_gw, 2.0)
+        self.assertIsNone(AGGRESSIVE_FULL.transfer_window_gw_range)
+        self.assertEqual(AGGRESSIVE_FULL.transfer_xp_threshold, 0.10)
+        self.assertEqual(AGGRESSIVE_FULL.transfer_xp_threshold_mode, 'relative')
+
+
 if __name__ == '__main__':
     unittest.main()
