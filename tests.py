@@ -1,6 +1,7 @@
 import unittest
 from fpl_auto import team as team_module
 from fpl_auto.team import Team, POSITIONS, MAX_PER_POS, MIN_PRICE
+from fpl_auto.temporal import TemporalGate, TemporalViolationError
 
 
 SEASON = '2021-22'
@@ -169,6 +170,90 @@ class TestSubstitutions(unittest.TestCase):
         t.return_subs_to_team()
         self.assertIn('Mohamed Salah', t.mids)
         self.assertEqual(t.subs, [])
+
+
+class TestTemporalIntegrity(unittest.TestCase):
+    def test_temporal_gate_blocks_future_historical_data(self):
+        """Test that TemporalGate prevents access to future gameweek historical data."""
+        gate = TemporalGate('2023-24', decision_gameweek=10)
+
+        # Should allow access to GW9 (past)
+        self.assertTrue(gate.safe_read_historical_form(9))
+
+        # Should block access to GW11 (future)
+        with self.assertRaises(TemporalViolationError) as cm:
+            gate.safe_read_historical_form(11)
+
+        # Verify error message contains gameweek information
+        error_msg = str(cm.exception)
+        self.assertIn('GW11', error_msg)
+        self.assertIn('GW10', error_msg)
+
+    def test_temporal_gate_only_allows_current_predictions(self):
+        """Test that TemporalGate only allows predictions for the current decision gameweek."""
+        gate = TemporalGate('2023-24', decision_gameweek=10)
+
+        # Should allow access to GW10 (current)
+        self.assertTrue(gate.safe_read_predictions(10))
+
+        # Should block access to GW11 (future)
+        with self.assertRaises(TemporalViolationError) as cm:
+            gate.safe_read_predictions(11)
+        error_msg = str(cm.exception)
+        self.assertIn('GW10', error_msg)
+
+        # Should block access to GW9 (past)
+        with self.assertRaises(TemporalViolationError) as cm:
+            gate.safe_read_predictions(9)
+        error_msg = str(cm.exception)
+        self.assertIn('GW10', error_msg)
+
+    def test_temporal_gate_fixtures_always_safe(self):
+        """Test that TemporalGate always allows fixture metadata access."""
+        gate = TemporalGate('2023-24', decision_gameweek=5)
+
+        # Fixtures should always be available (known pre-season)
+        self.assertTrue(gate.safe_read_fixture_metadata())
+
+        # Multiple calls should all succeed
+        self.assertTrue(gate.safe_read_fixture_metadata())
+        self.assertTrue(gate.safe_read_fixture_metadata())
+
+    def test_audit_trail_logs_all_accesses(self):
+        """Test that audit_trail records all data access attempts including violations."""
+        gate = TemporalGate('2023-24', decision_gameweek=15)
+
+        # Successful access to GW14 historical form
+        gate.safe_read_historical_form(14)
+
+        # Successful access to GW15 predictions
+        gate.safe_read_predictions(15)
+
+        # Attempted access to GW16 historical form (should fail but log it)
+        try:
+            gate.safe_read_historical_form(16)
+        except TemporalViolationError:
+            pass
+
+        # Check audit trail
+        trail = gate.audit_trail()
+        self.assertEqual(len(trail), 3)
+
+        # Verify entry format: (data_type, accessed_gw, decision_gw, allowed: bool)
+        self.assertEqual(trail[0][0], 'historical_form')
+        self.assertEqual(trail[0][1], 14)
+        self.assertEqual(trail[0][2], 15)
+        self.assertTrue(trail[0][3])
+
+        self.assertEqual(trail[1][0], 'predictions')
+        self.assertEqual(trail[1][1], 15)
+        self.assertEqual(trail[1][2], 15)
+        self.assertTrue(trail[1][3])
+
+        self.assertEqual(trail[2][0], 'historical_form')
+        self.assertEqual(trail[2][1], 16)
+        self.assertEqual(trail[2][2], 15)
+        self.assertFalse(trail[2][3])
 
 
 if __name__ == '__main__':
