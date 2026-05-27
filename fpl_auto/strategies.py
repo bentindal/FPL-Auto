@@ -6,6 +6,7 @@ systematic comparison and evaluation of different team management approaches.
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -37,6 +38,37 @@ class StrategyConfig:
     Discount factor for multi-GW lookahead in transfer decisions (0.6-1.0).
     Lower values (0.6) discount future GWs more, favoring immediate gain.
     Higher values (1.0) weight all future GWs equally.
+    """
+
+    transfer_budget_per_gw: float = 1.5
+    """
+    Points-per-GW budget for transfers (0.0-10.0, default 1.5).
+    Semantics: Maximum total xP gain budget allowed per gameweek.
+    Reset each GW; cumulative xP gain within a GW cannot exceed this.
+    Examples: 0.5 = conservative, 1.5 = baseline, 2.0 = aggressive.
+    """
+
+    transfer_window_gw_range: Optional[tuple] = None
+    """
+    Restrict transfers to GW range [start, end] inclusive (default: None = full season).
+    Examples: (1, 10) for early season, (11, 24) for mid, (25, 38) for late.
+    None means transfers allowed in entire season (subject to GW > 35 hard stop).
+    """
+
+    transfer_xp_threshold: float = 0.15
+    """
+    Threshold for transfer trigger (default 0.15).
+    When transfer_xp_threshold_mode='relative': (new_xp - old_xp) / old_xp > threshold
+    When transfer_xp_threshold_mode='absolute': (new_xp - old_xp) >= threshold
+    Range: [0.0, 1.0] for relative; [0.0, 50.0] for absolute.
+    """
+
+    transfer_xp_threshold_mode: str = 'relative'
+    """
+    How to interpret transfer_xp_threshold (default 'relative').
+    Options: 'relative' | 'absolute'
+    'relative': percentage improvement; 0.20 = 20% better required
+    'absolute': points improvement; 4.0 = at least 4 points better
     """
 
     # Captaincy policy
@@ -193,6 +225,44 @@ class StrategyConfig:
                 f"punt_threshold must be 0.0-2.0, got {self.punt_threshold}"
             )
 
+        # Transfer budget/window/threshold validation (new parameters)
+        if self.transfer_budget_per_gw <= 0:
+            raise ValueError(
+                f"transfer_budget_per_gw must be > 0, got {self.transfer_budget_per_gw}"
+            )
+
+        if self.transfer_window_gw_range is not None:
+            start, end = self.transfer_window_gw_range
+            if not (1 <= start <= 38 and 1 <= end <= 38):
+                raise ValueError(
+                    f"transfer_window_gw_range bounds must be in [1, 38], "
+                    f"got ({start}, {end})"
+                )
+            if start > end:
+                raise ValueError(
+                    f"transfer_window_gw_range start must be <= end, "
+                    f"got ({start}, {end})"
+                )
+
+        if self.transfer_xp_threshold_mode not in ('relative', 'absolute'):
+            raise ValueError(
+                f"transfer_xp_threshold_mode must be 'relative' or 'absolute', "
+                f"got {self.transfer_xp_threshold_mode}"
+            )
+
+        if self.transfer_xp_threshold_mode == 'relative':
+            if not (0.0 <= self.transfer_xp_threshold <= 1.0):
+                raise ValueError(
+                    f"transfer_xp_threshold with mode='relative' must be [0.0, 1.0], "
+                    f"got {self.transfer_xp_threshold}"
+                )
+        else:  # absolute mode
+            if self.transfer_xp_threshold < 0:
+                raise ValueError(
+                    f"transfer_xp_threshold with mode='absolute' must be >= 0, "
+                    f"got {self.transfer_xp_threshold}"
+                )
+
 
 # BASELINE STRATEGIES (for comparison and validation)
 
@@ -290,6 +360,120 @@ DIFFERENTIAL = StrategyConfig(
 )
 
 
+# PHASE 6: TRANSFER STRATEGY VARIANTS
+# Systematic evaluation across budget (conservative/baseline/aggressive) and window (early/mid/late) dimensions
+
+CONSERVATIVE_EARLY = StrategyConfig(
+    # Philosophy: Low-risk transfers in early season only.
+    # Budget: 0.5 (conservative); Window: GW 1-10 (early); Threshold: 20% relative improvement
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=(1, 10),
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+CONSERVATIVE_FULL = StrategyConfig(
+    # Philosophy: Low-risk transfers throughout season.
+    # Budget: 0.5 (conservative); Window: None (full season); Threshold: 20% relative improvement
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+BASELINE_MID = StrategyConfig(
+    # Philosophy: Baseline transfers in mid-season (GW 11-24).
+    # Budget: 1.5 (baseline); Window: GW 11-24 (mid); Threshold: 15% relative improvement
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=1.5,
+    transfer_window_gw_range=(11, 24),
+    transfer_xp_threshold=0.15,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+AGGRESSIVE_LATE = StrategyConfig(
+    # Philosophy: Aggressive transfers in late season (GW 25-38).
+    # Budget: 2.0 (aggressive); Window: GW 25-38 (late); Threshold: 10% relative improvement
+    transfer_mode='greedy',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=2.0,
+    transfer_window_gw_range=(25, 38),
+    transfer_xp_threshold=0.10,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+AGGRESSIVE_FULL = StrategyConfig(
+    # Philosophy: Aggressive transfers throughout season.
+    # Budget: 2.0 (aggressive); Window: None (full season); Threshold: 10% relative improvement
+    transfer_mode='greedy',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=2.0,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.10,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+
 __all__ = [
     'StrategyConfig',
     'BASELINE_STATIC',
@@ -297,4 +481,9 @@ __all__ = [
     'CONSERVATIVE',
     'AGGRESSIVE',
     'DIFFERENTIAL',
+    'CONSERVATIVE_EARLY',
+    'CONSERVATIVE_FULL',
+    'BASELINE_MID',
+    'AGGRESSIVE_LATE',
+    'AGGRESSIVE_FULL',
 ]
