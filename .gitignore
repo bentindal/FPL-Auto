@@ -36,3 +36,8 @@ wheels/
 # OS
 .DS_Store
 .env
+
+# Coverage
+.coverage
+htmlcov/
+coverage.xml
