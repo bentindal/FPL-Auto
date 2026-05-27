@@ -60,20 +60,47 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
     For now: simplified version keeps current GW-by-GW loop structure
     but prepares infrastructure for full nested CV in Phase 4.
 
+    === Phase 4 v2: Apply VIF filtering to remove multicollinear features ===
+
     Returns: (predictions, metrics_dict, predictor)
     """
-    predictor = Predictor(model_type=model_type).fit(training_data)
-    test_preds = predictor.predict_test(test_data)
+    # === NEW: Apply VIF filtering per position ===
+    training_data_filtered = []
+    test_data_filtered = []
+    dropped_features_log = {}
+
+    for j, pos in enumerate(POSITIONS):
+        X_train = training_data[j][0].copy()
+        y_train = training_data[j][1].copy()
+        X_test = test_data[j][0].copy()
+        y_test = test_data[j][1].copy()
+
+        feature_names = list(X_train.columns)
+
+        # Compute VIF on training data only (prevent test leakage)
+        vif_df, drop_list = eval.display_feature_vif(X_train, feature_names, pos, threshold=5.0)
+
+        # Drop high-VIF features from both train and test
+        if len(drop_list) > 0:
+            X_train = X_train.drop(columns=drop_list, errors='ignore')
+            X_test = X_test.drop(columns=drop_list, errors='ignore')
+            dropped_features_log[pos] = drop_list
+
+        training_data_filtered.append((X_train, y_train))
+        test_data_filtered.append((X_test, y_test))
+
+    predictor = Predictor(model_type=model_type).fit(training_data_filtered)
+    test_preds = predictor.predict_test(test_data_filtered)
 
     # Compute metrics per position
     metrics = {}
     for j, pos in enumerate(POSITIONS):
-        test_rmse = np.sqrt(mean_squared_error(test_data[j][1], test_preds[j]))
-        test_mae = mean_absolute_error(test_data[j][1], test_preds[j])
+        test_rmse = np.sqrt(mean_squared_error(test_data_filtered[j][1], test_preds[j]))
+        test_mae = mean_absolute_error(test_data_filtered[j][1], test_preds[j])
 
         # Train RMSE for gap calculation
-        train_preds = np.round(predictor.models[j].predict(training_data[j][0]), 5)
-        train_rmse = np.sqrt(mean_squared_error(training_data[j][1], train_preds))
+        train_preds = np.round(predictor.models[j].predict(training_data_filtered[j][0]), 5)
+        train_rmse = np.sqrt(mean_squared_error(training_data_filtered[j][1], train_preds))
 
         gap_ratio = (test_rmse - train_rmse) / train_rmse if train_rmse > 0 else 0
 

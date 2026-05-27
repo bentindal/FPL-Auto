@@ -130,7 +130,7 @@ class FplData:
         )
 
     def avg_player_data(self, season, from_gw, to_gw):
-        """Aggregate per-player stats across a GW range, averaged by player name."""
+        """Aggregate per-player stats across a GW range, averaged by player name. Includes feature engineering."""
         if self.season == '2022-23' and from_gw == 7:
             from_gw = 8
 
@@ -146,6 +146,12 @@ class FplData:
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
+
+        # === NEW: Apply feature engineering per position before averaging ===
+        gk_data = self.engineer_features_on_gw_data(gk_data, season, to_gw, 'GK')
+        def_data = self.engineer_features_on_gw_data(def_data, season, to_gw, 'DEF')
+        mid_data = self.engineer_features_on_gw_data(mid_data, season, to_gw, 'MID')
+        fwd_data = self.engineer_features_on_gw_data(fwd_data, season, to_gw, 'FWD')
 
         gk_data = gk_data.groupby('name').mean().reset_index().set_index('name')
         def_data = def_data.groupby('name').mean().reset_index().set_index('name')
