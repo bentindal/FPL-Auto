@@ -152,6 +152,23 @@ class TestTransferLogic(unittest.TestCase):
         t.add_player('Mohamed Salah', 'MID', 4.0)
         self.assertTrue(t.player_in_squad(['Mohamed Salah', 'MID']))
 
+    def test_transfer_in_allowed_uses_effective_budget(self):
+        # Bank has £1.1m but selling an outgoing player frees £5.5m → total £6.6m.
+        # A £5.0m player should be allowed when effective_budget=6.6 is passed,
+        # even though self.budget alone (1.1) is insufficient.
+        t = make_team(budget=6.6)
+        t.add_player('Lucas Digne', 'DEF', 5.5)  # bank drops to 1.1
+        self.assertFalse(t.transfer_in_allowed('Trevoh Chalobah', 'DEF', 5.0))
+        self.assertTrue(t.transfer_in_allowed('Trevoh Chalobah', 'DEF', 5.0, effective_budget=6.6))
+
+    def test_suggest_transfer_in_finds_player_with_combined_budget(self):
+        # GW2 team with low bank but a cheap player to sell — suggest_transfer_in
+        # should find a replacement using the combined (bank + selling price) budget.
+        t = Team(SEASON, 2, budget=6.6)
+        t.add_player('Lucas Digne', 'DEF', 5.5)
+        result = t.suggest_transfer_in('DEF', 'Lucas Digne', t.budget + t.selling_price('Lucas Digne'))
+        self.assertNotEqual(result, 'No player found to transfer in')
+
 
 class TestPositionConstants(unittest.TestCase):
     def test_max_per_pos(self):
@@ -639,6 +656,12 @@ class TestFeatureEngineering(unittest.TestCase):
         """Set up test fixtures."""
         self.fpl_data = get_fpl_data('data', '2021-22')
         self.season = '2021-22'
+        self._cache_keys_injected = []
+
+    def tearDown(self):
+        """Remove any fake GW data injected into the shared cache."""
+        for key in self._cache_keys_injected:
+            self.fpl_data._gw_cache.pop(key, None)
 
     def test_rolling_averages_compute_correctly(self):
         """Test that rolling averages compute correctly for known data.
@@ -681,6 +704,7 @@ class TestFeatureEngineering(unittest.TestCase):
             # Cache the data
             cache_key = (self.season, gw)
             self.fpl_data._gw_cache[cache_key] = gw_data
+            self._cache_keys_injected.append(cache_key)
 
         # Create GW5 data and engineer features
         gw5_data = pd.DataFrame({
@@ -770,6 +794,7 @@ class TestFeatureEngineering(unittest.TestCase):
 
             cache_key = (self.season, gw)
             self.fpl_data._gw_cache[cache_key] = gw_data
+            self._cache_keys_injected.append(cache_key)
 
         # Create GW8 data with dummy values (the actual current GW data)
         gw8_current = pd.DataFrame({

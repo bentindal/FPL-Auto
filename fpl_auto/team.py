@@ -143,7 +143,7 @@ class Team:
         except TypeError:
             return False
 
-    def transfer_in_allowed(self, player, position='none', custom_price=None, club_counts=None):
+    def transfer_in_allowed(self, player, position='none', custom_price=None, club_counts=None, effective_budget=None):
         p_cost = custom_price if custom_price is not None else self.player_value(player, self.gw_data)
         if position == 'none':
             position = self.player_pos(player)
@@ -167,7 +167,8 @@ class Team:
 
         if len(self._pos_squad_list(position)) >= MAX_PER_POS[position]:
             return False
-        if self.budget < p_cost:
+        available = effective_budget if effective_budget is not None else self.budget
+        if available < p_cost:
             return False
         if self.squad_size() >= SQUAD_SIZE:
             return False
@@ -404,7 +405,7 @@ class Team:
             p_cost /= 10
             if p_cost > budget:
                 continue
-            if self.transfer_in_allowed(name, position, p_cost, club_counts=club_counts):
+            if self.transfer_in_allowed(name, position, p_cost, club_counts=club_counts, effective_budget=budget):
                 return name
 
         return 'No player found to transfer in'
@@ -423,8 +424,8 @@ class Team:
                 return
 
             self.return_subs_to_team()
-            self.add_player(transfer_in, position)
             self.remove_player(transfer_out, position)
+            self.add_player(transfer_in, position)
 
             if self.squad_size() == 14:
                 self.add_player(transfer_out, position, force=True)
