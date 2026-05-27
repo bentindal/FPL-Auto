@@ -267,10 +267,10 @@ def main():
             print(f'Reached Prediction Limit for {season} GW{i}, can only predict 1 week beyond data.')
             return
 
-        # Use evaluate_with_nested_cv for consistency with baseline metrics
-        # Apply VIF filtering (drop features with VIF >= 5) to remove multicollinearity
-        # This requires using filtered data for both training and prediction
-        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=True)
+        # When saving predictions, train without VIF filtering so model features
+        # match the full feature set used by get_player_predictions.
+        apply_vif = not inputs.save
+        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=apply_vif)
 
         if inputs.display_weights:
             feature_list = vif_training_data[0][0].columns

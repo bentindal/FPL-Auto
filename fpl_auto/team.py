@@ -143,7 +143,7 @@ class Team:
         except TypeError:
             return False
 
-    def transfer_in_allowed(self, player, position='none', custom_price=None, club_counts=None, effective_budget=None):
+    def transfer_in_allowed(self, player, position='none', custom_price=None, club_counts=None, effective_budget=None, replacing=False):
         p_cost = custom_price if custom_price is not None else self.player_value(player, self.gw_data)
         if position == 'none':
             position = self.player_pos(player)
@@ -165,12 +165,12 @@ class Team:
         if club_counts.get(player_club, 0) + 1 > 3 and player_club != 'None':
             return False
 
-        if len(self._pos_squad_list(position)) >= MAX_PER_POS[position]:
+        if not replacing and len(self._pos_squad_list(position)) >= MAX_PER_POS[position]:
             return False
         available = effective_budget if effective_budget is not None else self.budget
         if available < p_cost:
             return False
-        if self.squad_size() >= SQUAD_SIZE:
+        if not replacing and self.squad_size() >= SQUAD_SIZE:
             return False
         return True
 
@@ -405,7 +405,7 @@ class Team:
             p_cost /= 10
             if p_cost > budget:
                 continue
-            if self.transfer_in_allowed(name, position, p_cost, club_counts=club_counts, effective_budget=budget):
+            if self.transfer_in_allowed(name, position, p_cost, club_counts=club_counts, effective_budget=budget, replacing=True):
                 return name
 
         return 'No player found to transfer in'
@@ -458,11 +458,8 @@ class Team:
             if budget + self.budget < MIN_PRICE[pos]:
                 return
             transfer_in = self.suggest_transfer_in(pos, out, self.budget + budget)
-            out_xp = self.player_xp(out, pos)
-            in_xp = self.player_xp(transfer_in, pos) if transfer_in != 'No player found to transfer in' else 0
-            print(f'[DEBUG] GW{self.gameweek} out={out}({out_xp:.1f}) in={transfer_in}({in_xp:.1f}) budget={self.budget + budget:.1f}')
             if transfer_in != 'No player found to transfer in' and \
-               in_xp - out_xp >= threshold:
+               self.player_xp(transfer_in, pos) - self.player_xp(out, pos) >= threshold:
                 self.transfer(out, transfer_in, pos)
                 if self.squad_size() != SQUAD_SIZE:
                     self.remove_excess_players()
@@ -677,6 +674,16 @@ class Team:
         cached = self._pos_cache.get(player)
         if cached is not None:
             return cached
+        # Check actual squad slot first — player may have been transferred into a
+        # position that differs from gw_data (e.g. position-changed historical player)
+        for pos, lst in zip(POSITIONS, [self.gks, self.defs, self.mids, self.fwds]):
+            if player in lst:
+                self._pos_cache[player] = pos
+                return pos
+        for sub_name, sub_pos in self.subs:
+            if sub_name == player:
+                self._pos_cache[player] = sub_pos
+                return sub_pos
         pos = (self.positions_list.get(player)
                or self.prev_pos_list.get(player)
                or self.fpl.position_dict(self.gameweek).get(player))
