@@ -44,6 +44,20 @@ class FplData:
         return team_list.set_index('name')
 
     def get_predictions(self, gw: int, pos: str) -> pd.DataFrame:
+        """
+        Retrieve pre-trained xP predictions for a gameweek and position.
+
+        Temporal rule: Predictions must be pre-trained on data strictly before the deadline.
+        During GW(N) decisions, only read predictions for GW(N) (generated overnight).
+        Never read predictions for GW(N+1) or later.
+
+        Args:
+            gw: Gameweek (typically matches current decision gameweek)
+            pos: Position code ('GK', 'DEF', 'MID', 'FWD')
+
+        Returns:
+            DataFrame with columns Name, xP (expected points)
+        """
         key = (gw, pos)
         if key not in self._prediction_cache:
             self._prediction_cache[key] = pd.read_csv(
@@ -52,18 +66,37 @@ class FplData:
         return self._prediction_cache[key]
 
     def get_gw_data(self, season, week_num):
+        """
+        Read gameweek stats (form, price, minutes, etc).
+
+        Temporal rule: During GW(N) decisions, only access GW(1) through GW(N-1).
+        Future integration: TemporalGate will enforce this boundary.
+
+        Args:
+            season: Season code (e.g. '2023-24')
+            week_num: Gameweek number (1-38)
+
+        Returns:
+            DataFrame indexed by player name with columns: position, team, total_points, etc
+        """
         cache_key = (season, week_num)
         if cache_key in self._gw_cache:
             return self._gw_cache[cache_key]
 
+        _cols = ['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity',
+                 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes',
+                 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves',
+                 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']
         try:
             if week_num < 1:
                 gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
             else:
                 gw_data = pd.read_csv(f'{self.data_location}/{season}/gws/gw{week_num}.csv')
         except FileNotFoundError:
-            pass
-        gw_data = gw_data[['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']]
+            empty = pd.DataFrame(columns=_cols).set_index('name')
+            self._gw_cache[cache_key] = empty
+            return empty
+        gw_data = gw_data[_cols]
         gw_data = gw_data.set_index('name')
         self._gw_cache[cache_key] = gw_data
         return gw_data
@@ -73,6 +106,17 @@ class FplData:
         gw_data = gw_data[gw_data['position'] == position]
         gw_data = gw_data.join(self.team_list, on='team')
         gw_data = gw_data.dropna()
+        lookback = 3
+        recent_minutes = pd.Series(0.0, index=gw_data.index, dtype=float)
+        for offset in range(1, lookback + 1):
+            past = self.get_gw_data(season, week_num - offset)
+            if past.empty:
+                continue
+            past_mins = pd.to_numeric(past['minutes'], errors='coerce').fillna(0)
+            recent_minutes = recent_minutes.add(
+                past_mins.reindex(gw_data.index).fillna(0)
+            )
+        gw_data['recent_minutes_ratio'] = (recent_minutes / (lookback * 90)).clip(upper=1.0)
         gw_data = gw_data.drop(['position', 'team', 'ict_index'], axis=1)
         return gw_data
 
@@ -139,6 +183,8 @@ class FplData:
         return tuple(zip(features, feature_labels))
 
     def get_training_data_all(self, season, from_gw, to_gw):
+        # Temporal rule: to_gw is INCLUSIVE. When called from model.py with (i - 19, i),
+        # this trains on GW(i) actual points. FIX: call with (i - 20, i - 1) to exclude GW(i).
         for i in range(from_gw, to_gw):
             if i == from_gw:
                 if i < 1:
@@ -188,6 +234,19 @@ class FplData:
         return None
 
     def actual_points_dict(self, season, week_num):
+        """
+        Extract player->points mapping for a completed gameweek.
+
+        Temporal rule: Only call for PAST gameweeks. During GW(N) decisions,
+        should only read GW(N-1) or earlier. Never read GW(N) during GW(N) decisions.
+
+        Args:
+            season: Season code
+            week_num: Gameweek number (must be <= current_gameweek - 1)
+
+        Returns:
+            Dict mapping player name to actual points scored
+        """
         gw_data = self.get_gw_data(season, week_num)
         return gw_data[['total_points']].to_dict()['total_points']
 
@@ -199,10 +258,11 @@ class FplData:
         return gw_data[gw_data['minutes'] == 0].to_dict()['minutes']
 
     def non_players(self, season, gameweek):
-        if gameweek < self.get_recent_gw():
+        recent_gw = self.get_recent_gw()
+        if recent_gw is None or gameweek < recent_gw:
             gw_data = self.get_gw_data(season, gameweek)
-            gw_data = gw_data[gw_data['minutes'] == 0]
-        return gw_data
+            return gw_data[gw_data['minutes'] == 0]
+        return pd.DataFrame()
 
     def post_model_weightings(self, clean_predictions, week_num, next_num_gws):
         """
