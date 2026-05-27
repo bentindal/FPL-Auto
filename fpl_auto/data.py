@@ -5,6 +5,18 @@ import datetime
 import requests
 import json
 
+# Module-level cache: one fpl_data instance per (data_location, season).
+# Shared across all team instances within a season run so caches accumulate.
+_instance_cache: dict = {}
+
+
+def get_fpl_data(data_location: str, season: str) -> 'fpl_data':
+    key = (data_location, season)
+    if key not in _instance_cache:
+        _instance_cache[key] = fpl_data(data_location, season)
+    return _instance_cache[key]
+
+
 class fpl_data:
     def __init__(self, data_location, season):
         """
@@ -21,8 +33,10 @@ class fpl_data:
         self.team_list = self.get_team_list(season)
         self.team_to_id = self.team_list.reset_index().set_index('name').to_dict()['id']
         self.id_to_name = self.id_to_name_dict()
-        self._gw_cache: dict = {}        # (season, week_num) -> DataFrame
-        self._fixtures_cache: dict = {}  # season -> DataFrame (full fixtures.csv)
+        self._gw_cache: dict = {}           # (season, week_num) -> DataFrame
+        self._fixtures_cache: dict = {}     # season -> DataFrame (full fixtures.csv)
+        self._prediction_cache: dict = {}   # (gw, pos) -> DataFrame
+        self._recent_gw: int = None         # cached to avoid repeated HTTP requests
 
     def get_player_list(self, season):
         """
@@ -59,6 +73,14 @@ class fpl_data:
         team_list = team_list[['name', 'id', 'strength_attack_home', 'strength_attack_away', 'strength_defence_home', 'strength_defence_away']]
         return team_list.set_index('name')
     
+    def get_predictions(self, gw: int, pos: str) -> pd.DataFrame:
+        key = (gw, pos)
+        if key not in self._prediction_cache:
+            self._prediction_cache[key] = pd.read_csv(
+                f'predictions/{self.season}/GW{gw}/{pos}.tsv', sep='\t'
+            )
+        return self._prediction_cache[key]
+
     def get_gw_data(self, season, week_num):
         """
         Retrieve the game week data for a given season and week.
@@ -444,50 +466,54 @@ class fpl_data:
         """
         Apply post-model weightings to the predictions.
 
-        Args:
-            clean_predictions (list): The clean predictions.
-            week_num (int): The week number.
-            next_num_gws (int): The number of future gameweeks to predict.
+        Vectorised: pre-computes fixture adjustments for all 20 teams once, then
+        applies them per player via numpy broadcast instead of per-player pandas filtering.
 
-        Returns:
-            list: The post-model weightings.
+        Returns list of DataFrames [Name, xP] where xP is a numpy array of length next_num_gws.
         """
-        overall_predictions = []
         gw_data = self.get_gw_data(self.season, week_num)
-        # For each pos in predictions
-        for pos in clean_predictions:
-            # change pos into dataframe, skip first header
-            pos = pos.reset_index()
-            # For each player in pos
-            post_predictions = []
-            for i in range(len(pos)):
-                name = pos.loc[i, 'Name']
-                xP = pos.loc[i, 'xP']
-                next_gws_p = np.ones(next_num_gws) * xP
-                try:
-                    team_name = self.get_player_team(name, week_num, gw_data)
-                    team_id = self.team_to_id[team_name]
-                    fixture_list = self.get_future_fixtures_for_player(name, week_num, gw_data)[0:next_num_gws]
-                except (KeyError, TypeError):
-                    if next_num_gws == 1:
-                        post_predictions.append([name, [0]])
-                    else:
-                        post_predictions.append([name, np.zeros(next_num_gws)])
-                    continue
+        future_fx = self.get_future_fixtures(self.season, week_num)  # already sorted by event
 
-                for i, fixture in enumerate(fixture_list.itertuples()):
-                    home_fixture = fixture.team_h == team_id
-                    home_away_p = 0.1 if home_fixture else -0.1
-                    difficulty = fixture.team_h_difficulty if home_fixture else fixture.team_a_difficulty
-                    diff_p = 0.2 if difficulty == 1 else 0.05 if difficulty == 2 else 0.0 if difficulty == 3 else -0.05 if difficulty == 4 else -0.2
-                    p = xP + home_away_p + diff_p
-                    p = round(p, 3)
-                    next_gws_p[i] = p
+        diff_map = {1: 0.2, 2: 0.05, 3: 0.0, 4: -0.05, 5: -0.2}
 
-                post_predictions.append([name, next_gws_p])
+        # Pre-compute adjustment vector for each of the 20 teams (not per player)
+        team_adjs: dict = {}
+        for team_id in set(self.team_to_id.values()):
+            mask = (future_fx['team_h'] == team_id) | (future_fx['team_a'] == team_id)
+            fixes = future_fx[mask].head(next_num_gws)
+            adjs = np.zeros(next_num_gws)
+            for i, fx in enumerate(fixes.itertuples()):
+                is_home = fx.team_h == team_id
+                diff = fx.team_h_difficulty if is_home else fx.team_a_difficulty
+                adjs[i] = (0.1 if is_home else -0.1) + diff_map.get(diff, 0.0)
+            team_adjs[team_id] = adjs
 
-            post_predictions = pd.DataFrame(post_predictions, columns=['Name', 'xP'])
-            overall_predictions.append(post_predictions)
+        player_team = gw_data['team'].to_dict()
+
+        overall_predictions = []
+        for pos_df in clean_predictions:
+            df = pos_df.reset_index()[['Name', 'xP']].copy()
+            names = df['Name'].values
+            xp_vals = df['xP'].values.astype(float)
+
+            # Build (n_players × next_num_gws) adjustment matrix
+            adj_matrix = np.zeros((len(names), next_num_gws))
+            no_team = np.zeros(len(names), dtype=bool)
+            for j, name in enumerate(names):
+                tid = self.team_to_id.get(player_team.get(name))
+                if tid is not None and tid in team_adjs:
+                    adj_matrix[j] = team_adjs[tid]
+                else:
+                    no_team[j] = True
+
+            # Vectorised: xP_matrix[player, gw] = adjusted xP for each future GW
+            xp_matrix = xp_vals[:, np.newaxis] + adj_matrix
+            xp_matrix[no_team] = 0.0
+            xp_matrix = np.round(xp_matrix, 3)
+
+            result = pd.DataFrame({'Name': names, 'xP': list(xp_matrix)})
+            overall_predictions.append(result)
+
         return overall_predictions
     
     def post_model_weightings_for_next_gw(self, clean_predictions, week_num):
@@ -592,17 +618,20 @@ class fpl_data:
         Returns:
             int: The most recent gameweek's ID.
         """
+        if self._recent_gw is not None:
+            return self._recent_gw
 
         data = requests.get('https://fantasy.premierleague.com/api/bootstrap-static/')
         data = json.loads(data.content)
 
         gameweeks = data['events']
-        
+
         now = datetime.datetime.utcnow()
         for gameweek in gameweeks:
             next_deadline_date = datetime.datetime.strptime(gameweek['deadline_time'], '%Y-%m-%dT%H:%M:%SZ')
             if next_deadline_date > now:
-                return gameweek['id'] - 1
+                self._recent_gw = gameweek['id'] - 1
+                return self._recent_gw
             
     def get_avg_score_list(self):
         """
@@ -632,7 +661,8 @@ class fpl_data:
             pandas.DataFrame: The future fixtures for the specified season and week.
         """
         if season not in self._fixtures_cache:
-            self._fixtures_cache[season] = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
+            df = pd.read_csv(f'{self.data_location}/{season}/fixtures.csv')
+            self._fixtures_cache[season] = df.sort_values('event').reset_index(drop=True)
         future_fixtures = self._fixtures_cache[season]
         return future_fixtures[future_fixtures['event'] > week_num]
         
@@ -713,36 +743,29 @@ class fpl_data:
 
     def discount_next_n_gws(self, predictions, gw, n, discount_factor=0.8, sum=True):
         """
-        Discount the next n gameweeks.
+        Discount the next n gameweeks and return scalar (mean) or array xP per player.
 
-        Args:
-            predictions (list): The predictions.
-            gw (int): The week number.
-            n (int): The number of future gameweeks to predict.
-            discount_factor (float): The discount factor.
-            sum (bool): Whether to sum the predictions.
-
-        Returns:
-            list: The discounted predictions.
+        Fully vectorised: uses numpy stack + broadcast instead of per-player Python loops.
         """
         if gw + n > 38:
             n = 38 - gw
-        
-        # Get the next n gameweeks
-        n_next_weeks = self.post_model_weightings(predictions, gw, n)
-        
         if n == 0 or gw >= 36:
-            return n_next_weeks
-        
-        # For each player in each position
-        for pos in n_next_weeks:
-            for i, row in pos.iterrows():
-                xp_array = row['xP']
-                for i in range(len(xp_array)):
-                    xp_array[i] *= discount_factor ** i
-                if sum:
-                    row['xP'] = round(np.mean(xp_array), 2)
-                else:
-                    row['xP'] = xp_array
-        
-        return n_next_weeks
+            return predictions
+
+        n_next_weeks = self.post_model_weightings(predictions, gw, n)
+        discount_weights = np.array([discount_factor ** i for i in range(n)])
+
+        result = []
+        for pos_df in n_next_weeks:
+            # xP column contains numpy arrays of shape (n,) from post_model_weightings
+            xp_arrays = np.stack(pos_df['xP'].values)   # (n_players, n)
+            discounted = xp_arrays * discount_weights     # (n_players, n) broadcast
+
+            df = pos_df[['Name']].copy()
+            if sum:
+                df['xP'] = np.round(np.mean(discounted, axis=1), 2)
+            else:
+                df['xP'] = list(discounted)
+            result.append(df)
+
+        return result

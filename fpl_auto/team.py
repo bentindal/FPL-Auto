@@ -19,7 +19,7 @@ class team:
         chips_used = chips_used if chips_used is not None else []
         transfer_history = transfer_history if transfer_history is not None else []
 
-        self.fpl = fpl.fpl_data('data', season)
+        self.fpl = fpl.get_fpl_data('data', season)
         self.season = season
         self.gameweek = gameweek
         self.budget = budget
@@ -54,10 +54,10 @@ class team:
             print('============== Wildcard Returned! ==============\n')
             self.chip_wildcard_available = True
 
-        self.gk_xp  = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/GK.tsv',  sep='\t')
-        self.def_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/DEF.tsv', sep='\t')
-        self.mid_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/MID.tsv', sep='\t')
-        self.fwd_xp = pd.read_csv(f'predictions/{season}/GW{self.gameweek}/FWD.tsv', sep='\t')
+        self.gk_xp  = self.fpl.get_predictions(self.gameweek, 'GK')
+        self.def_xp = self.fpl.get_predictions(self.gameweek, 'DEF')
+        self.mid_xp = self.fpl.get_predictions(self.gameweek, 'MID')
+        self.fwd_xp = self.fpl.get_predictions(self.gameweek, 'FWD')
         self.combined_xp = [self.gk_xp, self.def_xp, self.mid_xp, self.fwd_xp]
 
         self.all_xp = self._get_n_gws_xp(5, discount_factor=0.8)
