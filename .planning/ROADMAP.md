@@ -13,7 +13,7 @@
 - [x] **Phase 1: Temporal Integrity** - Fix lookahead bias and implement enforcement mechanism
 - [ ] **Phase 2: Model Diagnostics** - Understand prediction gaps by comparing to top 100 managers
 - [x] **Phase 3: Model Infrastructure** - Establish proper validation pipeline (TimeSeriesSplit, nested CV)
-- [ ] **Phase 4: Feature Engineering** - Expand and improve predictor features
+- [x] **Phase 4: Feature Engineering** - Expand and improve predictor features
 - [ ] **Phase 5: Strategy Framework & Evaluation** - Define parametrizable strategies and validation framework
 - [ ] **Phase 6: Transfer Strategy Evaluation** - Test transfer frequency and timing variants
 - [ ] **Phase 7: Captain & Chip Strategy Evaluation** - Test captain selection and chip usage variants
