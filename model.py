@@ -55,7 +55,7 @@ def main():
 
     for i in range(target_gameweek, min(target_gameweek + repeat, 39)):
         try:
-            training_data, test_data = vastaav.get_training_data_all(season, i - training_prev_weeks, i)
+            training_data, test_data = vastaav.get_training_data_all(season, i - training_prev_weeks - 1, i - 1)
         except UnboundLocalError:
             print(f'Reached Prediction Limit for {season} GW{i}, can only predict 1 week beyond data.')
             return
