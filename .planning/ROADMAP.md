@@ -96,7 +96,7 @@
 4. Iteration workflow validated: hypothesis → retrain with TimeSeriesSplit → measure RMSE improvement (threshold: >2% per feature addition)
 5. Final feature set improves baseline RMSE by at least 5% across all 4 seasons (measured with temporal integrity intact)
 
-**Plans**: 04-01, 04-02, 04-03 (2-3 plans)
+**Plans**: 04-01, 04-02, 04-03 (3 plans, execution complete)
 
 ---
 
@@ -117,7 +117,11 @@
 7. 95% bootstrapped confidence intervals generated for all metrics (no point estimates; CIs quantify uncertainty)
 8. Bonferroni correction applied to prevent false positives in multiple comparisons
 
-**Plans**: TBD
+**Plans**:
+- [ ] 05-01-PLAN.md — StrategyConfig design + three strategy archetypes (SF-01, SF-02, SF-03)
+- [ ] 05-02-PLAN.md — Walk-forward validation framework + baselines (SE-01, SE-02)
+- [ ] 05-03-PLAN.md — Multi-dimensional metrics + bootstrapped CIs + Bonferroni correction (SE-03, SE-04, SE-05)
+- [ ] 05-04-PLAN.md — Integration testing + Phase 5 verification (all requirements)
 
 ---
 
@@ -199,8 +203,8 @@
 | 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Execution complete |
 | 2. Model Diagnostics | Understand gaps | 4 | TBD | Not started |
 | 3. Model Infrastructure | Proper validation | 6 | 3 | Execution complete |
-| 4. Feature Engineering | Expand features | 4 | TBD | Not started |
-| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | TBD | Not started |
+| 4. Feature Engineering | Expand features | 4 | 3 | Execution complete |
+| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | 4 | Planning complete |
 | 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | TBD | Not started |
 | 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | TBD | Not started |
 | 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | TBD | Not started |
@@ -217,4 +221,4 @@
 
 ---
 
-*Roadmap updated: 2026-05-27 - Phase 1 & Phase 3 execution complete*
+*Roadmap updated: 2026-05-27 - Phase 4 execution complete, Phase 5 planning complete*
