@@ -37,7 +37,9 @@
 3. Temporal architecture documented: what data is available at each gameweek, what's forbidden
 4. Automated tests pass that detect temporal violations (e.g., accessing GW(i) for prediction at GW(i))
 
-**Plans**: TBD
+**Plans**:
+- [ ] 01-01-PLAN.md — Create TemporalGate class and fix model training lookahead (TI-01, TI-02)
+- [ ] 01-02-PLAN.md — Add temporal violation detection tests and architecture documentation (TI-03, TI-04)
 
 ---
 
@@ -189,17 +191,17 @@
 
 ## Progress Table
 
-| Phase | Goal | Requirements | Status | Completed |
-|-------|------|--------------|--------|-----------|
-| 1. Temporal Integrity | Fix lookahead bias | 4 | Not started | - |
-| 2. Model Diagnostics | Understand gaps | 4 | Not started | - |
-| 3. Model Infrastructure | Proper validation | 6 | Not started | - |
-| 4. Feature Engineering | Expand features | 4 | Not started | - |
-| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | Not started | - |
-| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | Not started | - |
-| 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | Not started | - |
-| 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | Not started | - |
-| 9. Performance Validation | Final validation | 4 | Not started | - |
+| Phase | Goal | Requirements | Plans | Status |
+|-------|------|--------------|-------|--------|
+| 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Planning complete |
+| 2. Model Diagnostics | Understand gaps | 4 | TBD | Not started |
+| 3. Model Infrastructure | Proper validation | 6 | TBD | Not started |
+| 4. Feature Engineering | Expand features | 4 | TBD | Not started |
+| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | TBD | Not started |
+| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | TBD | Not started |
+| 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | TBD | Not started |
+| 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | TBD | Not started |
+| 9. Performance Validation | Final validation | 4 | TBD | Not started |
 
 ---
 
@@ -212,4 +214,4 @@
 
 ---
 
-*Roadmap created: 2026-05-27*
+*Roadmap updated: 2026-05-27 - Phase 1 planning complete*
