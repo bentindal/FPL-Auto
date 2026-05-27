@@ -185,6 +185,14 @@ class FplData:
 
     def get_training_data(self, season, week_num):
         features = self.get_all_pos_data(season, week_num)
+
+        # === NEW: Apply feature engineering to training data ===
+        features_engineered = []
+        for j, pos in enumerate(['GK', 'DEF', 'MID', 'FWD']):
+            engineered = self.engineer_features_on_gw_data(features[j], season, week_num, pos)
+            features_engineered.append(engineered)
+        features = tuple(features_engineered)
+
         feature_labels = self.extract_all_labels(features)
         features = self.prune_all_features(features)
         return tuple(zip(features, feature_labels))
