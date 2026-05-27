@@ -29,6 +29,9 @@ def parse_args():
     parser.add_argument('-starting_team', type=str, default='auto',
                         choices=['auto', 'custom_1'],
                         help='Initial team: auto = generate own team, default: auto')
+    parser.add_argument('-strategy', type=str, default='baseline_current',
+                        choices=['static', 'baseline_current', 'conservative', 'aggressive', 'differential'],
+                        help='Strategy to use for season simulation (default: baseline_current)')
     parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
                         help='Export results to JSON + score plot')
     parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
@@ -37,6 +40,35 @@ def parse_args():
     parser.add_argument('-plot_xp', action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument('-project_score', action=argparse.BooleanOptionalAction, default=False)
     return parser.parse_args()
+
+
+def get_strategy_config(strategy_name: str):
+    """
+    Instantiate a StrategyConfig by name.
+
+    Args:
+        strategy_name: Strategy name from CLI choices
+                      ('static', 'baseline_current', 'conservative', 'aggressive', 'differential')
+
+    Returns:
+        StrategyConfig instance
+
+    Raises:
+        ValueError if strategy_name is not recognized
+    """
+    from fpl_auto.strategies import (
+        BASELINE_STATIC, BASELINE_CURRENT, CONSERVATIVE, AGGRESSIVE, DIFFERENTIAL
+    )
+    strategies = {
+        'static': BASELINE_STATIC,
+        'baseline_current': BASELINE_CURRENT,
+        'conservative': CONSERVATIVE,
+        'aggressive': AGGRESSIVE,
+        'differential': DIFFERENTIAL,
+    }
+    if strategy_name not in strategies:
+        raise ValueError(f"Unknown strategy: {strategy_name}")
+    return strategies[strategy_name]
 
 
 def _make_team_at_gw1(season, start_gw):
@@ -151,6 +183,9 @@ def main():
     seasons = inputs.seasons if inputs.seasons else [inputs.season]
     parallel = len(seasons) > 1
 
+    # Instantiate strategy config
+    strategy_config = get_strategy_config(inputs.strategy)
+
     configs = [
         {
             'season': s,
@@ -158,6 +193,7 @@ def main():
             'repeat': inputs.repeat_until - 1,
             'starting_team': inputs.starting_team,
             'quiet': parallel,
+            'strategy': strategy_config,
         }
         for s in seasons
     ]
