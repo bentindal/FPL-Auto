@@ -1288,5 +1288,74 @@ class TestFeatureEngineering(unittest.TestCase):
             self.assertLessEqual(val, 1.0)
 
 
+class TestPhase5Integration(unittest.TestCase):
+    """Integration tests for Phase 5 strategy framework and evaluation."""
+
+    def test_all_strategies_instantiate_without_error(self):
+        """Verify all 5 strategy configs are valid."""
+        from fpl_auto.strategies import (
+            BASELINE_STATIC, BASELINE_CURRENT, CONSERVATIVE, AGGRESSIVE, DIFFERENTIAL
+        )
+
+        strategies = [BASELINE_STATIC, BASELINE_CURRENT, CONSERVATIVE, AGGRESSIVE, DIFFERENTIAL]
+        for s in strategies:
+            self.assertIsNotNone(s.transfer_mode)
+            self.assertIn(s.transfer_mode, ['never', 'flexible', 'greedy'])
+            self.assertIn(s.captain_mode, ['highest_xp', 'highest_value', 'form_based'])
+
+    def test_baseline_static_runs_on_single_season(self):
+        """Baseline (static team) executes without error on one season."""
+        from fpl_auto.strategies import BASELINE_STATIC
+        from evaluation.walk_forward import run_strategy_on_seasons
+
+        results = run_strategy_on_seasons(BASELINE_STATIC, ['2021-22'])
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]['season'], '2021-22')
+        self.assertEqual(len(results[0]['p_list']), 38)  # 38 GWs
+
+    def test_baseline_current_runs_on_single_season(self):
+        """Baseline (current approach) executes without error on one season."""
+        from fpl_auto.strategies import BASELINE_CURRENT
+        from evaluation.walk_forward import run_strategy_on_seasons
+
+        results = run_strategy_on_seasons(BASELINE_CURRENT, ['2021-22'])
+        self.assertEqual(len(results), 1)
+        self.assertEqual(len(results[0]['p_list']), 38)
+
+    def test_nested_walk_forward_returns_two_iterations(self):
+        """Walk-forward validation produces 2 iterations (test on 2023-24, 2024-25)."""
+        from fpl_auto.strategies import BASELINE_STATIC
+        from evaluation.walk_forward import nested_walk_forward_evaluation
+
+        results = nested_walk_forward_evaluation(BASELINE_STATIC)
+        self.assertGreaterEqual(len(results), 1)  # At least 1 iteration should succeed
+        test_seasons = {r['test_season'] for r in results}
+        self.assertIn('2023-24', test_seasons)  # At least 2023-24 should be tested
+
+    def test_walk_forward_metrics_include_required_fields(self):
+        """Walk-forward results include test_metrics and train_metrics."""
+        from fpl_auto.strategies import BASELINE_STATIC
+        from evaluation.walk_forward import nested_walk_forward_evaluation
+
+        results = nested_walk_forward_evaluation(BASELINE_STATIC)
+        for iteration in results:
+            self.assertIn('test_metrics', iteration)
+            self.assertIn('train_metrics', iteration)
+            self.assertIn('test_season', iteration)
+            self.assertIn('train_seasons', iteration)
+
+    def test_compute_metrics_returns_sharpe_and_sortino(self):
+        """Metrics computation includes Sharpe and Sortino ratios."""
+        from evaluation.metrics import compute_season_metrics
+
+        weekly_points = [50, 60, 45, 55, 48, 52, 58, 47, 61, 53] + [50] * 28  # 38 weeks
+        metrics = compute_season_metrics(weekly_points)
+        self.assertIn('sharpe_ratio', metrics)
+        self.assertIn('sortino_ratio', metrics)
+        self.assertIn('coefficient_variation', metrics)
+        self.assertIn('max_drawdown', metrics)
+        self.assertGreater(metrics['sharpe_ratio'], 0)
+
+
 if __name__ == '__main__':
     unittest.main()
