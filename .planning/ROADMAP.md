@@ -10,9 +10,9 @@
 
 ## Phases
 
-- [ ] **Phase 1: Temporal Integrity** - Fix lookahead bias and implement enforcement mechanism
+- [x] **Phase 1: Temporal Integrity** - Fix lookahead bias and implement enforcement mechanism
 - [ ] **Phase 2: Model Diagnostics** - Understand prediction gaps by comparing to top 100 managers
-- [ ] **Phase 3: Model Infrastructure** - Establish proper validation pipeline (TimeSeriesSplit, nested CV)
+- [x] **Phase 3: Model Infrastructure** - Establish proper validation pipeline (TimeSeriesSplit, nested CV)
 - [ ] **Phase 4: Feature Engineering** - Expand and improve predictor features
 - [ ] **Phase 5: Strategy Framework & Evaluation** - Define parametrizable strategies and validation framework
 - [ ] **Phase 6: Transfer Strategy Evaluation** - Test transfer frequency and timing variants
@@ -38,8 +38,8 @@
 4. Automated tests pass that detect temporal violations (e.g., accessing GW(i) for prediction at GW(i))
 
 **Plans**:
-- [ ] 01-01-PLAN.md — Create TemporalGate class and fix model training lookahead (TI-01, TI-02)
-- [ ] 01-02-PLAN.md — Add temporal violation detection tests and architecture documentation (TI-03, TI-04)
+- [x] 01-01-PLAN.md — Create TemporalGate class and fix model training lookahead (TI-01, TI-02)
+- [x] 01-02-PLAN.md — Add temporal violation detection tests and architecture documentation (TI-03, TI-04)
 
 ---
 
@@ -75,7 +75,10 @@
 5. Baseline metrics established: per-position RMSE/MAE, train-vs-test gap tracked (10-20% healthy, >20% signals overfitting)
 6. Baseline model performance on all 4 seasons (2021-22 through 2024-25) recorded as reference
 
-**Plans**: TBD
+**Plans**:
+- [x] 03-01-PLAN.md — Refactor Predictor for Pipeline + TimeSeriesSplit foundation (MI-01, MI-02, MI-03)
+- [x] 03-02-PLAN.md — Implement nested CV, permutation importance, baseline metrics (MI-02, MI-03, MI-04, MI-05)
+- [x] 03-03-PLAN.md — Verify manager.py backward compatibility and Phase 3 readiness (MI-06)
 
 ---
 
@@ -195,7 +198,7 @@
 |-------|------|--------------|-------|--------|
 | 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Planning complete |
 | 2. Model Diagnostics | Understand gaps | 4 | TBD | Not started |
-| 3. Model Infrastructure | Proper validation | 6 | TBD | Not started |
+| 3. Model Infrastructure | Proper validation | 6 | 3 | Planning complete |
 | 4. Feature Engineering | Expand features | 4 | TBD | Not started |
 | 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | TBD | Not started |
 | 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | TBD | Not started |
@@ -214,4 +217,4 @@
 
 ---
 
-*Roadmap updated: 2026-05-27 - Phase 1 planning complete*
+*Roadmap updated: 2026-05-27 - Phase 3 planning complete*
