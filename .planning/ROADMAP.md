@@ -96,7 +96,7 @@
 4. Iteration workflow validated: hypothesis → retrain with TimeSeriesSplit → measure RMSE improvement (threshold: >2% per feature addition)
 5. Final feature set improves baseline RMSE by at least 5% across all 4 seasons (measured with temporal integrity intact)
 
-**Plans**: TBD
+**Plans**: 04-01, 04-02, 04-03 (2-3 plans)
 
 ---
 
@@ -196,9 +196,9 @@
 
 | Phase | Goal | Requirements | Plans | Status |
 |-------|------|--------------|-------|--------|
-| 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Planning complete |
+| 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Execution complete |
 | 2. Model Diagnostics | Understand gaps | 4 | TBD | Not started |
-| 3. Model Infrastructure | Proper validation | 6 | 3 | Planning complete |
+| 3. Model Infrastructure | Proper validation | 6 | 3 | Execution complete |
 | 4. Feature Engineering | Expand features | 4 | TBD | Not started |
 | 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | TBD | Not started |
 | 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | TBD | Not started |
@@ -217,4 +217,4 @@
 
 ---
 
-*Roadmap updated: 2026-05-27 - Phase 3 planning complete*
+*Roadmap updated: 2026-05-27 - Phase 1 & Phase 3 execution complete*
