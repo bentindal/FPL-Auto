@@ -62,8 +62,11 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
 
     === Phase 4 v2: Apply VIF filtering to remove multicollinear features (optional) ===
 
-    Returns: (predictions, metrics_dict, predictor)
+    Returns: (predictions, metrics_dict, predictor, filtered_training_data, filtered_test_data)
     """
+    vif_filtered_training_data = training_data
+    vif_filtered_test_data = test_data
+
     # Only apply VIF filtering during standalone evaluation (not in main loop with prediction)
     if apply_vif_filtering:
         import sys
@@ -99,6 +102,8 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
             training_data_filtered.append((X_train, y_train))
             test_data_filtered.append((X_test, y_test))
 
+        vif_filtered_training_data = training_data_filtered
+        vif_filtered_test_data = test_data_filtered
         training_data = training_data_filtered
         test_data = test_data_filtered
 
@@ -125,7 +130,7 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
             'test_rmse': test_rmse
         }
 
-    return test_preds, metrics, predictor
+    return test_preds, metrics, predictor, vif_filtered_training_data, vif_filtered_test_data
 
 
 def compute_baseline_metrics(season, vastaav, model_type, inputs):
@@ -148,7 +153,7 @@ def compute_baseline_metrics(season, vastaav, model_type, inputs):
         except UnboundLocalError:
             break
 
-        test_preds, metrics, _ = evaluate_with_nested_cv(
+        test_preds, metrics, _, _, _ = evaluate_with_nested_cv(
             training_data, test_data, model_type, '', inputs, apply_vif_filtering=False
         )
 
@@ -263,8 +268,8 @@ def main():
             return
 
         # Use evaluate_with_nested_cv for consistency with baseline metrics
-        # Disable VIF filtering in main loop to avoid feature mismatch with prediction phase
-        test_preds, metrics, predictor = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=False)
+        # Note: VIF filtering disabled for main loop to keep models compatible with prediction phase
+        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=False)
 
         if inputs.display_weights:
             feature_list = training_data[0][0].columns
