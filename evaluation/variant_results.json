@@ -1,0 +1,1913 @@
+{
+  "CONSERVATIVE_EARLY": {
+    "strategy_config": {
+      "transfer_mode": "flexible",
+      "transfer_budget_per_gw": 0.5,
+      "transfer_window_gw_range": [
+        1,
+        10
+      ],
+      "transfer_xp_threshold": 0.2,
+      "transfer_xp_threshold_mode": "relative",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_results": {
+          "season": "2023-24",
+          "p_list": [
+            47,
+            84,
+            23,
+            30,
+            41,
+            41,
+            46,
+            54,
+            59,
+            47,
+            29,
+            36,
+            49,
+            56,
+            41,
+            29,
+            50,
+            15,
+            33,
+            42,
+            40,
+            58,
+            35,
+            34,
+            55,
+            29,
+            74,
+            38,
+            6,
+            21,
+            28,
+            54,
+            41,
+            84,
+            47,
+            49,
+            56,
+            59
+          ],
+          "xp_list": [
+            293.28999999999996,
+            228.39000000000004,
+            226.24,
+            199.76999999999998,
+            139.43,
+            171.44,
+            169.05,
+            165.82999999999998,
+            268.54,
+            242.13,
+            218.28,
+            169.89,
+            150.42,
+            151.68,
+            129.59,
+            126.66999999999999,
+            120.94,
+            92.66,
+            74.05000000000001,
+            93.27,
+            102.68,
+            105.81000000000002,
+            110.33000000000001,
+            144.06,
+            169.18,
+            132.78,
+            159.01999999999998,
+            163.85,
+            58.089999999999996,
+            56.98,
+            147.31,
+            112.71,
+            120.28,
+            96.99000000000002,
+            233.78000000000003,
+            85.485,
+            76.09,
+            56.730000000000004
+          ],
+          "chips_used": [
+            [
+              "Triple Captain",
+              2
+            ],
+            [
+              "Bench Boost",
+              3
+            ],
+            [
+              "Free Hit",
+              35
+            ]
+          ],
+          "transfer_history": [
+            [
+              2,
+              [
+                "Trent Alexander-Arnold",
+                "Axel Disasi"
+              ],
+              24.06
+            ],
+            [
+              3,
+              [
+                "Virgil van Dijk",
+                "Kyle Walker"
+              ],
+              18.56
+            ],
+            [
+              4,
+              [
+                "Thomas Cannon",
+                "Diogo Teixeira da Silva"
+              ],
+              43.27
+            ],
+            [
+              5,
+              [
+                "Yoane Wissa",
+                "James Maddison"
+              ],
+              28.88
+            ],
+            [
+              6,
+              [
+                "Bryan Mbeumo",
+                "Juli\u00e1n \u00c1lvarez"
+              ],
+              39.84
+            ],
+            [
+              7,
+              [
+                "Diogo Teixeira da Silva",
+                "Erling Haaland"
+              ],
+              33.55
+            ],
+            [
+              8,
+              [
+                "Luke Shaw",
+                "Kieran Trippier"
+              ],
+              31.23
+            ],
+            [
+              9,
+              [
+                "Aaron Wan-Bissaka",
+                "Dan Burn"
+              ],
+              26.16
+            ],
+            [
+              10,
+              [
+                "Taiwo Awoniyi",
+                "Ollie Watkins"
+              ],
+              48.17
+            ]
+          ],
+          "total_points": 1660
+        },
+        "test_metrics": {
+          "total_points": 1660.0,
+          "mean_gw_points": 43.68421052631579,
+          "std_gw_points": 16.470236733603496,
+          "sharpe_ratio": 2.6523122425550096,
+          "sortino_ratio": 4.650415331215548,
+          "coefficient_variation": 0.3770295155885138,
+          "max_drawdown": 0.0,
+          "best_week": 84.0,
+          "worst_week": 6.0
+        },
+        "train_metrics": {
+          "avg_total_points": 1567.0,
+          "avg_mean_gw_points": 41.23684210526316,
+          "avg_std_gw_points": 14.128939260313452,
+          "avg_sharpe": 2.938548832646191,
+          "avg_sortino": 5.658038941508688,
+          "avg_cv": 0.3416860367224718,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T20:48:22.977621"
+      }
+    ],
+    "confidence_intervals": {
+      "total_points": {
+        "ci_lower": 1660.0,
+        "ci_upper": 1660.0,
+        "mean": 1660.0,
+        "n_iterations": 1
+      },
+      "sharpe_ratio": {
+        "ci_lower": 2.6523122425550096,
+        "ci_upper": 2.6523122425550096,
+        "mean": 2.6523122425550096,
+        "n_iterations": 1
+      },
+      "sortino_ratio": {
+        "ci_lower": 4.650415331215548,
+        "ci_upper": 4.650415331215548,
+        "mean": 4.650415331215548,
+        "n_iterations": 1
+      },
+      "max_drawdown": {
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "mean": 0.0,
+        "n_iterations": 1
+      },
+      "mean_gw_points": {
+        "ci_lower": 43.68421052631579,
+        "ci_upper": 43.68421052631579,
+        "mean": 43.68421052631579,
+        "n_iterations": 1
+      },
+      "std_gw_points": {
+        "ci_lower": 16.470236733603496,
+        "ci_upper": 16.470236733603496,
+        "mean": 16.470236733603496,
+        "n_iterations": 1
+      },
+      "coefficient_variation": {
+        "ci_lower": 0.3770295155885138,
+        "ci_upper": 0.3770295155885138,
+        "mean": 0.3770295155885138,
+        "n_iterations": 1
+      }
+    }
+  },
+  "CONSERVATIVE_FULL": {
+    "strategy_config": {
+      "transfer_mode": "flexible",
+      "transfer_budget_per_gw": 0.5,
+      "transfer_window_gw_range": null,
+      "transfer_xp_threshold": 0.2,
+      "transfer_xp_threshold_mode": "relative",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_results": {
+          "season": "2023-24",
+          "p_list": [
+            47,
+            84,
+            23,
+            30,
+            41,
+            41,
+            46,
+            54,
+            59,
+            47,
+            30,
+            40,
+            56,
+            56,
+            40,
+            31,
+            61,
+            41,
+            44,
+            45,
+            40,
+            70,
+            36,
+            33,
+            43,
+            72,
+            54,
+            28,
+            10,
+            52,
+            39,
+            55,
+            92,
+            56,
+            47,
+            68,
+            44,
+            50
+          ],
+          "xp_list": [
+            293.28999999999996,
+            228.39000000000004,
+            226.24,
+            199.76999999999998,
+            139.43,
+            171.44,
+            169.05,
+            165.82999999999998,
+            268.54,
+            242.13,
+            239.21,
+            213.12,
+            192.5,
+            173.14999999999998,
+            194.28,
+            184.55,
+            171.39999999999998,
+            185.89000000000001,
+            227.15,
+            218.07,
+            201.68,
+            170.09000000000003,
+            167.04,
+            192.83,
+            164.93,
+            168.07,
+            197.36,
+            195.94,
+            119.48,
+            123.30999999999999,
+            203.48999999999998,
+            164.18999999999997,
+            237.83,
+            173.83,
+            113.94999999999999,
+            61.431999999999995,
+            60.949999999999996,
+            51.11
+          ],
+          "chips_used": [
+            [
+              "Triple Captain",
+              2
+            ],
+            [
+              "Bench Boost",
+              3
+            ]
+          ],
+          "transfer_history": [
+            [
+              2,
+              [
+                "Trent Alexander-Arnold",
+                "Axel Disasi"
+              ],
+              24.06
+            ],
+            [
+              3,
+              [
+                "Virgil van Dijk",
+                "Kyle Walker"
+              ],
+              18.56
+            ],
+            [
+              4,
+              [
+                "Thomas Cannon",
+                "Diogo Teixeira da Silva"
+              ],
+              43.27
+            ],
+            [
+              5,
+              [
+                "Yoane Wissa",
+                "James Maddison"
+              ],
+              28.88
+            ],
+            [
+              6,
+              [
+                "Bryan Mbeumo",
+                "Juli\u00e1n \u00c1lvarez"
+              ],
+              39.84
+            ],
+            [
+              7,
+              [
+                "Diogo Teixeira da Silva",
+                "Erling Haaland"
+              ],
+              33.55
+            ],
+            [
+              8,
+              [
+                "Luke Shaw",
+                "Kieran Trippier"
+              ],
+              31.23
+            ],
+            [
+              9,
+              [
+                "Aaron Wan-Bissaka",
+                "Dan Burn"
+              ],
+              26.16
+            ],
+            [
+              10,
+              [
+                "Taiwo Awoniyi",
+                "Ollie Watkins"
+              ],
+              48.17
+            ],
+            [
+              11,
+              [
+                "Granit Xhaka",
+                "Douglas Luiz Soares de Paulo"
+              ],
+              23.91
+            ],
+            [
+              12,
+              [
+                "Axel Disasi",
+                "Harry Toffolo"
+              ],
+              25.27
+            ],
+            [
+              13,
+              [
+                "Curtis Jones",
+                "Cole Palmer"
+              ],
+              21.37
+            ],
+            [
+              14,
+              [
+                "James Maddison",
+                "Conor Gallagher"
+              ],
+              15.64
+            ],
+            [
+              15,
+              [
+                "Benjamin White",
+                "Diogo Dalot Teixeira"
+              ],
+              23.19
+            ],
+            [
+              16,
+              [
+                "Dan Burn",
+                "Trent Alexander-Arnold"
+              ],
+              30.22
+            ],
+            [
+              17,
+              [
+                "Aaron Ramsdale",
+                "Jordan Pickford"
+              ],
+              14.97
+            ],
+            [
+              18,
+              [
+                "Conor Gallagher",
+                "Mohammed Kudus"
+              ],
+              25.22
+            ],
+            [
+              19,
+              [
+                "Kyle Walker",
+                "Marcos Senesi"
+              ],
+              54.95
+            ],
+            [
+              20,
+              [
+                "Kieran Trippier",
+                "Emerson Palmieri dos Santos"
+              ],
+              26.18
+            ],
+            [
+              21,
+              [
+                "Willian Borges da Silva",
+                "Keane Lewis-Potter"
+              ],
+              25.36
+            ],
+            [
+              22,
+              [
+                "Cole Palmer",
+                "Michael Olise"
+              ],
+              31.87
+            ],
+            [
+              23,
+              [
+                "Harry Toffolo",
+                "Pervis Estupi\u00f1\u00e1n"
+              ],
+              25.77
+            ],
+            [
+              24,
+              [
+                "Marcos Senesi",
+                "Max Kilman"
+              ],
+              36.22
+            ],
+            [
+              25,
+              [
+                "Trent Alexander-Arnold",
+                "Conor Bradley"
+              ],
+              30.58
+            ],
+            [
+              26,
+              [
+                "Juli\u00e1n \u00c1lvarez",
+                "Rasmus H\u00f8jlund"
+              ],
+              33.48
+            ],
+            [
+              27,
+              [
+                "Conor Bradley",
+                "Jarrad Branthwaite"
+              ],
+              27.52
+            ],
+            [
+              28,
+              [
+                "Pervis Estupi\u00f1\u00e1n",
+                "Jakub Kiwior"
+              ],
+              25.45
+            ],
+            [
+              29,
+              [
+                "Keane Lewis-Potter",
+                "Son Heung-min"
+              ],
+              21.27
+            ],
+            [
+              30,
+              [
+                "Michael Olise",
+                "Brennan Johnson"
+              ],
+              19.45
+            ],
+            [
+              31,
+              [
+                "Emerson Palmieri dos Santos",
+                "Benjamin White"
+              ],
+              42.11
+            ],
+            [
+              32,
+              [
+                "Rasmus H\u00f8jlund",
+                "Alexander Isak"
+              ],
+              21.55
+            ],
+            [
+              33,
+              [
+                "Douglas Luiz Soares de Paulo",
+                "Cole Palmer"
+              ],
+              56.04
+            ],
+            [
+              34,
+              [
+                "Jakub Kiwior",
+                "Mathias Jorgensen"
+              ],
+              17.71
+            ],
+            [
+              35,
+              [
+                "Max Kilman",
+                "Sergio Reguil\u00f3n"
+              ],
+              12.16
+            ]
+          ],
+          "total_points": 1805
+        },
+        "test_metrics": {
+          "total_points": 1805.0,
+          "mean_gw_points": 47.5,
+          "std_gw_points": 15.87243555747875,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0,
+          "best_week": 92.0,
+          "worst_week": 10.0
+        },
+        "train_metrics": {
+          "avg_total_points": 1782.5,
+          "avg_mean_gw_points": 46.90789473684211,
+          "avg_std_gw_points": 15.058274558794583,
+          "avg_sharpe": 3.106451032251388,
+          "avg_sortino": 5.580012438490501,
+          "avg_cv": 0.3228283104521018,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T20:49:27.594849"
+      }
+    ],
+    "confidence_intervals": {
+      "total_points": {
+        "ci_lower": 1805.0,
+        "ci_upper": 1805.0,
+        "mean": 1805.0,
+        "n_iterations": 1
+      },
+      "sharpe_ratio": {
+        "ci_lower": 2.9926094094374207,
+        "ci_upper": 2.9926094094374207,
+        "mean": 2.9926094094374207,
+        "n_iterations": 1
+      },
+      "sortino_ratio": {
+        "ci_lower": 5.361579787068557,
+        "ci_upper": 5.361579787068557,
+        "mean": 5.361579787068557,
+        "n_iterations": 1
+      },
+      "max_drawdown": {
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "mean": 0.0,
+        "n_iterations": 1
+      },
+      "mean_gw_points": {
+        "ci_lower": 47.5,
+        "ci_upper": 47.5,
+        "mean": 47.5,
+        "n_iterations": 1
+      },
+      "std_gw_points": {
+        "ci_lower": 15.87243555747875,
+        "ci_upper": 15.87243555747875,
+        "mean": 15.87243555747875,
+        "n_iterations": 1
+      },
+      "coefficient_variation": {
+        "ci_lower": 0.3341565380521842,
+        "ci_upper": 0.3341565380521842,
+        "mean": 0.3341565380521842,
+        "n_iterations": 1
+      }
+    }
+  },
+  "BASELINE_MID": {
+    "strategy_config": {
+      "transfer_mode": "flexible",
+      "transfer_budget_per_gw": 1.5,
+      "transfer_window_gw_range": [
+        11,
+        24
+      ],
+      "transfer_xp_threshold": 0.15,
+      "transfer_xp_threshold_mode": "relative",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_results": {
+          "season": "2023-24",
+          "p_list": [
+            47,
+            84,
+            14,
+            42,
+            38,
+            31,
+            34,
+            46,
+            42,
+            54,
+            32,
+            35,
+            54,
+            50,
+            70,
+            33,
+            68,
+            26,
+            40,
+            34,
+            56,
+            60,
+            23,
+            25,
+            62,
+            46,
+            44,
+            29,
+            15,
+            32,
+            17,
+            24,
+            54,
+            28,
+            47,
+            49,
+            56,
+            59
+          ],
+          "xp_list": [
+            293.28999999999996,
+            208.36,
+            187.26,
+            109.42000000000002,
+            99.02,
+            89.41,
+            60.53000000000001,
+            67.45000000000002,
+            86.35,
+            95.15,
+            141.76,
+            171.64000000000001,
+            137.33,
+            180.19,
+            171.07,
+            185.45,
+            175.58,
+            201.16999999999996,
+            216.8,
+            210.24,
+            180.5,
+            201.51,
+            164.01,
+            140.31,
+            113.85999999999999,
+            122.85999999999999,
+            152.71,
+            130.35,
+            59.5,
+            49.61,
+            108.45,
+            83.19,
+            100.05,
+            76.89999999999999,
+            233.78000000000003,
+            85.485,
+            76.09,
+            56.730000000000004
+          ],
+          "chips_used": [
+            [
+              "Triple Captain",
+              2
+            ],
+            [
+              "Bench Boost",
+              3
+            ],
+            [
+              "Free Hit",
+              35
+            ]
+          ],
+          "transfer_history": [
+            [
+              11,
+              [
+                "Yoane Wissa",
+                "Douglas Luiz Soares de Paulo"
+              ],
+              26.35
+            ],
+            [
+              12,
+              [
+                "Bryan Mbeumo",
+                "Nicolas Jackson"
+              ],
+              20.57
+            ],
+            [
+              13,
+              [
+                "Curtis Jones",
+                "Cole Palmer"
+              ],
+              21.37
+            ],
+            [
+              14,
+              [
+                "Thomas Cannon",
+                "Erling Haaland"
+              ],
+              39.76
+            ],
+            [
+              15,
+              [
+                "Granit Xhaka",
+                "Anthony Gordon"
+              ],
+              23.36
+            ],
+            [
+              16,
+              [
+                "Benjamin White",
+                "Antonee Robinson"
+              ],
+              13.33
+            ],
+            [
+              17,
+              [
+                "Aaron Ramsdale",
+                "Jordan Pickford"
+              ],
+              14.97
+            ],
+            [
+              18,
+              [
+                "Aaron Wan-Bissaka",
+                "Ezri Konsa Ngoyo"
+              ],
+              24.32
+            ],
+            [
+              19,
+              [
+                "Erling Haaland",
+                "Dominic Solanke"
+              ],
+              39.87
+            ],
+            [
+              20,
+              [
+                "Willian Borges da Silva",
+                "Bernardo Veiga de Carvalho e Silva"
+              ],
+              34.68
+            ],
+            [
+              21,
+              [
+                "Ezri Konsa Ngoyo",
+                "Emerson Palmieri dos Santos"
+              ],
+              20.65
+            ],
+            [
+              22,
+              [
+                "Cole Palmer",
+                "Michael Olise"
+              ],
+              31.87
+            ],
+            [
+              23,
+              [
+                "Luke Shaw",
+                "Pervis Estupi\u00f1\u00e1n"
+              ],
+              25.92
+            ],
+            [
+              24,
+              [
+                "Nicolas Jackson",
+                "Matheus Santos Carneiro Da Cunha"
+              ],
+              31.82
+            ]
+          ],
+          "total_points": 1600
+        },
+        "test_metrics": {
+          "total_points": 1600.0,
+          "mean_gw_points": 42.10526315789474,
+          "std_gw_points": 15.88741553240076,
+          "sharpe_ratio": 2.6502273495664137,
+          "sortino_ratio": 5.21010582023286,
+          "coefficient_variation": 0.37732611889451806,
+          "max_drawdown": 0.0,
+          "best_week": 84.0,
+          "worst_week": 14.0
+        },
+        "train_metrics": {
+          "avg_total_points": 1582.5,
+          "avg_mean_gw_points": 41.64473684210526,
+          "avg_std_gw_points": 14.553140950017575,
+          "avg_sharpe": 2.854188575068042,
+          "avg_sortino": 4.484979373501297,
+          "avg_cv": 0.3512346561634069,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T20:50:18.967688"
+      }
+    ],
+    "confidence_intervals": {
+      "total_points": {
+        "ci_lower": 1600.0,
+        "ci_upper": 1600.0,
+        "mean": 1600.0,
+        "n_iterations": 1
+      },
+      "sharpe_ratio": {
+        "ci_lower": 2.6502273495664137,
+        "ci_upper": 2.6502273495664137,
+        "mean": 2.6502273495664137,
+        "n_iterations": 1
+      },
+      "sortino_ratio": {
+        "ci_lower": 5.21010582023286,
+        "ci_upper": 5.21010582023286,
+        "mean": 5.21010582023286,
+        "n_iterations": 1
+      },
+      "max_drawdown": {
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "mean": 0.0,
+        "n_iterations": 1
+      },
+      "mean_gw_points": {
+        "ci_lower": 42.10526315789474,
+        "ci_upper": 42.10526315789474,
+        "mean": 42.10526315789474,
+        "n_iterations": 1
+      },
+      "std_gw_points": {
+        "ci_lower": 15.88741553240076,
+        "ci_upper": 15.88741553240076,
+        "mean": 15.88741553240076,
+        "n_iterations": 1
+      },
+      "coefficient_variation": {
+        "ci_lower": 0.37732611889451806,
+        "ci_upper": 0.37732611889451806,
+        "mean": 0.37732611889451806,
+        "n_iterations": 1
+      }
+    }
+  },
+  "AGGRESSIVE_LATE": {
+    "strategy_config": {
+      "transfer_mode": "greedy",
+      "transfer_budget_per_gw": 2.0,
+      "transfer_window_gw_range": [
+        25,
+        38
+      ],
+      "transfer_xp_threshold": 0.1,
+      "transfer_xp_threshold_mode": "relative",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_results": {
+          "season": "2023-24",
+          "p_list": [
+            47,
+            84,
+            14,
+            42,
+            38,
+            31,
+            34,
+            46,
+            42,
+            54,
+            32,
+            36,
+            48,
+            50,
+            65,
+            30,
+            49,
+            20,
+            41,
+            19,
+            32,
+            25,
+            20,
+            38,
+            42,
+            28,
+            50,
+            24,
+            6,
+            34,
+            22,
+            44,
+            80,
+            54,
+            23,
+            38,
+            38,
+            49
+          ],
+          "xp_list": [
+            293.28999999999996,
+            208.36,
+            187.26,
+            109.42000000000002,
+            99.02,
+            89.41,
+            60.53000000000001,
+            67.45000000000002,
+            86.35,
+            95.15,
+            111.96,
+            118.64999999999999,
+            80.73,
+            84.22999999999999,
+            86.35,
+            121.64,
+            111.39,
+            116.29999999999998,
+            86.28000000000002,
+            118.35,
+            67.31000000000002,
+            91.44999999999997,
+            66.48,
+            59.540000000000006,
+            147.37,
+            136.38,
+            147.05,
+            152.9,
+            81.38,
+            109.94,
+            183.82999999999996,
+            210.25,
+            220.75,
+            159.46,
+            123.40999999999998,
+            56.98,
+            50.18999999999999,
+            42.739999999999995
+          ],
+          "chips_used": [
+            [
+              "Triple Captain",
+              2
+            ],
+            [
+              "Bench Boost",
+              3
+            ]
+          ],
+          "transfer_history": [
+            [
+              25,
+              [
+                "Yoane Wissa",
+                "Diogo Teixeira da Silva"
+              ],
+              36.13
+            ],
+            [
+              26,
+              [
+                "Bryan Mbeumo",
+                "Ollie Watkins"
+              ],
+              38.89
+            ],
+            [
+              27,
+              [
+                "Virgil van Dijk",
+                "Jarrad Branthwaite"
+              ],
+              27.52
+            ],
+            [
+              28,
+              [
+                "Aaron Wan-Bissaka",
+                "Malo Gusto"
+              ],
+              22.76
+            ],
+            [
+              29,
+              [
+                "Willian Borges da Silva",
+                "Son Heung-min"
+              ],
+              23.02
+            ],
+            [
+              30,
+              [
+                "Jarrad Branthwaite",
+                "Timothy Castagne"
+              ],
+              17.44
+            ],
+            [
+              31,
+              [
+                "Trent Alexander-Arnold",
+                "Victor Lindel\u00f6f"
+              ],
+              18.36
+            ],
+            [
+              32,
+              [
+                "Curtis Jones",
+                "Cole Palmer"
+              ],
+              52.13
+            ],
+            [
+              33,
+              [
+                "Malo Gusto",
+                "Mads Roerslev Rasmussen"
+              ],
+              23.33
+            ],
+            [
+              34,
+              [
+                "Timothy Castagne",
+                "William Saliba"
+              ],
+              20.14
+            ],
+            [
+              35,
+              [
+                "Son Heung-min",
+                "Bruno Borges Fernandes"
+              ],
+              39.08
+            ]
+          ],
+          "total_points": 1469
+        },
+        "test_metrics": {
+          "total_points": 1469.0,
+          "mean_gw_points": 38.6578947368421,
+          "std_gw_points": 16.01689291734704,
+          "sharpe_ratio": 2.4135701559803655,
+          "sortino_ratio": 4.493475921714868,
+          "coefficient_variation": 0.41432398288576416,
+          "max_drawdown": 0.0,
+          "best_week": 84.0,
+          "worst_week": 6.0
+        },
+        "train_metrics": {
+          "avg_total_points": 1537.0,
+          "avg_mean_gw_points": 40.44736842105263,
+          "avg_std_gw_points": 16.29955142736457,
+          "avg_sharpe": 2.5283336080629564,
+          "avg_sortino": 5.110304903551738,
+          "avg_cv": 0.4053192621579036,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T20:51:08.594988"
+      }
+    ],
+    "confidence_intervals": {
+      "total_points": {
+        "ci_lower": 1469.0,
+        "ci_upper": 1469.0,
+        "mean": 1469.0,
+        "n_iterations": 1
+      },
+      "sharpe_ratio": {
+        "ci_lower": 2.4135701559803655,
+        "ci_upper": 2.4135701559803655,
+        "mean": 2.4135701559803655,
+        "n_iterations": 1
+      },
+      "sortino_ratio": {
+        "ci_lower": 4.493475921714868,
+        "ci_upper": 4.493475921714868,
+        "mean": 4.493475921714868,
+        "n_iterations": 1
+      },
+      "max_drawdown": {
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "mean": 0.0,
+        "n_iterations": 1
+      },
+      "mean_gw_points": {
+        "ci_lower": 38.6578947368421,
+        "ci_upper": 38.6578947368421,
+        "mean": 38.6578947368421,
+        "n_iterations": 1
+      },
+      "std_gw_points": {
+        "ci_lower": 16.01689291734704,
+        "ci_upper": 16.01689291734704,
+        "mean": 16.01689291734704,
+        "n_iterations": 1
+      },
+      "coefficient_variation": {
+        "ci_lower": 0.41432398288576416,
+        "ci_upper": 0.41432398288576416,
+        "mean": 0.41432398288576416,
+        "n_iterations": 1
+      }
+    }
+  },
+  "AGGRESSIVE_FULL": {
+    "strategy_config": {
+      "transfer_mode": "greedy",
+      "transfer_budget_per_gw": 2.0,
+      "transfer_window_gw_range": null,
+      "transfer_xp_threshold": 0.1,
+      "transfer_xp_threshold_mode": "relative",
+      "captain_mode": "highest_xp",
+      "chip_schedule": "conservative"
+    },
+    "test_iterations": [
+      {
+        "iteration": 1,
+        "test_season": "2023-24",
+        "train_seasons": [
+          "2021-22",
+          "2022-23",
+          "2024-25"
+        ],
+        "test_results": {
+          "season": "2023-24",
+          "p_list": [
+            47,
+            84,
+            23,
+            30,
+            41,
+            41,
+            46,
+            54,
+            59,
+            47,
+            30,
+            40,
+            56,
+            56,
+            40,
+            31,
+            61,
+            41,
+            44,
+            45,
+            40,
+            70,
+            36,
+            33,
+            43,
+            72,
+            54,
+            28,
+            10,
+            52,
+            39,
+            55,
+            92,
+            56,
+            47,
+            68,
+            44,
+            50
+          ],
+          "xp_list": [
+            293.28999999999996,
+            228.39000000000004,
+            226.24,
+            199.76999999999998,
+            139.43,
+            171.44,
+            169.05,
+            165.82999999999998,
+            268.54,
+            242.13,
+            239.21,
+            213.12,
+            192.5,
+            173.14999999999998,
+            194.28,
+            184.55,
+            171.39999999999998,
+            185.89000000000001,
+            227.15,
+            218.07,
+            201.68,
+            170.09000000000003,
+            167.04,
+            192.83,
+            164.93,
+            168.07,
+            197.36,
+            195.94,
+            119.48,
+            123.30999999999999,
+            203.48999999999998,
+            164.18999999999997,
+            237.83,
+            173.83,
+            113.94999999999999,
+            61.431999999999995,
+            60.949999999999996,
+            51.11
+          ],
+          "chips_used": [
+            [
+              "Triple Captain",
+              2
+            ],
+            [
+              "Bench Boost",
+              3
+            ]
+          ],
+          "transfer_history": [
+            [
+              2,
+              [
+                "Trent Alexander-Arnold",
+                "Axel Disasi"
+              ],
+              24.06
+            ],
+            [
+              3,
+              [
+                "Virgil van Dijk",
+                "Kyle Walker"
+              ],
+              18.56
+            ],
+            [
+              4,
+              [
+                "Thomas Cannon",
+                "Diogo Teixeira da Silva"
+              ],
+              43.27
+            ],
+            [
+              5,
+              [
+                "Yoane Wissa",
+                "James Maddison"
+              ],
+              28.88
+            ],
+            [
+              6,
+              [
+                "Bryan Mbeumo",
+                "Juli\u00e1n \u00c1lvarez"
+              ],
+              39.84
+            ],
+            [
+              7,
+              [
+                "Diogo Teixeira da Silva",
+                "Erling Haaland"
+              ],
+              33.55
+            ],
+            [
+              8,
+              [
+                "Luke Shaw",
+                "Kieran Trippier"
+              ],
+              31.23
+            ],
+            [
+              9,
+              [
+                "Aaron Wan-Bissaka",
+                "Dan Burn"
+              ],
+              26.16
+            ],
+            [
+              10,
+              [
+                "Taiwo Awoniyi",
+                "Ollie Watkins"
+              ],
+              48.17
+            ],
+            [
+              11,
+              [
+                "Granit Xhaka",
+                "Douglas Luiz Soares de Paulo"
+              ],
+              23.91
+            ],
+            [
+              12,
+              [
+                "Axel Disasi",
+                "Harry Toffolo"
+              ],
+              25.27
+            ],
+            [
+              13,
+              [
+                "Curtis Jones",
+                "Cole Palmer"
+              ],
+              21.37
+            ],
+            [
+              14,
+              [
+                "James Maddison",
+                "Conor Gallagher"
+              ],
+              15.64
+            ],
+            [
+              15,
+              [
+                "Benjamin White",
+                "Diogo Dalot Teixeira"
+              ],
+              23.19
+            ],
+            [
+              16,
+              [
+                "Dan Burn",
+                "Trent Alexander-Arnold"
+              ],
+              30.22
+            ],
+            [
+              17,
+              [
+                "Aaron Ramsdale",
+                "Jordan Pickford"
+              ],
+              14.97
+            ],
+            [
+              18,
+              [
+                "Conor Gallagher",
+                "Mohammed Kudus"
+              ],
+              25.22
+            ],
+            [
+              19,
+              [
+                "Kyle Walker",
+                "Marcos Senesi"
+              ],
+              54.95
+            ],
+            [
+              20,
+              [
+                "Kieran Trippier",
+                "Emerson Palmieri dos Santos"
+              ],
+              26.18
+            ],
+            [
+              21,
+              [
+                "Willian Borges da Silva",
+                "Keane Lewis-Potter"
+              ],
+              25.36
+            ],
+            [
+              22,
+              [
+                "Cole Palmer",
+                "Michael Olise"
+              ],
+              31.87
+            ],
+            [
+              23,
+              [
+                "Harry Toffolo",
+                "Pervis Estupi\u00f1\u00e1n"
+              ],
+              25.77
+            ],
+            [
+              24,
+              [
+                "Marcos Senesi",
+                "Max Kilman"
+              ],
+              36.22
+            ],
+            [
+              25,
+              [
+                "Trent Alexander-Arnold",
+                "Conor Bradley"
+              ],
+              30.58
+            ],
+            [
+              26,
+              [
+                "Juli\u00e1n \u00c1lvarez",
+                "Rasmus H\u00f8jlund"
+              ],
+              33.48
+            ],
+            [
+              27,
+              [
+                "Conor Bradley",
+                "Jarrad Branthwaite"
+              ],
+              27.52
+            ],
+            [
+              28,
+              [
+                "Pervis Estupi\u00f1\u00e1n",
+                "Jakub Kiwior"
+              ],
+              25.45
+            ],
+            [
+              29,
+              [
+                "Keane Lewis-Potter",
+                "Son Heung-min"
+              ],
+              21.27
+            ],
+            [
+              30,
+              [
+                "Michael Olise",
+                "Brennan Johnson"
+              ],
+              19.45
+            ],
+            [
+              31,
+              [
+                "Emerson Palmieri dos Santos",
+                "Benjamin White"
+              ],
+              42.11
+            ],
+            [
+              32,
+              [
+                "Rasmus H\u00f8jlund",
+                "Alexander Isak"
+              ],
+              21.55
+            ],
+            [
+              33,
+              [
+                "Douglas Luiz Soares de Paulo",
+                "Cole Palmer"
+              ],
+              56.04
+            ],
+            [
+              34,
+              [
+                "Jakub Kiwior",
+                "Mathias Jorgensen"
+              ],
+              17.71
+            ],
+            [
+              35,
+              [
+                "Max Kilman",
+                "Sergio Reguil\u00f3n"
+              ],
+              12.16
+            ]
+          ],
+          "total_points": 1805
+        },
+        "test_metrics": {
+          "total_points": 1805.0,
+          "mean_gw_points": 47.5,
+          "std_gw_points": 15.87243555747875,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0,
+          "best_week": 92.0,
+          "worst_week": 10.0
+        },
+        "train_metrics": {
+          "avg_total_points": 1782.5,
+          "avg_mean_gw_points": 46.90789473684211,
+          "avg_std_gw_points": 15.058274558794583,
+          "avg_sharpe": 3.106451032251388,
+          "avg_sortino": 5.580012438490501,
+          "avg_cv": 0.3228283104521018,
+          "avg_max_drawdown": 0.0,
+          "num_seasons": 2
+        },
+        "timestamp": "2026-05-27T20:52:01.888962"
+      }
+    ],
+    "confidence_intervals": {
+      "total_points": {
+        "ci_lower": 1805.0,
+        "ci_upper": 1805.0,
+        "mean": 1805.0,
+        "n_iterations": 1
+      },
+      "sharpe_ratio": {
+        "ci_lower": 2.9926094094374207,
+        "ci_upper": 2.9926094094374207,
+        "mean": 2.9926094094374207,
+        "n_iterations": 1
+      },
+      "sortino_ratio": {
+        "ci_lower": 5.361579787068557,
+        "ci_upper": 5.361579787068557,
+        "mean": 5.361579787068557,
+        "n_iterations": 1
+      },
+      "max_drawdown": {
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "mean": 0.0,
+        "n_iterations": 1
+      },
+      "mean_gw_points": {
+        "ci_lower": 47.5,
+        "ci_upper": 47.5,
+        "mean": 47.5,
+        "n_iterations": 1
+      },
+      "std_gw_points": {
+        "ci_lower": 15.87243555747875,
+        "ci_upper": 15.87243555747875,
+        "mean": 15.87243555747875,
+        "n_iterations": 1
+      },
+      "coefficient_variation": {
+        "ci_lower": 0.3341565380521842,
+        "ci_upper": 0.3341565380521842,
+        "mean": 0.3341565380521842,
+        "n_iterations": 1
+      }
+    }
+  },
+  "significance_report": {
+    "method": "CI overlap (non-overlapping = significant)",
+    "variants_vs_baseline_current": {
+      "CONSERVATIVE_EARLY": {
+        "total_points": {
+          "variant_ci": [
+            1660.0,
+            1660.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "CONSERVATIVE_FULL": {
+        "total_points": {
+          "variant_ci": [
+            1805.0,
+            1805.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": true,
+          "significant": false
+        }
+      },
+      "BASELINE_MID": {
+        "total_points": {
+          "variant_ci": [
+            1600.0,
+            1600.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "AGGRESSIVE_LATE": {
+        "total_points": {
+          "variant_ci": [
+            1469.0,
+            1469.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "AGGRESSIVE_FULL": {
+        "total_points": {
+          "variant_ci": [
+            1805.0,
+            1805.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": true,
+          "significant": false
+        }
+      }
+    },
+    "variants_vs_baseline_static": {
+      "CONSERVATIVE_EARLY": {
+        "total_points": {
+          "variant_ci": [
+            1660.0,
+            1660.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "CONSERVATIVE_FULL": {
+        "total_points": {
+          "variant_ci": [
+            1805.0,
+            1805.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": true,
+          "significant": false
+        }
+      },
+      "BASELINE_MID": {
+        "total_points": {
+          "variant_ci": [
+            1600.0,
+            1600.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "AGGRESSIVE_LATE": {
+        "total_points": {
+          "variant_ci": [
+            1469.0,
+            1469.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": false,
+          "significant": true
+        }
+      },
+      "AGGRESSIVE_FULL": {
+        "total_points": {
+          "variant_ci": [
+            1805.0,
+            1805.0
+          ],
+          "baseline_ci": [
+            1805.0,
+            1805.0,
+            1805.0
+          ],
+          "overlaps": true,
+          "significant": false
+        }
+      }
+    },
+    "winners": []
+  }
+}
