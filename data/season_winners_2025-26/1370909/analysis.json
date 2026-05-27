@@ -1,0 +1,194 @@
+{
+  "manager": {
+    "rank": 13,
+    "manager_id": 1370909,
+    "player_name": "Ratthagun Suwanchai",
+    "team_name": "GUNKERES",
+    "points": 2492
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 18,
+      "449": 9,
+      "381": 6,
+      "16": 3,
+      "450": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        17,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        3,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 64,
+    "most_selected": {
+      "449": 32,
+      "470": 31,
+      "72": 31,
+      "317": 30,
+      "430": 29,
+      "1": 29,
+      "82": 28,
+      "257": 27,
+      "5": 24,
+      "136": 17,
+      "329": 17,
+      "373": 16,
+      "427": 14,
+      "414": 14,
+      "661": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 20,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2492,
+    "final_rank": 80,
+    "best_gw": {
+      "gw": 33,
+      "points": 124,
+      "total": 2165,
+      "rank": 179358
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 25,
+      "total": 1381,
+      "rank": 12290796
+    },
+    "avg_gw_points": 65.7
+  }
+}

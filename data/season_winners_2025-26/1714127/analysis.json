@@ -1,0 +1,196 @@
+{
+  "manager": {
+    "rank": 75,
+    "manager_id": 1714127,
+    "player_name": "Elise Rawlinson",
+    "team_name": "Karma Mapi Leon",
+    "points": 2460
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 27,
+      "449": 4,
+      "5": 2,
+      "257": 1,
+      "283": 1,
+      "82": 1,
+      "661": 1,
+      "666": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        9,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 72,
+    "most_selected": {
+      "430": 37,
+      "82": 28,
+      "470": 26,
+      "8": 26,
+      "449": 25,
+      "348": 25,
+      "5": 23,
+      "139": 21,
+      "72": 18,
+      "661": 16,
+      "411": 16,
+      "252": 16,
+      "21": 15,
+      "257": 13,
+      "249": 12
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 20,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2460,
+    "final_rank": 538,
+    "best_gw": {
+      "gw": 33,
+      "points": 125,
+      "total": 2138,
+      "rank": 164922
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 33,
+      "total": 1264,
+      "rank": 9920077
+    },
+    "avg_gw_points": 64.7
+  }
+}

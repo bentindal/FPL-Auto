@@ -1,0 +1,187 @@
+{
+  "manager": {
+    "rank": 27,
+    "manager_id": 6271780,
+    "player_name": "Aleksi Sopanen",
+    "team_name": "Ty\u00f6v\u00e4en Potkijat",
+    "points": 2477
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 32,
+      "449": 3,
+      "661": 2,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        16,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 61,
+    "most_selected": {
+      "82": 35,
+      "430": 34,
+      "348": 31,
+      "101": 30,
+      "449": 30,
+      "470": 28,
+      "373": 25,
+      "5": 23,
+      "683": 22,
+      "249": 21,
+      "136": 18,
+      "6": 16,
+      "256": 15,
+      "450": 15,
+      "64": 14
+    }
+  },
+  "transfers": {
+    "total": 35,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2477,
+    "final_rank": 186,
+    "best_gw": {
+      "gw": 33,
+      "points": 131,
+      "total": 2157,
+      "rank": 79677
+    },
+    "worst_gw": {
+      "gw": 23,
+      "points": 35,
+      "total": 1435,
+      "rank": 10332165
+    },
+    "avg_gw_points": 65.2
+  }
+}

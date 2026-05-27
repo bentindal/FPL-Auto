@@ -1,0 +1,238 @@
+{
+  "manager": {
+    "rank": 45,
+    "manager_id": 2063557,
+    "player_name": "Graham Allen",
+    "team_name": "N5",
+    "points": 2468
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 24,
+      "136": 2,
+      "21": 2,
+      "249": 2,
+      "449": 2,
+      "525": 1,
+      "82": 1,
+      "16": 1,
+      "337": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        10,
+        33
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        3,
+        30
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        19,
+        31
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        14,
+        20
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 66,
+    "most_selected": {
+      "430": 37,
+      "341": 37,
+      "5": 29,
+      "21": 28,
+      "449": 25,
+      "347": 24,
+      "373": 20,
+      "291": 18,
+      "249": 17,
+      "1": 16,
+      "110": 16,
+      "47": 15,
+      "160": 14,
+      "624": 14,
+      "575": 13
+    }
+  },
+  "transfers": {
+    "total": 42,
+    "gameweeks_with_transfers": 28,
+    "avg_per_transfer_gw": 0.7,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 7,
+        "cost": 8
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2468,
+    "final_rank": 343,
+    "best_gw": {
+      "gw": 10,
+      "points": 112,
+      "total": 751,
+      "rank": 1494
+    },
+    "worst_gw": {
+      "gw": 13,
+      "points": 30,
+      "total": 874,
+      "rank": 8249588
+    },
+    "avg_gw_points": 65.5
+  }
+}

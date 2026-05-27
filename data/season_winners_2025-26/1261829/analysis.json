@@ -1,0 +1,197 @@
+{
+  "manager": {
+    "rank": 81,
+    "manager_id": 1261829,
+    "player_name": "Sri Harsha Kodali",
+    "team_name": "12 Angry Men",
+    "points": 2459
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 20,
+      "449": 8,
+      "16": 3,
+      "381": 2,
+      "119": 1,
+      "283": 1,
+      "666": 1,
+      "5": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        9,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        16,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 65,
+    "most_selected": {
+      "82": 34,
+      "470": 31,
+      "430": 30,
+      "449": 26,
+      "5": 25,
+      "151": 23,
+      "136": 21,
+      "72": 19,
+      "348": 17,
+      "329": 16,
+      "661": 15,
+      "119": 14,
+      "249": 14,
+      "8": 14,
+      "237": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 20,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2459,
+    "final_rank": 578,
+    "best_gw": {
+      "gw": 33,
+      "points": 118,
+      "total": 2126,
+      "rank": 296381
+    },
+    "worst_gw": {
+      "gw": 23,
+      "points": 32,
+      "total": 1387,
+      "rank": 11010405
+    },
+    "avg_gw_points": 64.8
+  }
+}

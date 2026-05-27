@@ -1,0 +1,218 @@
+{
+  "manager": {
+    "rank": 65,
+    "manager_id": 101207,
+    "player_name": "Ian Colbourne",
+    "team_name": "Coop\u2019s Ballers",
+    "points": 2462
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 19,
+      "449": 7,
+      "16": 3,
+      "5": 2,
+      "661": 2,
+      "235": 1,
+      "82": 1,
+      "283": 1,
+      "249": 1,
+      "381": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        36
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        17,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        3,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 68,
+    "most_selected": {
+      "260": 34,
+      "470": 31,
+      "5": 31,
+      "430": 30,
+      "8": 28,
+      "449": 25,
+      "373": 22,
+      "249": 21,
+      "407": 18,
+      "47": 17,
+      "220": 16,
+      "191": 15,
+      "668": 15,
+      "237": 15,
+      "568": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2462,
+    "final_rank": 485,
+    "best_gw": {
+      "gw": 33,
+      "points": 122,
+      "total": 2133,
+      "rank": 217660
+    },
+    "worst_gw": {
+      "gw": 1,
+      "points": 36,
+      "total": 36,
+      "rank": 8771522
+    },
+    "avg_gw_points": 64.9
+  }
+}

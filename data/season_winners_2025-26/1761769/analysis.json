@@ -1,0 +1,201 @@
+{
+  "manager": {
+    "rank": 23,
+    "manager_id": 1761769,
+    "player_name": "\u0627\u0644\u062a\u0647\u0627\u0645\u064a \u0627\u0639\u0644\u064a",
+    "team_name": "Lepron Jems Lejers",
+    "points": 2480
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 22,
+      "449": 7,
+      "235": 2,
+      "329": 2,
+      "488": 2,
+      "249": 1,
+      "5": 1,
+      "215": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        7,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        15,
+        24
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        10,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        12,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 76,
+    "most_selected": {
+      "430": 37,
+      "1": 32,
+      "5": 30,
+      "82": 30,
+      "67": 26,
+      "260": 23,
+      "136": 21,
+      "449": 18,
+      "329": 16,
+      "661": 15,
+      "249": 13,
+      "72": 13,
+      "411": 13,
+      "21": 13,
+      "694": 12
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 21,
+    "avg_per_transfer_gw": 0.8,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 4,
+        "cost": 4
+      },
+      {
+        "gw": 35,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2480,
+    "final_rank": 161,
+    "best_gw": {
+      "gw": 33,
+      "points": 112,
+      "total": 2138,
+      "rank": 453458
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 28,
+      "total": 1235,
+      "rank": 11532417
+    },
+    "avg_gw_points": 65.7
+  }
+}

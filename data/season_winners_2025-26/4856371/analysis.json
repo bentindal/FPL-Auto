@@ -1,0 +1,214 @@
+{
+  "manager": {
+    "rank": 78,
+    "manager_id": 4856371,
+    "player_name": "Kaden Boehme",
+    "team_name": "Gyok and Key",
+    "points": 2460
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 24,
+      "449": 6,
+      "381": 4,
+      "5": 2,
+      "82": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        5,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        19,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        3,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "82": 32,
+      "430": 31,
+      "470": 30,
+      "36": 28,
+      "5": 23,
+      "249": 21,
+      "8": 21,
+      "136": 20,
+      "449": 19,
+      "139": 17,
+      "384": 15,
+      "427": 15,
+      "47": 15,
+      "575": 14,
+      "256": 13
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2460,
+    "final_rank": 553,
+    "best_gw": {
+      "gw": 33,
+      "points": 142,
+      "total": 2136,
+      "rank": 7067
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 33,
+      "total": 1363,
+      "rank": 9765441
+    },
+    "avg_gw_points": 64.9
+  }
+}

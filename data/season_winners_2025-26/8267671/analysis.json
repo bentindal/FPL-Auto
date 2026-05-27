@@ -1,0 +1,228 @@
+{
+  "manager": {
+    "rank": 71,
+    "manager_id": 8267671,
+    "player_name": "Sam Bowler",
+    "team_name": "Hakuna Mateta",
+    "points": 2461
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 14,
+      "449": 7,
+      "666": 3,
+      "249": 3,
+      "661": 2,
+      "82": 2,
+      "235": 1,
+      "237": 1,
+      "16": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        15,
+        25
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        20
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 65,
+    "most_selected": {
+      "470": 36,
+      "72": 34,
+      "517": 34,
+      "430": 33,
+      "5": 30,
+      "82": 27,
+      "191": 24,
+      "449": 23,
+      "249": 23,
+      "256": 19,
+      "260": 19,
+      "21": 18,
+      "287": 18,
+      "237": 16,
+      "666": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 26,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2461,
+    "final_rank": 518,
+    "best_gw": {
+      "gw": 33,
+      "points": 114,
+      "total": 2144,
+      "rank": 396421
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 30,
+      "total": 1209,
+      "rank": 10999481
+    },
+    "avg_gw_points": 64.9
+  }
+}

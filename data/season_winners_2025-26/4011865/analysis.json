@@ -1,0 +1,218 @@
+{
+  "manager": {
+    "rank": 61,
+    "manager_id": 4011865,
+    "player_name": "Michael Elliott-Smith",
+    "team_name": "Zombie AFC",
+    "points": 2463
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 28,
+      "449": 6,
+      "5": 2,
+      "381": 1,
+      "82": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        1,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        4,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        5,
+        24
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 57,
+    "most_selected": {
+      "470": 37,
+      "430": 35,
+      "1": 33,
+      "82": 31,
+      "21": 31,
+      "260": 26,
+      "136": 26,
+      "449": 21,
+      "329": 21,
+      "249": 19,
+      "47": 18,
+      "575": 17,
+      "348": 17,
+      "8": 17,
+      "317": 15
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2463,
+    "final_rank": 460,
+    "best_gw": {
+      "gw": 4,
+      "points": 99,
+      "total": 293,
+      "rank": 31046
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 28,
+      "total": 773,
+      "rank": 10924571
+    },
+    "avg_gw_points": 64.9
+  }
+}

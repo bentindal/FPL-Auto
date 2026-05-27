@@ -1,0 +1,223 @@
+{
+  "manager": {
+    "rank": 79,
+    "manager_id": 94738,
+    "player_name": "Antonis Antonopoulos",
+    "team_name": "Cold Palmeiras",
+    "points": 2460
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 19,
+      "449": 9,
+      "381": 2,
+      "450": 2,
+      "235": 1,
+      "82": 1,
+      "661": 1,
+      "47": 1,
+      "136": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        1,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        12,
+        26
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        16,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        24
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 76,
+    "most_selected": {
+      "430": 34,
+      "373": 25,
+      "136": 24,
+      "5": 23,
+      "82": 22,
+      "449": 20,
+      "565": 19,
+      "256": 19,
+      "541": 19,
+      "237": 17,
+      "387": 17,
+      "119": 15,
+      "260": 15,
+      "77": 15,
+      "72": 14
+    }
+  },
+  "transfers": {
+    "total": 41,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.6,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2460,
+    "final_rank": 557,
+    "best_gw": {
+      "gw": 26,
+      "points": 98,
+      "total": 1620,
+      "rank": 32604
+    },
+    "worst_gw": {
+      "gw": 3,
+      "points": 27,
+      "total": 156,
+      "rank": 11015090
+    },
+    "avg_gw_points": 65.2
+  }
+}

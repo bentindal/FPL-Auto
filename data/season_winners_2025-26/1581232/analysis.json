@@ -1,0 +1,218 @@
+{
+  "manager": {
+    "rank": 39,
+    "manager_id": 1581232,
+    "player_name": "Ahmed Crespo",
+    "team_name": "\u043e\u0445\u043e\u0442\u043d\u0438\u043a \u0437\u0430 \u043f\u0440\u0438\u0432\u0438\u0434\u0435\u043d\u0438",
+    "points": 2470
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 23,
+      "381": 4,
+      "449": 3,
+      "5": 2,
+      "525": 1,
+      "283": 1,
+      "237": 1,
+      "136": 1,
+      "249": 1,
+      "242": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        15,
+        36
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 66,
+    "most_selected": {
+      "470": 34,
+      "430": 34,
+      "575": 33,
+      "242": 33,
+      "5": 22,
+      "373": 22,
+      "1": 18,
+      "317": 18,
+      "387": 17,
+      "449": 16,
+      "47": 15,
+      "256": 15,
+      "249": 15,
+      "661": 15,
+      "77": 15
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2470,
+    "final_rank": 298,
+    "best_gw": {
+      "gw": 33,
+      "points": 110,
+      "total": 2149,
+      "rank": 520222
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 30,
+      "total": 733,
+      "rank": 9998837
+    },
+    "avg_gw_points": 65.1
+  }
+}

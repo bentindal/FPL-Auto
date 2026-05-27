@@ -1,0 +1,243 @@
+{
+  "manager": {
+    "rank": 10,
+    "manager_id": 6556124,
+    "player_name": "Tyler Zabel",
+    "team_name": "Skell on Earth",
+    "points": 2495
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 23,
+      "449": 4,
+      "661": 2,
+      "64": 1,
+      "283": 1,
+      "16": 1,
+      "249": 1,
+      "8": 1,
+      "235": 1,
+      "82": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        15,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        28
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 78,
+    "most_selected": {
+      "430": 38,
+      "470": 35,
+      "47": 33,
+      "1": 23,
+      "8": 23,
+      "36": 23,
+      "329": 21,
+      "136": 18,
+      "225": 16,
+      "449": 15,
+      "322": 14,
+      "249": 13,
+      "82": 13,
+      "256": 12,
+      "418": 11
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 29,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2495,
+    "final_rank": 66,
+    "best_gw": {
+      "gw": 33,
+      "points": 120,
+      "total": 2148,
+      "rank": 256000
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 31,
+      "total": 1243,
+      "rank": 10674394
+    },
+    "avg_gw_points": 65.9
+  }
+}

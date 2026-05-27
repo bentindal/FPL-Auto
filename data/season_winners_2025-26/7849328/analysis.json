@@ -1,0 +1,189 @@
+{
+  "manager": {
+    "rank": 26,
+    "manager_id": 7849328,
+    "player_name": "Alex Iliev",
+    "team_name": "Major League Saka",
+    "points": 2478
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 25,
+      "5": 4,
+      "249": 3,
+      "449": 3,
+      "661": 1,
+      "624": 1,
+      "691": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        16,
+        23
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        18,
+        28
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        31
+      ],
+      "count": 1
+    }
+  },
+  "squad": {
+    "total_unique_players": 53,
+    "most_selected": {
+      "21": 38,
+      "430": 38,
+      "314": 37,
+      "1": 36,
+      "5": 35,
+      "226": 28,
+      "488": 27,
+      "249": 26,
+      "82": 24,
+      "403": 22,
+      "531": 22,
+      "260": 21,
+      "47": 20,
+      "329": 20,
+      "136": 17
+    }
+  },
+  "transfers": {
+    "total": 28,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2478,
+    "final_rank": 175,
+    "best_gw": {
+      "gw": 17,
+      "points": 102,
+      "total": 1132,
+      "rank": 259235
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 40,
+      "total": 724,
+      "rank": 4999072
+    },
+    "avg_gw_points": 65.2
+  }
+}

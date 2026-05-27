@@ -1,0 +1,214 @@
+{
+  "manager": {
+    "rank": 21,
+    "manager_id": 1975501,
+    "player_name": "Mark Nowell",
+    "team_name": "Gooner win again",
+    "points": 2482
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 27,
+      "449": 6,
+      "249": 2,
+      "283": 1,
+      "666": 1,
+      "661": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        16,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        19,
+        24
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "430": 37,
+      "470": 37,
+      "1": 33,
+      "5": 31,
+      "82": 20,
+      "575": 19,
+      "249": 18,
+      "16": 18,
+      "541": 17,
+      "449": 17,
+      "283": 16,
+      "256": 15,
+      "554": 15,
+      "77": 14,
+      "267": 13
+    }
+  },
+  "transfers": {
+    "total": 43,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 1.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 7,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 5,
+        "cost": 8
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2482,
+    "final_rank": 146,
+    "best_gw": {
+      "gw": 33,
+      "points": 114,
+      "total": 2128,
+      "rank": 413722
+    },
+    "worst_gw": {
+      "gw": 5,
+      "points": 33,
+      "total": 296,
+      "rank": 9641760
+    },
+    "avg_gw_points": 66.1
+  }
+}

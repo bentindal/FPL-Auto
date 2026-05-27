@@ -1,0 +1,213 @@
+{
+  "manager": {
+    "rank": 5,
+    "manager_id": 5747573,
+    "player_name": "Trond Guldahl Hansen",
+    "team_name": "Kebabslaskene",
+    "points": 2513
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 20,
+      "449": 5,
+      "82": 3,
+      "16": 3,
+      "661": 2,
+      "381": 1,
+      "5": 1,
+      "249": 1,
+      "329": 1,
+      "411": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        7,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "430": 30,
+      "145": 30,
+      "291": 24,
+      "470": 24,
+      "5": 23,
+      "21": 22,
+      "411": 20,
+      "16": 19,
+      "253": 18,
+      "382": 17,
+      "82": 17,
+      "249": 17,
+      "575": 16,
+      "260": 15,
+      "226": 15
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 23,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2513,
+    "final_rank": 23,
+    "best_gw": {
+      "gw": 33,
+      "points": 121,
+      "total": 2169,
+      "rank": 246872
+    },
+    "worst_gw": {
+      "gw": 2,
+      "points": 30,
+      "total": 102,
+      "rank": 10187664
+    },
+    "avg_gw_points": 66.2
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "manager": {
+    "rank": 46,
+    "manager_id": 2229311,
+    "player_name": "Christos Phedonos",
+    "team_name": "Saka Punch",
+    "points": 2467
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 26,
+      "449": 5,
+      "16": 2,
+      "381": 1,
+      "666": 1,
+      "82": 1,
+      "5": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        15,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        3,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "430": 35,
+      "82": 33,
+      "470": 31,
+      "347": 30,
+      "1": 29,
+      "291": 28,
+      "449": 27,
+      "136": 24,
+      "21": 23,
+      "5": 23,
+      "256": 17,
+      "317": 16,
+      "329": 16,
+      "72": 14,
+      "661": 14
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 27,
+    "avg_per_transfer_gw": 0.1,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2467,
+    "final_rank": 353,
+    "best_gw": {
+      "gw": 33,
+      "points": 128,
+      "total": 2156,
+      "rank": 126689
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 39,
+      "total": 689,
+      "rank": 5499544
+    },
+    "avg_gw_points": 65.0
+  }
+}

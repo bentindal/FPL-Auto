@@ -1,0 +1,205 @@
+{
+  "manager": {
+    "rank": 28,
+    "manager_id": 6171681,
+    "player_name": "Richy Moor",
+    "team_name": "Richy",
+    "points": 2477
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 33,
+      "449": 5
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        38
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        12,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        13,
+        36
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 62,
+    "most_selected": {
+      "430": 37,
+      "470": 35,
+      "21": 31,
+      "5": 29,
+      "1": 28,
+      "449": 25,
+      "47": 23,
+      "136": 22,
+      "82": 21,
+      "249": 20,
+      "694": 19,
+      "329": 19,
+      "191": 17,
+      "72": 17,
+      "295": 17
+    }
+  },
+  "transfers": {
+    "total": 42,
+    "gameweeks_with_transfers": 23,
+    "avg_per_transfer_gw": 1.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2477,
+    "final_rank": 195,
+    "best_gw": {
+      "gw": 33,
+      "points": 109,
+      "total": 2173,
+      "rank": 557793
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 36,
+      "total": 1222,
+      "rank": 8233782
+    },
+    "avg_gw_points": 65.8
+  }
+}

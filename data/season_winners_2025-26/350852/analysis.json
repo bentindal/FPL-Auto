@@ -1,0 +1,188 @@
+{
+  "manager": {
+    "rank": 48,
+    "manager_id": 350852,
+    "player_name": "Louis Rolland",
+    "team_name": "What the Skelly",
+    "points": 2466
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 21,
+      "449": 11,
+      "381": 4,
+      "5": 1,
+      "16": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        18,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        35
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 68,
+    "most_selected": {
+      "1": 33,
+      "430": 32,
+      "694": 32,
+      "449": 31,
+      "470": 31,
+      "411": 23,
+      "5": 22,
+      "684": 19,
+      "517": 19,
+      "249": 18,
+      "72": 17,
+      "329": 17,
+      "82": 14,
+      "136": 13,
+      "261": 12
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2466,
+    "final_rank": 369,
+    "best_gw": {
+      "gw": 33,
+      "points": 114,
+      "total": 2068,
+      "rank": 396421
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 33,
+      "total": 1113,
+      "rank": 9920077
+    },
+    "avg_gw_points": 64.9
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "manager": {
+    "rank": 63,
+    "manager_id": 25482,
+    "player_name": "Larry Mbaco",
+    "team_name": "Twice As Rice",
+    "points": 2463
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 13,
+      "449": 9,
+      "666": 2,
+      "661": 2,
+      "16": 1,
+      "525": 1,
+      "82": 1,
+      "381": 1,
+      "136": 1,
+      "382": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        17,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        12,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 81,
+    "most_selected": {
+      "430": 36,
+      "21": 28,
+      "5": 27,
+      "683": 26,
+      "82": 20,
+      "449": 19,
+      "249": 17,
+      "685": 16,
+      "414": 16,
+      "260": 16,
+      "470": 15,
+      "67": 15,
+      "661": 14,
+      "329": 13,
+      "624": 12
+    }
+  },
+  "transfers": {
+    "total": 43,
+    "gameweeks_with_transfers": 31,
+    "avg_per_transfer_gw": 0.8,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2463,
+    "final_rank": 471,
+    "best_gw": {
+      "gw": 33,
+      "points": 142,
+      "total": 2124,
+      "rank": 7067
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 33,
+      "total": 663,
+      "rank": 8945854
+    },
+    "avg_gw_points": 65.4
+  }
+}

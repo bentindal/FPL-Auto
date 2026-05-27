@@ -1,0 +1,209 @@
+{
+  "manager": {
+    "rank": 47,
+    "manager_id": 6626474,
+    "player_name": "Zakir Ahmed",
+    "team_name": "Change Name",
+    "points": 2467
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 22,
+      "449": 6,
+      "381": 4,
+      "16": 4,
+      "82": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        19,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        3,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 65,
+    "most_selected": {
+      "430": 34,
+      "470": 30,
+      "449": 27,
+      "1": 26,
+      "82": 23,
+      "5": 23,
+      "373": 20,
+      "16": 19,
+      "317": 18,
+      "249": 18,
+      "329": 16,
+      "261": 15,
+      "497": 14,
+      "575": 13,
+      "411": 13
+    }
+  },
+  "transfers": {
+    "total": 40,
+    "gameweeks_with_transfers": 23,
+    "avg_per_transfer_gw": 0.5,
+    "gw_breakdown": [
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2467,
+    "final_rank": 359,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2148,
+      "rank": 42342
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 35,
+      "total": 1345,
+      "rank": 8776682
+    },
+    "avg_gw_points": 65.2
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "manager": {
+    "rank": 31,
+    "manager_id": 2701945,
+    "player_name": "Valentine Tinashe Wenjere",
+    "team_name": "The Gy\u00f6keres Effect",
+    "points": 2474
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 16,
+      "449": 7,
+      "381": 6,
+      "16": 4,
+      "5": 2,
+      "624": 2,
+      "450": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        7,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 71,
+    "most_selected": {
+      "449": 34,
+      "470": 31,
+      "430": 28,
+      "1": 26,
+      "291": 25,
+      "252": 23,
+      "5": 23,
+      "373": 19,
+      "317": 17,
+      "237": 15,
+      "16": 15,
+      "100": 14,
+      "411": 14,
+      "160": 12,
+      "387": 12
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2474,
+    "final_rank": 230,
+    "best_gw": {
+      "gw": 33,
+      "points": 133,
+      "total": 2152,
+      "rank": 68952
+    },
+    "worst_gw": {
+      "gw": 18,
+      "points": 35,
+      "total": 1168,
+      "rank": 10228371
+    },
+    "avg_gw_points": 65.2
+  }
+}

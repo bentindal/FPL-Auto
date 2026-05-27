@@ -1,0 +1,186 @@
+{
+  "manager": {
+    "rank": 3,
+    "manager_id": 3023815,
+    "player_name": "Oluwatobi Ajayi",
+    "team_name": "Le Puissant FC",
+    "points": 2524
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 32,
+      "449": 4,
+      "235": 1,
+      "381": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        19,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        33
+      ],
+      "count": 1
+    },
+    "wildcard": {
+      "gameweeks": [
+        18,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 52,
+    "most_selected": {
+      "287": 37,
+      "47": 35,
+      "624": 34,
+      "430": 34,
+      "5": 29,
+      "136": 29,
+      "256": 27,
+      "267": 27,
+      "694": 25,
+      "470": 23,
+      "16": 21,
+      "373": 19,
+      "151": 18,
+      "348": 18,
+      "82": 18
+    }
+  },
+  "transfers": {
+    "total": 32,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 4,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2524,
+    "final_rank": 12,
+    "best_gw": {
+      "gw": 14,
+      "points": 105,
+      "total": 961,
+      "rank": 9040
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 39,
+      "total": 1463,
+      "rank": 6637718
+    },
+    "avg_gw_points": 66.4
+  }
+}

@@ -1,0 +1,724 @@
+{
+  "metadata": {
+    "timestamp": "2026-05-27T13:49:28.980810",
+    "season": "2025-26",
+    "managers_archived": 100,
+    "gameweeks": 38
+  },
+  "top_managers": [
+    {
+      "rank": 1,
+      "manager_id": 3244539,
+      "player_name": "Ivan Peula",
+      "team_name": "Team Peki",
+      "points": 2538
+    },
+    {
+      "rank": 2,
+      "manager_id": 3649057,
+      "player_name": "Shamim Wakil",
+      "team_name": "2EZE",
+      "points": 2531
+    },
+    {
+      "rank": 3,
+      "manager_id": 3023815,
+      "player_name": "Oluwatobi Ajayi",
+      "team_name": "Le Puissant FC",
+      "points": 2524
+    },
+    {
+      "rank": 4,
+      "manager_id": 5407948,
+      "player_name": "matheos sofokleous",
+      "team_name": "Invincibles 2.0",
+      "points": 2519
+    },
+    {
+      "rank": 5,
+      "manager_id": 5747573,
+      "player_name": "Trond Guldahl Hansen",
+      "team_name": "Kebabslaskene",
+      "points": 2513
+    },
+    {
+      "rank": 6,
+      "manager_id": 4537055,
+      "player_name": "Andrew Mount",
+      "team_name": "Team One",
+      "points": 2508
+    },
+    {
+      "rank": 7,
+      "manager_id": 22270,
+      "player_name": "Jonah Jones",
+      "team_name": "Ren\u00e9e Slaygers",
+      "points": 2507
+    },
+    {
+      "rank": 8,
+      "manager_id": 2932608,
+      "player_name": "Lee ward",
+      "team_name": "Wardies Wonderlads",
+      "points": 2504
+    },
+    {
+      "rank": 9,
+      "manager_id": 6943395,
+      "player_name": "ziad alsyd",
+      "team_name": "Samurai \u2667\ufe0e",
+      "points": 2501
+    },
+    {
+      "rank": 10,
+      "manager_id": 6556124,
+      "player_name": "Tyler Zabel",
+      "team_name": "Skell on Earth",
+      "points": 2495
+    },
+    {
+      "rank": 11,
+      "manager_id": 3871872,
+      "player_name": "Kirpal Mehat",
+      "team_name": "RAMBO",
+      "points": 2494
+    },
+    {
+      "rank": 12,
+      "manager_id": 304110,
+      "player_name": "Jeppe Skov",
+      "team_name": "Taptics",
+      "points": 2494
+    },
+    {
+      "rank": 13,
+      "manager_id": 1370909,
+      "player_name": "Ratthagun Suwanchai",
+      "team_name": "GUNKERES",
+      "points": 2492
+    },
+    {
+      "rank": 14,
+      "manager_id": 7227539,
+      "player_name": "Karol Kulesza",
+      "team_name": "KULAsy",
+      "points": 2489
+    },
+    {
+      "rank": 15,
+      "manager_id": 753050,
+      "player_name": "Aldo Kacorri",
+      "team_name": "Kanun of Arsenal",
+      "points": 2489
+    },
+    {
+      "rank": 16,
+      "manager_id": 24543,
+      "player_name": "Mustafa I",
+      "team_name": "Baby Reijnders",
+      "points": 2486
+    },
+    {
+      "rank": 17,
+      "manager_id": 9379719,
+      "player_name": "Carson Ho",
+      "team_name": "COYG",
+      "points": 2484
+    },
+    {
+      "rank": 18,
+      "manager_id": 43164,
+      "player_name": "Cameron Scott",
+      "team_name": "Sweet Viktory",
+      "points": 2483
+    },
+    {
+      "rank": 19,
+      "manager_id": 210697,
+      "player_name": "Zacharay Murray",
+      "team_name": "\u30c9\u30f3\u30ad\u30fc\u30fb\u30a2\u30b9\u30ec\u30c1\u30c3\u30af",
+      "points": 2483
+    },
+    {
+      "rank": 19,
+      "manager_id": 5006014,
+      "player_name": "Top Captain MK",
+      "team_name": "Wizards",
+      "points": 2483
+    },
+    {
+      "rank": 21,
+      "manager_id": 1975501,
+      "player_name": "Mark Nowell",
+      "team_name": "Gooner win again",
+      "points": 2482
+    },
+    {
+      "rank": 22,
+      "manager_id": 4813967,
+      "player_name": "Rose Kilbourn",
+      "team_name": "Balloon Dior",
+      "points": 2481
+    },
+    {
+      "rank": 23,
+      "manager_id": 1761769,
+      "player_name": "\u0627\u0644\u062a\u0647\u0627\u0645\u064a \u0627\u0639\u0644\u064a",
+      "team_name": "Lepron Jems Lejers",
+      "points": 2480
+    },
+    {
+      "rank": 24,
+      "manager_id": 1112601,
+      "player_name": "samuel martin",
+      "team_name": "Net six and chill",
+      "points": 2480
+    },
+    {
+      "rank": 25,
+      "manager_id": 213179,
+      "player_name": "Daniel Ukpong",
+      "team_name": "Kloppenheimer",
+      "points": 2479
+    },
+    {
+      "rank": 26,
+      "manager_id": 7849328,
+      "player_name": "Alex Iliev",
+      "team_name": "Major League Saka",
+      "points": 2478
+    },
+    {
+      "rank": 27,
+      "manager_id": 6271780,
+      "player_name": "Aleksi Sopanen",
+      "team_name": "Ty\u00f6v\u00e4en Potkijat",
+      "points": 2477
+    },
+    {
+      "rank": 28,
+      "manager_id": 6171681,
+      "player_name": "Richy Moor",
+      "team_name": "Richy",
+      "points": 2477
+    },
+    {
+      "rank": 29,
+      "manager_id": 579711,
+      "player_name": "Erik Haga Owesen",
+      "team_name": "Owes",
+      "points": 2475
+    },
+    {
+      "rank": 30,
+      "manager_id": 1842657,
+      "player_name": "George Vincent",
+      "team_name": "WhoAteAllDepays?",
+      "points": 2475
+    },
+    {
+      "rank": 31,
+      "manager_id": 456879,
+      "player_name": "Saranyu Ngamsaard",
+      "team_name": "Zubi-Doo",
+      "points": 2474
+    },
+    {
+      "rank": 31,
+      "manager_id": 2701945,
+      "player_name": "Valentine Tinashe Wenjere",
+      "team_name": "The Gy\u00f6keres Effect",
+      "points": 2474
+    },
+    {
+      "rank": 31,
+      "manager_id": 4312711,
+      "player_name": "Patrick Lanau",
+      "team_name": "Rice to Michu",
+      "points": 2474
+    },
+    {
+      "rank": 31,
+      "manager_id": 9476966,
+      "player_name": "Henriette Hansen",
+      "team_name": "henri",
+      "points": 2474
+    },
+    {
+      "rank": 35,
+      "manager_id": 5262291,
+      "player_name": "G\u00f6sta Gustafsson",
+      "team_name": "Rostafari FC",
+      "points": 2474
+    },
+    {
+      "rank": 36,
+      "manager_id": 214608,
+      "player_name": "Adam Cann",
+      "team_name": "Mind the Gap",
+      "points": 2472
+    },
+    {
+      "rank": 37,
+      "manager_id": 2033949,
+      "player_name": "Firstky Septia M",
+      "team_name": "Gudang Senjata FC",
+      "points": 2472
+    },
+    {
+      "rank": 38,
+      "manager_id": 6629455,
+      "player_name": "SalMedia Ja",
+      "team_name": "Life\u2019s Good FC",
+      "points": 2472
+    },
+    {
+      "rank": 39,
+      "manager_id": 1581232,
+      "player_name": "Ahmed Crespo",
+      "team_name": "\u043e\u0445\u043e\u0442\u043d\u0438\u043a \u0437\u0430 \u043f\u0440\u0438\u0432\u0438\u0434\u0435\u043d\u0438",
+      "points": 2470
+    },
+    {
+      "rank": 40,
+      "manager_id": 5037596,
+      "player_name": "Dan Thomas",
+      "team_name": "Dangerous",
+      "points": 2470
+    },
+    {
+      "rank": 41,
+      "manager_id": 2269823,
+      "player_name": "Emlyn Ayrton",
+      "team_name": "GTA Rice City",
+      "points": 2469
+    },
+    {
+      "rank": 42,
+      "manager_id": 5885365,
+      "player_name": "S Sy",
+      "team_name": "ABCDE FC",
+      "points": 2468
+    },
+    {
+      "rank": 43,
+      "manager_id": 239831,
+      "player_name": "Clare Woodrow",
+      "team_name": "Gabs' XI",
+      "points": 2468
+    },
+    {
+      "rank": 44,
+      "manager_id": 1139478,
+      "player_name": "Arijan Iveljic",
+      "team_name": "Ac Papaya",
+      "points": 2468
+    },
+    {
+      "rank": 45,
+      "manager_id": 2063557,
+      "player_name": "Graham Allen",
+      "team_name": "N5",
+      "points": 2468
+    },
+    {
+      "rank": 46,
+      "manager_id": 2229311,
+      "player_name": "Christos Phedonos",
+      "team_name": "Saka Punch",
+      "points": 2467
+    },
+    {
+      "rank": 47,
+      "manager_id": 6626474,
+      "player_name": "Zakir Ahmed",
+      "team_name": "Change Name",
+      "points": 2467
+    },
+    {
+      "rank": 48,
+      "manager_id": 350852,
+      "player_name": "Louis Rolland",
+      "team_name": "What the Skelly",
+      "points": 2466
+    },
+    {
+      "rank": 49,
+      "manager_id": 304197,
+      "player_name": "Michael Laws",
+      "team_name": "Famous last Wirtz",
+      "points": 2466
+    },
+    {
+      "rank": 50,
+      "manager_id": 5558475,
+      "player_name": "Rory Gibney",
+      "team_name": "WingardiumLevioSarr",
+      "points": 2466
+    },
+    {
+      "rank": 51,
+      "manager_id": 83504,
+      "player_name": "Adam White",
+      "team_name": "Whitewash",
+      "points": 2465
+    },
+    {
+      "rank": 52,
+      "manager_id": 2401572,
+      "player_name": "Ali Haroon",
+      "team_name": "White Rice FC",
+      "points": 2465
+    },
+    {
+      "rank": 53,
+      "manager_id": 2378519,
+      "player_name": "Toby Taylor",
+      "team_name": "Taylor Park Boys",
+      "points": 2465
+    },
+    {
+      "rank": 54,
+      "manager_id": 1331539,
+      "player_name": "\u0627\u0644\u062e\u0637\u064a\u0628 \u0645\u062d\u0645\u0648\u062f \u0639\u0628\u062f \u0627\u0644\u0633\u0644\u0627\u0645",
+      "team_name": "\u0645\u062d\u0645\u0648\u062f \u0639\u0628\u062f \u0627\u0644\u0633\u0644\u0627\u0645",
+      "points": 2465
+    },
+    {
+      "rank": 55,
+      "manager_id": 1270475,
+      "player_name": "Graham Baker",
+      "team_name": "Jemar's Stars",
+      "points": 2464
+    },
+    {
+      "rank": 55,
+      "manager_id": 3381818,
+      "player_name": "Hugh McCarthy",
+      "team_name": "The Gervinator",
+      "points": 2464
+    },
+    {
+      "rank": 57,
+      "manager_id": 2576761,
+      "player_name": "Jordan Smyth",
+      "team_name": "The Gunners",
+      "points": 2464
+    },
+    {
+      "rank": 58,
+      "manager_id": 2840798,
+      "player_name": "Simon Harrington",
+      "team_name": "Saka Punch",
+      "points": 2463
+    },
+    {
+      "rank": 58,
+      "manager_id": 2982329,
+      "player_name": "Tom Clewlow",
+      "team_name": "Eze Does It",
+      "points": 2463
+    },
+    {
+      "rank": 58,
+      "manager_id": 8243943,
+      "player_name": "Theo Langham",
+      "team_name": "Mart\u00edn ZubiSendIt",
+      "points": 2463
+    },
+    {
+      "rank": 61,
+      "manager_id": 4011865,
+      "player_name": "Michael Elliott-Smith",
+      "team_name": "Zombie AFC",
+      "points": 2463
+    },
+    {
+      "rank": 62,
+      "manager_id": 4102764,
+      "player_name": "Freddie Leach",
+      "team_name": "AFC",
+      "points": 2463
+    },
+    {
+      "rank": 63,
+      "manager_id": 25482,
+      "player_name": "Larry Mbaco",
+      "team_name": "Twice As Rice",
+      "points": 2463
+    },
+    {
+      "rank": 64,
+      "manager_id": 2888889,
+      "player_name": "Jawin Fabree",
+      "team_name": "Luxura",
+      "points": 2462
+    },
+    {
+      "rank": 65,
+      "manager_id": 101207,
+      "player_name": "Ian Colbourne",
+      "team_name": "Coop\u2019s Ballers",
+      "points": 2462
+    },
+    {
+      "rank": 65,
+      "manager_id": 1431552,
+      "player_name": "Kenichi Shoda",
+      "team_name": "Goosebump Gunners",
+      "points": 2462
+    },
+    {
+      "rank": 67,
+      "manager_id": 17660,
+      "player_name": "Cies Top",
+      "team_name": "Kai Me A River",
+      "points": 2462
+    },
+    {
+      "rank": 67,
+      "manager_id": 6610839,
+      "player_name": "Shah Aziz",
+      "team_name": "Luckless & Hopeless",
+      "points": 2462
+    },
+    {
+      "rank": 69,
+      "manager_id": 2097287,
+      "player_name": "Alex Thomas",
+      "team_name": "Eze does it",
+      "points": 2462
+    },
+    {
+      "rank": 70,
+      "manager_id": 2298985,
+      "player_name": "Senne Hendrickx",
+      "team_name": "Zigunner",
+      "points": 2461
+    },
+    {
+      "rank": 71,
+      "manager_id": 8267671,
+      "player_name": "Sam Bowler",
+      "team_name": "Hakuna Mateta",
+      "points": 2461
+    },
+    {
+      "rank": 72,
+      "manager_id": 7744630,
+      "player_name": "Chris Lavender",
+      "team_name": "Slabhead FC",
+      "points": 2461
+    },
+    {
+      "rank": 73,
+      "manager_id": 1808657,
+      "player_name": "Nelson Chiwara",
+      "team_name": "white rice",
+      "points": 2461
+    },
+    {
+      "rank": 74,
+      "manager_id": 323804,
+      "player_name": "Adam Baranski",
+      "team_name": "Armatki",
+      "points": 2461
+    },
+    {
+      "rank": 75,
+      "manager_id": 350212,
+      "player_name": "Sam Elliott",
+      "team_name": "Head.Cards.Benching",
+      "points": 2460
+    },
+    {
+      "rank": 75,
+      "manager_id": 1714127,
+      "player_name": "Elise Rawlinson",
+      "team_name": "Karma Mapi Leon",
+      "points": 2460
+    },
+    {
+      "rank": 77,
+      "manager_id": 77239,
+      "player_name": "Emil Anker Rasmussen",
+      "team_name": "Champagne Zubinova",
+      "points": 2460
+    },
+    {
+      "rank": 78,
+      "manager_id": 4856371,
+      "player_name": "Kaden Boehme",
+      "team_name": "Gyok and Key",
+      "points": 2460
+    },
+    {
+      "rank": 79,
+      "manager_id": 94738,
+      "player_name": "Antonis Antonopoulos",
+      "team_name": "Cold Palmeiras",
+      "points": 2460
+    },
+    {
+      "rank": 80,
+      "manager_id": 307389,
+      "player_name": "Wiktor Szymajda",
+      "team_name": "SetPeaceAgain",
+      "points": 2459
+    },
+    {
+      "rank": 81,
+      "manager_id": 1261829,
+      "player_name": "Sri Harsha Kodali",
+      "team_name": "12 Angry Men",
+      "points": 2459
+    },
+    {
+      "rank": 82,
+      "manager_id": 18821,
+      "player_name": "dimitris koulou",
+      "team_name": "Est\u00e8ve the TV",
+      "points": 2459
+    },
+    {
+      "rank": 83,
+      "manager_id": 1033119,
+      "player_name": "Martin S\u00f8iland",
+      "team_name": "Limagic XI",
+      "points": 2459
+    },
+    {
+      "rank": 84,
+      "manager_id": 1613657,
+      "player_name": "James Kimber",
+      "team_name": "LostinEdinburgh",
+      "points": 2458
+    },
+    {
+      "rank": 85,
+      "manager_id": 18202,
+      "player_name": "Tomasz Libner",
+      "team_name": "It's Clobberin' Time",
+      "points": 2458
+    },
+    {
+      "rank": 85,
+      "manager_id": 63714,
+      "player_name": "Anton Dahlstr\u00f6m",
+      "team_name": "Gunners IS",
+      "points": 2458
+    },
+    {
+      "rank": 85,
+      "manager_id": 301575,
+      "player_name": "Patrick Derbakk",
+      "team_name": "Str\u00f8ms\u00f8Aassen Faller",
+      "points": 2458
+    },
+    {
+      "rank": 85,
+      "manager_id": 2672310,
+      "player_name": "Patrick Halvorsen Tolgensbakk",
+      "team_name": "Invincibles",
+      "points": 2458
+    },
+    {
+      "rank": 85,
+      "manager_id": 5476047,
+      "player_name": "Cam Nott",
+      "team_name": "Saka Potatoes",
+      "points": 2458
+    },
+    {
+      "rank": 90,
+      "manager_id": 58005,
+      "player_name": "Henry Lam",
+      "team_name": "SKM\u5175\u5de5\u5ee0",
+      "points": 2457
+    },
+    {
+      "rank": 91,
+      "manager_id": 87192,
+      "player_name": "Dzung Pham",
+      "team_name": "MeoCantelope",
+      "points": 2457
+    },
+    {
+      "rank": 92,
+      "manager_id": 7116015,
+      "player_name": "James Evans",
+      "team_name": "BayerNeverlusen",
+      "points": 2457
+    },
+    {
+      "rank": 93,
+      "manager_id": 636160,
+      "player_name": "Oscar Teilman",
+      "team_name": "FC Bersant",
+      "points": 2457
+    },
+    {
+      "rank": 94,
+      "manager_id": 368254,
+      "player_name": "Joseph Kago",
+      "team_name": "Infinity FC",
+      "points": 2457
+    },
+    {
+      "rank": 95,
+      "manager_id": 37423,
+      "player_name": "Emmett OShea",
+      "team_name": "Zubi One Kenobi",
+      "points": 2456
+    },
+    {
+      "rank": 95,
+      "manager_id": 58709,
+      "player_name": "Finley Powditch",
+      "team_name": "Aaron Chen",
+      "points": 2456
+    },
+    {
+      "rank": 95,
+      "manager_id": 420092,
+      "player_name": "Top Thanapol",
+      "team_name": "toptnp",
+      "points": 2456
+    },
+    {
+      "rank": 95,
+      "manager_id": 4846499,
+      "player_name": "Jason Woodfield",
+      "team_name": "Invinciballs",
+      "points": 2456
+    },
+    {
+      "rank": 99,
+      "manager_id": 1259750,
+      "player_name": "Matt Chamberlain",
+      "team_name": "Matty C's 5ft 3's",
+      "points": 2456
+    },
+    {
+      "rank": 100,
+      "manager_id": 8465050,
+      "player_name": "Luke Evans",
+      "team_name": "Zubi dubi doo",
+      "points": 2455
+    }
+  ],
+  "captaincy_meta": {
+    "most_captained_overall": {
+      "430": 100,
+      "449": 100,
+      "5": 79,
+      "16": 76,
+      "381": 69,
+      "249": 36,
+      "82": 33,
+      "661": 31,
+      "235": 25,
+      "666": 22
+    }
+  }
+}

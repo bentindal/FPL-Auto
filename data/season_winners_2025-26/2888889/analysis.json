@@ -1,0 +1,193 @@
+{
+  "manager": {
+    "rank": 64,
+    "manager_id": 2888889,
+    "player_name": "Jawin Fabree",
+    "team_name": "Luxura",
+    "points": 2462
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 18,
+      "449": 6,
+      "381": 5,
+      "283": 2,
+      "249": 1,
+      "82": 1,
+      "216": 1,
+      "661": 1,
+      "21": 1,
+      "235": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        15,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        18,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        19,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 73,
+    "most_selected": {
+      "220": 30,
+      "21": 30,
+      "430": 30,
+      "82": 24,
+      "136": 20,
+      "5": 20,
+      "373": 19,
+      "414": 18,
+      "684": 18,
+      "470": 17,
+      "283": 16,
+      "256": 15,
+      "449": 15,
+      "335": 14,
+      "249": 14
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2462,
+    "final_rank": 475,
+    "best_gw": {
+      "gw": 33,
+      "points": 129,
+      "total": 2104,
+      "rank": 101294
+    },
+    "worst_gw": {
+      "gw": 23,
+      "points": 20,
+      "total": 1426,
+      "rank": 12645558
+    },
+    "avg_gw_points": 64.8
+  }
+}

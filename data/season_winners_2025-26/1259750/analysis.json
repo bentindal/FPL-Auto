@@ -1,0 +1,234 @@
+{
+  "manager": {
+    "rank": 99,
+    "manager_id": 1259750,
+    "player_name": "Matt Chamberlain",
+    "team_name": "Matty C's 5ft 3's",
+    "points": 2456
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 27,
+      "449": 5,
+      "16": 2,
+      "691": 2,
+      "5": 1,
+      "413": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        9,
+        22
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        3,
+        20
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 73,
+    "most_selected": {
+      "430": 37,
+      "470": 37,
+      "1": 34,
+      "291": 29,
+      "5": 28,
+      "16": 22,
+      "691": 22,
+      "47": 19,
+      "136": 18,
+      "684": 18,
+      "575": 16,
+      "82": 16,
+      "329": 16,
+      "449": 14,
+      "119": 13
+    }
+  },
+  "transfers": {
+    "total": 40,
+    "gameweeks_with_transfers": 28,
+    "avg_per_transfer_gw": 0.4,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 8
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2456,
+    "final_rank": 674,
+    "best_gw": {
+      "gw": 17,
+      "points": 103,
+      "total": 1230,
+      "rank": 214793
+    },
+    "worst_gw": {
+      "gw": 23,
+      "points": 35,
+      "total": 1527,
+      "rank": 10278858
+    },
+    "avg_gw_points": 64.9
+  }
+}

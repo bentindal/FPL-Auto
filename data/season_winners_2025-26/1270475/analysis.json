@@ -1,0 +1,237 @@
+{
+  "manager": {
+    "rank": 55,
+    "manager_id": 1270475,
+    "player_name": "Graham Baker",
+    "team_name": "Jemar's Stars",
+    "points": 2464
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 28,
+      "449": 8,
+      "381": 1,
+      "21": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        4,
+        22
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        2,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 67,
+    "most_selected": {
+      "470": 34,
+      "430": 33,
+      "257": 33,
+      "449": 32,
+      "5": 27,
+      "136": 23,
+      "82": 21,
+      "317": 19,
+      "8": 19,
+      "329": 17,
+      "624": 16,
+      "373": 15,
+      "220": 14,
+      "488": 14,
+      "283": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 29,
+    "avg_per_transfer_gw": 0.1,
+    "gw_breakdown": [
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2464,
+    "final_rank": 424,
+    "best_gw": {
+      "gw": 4,
+      "points": 103,
+      "total": 259,
+      "rank": 14504
+    },
+    "worst_gw": {
+      "gw": 18,
+      "points": 35,
+      "total": 1194,
+      "rank": 10228371
+    },
+    "avg_gw_points": 64.9
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "manager": {
+    "rank": 43,
+    "manager_id": 239831,
+    "player_name": "Clare Woodrow",
+    "team_name": "Gabs' XI",
+    "points": 2468
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 20,
+      "449": 10,
+      "381": 4,
+      "5": 2,
+      "267": 1,
+      "82": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        19,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 75,
+    "most_selected": {
+      "430": 34,
+      "470": 31,
+      "317": 30,
+      "82": 30,
+      "67": 27,
+      "5": 25,
+      "449": 20,
+      "136": 18,
+      "191": 17,
+      "249": 16,
+      "517": 16,
+      "440": 15,
+      "72": 13,
+      "411": 13,
+      "266": 12
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 28,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2468,
+    "final_rank": 338,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2144,
+      "rank": 42342
+    },
+    "worst_gw": {
+      "gw": 11,
+      "points": 34,
+      "total": 662,
+      "rank": 8452891
+    },
+    "avg_gw_points": 65.2
+  }
+}

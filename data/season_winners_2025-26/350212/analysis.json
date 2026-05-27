@@ -1,0 +1,226 @@
+{
+  "manager": {
+    "rank": 75,
+    "manager_id": 350212,
+    "player_name": "Sam Elliott",
+    "team_name": "Head.Cards.Benching",
+    "points": 2460
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 31,
+      "449": 6,
+      "666": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        1,
+        38
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        14,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        8,
+        22
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "430": 38,
+      "8": 28,
+      "136": 23,
+      "21": 22,
+      "226": 19,
+      "449": 19,
+      "694": 18,
+      "82": 17,
+      "249": 17,
+      "260": 16,
+      "5": 16,
+      "373": 16,
+      "139": 14,
+      "382": 13,
+      "470": 13
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 27,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2460,
+    "final_rank": 538,
+    "best_gw": {
+      "gw": 33,
+      "points": 108,
+      "total": 2120,
+      "rank": 597569
+    },
+    "worst_gw": {
+      "gw": 5,
+      "points": 35,
+      "total": 345,
+      "rank": 9184029
+    },
+    "avg_gw_points": 64.7
+  }
+}

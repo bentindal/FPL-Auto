@@ -1,0 +1,248 @@
+{
+  "manager": {
+    "rank": 73,
+    "manager_id": 1808657,
+    "player_name": "Nelson Chiwara",
+    "team_name": "white rice",
+    "points": 2461
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 28,
+      "449": 7,
+      "5": 1,
+      "82": 1,
+      "16": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        17,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        3,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "430": 37,
+      "72": 34,
+      "220": 30,
+      "82": 27,
+      "373": 25,
+      "449": 21,
+      "151": 21,
+      "8": 20,
+      "470": 16,
+      "191": 16,
+      "36": 16,
+      "329": 16,
+      "47": 15,
+      "5": 15,
+      "21": 15
+    }
+  },
+  "transfers": {
+    "total": 41,
+    "gameweeks_with_transfers": 31,
+    "avg_per_transfer_gw": 0.5,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2461,
+    "final_rank": 530,
+    "best_gw": {
+      "gw": 33,
+      "points": 118,
+      "total": 2118,
+      "rank": 311812
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 32,
+      "total": 1178,
+      "rank": 10315509
+    },
+    "avg_gw_points": 65.2
+  }
+}

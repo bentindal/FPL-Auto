@@ -1,0 +1,190 @@
+{
+  "manager": {
+    "rank": 85,
+    "manager_id": 18202,
+    "player_name": "Tomasz Libner",
+    "team_name": "It's Clobberin' Time",
+    "points": 2458
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 25,
+      "16": 5,
+      "449": 4,
+      "666": 1,
+      "450": 1,
+      "5": 1,
+      "414": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 72,
+    "most_selected": {
+      "430": 36,
+      "470": 31,
+      "449": 27,
+      "347": 27,
+      "5": 23,
+      "8": 20,
+      "16": 19,
+      "82": 17,
+      "249": 17,
+      "101": 17,
+      "151": 17,
+      "624": 17,
+      "276": 16,
+      "47": 14,
+      "257": 14
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 19,
+    "avg_per_transfer_gw": 0.6,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 4,
+        "cost": 4
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2458,
+    "final_rank": 602,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2132,
+      "rank": 60249
+    },
+    "worst_gw": {
+      "gw": 18,
+      "points": 36,
+      "total": 1217,
+      "rank": 9920728
+    },
+    "avg_gw_points": 65.0
+  }
+}

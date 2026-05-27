@@ -1,0 +1,186 @@
+{
+  "manager": {
+    "rank": 100,
+    "manager_id": 8465050,
+    "player_name": "Luke Evans",
+    "team_name": "Zubi dubi doo",
+    "points": 2455
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 18,
+      "449": 11,
+      "16": 3,
+      "666": 2,
+      "249": 1,
+      "384": 1,
+      "661": 1,
+      "450": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        5,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        3,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "430": 34,
+      "191": 30,
+      "8": 28,
+      "470": 28,
+      "136": 27,
+      "16": 26,
+      "449": 21,
+      "82": 19,
+      "242": 18,
+      "317": 17,
+      "67": 16,
+      "348": 15,
+      "661": 14,
+      "387": 14,
+      "575": 13
+    }
+  },
+  "transfers": {
+    "total": 35,
+    "gameweeks_with_transfers": 18,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2455,
+    "final_rank": 681,
+    "best_gw": {
+      "gw": 33,
+      "points": 118,
+      "total": 2107,
+      "rank": 314399
+    },
+    "worst_gw": {
+      "gw": 13,
+      "points": 37,
+      "total": 821,
+      "rank": 4871448
+    },
+    "avg_gw_points": 64.7
+  }
+}

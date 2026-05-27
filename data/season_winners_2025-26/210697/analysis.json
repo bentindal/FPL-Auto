@@ -1,0 +1,233 @@
+{
+  "manager": {
+    "rank": 19,
+    "manager_id": 210697,
+    "player_name": "Zacharay Murray",
+    "team_name": "\u30c9\u30f3\u30ad\u30fc\u30fb\u30a2\u30b9\u30ec\u30c1\u30c3\u30af",
+    "points": 2483
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 29,
+      "449": 6,
+      "5": 1,
+      "16": 1,
+      "413": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        1,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        2,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        13,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 77,
+    "most_selected": {
+      "430": 37,
+      "449": 30,
+      "373": 26,
+      "1": 25,
+      "252": 24,
+      "291": 23,
+      "517": 22,
+      "5": 21,
+      "101": 19,
+      "387": 19,
+      "317": 17,
+      "16": 16,
+      "299": 15,
+      "72": 15,
+      "257": 13
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 28,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2483,
+    "final_rank": 137,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2186,
+      "rank": 32435
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 36,
+      "total": 608,
+      "rank": 9958762
+    },
+    "avg_gw_points": 65.6
+  }
+}

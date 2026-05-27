@@ -1,0 +1,223 @@
+{
+  "manager": {
+    "rank": 4,
+    "manager_id": 5407948,
+    "player_name": "matheos sofokleous",
+    "team_name": "Invincibles 2.0",
+    "points": 2519
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 26,
+      "381": 5,
+      "449": 5,
+      "8": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "470": 31,
+      "430": 31,
+      "373": 30,
+      "242": 27,
+      "82": 23,
+      "449": 22,
+      "249": 21,
+      "736": 19,
+      "8": 18,
+      "72": 17,
+      "694": 16,
+      "5": 15,
+      "136": 15,
+      "260": 15,
+      "252": 12
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 26,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2519,
+    "final_rank": 17,
+    "best_gw": {
+      "gw": 33,
+      "points": 142,
+      "total": 2173,
+      "rank": 8320
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 35,
+      "total": 597,
+      "rank": 10236547
+    },
+    "avg_gw_points": 66.5
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "manager": {
+    "rank": 15,
+    "manager_id": 753050,
+    "player_name": "Aldo Kacorri",
+    "team_name": "Kanun of Arsenal",
+    "points": 2489
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 22,
+      "16": 6,
+      "449": 4,
+      "381": 3,
+      "661": 1,
+      "5": 1,
+      "414": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 68,
+    "most_selected": {
+      "430": 35,
+      "470": 31,
+      "220": 30,
+      "373": 27,
+      "5": 25,
+      "136": 21,
+      "449": 17,
+      "237": 16,
+      "16": 15,
+      "191": 15,
+      "82": 15,
+      "348": 15,
+      "21": 15,
+      "329": 15,
+      "382": 14
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 21,
+    "avg_per_transfer_gw": 0.4,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2489,
+    "final_rank": 106,
+    "best_gw": {
+      "gw": 33,
+      "points": 124,
+      "total": 2132,
+      "rank": 179358
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 33,
+      "total": 1213,
+      "rank": 9982439
+    },
+    "avg_gw_points": 65.7
+  }
+}

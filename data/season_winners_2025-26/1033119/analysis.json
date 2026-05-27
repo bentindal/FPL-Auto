@@ -1,0 +1,198 @@
+{
+  "manager": {
+    "rank": 83,
+    "manager_id": 1033119,
+    "player_name": "Martin S\u00f8iland",
+    "team_name": "Limagic XI",
+    "points": 2459
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 18,
+      "449": 7,
+      "381": 3,
+      "82": 2,
+      "16": 2,
+      "283": 1,
+      "119": 1,
+      "382": 1,
+      "5": 1,
+      "249": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        16,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 74,
+    "most_selected": {
+      "430": 33,
+      "470": 30,
+      "317": 27,
+      "575": 23,
+      "249": 21,
+      "5": 19,
+      "449": 18,
+      "82": 18,
+      "1": 17,
+      "136": 17,
+      "329": 17,
+      "72": 15,
+      "373": 15,
+      "266": 14,
+      "497": 13
+    }
+  },
+  "transfers": {
+    "total": 41,
+    "gameweeks_with_transfers": 20,
+    "avg_per_transfer_gw": 0.8,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 5,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 5,
+        "cost": 4
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2459,
+    "final_rank": 585,
+    "best_gw": {
+      "gw": 33,
+      "points": 124,
+      "total": 2114,
+      "rank": 192611
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 35,
+      "total": 1169,
+      "rank": 9040768
+    },
+    "avg_gw_points": 65.1
+  }
+}

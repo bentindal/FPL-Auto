@@ -1,0 +1,203 @@
+{
+  "manager": {
+    "rank": 53,
+    "manager_id": 2378519,
+    "player_name": "Toby Taylor",
+    "team_name": "Taylor Park Boys",
+    "points": 2465
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 21,
+      "449": 9,
+      "381": 4,
+      "16": 3,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        5,
+        36
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 73,
+    "most_selected": {
+      "470": 32,
+      "317": 31,
+      "449": 31,
+      "72": 30,
+      "430": 30,
+      "1": 29,
+      "373": 29,
+      "252": 24,
+      "5": 23,
+      "136": 19,
+      "242": 17,
+      "16": 16,
+      "82": 13,
+      "257": 12,
+      "612": 12
+    }
+  },
+  "transfers": {
+    "total": 40,
+    "gameweeks_with_transfers": 22,
+    "avg_per_transfer_gw": 0.5,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 4,
+        "cost": 4
+      },
+      {
+        "gw": 22,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2465,
+    "final_rank": 405,
+    "best_gw": {
+      "gw": 33,
+      "points": 115,
+      "total": 2118,
+      "rank": 367414
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 40,
+      "total": 534,
+      "rank": 8044269
+    },
+    "avg_gw_points": 65.2
+  }
+}

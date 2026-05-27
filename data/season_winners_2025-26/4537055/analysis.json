@@ -1,0 +1,221 @@
+{
+  "manager": {
+    "rank": 6,
+    "manager_id": 4537055,
+    "player_name": "Andrew Mount",
+    "team_name": "Team One",
+    "points": 2508
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 14,
+      "16": 8,
+      "449": 6,
+      "381": 4,
+      "387": 3,
+      "450": 1,
+      "5": 1,
+      "299": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        16,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        19,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        15,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "430": 32,
+      "373": 31,
+      "449": 29,
+      "470": 22,
+      "411": 22,
+      "317": 21,
+      "16": 19,
+      "329": 17,
+      "5": 16,
+      "337": 16,
+      "101": 16,
+      "136": 16,
+      "517": 14,
+      "191": 14,
+      "260": 14
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2508,
+    "final_rank": 29,
+    "best_gw": {
+      "gw": 33,
+      "points": 119,
+      "total": 2172,
+      "rank": 289539
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 33,
+      "total": 1359,
+      "rank": 10173248
+    },
+    "avg_gw_points": 66.1
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "manager": {
+    "rank": 65,
+    "manager_id": 1431552,
+    "player_name": "Kenichi Shoda",
+    "team_name": "Goosebump Gunners",
+    "points": 2462
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 15,
+      "16": 5,
+      "449": 4,
+      "235": 3,
+      "666": 2,
+      "387": 2,
+      "64": 1,
+      "82": 1,
+      "283": 1,
+      "450": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        5,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        15,
+        31
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        10,
+        34
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 59,
+    "most_selected": {
+      "430": 37,
+      "470": 32,
+      "694": 27,
+      "733": 24,
+      "348": 23,
+      "136": 19,
+      "5": 19,
+      "666": 17,
+      "21": 17,
+      "256": 17,
+      "235": 16,
+      "47": 16,
+      "575": 16,
+      "151": 15,
+      "449": 15
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 26,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2462,
+    "final_rank": 485,
+    "best_gw": {
+      "gw": 25,
+      "points": 110,
+      "total": 1570,
+      "rank": 1884
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 31,
+      "total": 568,
+      "rank": 11275031
+    },
+    "avg_gw_points": 64.9
+  }
+}

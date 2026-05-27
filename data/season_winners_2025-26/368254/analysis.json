@@ -1,0 +1,234 @@
+{
+  "manager": {
+    "rank": 94,
+    "manager_id": 368254,
+    "player_name": "Joseph Kago",
+    "team_name": "Infinity FC",
+    "points": 2457
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 23,
+      "449": 8,
+      "381": 4,
+      "16": 1,
+      "82": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        25
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        3,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        24
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "470": 37,
+      "191": 31,
+      "430": 31,
+      "449": 27,
+      "72": 26,
+      "256": 24,
+      "136": 22,
+      "139": 22,
+      "5": 22,
+      "335": 19,
+      "348": 18,
+      "16": 18,
+      "373": 15,
+      "82": 13,
+      "414": 13
+    }
+  },
+  "transfers": {
+    "total": 44,
+    "gameweeks_with_transfers": 28,
+    "avg_per_transfer_gw": 1.0,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2457,
+    "final_rank": 639,
+    "best_gw": {
+      "gw": 8,
+      "points": 107,
+      "total": 557,
+      "rank": 5570
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 35,
+      "total": 1249,
+      "rank": 9112011
+    },
+    "avg_gw_points": 65.4
+  }
+}

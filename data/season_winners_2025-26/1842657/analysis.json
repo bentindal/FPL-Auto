@@ -1,0 +1,211 @@
+{
+  "manager": {
+    "rank": 30,
+    "manager_id": 1842657,
+    "player_name": "George Vincent",
+    "team_name": "WhoAteAllDepays?",
+    "points": 2475
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 23,
+      "449": 8,
+      "661": 2,
+      "381": 1,
+      "5": 1,
+      "249": 1,
+      "485": 1,
+      "666": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        16,
+        24
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        5,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        14,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "430": 34,
+      "291": 32,
+      "470": 32,
+      "8": 26,
+      "249": 25,
+      "242": 25,
+      "5": 20,
+      "449": 19,
+      "440": 19,
+      "21": 18,
+      "82": 17,
+      "226": 17,
+      "136": 16,
+      "329": 16,
+      "191": 13
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 23,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2475,
+    "final_rank": 214,
+    "best_gw": {
+      "gw": 33,
+      "points": 104,
+      "total": 2120,
+      "rank": 791623
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 36,
+      "total": 547,
+      "rank": 9958762
+    },
+    "avg_gw_points": 65.3
+  }
+}

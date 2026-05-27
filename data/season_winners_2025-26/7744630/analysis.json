@@ -1,0 +1,188 @@
+{
+  "manager": {
+    "rank": 72,
+    "manager_id": 7744630,
+    "player_name": "Chris Lavender",
+    "team_name": "Slabhead FC",
+    "points": 2461
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 17,
+      "449": 7,
+      "661": 4,
+      "381": 3,
+      "16": 2,
+      "235": 1,
+      "450": 1,
+      "5": 1,
+      "237": 1,
+      "413": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        17,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        16,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "449": 31,
+      "430": 31,
+      "5": 22,
+      "411": 22,
+      "139": 21,
+      "373": 19,
+      "249": 17,
+      "82": 17,
+      "317": 17,
+      "1": 17,
+      "329": 17,
+      "470": 16,
+      "191": 15,
+      "220": 14,
+      "661": 14
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 18,
+    "avg_per_transfer_gw": 0.4,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 8
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2461,
+    "final_rank": 525,
+    "best_gw": {
+      "gw": 33,
+      "points": 128,
+      "total": 2141,
+      "rank": 115292
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 37,
+      "total": 564,
+      "rank": 9292648
+    },
+    "avg_gw_points": 65.0
+  }
+}

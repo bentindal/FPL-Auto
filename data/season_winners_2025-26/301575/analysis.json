@@ -1,0 +1,229 @@
+{
+  "manager": {
+    "rank": 85,
+    "manager_id": 301575,
+    "player_name": "Patrick Derbakk",
+    "team_name": "Str\u00f8ms\u00f8Aassen Faller",
+    "points": 2458
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 22,
+      "449": 9,
+      "381": 3,
+      "16": 2,
+      "525": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        1,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        2,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 70,
+    "most_selected": {
+      "430": 32,
+      "470": 29,
+      "82": 29,
+      "67": 28,
+      "260": 28,
+      "347": 27,
+      "5": 24,
+      "191": 23,
+      "136": 21,
+      "449": 21,
+      "151": 21,
+      "373": 18,
+      "72": 18,
+      "47": 17,
+      "249": 15
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 27,
+    "avg_per_transfer_gw": 0.1,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2458,
+    "final_rank": 602,
+    "best_gw": {
+      "gw": 33,
+      "points": 129,
+      "total": 2107,
+      "rank": 108385
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 30,
+      "total": 1151,
+      "rank": 10777220
+    },
+    "avg_gw_points": 64.8
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "manager": {
+    "rank": 58,
+    "manager_id": 8243943,
+    "player_name": "Theo Langham",
+    "team_name": "Mart\u00edn ZubiSendIt",
+    "points": 2463
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 30,
+      "449": 5,
+      "16": 1,
+      "661": 1,
+      "21": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        19,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        18,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        10,
+        33
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 66,
+    "most_selected": {
+      "430": 35,
+      "470": 32,
+      "82": 26,
+      "1": 26,
+      "517": 24,
+      "16": 22,
+      "249": 22,
+      "151": 19,
+      "694": 17,
+      "252": 16,
+      "661": 16,
+      "411": 15,
+      "329": 15,
+      "72": 14,
+      "443": 14
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 21,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2463,
+    "final_rank": 450,
+    "best_gw": {
+      "gw": 33,
+      "points": 95,
+      "total": 2081,
+      "rank": 1381097
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 34,
+      "total": 1306,
+      "rank": 9664529
+    },
+    "avg_gw_points": 64.8
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "manager": {
+    "rank": 38,
+    "manager_id": 6629455,
+    "player_name": "SalMedia Ja",
+    "team_name": "Life\u2019s Good FC",
+    "points": 2472
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 16,
+      "16": 7,
+      "449": 7,
+      "5": 2,
+      "568": 1,
+      "36": 1,
+      "450": 1,
+      "661": 1,
+      "21": 1,
+      "387": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        35
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        15,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        10,
+        24
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 69,
+    "most_selected": {
+      "430": 33,
+      "36": 31,
+      "5": 29,
+      "470": 22,
+      "16": 20,
+      "449": 19,
+      "119": 17,
+      "249": 16,
+      "82": 16,
+      "256": 15,
+      "283": 14,
+      "8": 14,
+      "502": 14,
+      "6": 14,
+      "694": 14
+    }
+  },
+  "transfers": {
+    "total": 47,
+    "gameweeks_with_transfers": 26,
+    "avg_per_transfer_gw": 1.5,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 7,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 4,
+        "cost": 4
+      },
+      {
+        "gw": 36,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2472,
+    "final_rank": 277,
+    "best_gw": {
+      "gw": 33,
+      "points": 111,
+      "total": 2131,
+      "rank": 485442
+    },
+    "worst_gw": {
+      "gw": 23,
+      "points": 32,
+      "total": 1435,
+      "rank": 11209501
+    },
+    "avg_gw_points": 66.1
+  }
+}

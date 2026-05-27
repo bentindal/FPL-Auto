@@ -1,0 +1,215 @@
+{
+  "manager": {
+    "rank": 24,
+    "manager_id": 1112601,
+    "player_name": "samuel martin",
+    "team_name": "Net six and chill",
+    "points": 2480
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 20,
+      "16": 6,
+      "449": 6,
+      "381": 3,
+      "5": 1,
+      "661": 1,
+      "624": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        11,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        4,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        13,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 67,
+    "most_selected": {
+      "517": 33,
+      "470": 33,
+      "430": 32,
+      "5": 26,
+      "291": 24,
+      "449": 23,
+      "136": 22,
+      "261": 21,
+      "139": 21,
+      "446": 21,
+      "16": 20,
+      "329": 17,
+      "411": 16,
+      "317": 15,
+      "237": 14
+    }
+  },
+  "transfers": {
+    "total": 41,
+    "gameweeks_with_transfers": 24,
+    "avg_per_transfer_gw": 0.8,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 6,
+        "count": 3,
+        "cost": 4
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2480,
+    "final_rank": 165,
+    "best_gw": {
+      "gw": 33,
+      "points": 96,
+      "total": 2126,
+      "rank": 1298048
+    },
+    "worst_gw": {
+      "gw": 22,
+      "points": 39,
+      "total": 1384,
+      "rank": 6977120
+    },
+    "avg_gw_points": 65.8
+  }
+}

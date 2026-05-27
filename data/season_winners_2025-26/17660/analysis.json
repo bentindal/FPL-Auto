@@ -1,0 +1,220 @@
+{
+  "manager": {
+    "rank": 67,
+    "manager_id": 17660,
+    "player_name": "Cies Top",
+    "team_name": "Kai Me A River",
+    "points": 2462
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 21,
+      "449": 7,
+      "381": 4,
+      "16": 3,
+      "666": 1,
+      "450": 1,
+      "5": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        8,
+        36
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        3,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 75,
+    "most_selected": {
+      "470": 33,
+      "1": 32,
+      "430": 30,
+      "47": 29,
+      "449": 27,
+      "5": 27,
+      "82": 24,
+      "694": 23,
+      "136": 23,
+      "317": 22,
+      "252": 20,
+      "256": 14,
+      "684": 14,
+      "237": 13,
+      "16": 12
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 20,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 4
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2462,
+    "final_rank": 496,
+    "best_gw": {
+      "gw": 8,
+      "points": 96,
+      "total": 536,
+      "rank": 47406
+    },
+    "worst_gw": {
+      "gw": 5,
+      "points": 38,
+      "total": 290,
+      "rank": 7792287
+    },
+    "avg_gw_points": 65.0
+  }
+}

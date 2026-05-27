@@ -1,0 +1,219 @@
+{
+  "manager": {
+    "rank": 82,
+    "manager_id": 18821,
+    "player_name": "dimitris koulou",
+    "team_name": "Est\u00e8ve the TV",
+    "points": 2459
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 21,
+      "449": 7,
+      "381": 4,
+      "16": 3,
+      "5": 2,
+      "413": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        36
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        18,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        15,
+        33
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        19,
+        35
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 71,
+    "most_selected": {
+      "1": 36,
+      "430": 32,
+      "449": 31,
+      "5": 30,
+      "517": 26,
+      "261": 18,
+      "347": 17,
+      "470": 17,
+      "317": 17,
+      "82": 17,
+      "252": 16,
+      "291": 16,
+      "411": 16,
+      "16": 15,
+      "473": 15
+    }
+  },
+  "transfers": {
+    "total": 39,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.3,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 21,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 3,
+        "cost": 8
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2459,
+    "final_rank": 580,
+    "best_gw": {
+      "gw": 33,
+      "points": 102,
+      "total": 2152,
+      "rank": 908067
+    },
+    "worst_gw": {
+      "gw": 20,
+      "points": 42,
+      "total": 1310,
+      "rank": 5953665
+    },
+    "avg_gw_points": 64.9
+  }
+}

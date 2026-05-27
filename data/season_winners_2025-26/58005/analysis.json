@@ -1,0 +1,220 @@
+{
+  "manager": {
+    "rank": 90,
+    "manager_id": 58005,
+    "player_name": "Henry Lam",
+    "team_name": "SKM\u5175\u5de5\u5ee0",
+    "points": 2457
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 25,
+      "449": 7,
+      "136": 2,
+      "381": 1,
+      "235": 1,
+      "249": 1,
+      "666": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        6,
+        33
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        19,
+        37
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        13,
+        31
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        4,
+        21
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 63,
+    "most_selected": {
+      "470": 35,
+      "430": 34,
+      "82": 32,
+      "5": 28,
+      "373": 25,
+      "136": 24,
+      "411": 23,
+      "249": 19,
+      "329": 19,
+      "242": 18,
+      "225": 18,
+      "449": 17,
+      "291": 17,
+      "253": 16,
+      "335": 14
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 25,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 2,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 6,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 8,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 32,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 34,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 1,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2457,
+    "final_rank": 620,
+    "best_gw": {
+      "gw": 29,
+      "points": 103,
+      "total": 1828,
+      "rank": 20193
+    },
+    "worst_gw": {
+      "gw": 9,
+      "points": 36,
+      "total": 566,
+      "rank": 9896735
+    },
+    "avg_gw_points": 64.7
+  }
+}

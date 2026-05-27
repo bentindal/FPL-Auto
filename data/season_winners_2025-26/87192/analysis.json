@@ -1,0 +1,197 @@
+{
+  "manager": {
+    "rank": 91,
+    "manager_id": 87192,
+    "player_name": "Dzung Pham",
+    "team_name": "MeoCantelope",
+    "points": 2457
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 20,
+      "449": 8,
+      "381": 3,
+      "16": 2,
+      "235": 1,
+      "249": 1,
+      "283": 1,
+      "136": 1,
+      "21": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        13,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        9,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        18,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        6,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 68,
+    "most_selected": {
+      "430": 32,
+      "470": 31,
+      "1": 27,
+      "449": 27,
+      "348": 26,
+      "136": 22,
+      "317": 20,
+      "517": 20,
+      "82": 19,
+      "5": 18,
+      "72": 13,
+      "16": 13,
+      "249": 11,
+      "414": 11,
+      "106": 11
+    }
+  },
+  "transfers": {
+    "total": 38,
+    "gameweeks_with_transfers": 20,
+    "avg_per_transfer_gw": 0.2,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 5,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 11,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 12,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 2,
+        "cost": 4
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 16,
+        "count": 4,
+        "cost": 0
+      },
+      {
+        "gw": 19,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 26,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 28,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 31,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2457,
+    "final_rank": 628,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2141,
+      "rank": 60249
+    },
+    "worst_gw": {
+      "gw": 12,
+      "points": 31,
+      "total": 722,
+      "rank": 9193177
+    },
+    "avg_gw_points": 64.8
+  }
+}

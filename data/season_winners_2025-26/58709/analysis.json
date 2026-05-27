@@ -1,0 +1,210 @@
+{
+  "manager": {
+    "rank": 95,
+    "manager_id": 58709,
+    "player_name": "Finley Powditch",
+    "team_name": "Aaron Chen",
+    "points": 2456
+  },
+  "captaincy": {
+    "top_choices": {
+      "430": 22,
+      "449": 8,
+      "381": 4,
+      "16": 1,
+      "661": 1,
+      "5": 1,
+      "666": 1
+    },
+    "total_gameweeks": 38
+  },
+  "chip_usage": {
+    "3xc": {
+      "gameweeks": [
+        17,
+        26
+      ],
+      "count": 2
+    },
+    "bboost": {
+      "gameweeks": [
+        13,
+        33
+      ],
+      "count": 2
+    },
+    "freehit": {
+      "gameweeks": [
+        16,
+        34
+      ],
+      "count": 2
+    },
+    "wildcard": {
+      "gameweeks": [
+        12,
+        32
+      ],
+      "count": 2
+    }
+  },
+  "squad": {
+    "total_unique_players": 62,
+    "most_selected": {
+      "430": 33,
+      "470": 31,
+      "82": 23,
+      "5": 23,
+      "449": 22,
+      "47": 21,
+      "1": 21,
+      "373": 20,
+      "411": 18,
+      "139": 17,
+      "329": 17,
+      "661": 16,
+      "283": 15,
+      "226": 14,
+      "694": 13
+    }
+  },
+  "transfers": {
+    "total": 37,
+    "gameweeks_with_transfers": 23,
+    "avg_per_transfer_gw": 0.0,
+    "gw_breakdown": [
+      {
+        "gw": 3,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 4,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 7,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 9,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 10,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 13,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 14,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 15,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 17,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 18,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 20,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 22,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 23,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 24,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 25,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 27,
+        "count": 2,
+        "cost": 0
+      },
+      {
+        "gw": 29,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 30,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 33,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 35,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 36,
+        "count": 3,
+        "cost": 0
+      },
+      {
+        "gw": 37,
+        "count": 1,
+        "cost": 0
+      },
+      {
+        "gw": 38,
+        "count": 2,
+        "cost": 0
+      }
+    ]
+  },
+  "performance": {
+    "total_points": 2456,
+    "final_rank": 647,
+    "best_gw": {
+      "gw": 33,
+      "points": 134,
+      "total": 2130,
+      "rank": 42342
+    },
+    "worst_gw": {
+      "gw": 19,
+      "points": 37,
+      "total": 1207,
+      "rank": 7735005
+    },
+    "avg_gw_points": 64.6
+  }
+}
