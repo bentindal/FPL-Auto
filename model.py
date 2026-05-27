@@ -41,6 +41,25 @@ def parse_args():
 
 
 def main():
+    """
+    Train models and generate predictions for FPL gameweeks.
+
+    Temporal Validation Strategy (Expanding Window):
+    -----------------------------------------------
+    This function implements an expanding-window cross-validation pattern for
+    temporal data, equivalent to TimeSeriesSplit without explicit framework usage:
+
+    - Training window: GW[i - training_prev_weeks : i-1] (expands as i increases)
+    - Test window: GW[i] (single gameweek, forward-only prediction)
+    - Invariant: training_data never contains test gameweek (i-1 < i ✓)
+
+    This mimics the realistic scenario where we train on all historical data up
+    to a deadline, then predict the next week. As seasons progress, the training
+    window grows, improving model calibration without look-ahead bias.
+
+    For explicit TimeSeriesSplit validation across the full season, use the
+    --use_explicit_timeseriessplit flag (future work in Plan 02).
+    """
     inputs = parse_args()
     season = inputs.season
     target_gameweek = inputs.target_gw
@@ -77,10 +96,12 @@ def main():
             ]
             train_errors = [eval.score_model(train_preds[j], training_data[j][1]) for j in range(4)]
             for j, pos in enumerate(POSITIONS):
-                ae_t, rmse_t, acc_t = test_errors = errors[j]
+                ae_t, rmse_t, acc_t = errors[j]
                 ae_tr, rmse_tr, acc_tr = train_errors[j]
+                # Calculate train-vs-test gap (relative improvement on test set)
+                rmse_gap = ((rmse_t - rmse_tr) / rmse_tr * 100) if rmse_tr > 0 else 0
                 print(f'GW{i} Test:  {pos}: AE: {ae_t:.3f}, RMSE: {rmse_t:.3f}, ACC: {acc_t*100:.2f}%')
-                print(f'GW{i} Train: {pos}: AE: {ae_tr:.3f}, RMSE: {rmse_tr:.3f}, ACC: {acc_tr*100:.2f}%')
+                print(f'GW{i} Train: {pos}: AE: {ae_tr:.3f}, RMSE: {rmse_tr:.3f}, ACC: {acc_tr*100:.2f}%, Gap: {rmse_gap:+.1f}%')
 
         avg_e   = sum(e[0] for e in errors) / 4
         avg_mse = sum(e[1] for e in errors) / 4
