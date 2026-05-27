@@ -130,7 +130,7 @@ class FplData:
         )
 
     def avg_player_data(self, season, from_gw, to_gw):
-        """Aggregate per-player stats across a GW range, averaged by player name. Includes feature engineering."""
+        """Aggregate per-player stats across a GW range, averaged by player name."""
         if self.season == '2022-23' and from_gw == 7:
             from_gw = 8
 
@@ -146,12 +146,6 @@ class FplData:
             def_data = pd.concat((def_data, self.get_pos_data(season, i, 'DEF')))
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
-
-        # === NEW: Apply feature engineering per position before averaging ===
-        gk_data = self.engineer_features_on_gw_data(gk_data, season, to_gw, 'GK')
-        def_data = self.engineer_features_on_gw_data(def_data, season, to_gw, 'DEF')
-        mid_data = self.engineer_features_on_gw_data(mid_data, season, to_gw, 'MID')
-        fwd_data = self.engineer_features_on_gw_data(fwd_data, season, to_gw, 'FWD')
 
         gk_data = gk_data.groupby('name').mean().reset_index().set_index('name')
         def_data = def_data.groupby('name').mean().reset_index().set_index('name')
@@ -185,14 +179,6 @@ class FplData:
 
     def get_training_data(self, season, week_num):
         features = self.get_all_pos_data(season, week_num)
-
-        # === NEW: Apply feature engineering to training data ===
-        features_engineered = []
-        for j, pos in enumerate(['GK', 'DEF', 'MID', 'FWD']):
-            engineered = self.engineer_features_on_gw_data(features[j], season, week_num, pos)
-            features_engineered.append(engineered)
-        features = tuple(features_engineered)
-
         feature_labels = self.extract_all_labels(features)
         features = self.prune_all_features(features)
         return tuple(zip(features, feature_labels))
@@ -448,7 +434,7 @@ class FplData:
 
             df = pos_df[['Name']].copy()
             if sum:
-                df['xP'] = np.round(np.mean(discounted, axis=1), 2)
+                df['xP'] = np.round(np.sum(discounted, axis=1), 2)
             else:
                 df['xP'] = list(discounted)
             result.append(df)
