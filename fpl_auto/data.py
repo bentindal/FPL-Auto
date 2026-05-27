@@ -474,9 +474,21 @@ class FplData:
         """
         gw_data = gw_data.copy()
 
-        # Rolling averages: 5-GW and 10-GW windows
-        rolling_windows = [5, 10]
-        rolling_columns = ['minutes', 'influence', 'assists', 'goals_scored', 'creativity', 'threat']
+        # === ROLLING AVERAGES: RESTRICTED (Plan 04-03 Optimization) ===
+        # Plan 04-02 discovered high multicollinearity in 5GW rolling features:
+        # - influence_rolling_5gw: VIF 7.2 (duplicates raw influence)
+        # - minutes_rolling_5gw: VIF 14.21 (duplicates raw minutes)
+        # These caused 65-75% performance degradation.
+        #
+        # Plan 04-03 strategy: Disable 5GW rolling features entirely (except creativity/threat for MID/FWD).
+        # Only compute 10GW rolling (longer-term trend, less correlated with current GW).
+        # New advanced features (seasonal bucket, form momentum, etc) replace the lost signals.
+
+        # Only compute 10GW rolling for less-problematic columns
+        rolling_windows = [10]  # REMOVED 5 from list
+        # REMOVED: 'minutes', 'influence', 'goals_scored' — these had high multicollinearity
+        # KEPT: 'creativity', 'threat' — these are less directly duplicative
+        rolling_columns = ['creativity', 'threat']
 
         for window in rolling_windows:
             for col in rolling_columns:
@@ -558,10 +570,14 @@ class FplData:
             gw_data['gw_bucket_final'] = 1.0
 
         # Feature 2: Form momentum (trend: recent form vs longer-term)
-        # Compute influence_rolling_3gw (very recent) and compare to rolling_10gw (longer trend)
+        # Since influence_rolling features are disabled to avoid multicollinearity,
+        # compute form momentum directly from past influence values
         influence_3gw_values = np.zeros(len(gw_data), dtype=float)
         count_3gw = 0
-        for offset in range(1, 4):  # 3 most recent GWs
+        influence_10gw_values = np.zeros(len(gw_data), dtype=float)
+        count_10gw = 0
+
+        for offset in range(1, 11):  # up to 10 GWs
             if week_num - offset < 1:
                 continue
             past_gw = self.get_gw_data(season, week_num - offset)
@@ -571,17 +587,20 @@ class FplData:
                 pd.to_numeric(past_gw['influence'], errors='coerce')
                 .fillna(0).groupby(level=0).sum().to_dict()
             )
-            influence_3gw_values += np.array([past_vals.get(n, 0.0) for n in gw_data.index])
-            count_3gw += 1
+            past_vals_array = np.array([past_vals.get(n, 0.0) for n in gw_data.index])
 
-        if count_3gw > 0:
-            influence_3gw = influence_3gw_values / count_3gw
-        else:
-            influence_3gw = np.zeros(len(gw_data))
+            # 3GW average (most recent)
+            if offset <= 3:
+                influence_3gw_values += past_vals_array
+                count_3gw += 1
 
-        # Form momentum = recent form (3GW) - longer term form (10GW)
-        # Positive momentum: recently improving; Negative: recently declining
-        influence_10gw = gw_data['influence_rolling_10gw'].values if 'influence_rolling_10gw' in gw_data.columns else np.zeros(len(gw_data))
+            # 10GW average (longer-term)
+            influence_10gw_values += past_vals_array
+            count_10gw += 1
+
+        # Form momentum = recent form (3GW avg) - longer term form (10GW avg)
+        influence_3gw = influence_3gw_values / count_3gw if count_3gw > 0 else np.zeros(len(gw_data))
+        influence_10gw = influence_10gw_values / count_10gw if count_10gw > 0 else np.zeros(len(gw_data))
         gw_data['form_momentum'] = influence_3gw - influence_10gw
         gw_data['form_momentum'] = gw_data['form_momentum'].fillna(0.0).replace([np.inf, -np.inf], 0.0)
 
