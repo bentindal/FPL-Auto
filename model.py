@@ -61,9 +61,13 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
     but prepares infrastructure for full nested CV in Phase 4.
 
     === Phase 4 v2: Apply VIF filtering to remove multicollinear features ===
+    Suppress verbose VIF output during normal operation.
 
-    Returns: (predictions, metrics_dict, predictor)
+    Returns: (predictions, metrics_dict, predictor, training_data_filtered, test_data_filtered)
     """
+    import sys
+    from io import StringIO
+
     # === NEW: Apply VIF filtering per position ===
     training_data_filtered = []
     test_data_filtered = []
@@ -77,8 +81,13 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
 
         feature_names = list(X_train.columns)
 
-        # Compute VIF on training data only (prevent test leakage)
-        vif_df, drop_list = eval.display_feature_vif(X_train, feature_names, pos, threshold=5.0)
+        # Suppress verbose VIF output
+        old_stdout = sys.stdout
+        sys.stdout = StringIO()
+        try:
+            vif_df, drop_list = eval.display_feature_vif(X_train, feature_names, pos, threshold=5.0)
+        finally:
+            sys.stdout = old_stdout
 
         # Drop high-VIF features from both train and test
         if len(drop_list) > 0:
@@ -112,7 +121,7 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
             'test_rmse': test_rmse
         }
 
-    return test_preds, metrics, predictor
+    return test_preds, metrics, predictor, training_data_filtered, test_data_filtered
 
 
 def compute_baseline_metrics(season, vastaav, model_type, inputs):
@@ -135,7 +144,7 @@ def compute_baseline_metrics(season, vastaav, model_type, inputs):
         except UnboundLocalError:
             break
 
-        test_preds, metrics, _ = evaluate_with_nested_cv(
+        test_preds, metrics, _, _, _ = evaluate_with_nested_cv(
             training_data, test_data, model_type, '', inputs
         )
 
@@ -250,31 +259,31 @@ def main():
             return
 
         # Use evaluate_with_nested_cv for consistency with baseline metrics
-        test_preds, metrics, predictor = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs)
+        test_preds, metrics, predictor, training_data_filtered, test_data_filtered = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs)
 
         if inputs.display_weights:
-            feature_list = training_data[0][0].columns
+            feature_list = training_data_filtered[0][0].columns
             eval.display_weights(i, predictor.feature_importances(), feature_list, POSITIONS)
 
         if inputs.display_permutation_importance:
-            feature_list = list(training_data[0][0].columns)
+            feature_list = list(training_data_filtered[0][0].columns)
             for j, pos in enumerate(POSITIONS):
                 importance_df = eval.display_permutation_importance(
-                    predictor, test_data[j][0], test_data[j][1],
+                    predictor, test_data_filtered[j][0], test_data_filtered[j][1],
                     feature_list, pos, top_n=10
                 )
                 if i == target_gameweek:  # Only display top 10 on first GW
                     print(f"\nTop 10 Permutation Importance for {pos}:")
                     print(importance_df.head(10).to_string())
 
-        errors = [eval.score_model(test_preds[j], test_data[j][1]) for j in range(4)]
+        errors = [eval.score_model(test_preds[j], test_data_filtered[j][1]) for j in range(4)]
 
         if inputs.score_train_vs_test:
             train_preds = [
-                np.round(predictor.models[j].predict(training_data[j][0]), 5)
+                np.round(predictor.models[j].predict(training_data_filtered[j][0]), 5)
                 for j in range(4)
             ]
-            train_errors = [eval.score_model(train_preds[j], training_data[j][1]) for j in range(4)]
+            train_errors = [eval.score_model(train_preds[j], training_data_filtered[j][1]) for j in range(4)]
             for j, pos in enumerate(POSITIONS):
                 ae_t, rmse_t, acc_t = errors[j]
                 ae_tr, rmse_tr, acc_tr = train_errors[j]
