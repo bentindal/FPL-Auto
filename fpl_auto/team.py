@@ -25,6 +25,7 @@ class Team:
         self.gameweek = gameweek
         self.budget = budget
         self.purchase_prices = dict(purchase_prices) if purchase_prices is not None else {}
+        self.hits_taken = 0
 
         self.gks  = list(players[0])
         self.defs = list(players[1])
@@ -301,8 +302,7 @@ class Team:
             multiplier = 3 if self.chip_triple_captain_active else 2
             return raw * multiplier
         if self.vice_captain == player and not captain_played:
-            multiplier = 3 if self.chip_triple_captain_active else 2
-            return raw * multiplier
+            return raw * 2
         return raw
 
     def captain_played(self):
@@ -324,6 +324,7 @@ class Team:
             total += sum(self.player_p(sub[0], sub[1]) for sub in self.subs)
         if self.chip_bench_boost_active:
             total += sum(self.player_p(sub[0], sub[1]) for sub in self.subs)
+        total -= 4 * self.hits_taken
         return total
 
     def team_p_list(self, include_subs=False):
@@ -431,6 +432,8 @@ class Team:
                 self.remove_player(transfer_in, position)
             else:
                 print(f'TRANSFER: OUT {transfer_out} {position} --> IN {transfer_in} {position} | xP Gain: {xp_gain:.2f}\n')
+                if self.transfers_left <= 0:
+                    self.hits_taken += 1
                 self.transfers_left -= 1
                 self.transfer_history.append([self.gameweek, [transfer_out, transfer_in], round(xp_gain, 2)])
         except ValueError:

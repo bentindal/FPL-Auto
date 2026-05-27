@@ -551,5 +551,82 @@ class TestPipelineBackwardCompatibility(unittest.TestCase):
                           f"{pos}: predictions contain NaN or Inf")
 
 
+class TestTripleCaptain(unittest.TestCase):
+    def _make_scored_team(self, captain_pts, vc_pts, tc_active=False):
+        t = make_team(budget=100)
+        t.add_player('Mohamed Salah', 'MID', 4.0)
+        t.add_player('Harry Kane', 'FWD', 4.0)
+        t.captain = 'Mohamed Salah'
+        t.vice_captain = 'Harry Kane'
+        t.chip_triple_captain_active = tc_active
+        t.points_scored = {}
+        if captain_pts is not None:
+            t.points_scored['Mohamed Salah'] = captain_pts
+        if vc_pts is not None:
+            t.points_scored['Harry Kane'] = vc_pts
+        return t
+
+    def test_captain_gets_2x_normally(self):
+        t = self._make_scored_team(10, 6)
+        self.assertEqual(t.player_p('Mohamed Salah', 'MID'), 20)
+
+    def test_captain_gets_3x_with_triple_captain(self):
+        t = self._make_scored_team(10, 6, tc_active=True)
+        self.assertEqual(t.player_p('Mohamed Salah', 'MID'), 30)
+
+    def test_vc_gets_2x_when_captain_doesnt_play(self):
+        # Captain absent (not in points_scored) → VC steps up with 2x
+        t = self._make_scored_team(None, 10)
+        self.assertEqual(t.player_p('Harry Kane', 'FWD'), 20)
+
+    def test_vc_gets_2x_not_3x_when_tc_active_and_captain_absent(self):
+        # TC chip is active but captain didn't play — VC should still get 2x only.
+        # The 3x bonus belongs to the nominated captain, not the VC stand-in.
+        t = self._make_scored_team(None, 10, tc_active=True)
+        self.assertEqual(t.player_p('Harry Kane', 'FWD'), 20)  # fails until fixed
+
+    def test_vc_unaffected_when_captain_played(self):
+        t = self._make_scored_team(10, 6, tc_active=True)
+        self.assertEqual(t.player_p('Harry Kane', 'FWD'), 6)
+
+
+class TestTransferHitPenalty(unittest.TestCase):
+    def _team_with_hits(self, hits):
+        t = make_team(budget=100)
+        t.hits_taken = hits
+        # Stub out the costly auto methods so team_p only tests the penalty math
+        t.return_subs_to_team = lambda: None
+        t.auto_subs = lambda: None
+        t.auto_captain = lambda: None
+        t.swap_players_who_didnt_play = lambda: None
+        t.add_player('Mohamed Salah', 'MID', 4.0)
+        t.points_scored = {'Mohamed Salah': 10}
+        t.captain = 'Mohamed Salah'
+        t.vice_captain = 'Mohamed Salah'
+        return t
+
+    def test_no_hits_no_penalty(self):
+        t = self._team_with_hits(0)
+        self.assertEqual(t.team_p(), 20)  # captain 2x, no deduction
+
+    def test_one_hit_deducts_4(self):
+        t = self._team_with_hits(1)
+        self.assertEqual(t.team_p(), 16)  # 20 - 4
+
+    def test_two_hits_deducts_8(self):
+        t = self._team_with_hits(2)
+        self.assertEqual(t.team_p(), 12)  # 20 - 8
+
+    def test_transfer_records_hit_when_no_free_transfers(self):
+        # When transfers_left is 0, a completed transfer should record a hit.
+        # We mock player_xp so the xP-gain gate doesn't block the transfer.
+        t = make_team(budget=100, transfers_left=0)
+        t.add_player('Mohamed Salah', 'MID', 4.0)
+        t.add_player('Heung-Min Son', 'MID', 4.0)
+        t.player_xp = lambda player, pos: 10.0 if player == 'Heung-Min Son' else 5.0
+        t.transfer('Mohamed Salah', 'Heung-Min Son', 'MID')
+        self.assertEqual(t.hits_taken, 1)
+
+
 if __name__ == '__main__':
     unittest.main()
