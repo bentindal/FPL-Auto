@@ -13,6 +13,7 @@ import numpy as np
 
 import fpl_auto.team as team_module
 from fpl_auto import evaluate as eval
+from fpl_auto.strategies import StrategyConfig, BASELINE_CURRENT
 
 
 def parse_args():
@@ -71,8 +72,8 @@ def get_strategy_config(strategy_name: str):
     return strategies[strategy_name]
 
 
-def _make_team_at_gw1(season, start_gw):
-    t = team_module.Team(season, start_gw)
+def _make_team_at_gw1(season, start_gw, strategy_config=None):
+    t = team_module.Team(season, start_gw, strategy_config=strategy_config)
     t.add_player('Aaron Ramsdale', 'GK')
     t.add_player('Gabriel dos Santos Magalhães', 'DEF')
     t.add_player('Luke Shaw', 'DEF')
@@ -96,7 +97,7 @@ def run_season(config: dict) -> dict:
     Simulate a full season. Designed to be called from a worker process.
 
     Args:
-        config: dict with keys season, start_gw, repeat, starting_team, quiet
+        config: dict with keys season, start_gw, repeat, starting_team, quiet, strategy
 
     Returns:
         dict with season results suitable for printing/saving.
@@ -106,6 +107,11 @@ def run_season(config: dict) -> dict:
     repeat = config['repeat']
     starting_team = config.get('starting_team', 'auto')
     quiet = config.get('quiet', False)
+    strategy_config = config.get('strategy', BASELINE_CURRENT)
+
+    # Ensure strategy_config is a StrategyConfig instance
+    if not isinstance(strategy_config, StrategyConfig):
+        strategy_config = BASELINE_CURRENT
 
     # Suppress stdout in worker processes so output doesn't interleave
     if quiet:
@@ -113,9 +119,9 @@ def run_season(config: dict) -> dict:
 
     try:
         if starting_team == 'custom_1':
-            t = _make_team_at_gw1(season, start_gw)
+            t = _make_team_at_gw1(season, start_gw, strategy_config)
         else:
-            t = team_module.Team(season, start_gw, 100)
+            t = team_module.Team(season, start_gw, 100, strategy_config=strategy_config)
             t.initial_team_generator()
 
         p_list = []
@@ -123,7 +129,7 @@ def run_season(config: dict) -> dict:
         all_p = []
 
         for i in range(start_gw, start_gw + repeat + 1):
-            t.auto_transfer()
+            t.auto_transfer(strategy_config=strategy_config)
             t.auto_subs()
             t.auto_captain()
             t.auto_chips()
@@ -147,6 +153,7 @@ def run_season(config: dict) -> dict:
                         t.chip_free_hit_available, t.chip_wildcard_available,
                         t.free_hit_team,
                         t.purchase_prices,
+                        strategy_config=strategy_config,
                     )
                 except FileNotFoundError:
                     break

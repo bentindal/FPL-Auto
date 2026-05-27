@@ -14,7 +14,7 @@ class Team:
         players=None, chips_used=None, transfer_history=None,
         triple_captain_available=True, bench_boost_available=True,
         free_hit_available=True, wildcard_available=True, free_hit_team=None,
-        purchase_prices=None,
+        purchase_prices=None, strategy_config=None,
     ):
         players = players if players is not None else [[], [], [], [], []]
         chips_used = chips_used if chips_used is not None else []
@@ -27,6 +27,7 @@ class Team:
         self.purchase_prices = dict(purchase_prices) if purchase_prices is not None else {}
         self.hits_taken = 0
         self.transfer_budget_spent = 0  # Reset per GW: tracks cumulative xP gain budget used
+        self.strategy_config = strategy_config  # Store strategy config for access in auto_transfer()
 
         self.gks  = list(players[0])
         self.defs = list(players[1])
