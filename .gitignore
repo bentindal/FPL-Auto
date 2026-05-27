@@ -41,3 +41,4 @@ wheels/
 .coverage
 htmlcov/
 coverage.xml
+predictions/
