@@ -71,6 +71,58 @@ def compute_permutation_importance(model_pipeline, X_test, y_test, feature_names
     return importance_df
 
 
+def display_permutation_importance(predictor, X_test, y_test, feature_names, position: str, top_n: int = 10):
+    """
+    Compute and display top N permutation importance features for a position.
+
+    Args:
+        predictor: Fitted Predictor instance
+        X_test: Test features DataFrame or array
+        y_test: Test targets array
+        feature_names: List of feature column names
+        position: One of ['GK', 'DEF', 'MID', 'FWD']
+        top_n: Number of top features to display
+
+    Output format (printed):
+        ```
+        Permutation Importance — {position}
+        Feature                          Importance   Std Dev
+        ---                              ----------   -------
+        selected_percent                 0.0850       0.0052
+        expected_points                  0.0743       0.0048
+        creativity                       0.0512       0.0031
+        ...
+        ```
+
+    Returns: pandas DataFrame with columns [feature, importance_mean, importance_std]
+    """
+    pos_idx = {'GK': 0, 'DEF': 1, 'MID': 2, 'FWD': 3}[position]
+    model_pipeline = predictor.models[pos_idx]
+
+    # Compute permutation importance
+    result = permutation_importance(
+        model_pipeline,
+        X_test, y_test,
+        n_repeats=10,
+        random_state=42,
+        n_jobs=-1,
+        scoring='neg_mean_squared_error'
+    )
+
+    # Build DataFrame
+    importance_df = pd.DataFrame({
+        'feature': feature_names,
+        'importance': result.importances_mean,
+        'std': result.importances_std
+    }).sort_values('importance', ascending=False)
+
+    # Display
+    print(f"\nPermutation Importance — {position}")
+    print(importance_df.head(top_n).to_string(index=False))
+
+    return importance_df
+
+
 def display_weights(week_num, weights, feature_names, pos):
     """
     Display the feature importances for each position.
