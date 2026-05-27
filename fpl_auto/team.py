@@ -233,6 +233,10 @@ class Team:
             key=lambda x: float(x[1]),
         )
 
+        # Defensive check: ensure we have at least one GK before accessing
+        if not ranked_gk:
+            return []
+
         subs = [[ranked_gk[0][0], 'GK']]
         positions_substituted = {'GK': 1}
         for player in ranked_others:
