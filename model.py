@@ -51,7 +51,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def evaluate_with_nested_cv(training_data, test_data, model_type, position, inputs):
+def evaluate_with_nested_cv(training_data, test_data, model_type, position, inputs, apply_vif_filtering=True):
     """
     Evaluate model using nested CV structure:
     - Inner CV: GridSearchCV with TimeSeriesSplit(n_splits=3) for hyperparameter tuning
@@ -60,56 +60,60 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
     For now: simplified version keeps current GW-by-GW loop structure
     but prepares infrastructure for full nested CV in Phase 4.
 
-    === Phase 4 v2: Apply VIF filtering to remove multicollinear features ===
-    Suppress verbose VIF output during normal operation.
+    === Phase 4 v2: Apply VIF filtering to remove multicollinear features (optional) ===
 
-    Returns: (predictions, metrics_dict, predictor, training_data_filtered, test_data_filtered)
+    Returns: (predictions, metrics_dict, predictor)
     """
-    import sys
-    from io import StringIO
+    # Only apply VIF filtering during standalone evaluation (not in main loop with prediction)
+    if apply_vif_filtering:
+        import sys
+        from io import StringIO
 
-    # === NEW: Apply VIF filtering per position ===
-    training_data_filtered = []
-    test_data_filtered = []
-    dropped_features_log = {}
+        # === Apply VIF filtering per position ===
+        training_data_filtered = []
+        test_data_filtered = []
+        dropped_features_log = {}
 
-    for j, pos in enumerate(POSITIONS):
-        X_train = training_data[j][0].copy()
-        y_train = training_data[j][1].copy()
-        X_test = test_data[j][0].copy()
-        y_test = test_data[j][1].copy()
+        for j, pos in enumerate(POSITIONS):
+            X_train = training_data[j][0].copy()
+            y_train = training_data[j][1].copy()
+            X_test = test_data[j][0].copy()
+            y_test = test_data[j][1].copy()
 
-        feature_names = list(X_train.columns)
+            feature_names = list(X_train.columns)
 
-        # Suppress verbose VIF output
-        old_stdout = sys.stdout
-        sys.stdout = StringIO()
-        try:
-            vif_df, drop_list = eval.display_feature_vif(X_train, feature_names, pos, threshold=5.0)
-        finally:
-            sys.stdout = old_stdout
+            # Suppress verbose VIF output
+            old_stdout = sys.stdout
+            sys.stdout = StringIO()
+            try:
+                vif_df, drop_list = eval.display_feature_vif(X_train, feature_names, pos, threshold=5.0)
+            finally:
+                sys.stdout = old_stdout
 
-        # Drop high-VIF features from both train and test
-        if len(drop_list) > 0:
-            X_train = X_train.drop(columns=drop_list, errors='ignore')
-            X_test = X_test.drop(columns=drop_list, errors='ignore')
-            dropped_features_log[pos] = drop_list
+            # Drop high-VIF features from both train and test
+            if len(drop_list) > 0:
+                X_train = X_train.drop(columns=drop_list, errors='ignore')
+                X_test = X_test.drop(columns=drop_list, errors='ignore')
+                dropped_features_log[pos] = drop_list
 
-        training_data_filtered.append((X_train, y_train))
-        test_data_filtered.append((X_test, y_test))
+            training_data_filtered.append((X_train, y_train))
+            test_data_filtered.append((X_test, y_test))
 
-    predictor = Predictor(model_type=model_type).fit(training_data_filtered)
-    test_preds = predictor.predict_test(test_data_filtered)
+        training_data = training_data_filtered
+        test_data = test_data_filtered
+
+    predictor = Predictor(model_type=model_type).fit(training_data)
+    test_preds = predictor.predict_test(test_data)
 
     # Compute metrics per position
     metrics = {}
     for j, pos in enumerate(POSITIONS):
-        test_rmse = np.sqrt(mean_squared_error(test_data_filtered[j][1], test_preds[j]))
-        test_mae = mean_absolute_error(test_data_filtered[j][1], test_preds[j])
+        test_rmse = np.sqrt(mean_squared_error(test_data[j][1], test_preds[j]))
+        test_mae = mean_absolute_error(test_data[j][1], test_preds[j])
 
         # Train RMSE for gap calculation
-        train_preds = np.round(predictor.models[j].predict(training_data_filtered[j][0]), 5)
-        train_rmse = np.sqrt(mean_squared_error(training_data_filtered[j][1], train_preds))
+        train_preds = np.round(predictor.models[j].predict(training_data[j][0]), 5)
+        train_rmse = np.sqrt(mean_squared_error(training_data[j][1], train_preds))
 
         gap_ratio = (test_rmse - train_rmse) / train_rmse if train_rmse > 0 else 0
 
@@ -121,7 +125,7 @@ def evaluate_with_nested_cv(training_data, test_data, model_type, position, inpu
             'test_rmse': test_rmse
         }
 
-    return test_preds, metrics, predictor, training_data_filtered, test_data_filtered
+    return test_preds, metrics, predictor
 
 
 def compute_baseline_metrics(season, vastaav, model_type, inputs):
@@ -144,8 +148,8 @@ def compute_baseline_metrics(season, vastaav, model_type, inputs):
         except UnboundLocalError:
             break
 
-        test_preds, metrics, _, _, _ = evaluate_with_nested_cv(
-            training_data, test_data, model_type, '', inputs
+        test_preds, metrics, _ = evaluate_with_nested_cv(
+            training_data, test_data, model_type, '', inputs, apply_vif_filtering=False
         )
 
         gw_count += 1
@@ -259,31 +263,32 @@ def main():
             return
 
         # Use evaluate_with_nested_cv for consistency with baseline metrics
-        test_preds, metrics, predictor, training_data_filtered, test_data_filtered = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs)
+        # Disable VIF filtering in main loop to avoid feature mismatch with prediction phase
+        test_preds, metrics, predictor = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=False)
 
         if inputs.display_weights:
-            feature_list = training_data_filtered[0][0].columns
+            feature_list = training_data[0][0].columns
             eval.display_weights(i, predictor.feature_importances(), feature_list, POSITIONS)
 
         if inputs.display_permutation_importance:
-            feature_list = list(training_data_filtered[0][0].columns)
+            feature_list = list(training_data[0][0].columns)
             for j, pos in enumerate(POSITIONS):
                 importance_df = eval.display_permutation_importance(
-                    predictor, test_data_filtered[j][0], test_data_filtered[j][1],
+                    predictor, test_data[j][0], test_data[j][1],
                     feature_list, pos, top_n=10
                 )
                 if i == target_gameweek:  # Only display top 10 on first GW
                     print(f"\nTop 10 Permutation Importance for {pos}:")
                     print(importance_df.head(10).to_string())
 
-        errors = [eval.score_model(test_preds[j], test_data_filtered[j][1]) for j in range(4)]
+        errors = [eval.score_model(test_preds[j], test_data[j][1]) for j in range(4)]
 
         if inputs.score_train_vs_test:
             train_preds = [
-                np.round(predictor.models[j].predict(training_data_filtered[j][0]), 5)
+                np.round(predictor.models[j].predict(training_data[j][0]), 5)
                 for j in range(4)
             ]
-            train_errors = [eval.score_model(train_preds[j], training_data_filtered[j][1]) for j in range(4)]
+            train_errors = [eval.score_model(train_preds[j], training_data[j][1]) for j in range(4)]
             for j, pos in enumerate(POSITIONS):
                 ae_t, rmse_t, acc_t = errors[j]
                 ae_tr, rmse_tr, acc_tr = train_errors[j]
