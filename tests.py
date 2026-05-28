@@ -1816,17 +1816,17 @@ class TestTeamCaptaincy(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_XP)
 
-    def test_suggest_captaincy_returns_tuples(self):
-        """suggest_captaincy() should return ((name, xp), (name, xp)) tuples."""
+    def test_suggest_captaincy_returns_lists(self):
+        """suggest_captaincy() should return ([name, xp], [name, xp]) lists."""
         from fpl_auto.strategies import CAPTAIN_HIGHEST_XP
 
         self.team.add_player('Mohamed Salah', 'MID', 10.0)
         self.team.add_player('Harry Kane', 'FWD', 11.0)
 
         captain, vice = self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_XP)
-        # Verify tuple structure
-        self.assertIsInstance(captain, tuple)
-        self.assertIsInstance(vice, tuple)
+        # Verify list structure (get_all_xp returns lists, not tuples)
+        self.assertIsInstance(captain, list)
+        self.assertIsInstance(vice, list)
         self.assertEqual(len(captain), 2)
         self.assertEqual(len(vice), 2)
         self.assertIsInstance(captain[0], str)  # player name
