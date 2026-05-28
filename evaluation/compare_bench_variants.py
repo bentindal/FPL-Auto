@@ -49,12 +49,11 @@ def run_all_variants(eval_config: EvaluationConfig) -> Dict:
     Returns:
         {
             'BENCH_SAFE_STATIC': {
-                '2023-24': {...metrics...},
-                '2024-25': {...metrics...},
-                'combined': {...bootstrapped CIs...}
+                'iterations': [...],  # Walk-forward iteration results
+                'combined_metrics': {...}  # Aggregated metrics across iterations
             },
             ...
-            'summary': {...comparison table...}
+            '_comparison': {...summary table...}
         }
     """
     results = {}
@@ -75,14 +74,30 @@ def run_all_variants(eval_config: EvaluationConfig) -> Dict:
 
         # Run walk-forward for this variant
         try:
-            result = walk_forward.nested_walk_forward_evaluation(
+            wf_results = walk_forward.nested_walk_forward_evaluation(
                 variant_config,
-                eval_config.test_seasons
+                ['2021-22', '2022-23', '2023-24', '2024-25']
             )
-            results[variant_name] = result
-            print(f"✓ {variant_name} completed")
+
+            # Extract test season results (2023-24 and 2024-25)
+            test_season_results = []
+            for wf_iter in wf_results:
+                if wf_iter.get('test_season') in eval_config.test_seasons:
+                    test_season_results.append(wf_iter)
+
+            # Compute combined metrics across test seasons
+            combined = _aggregate_test_results(test_season_results)
+
+            results[variant_name] = {
+                'iterations': wf_results,
+                'test_iterations': test_season_results,
+                'combined_metrics': combined,
+            }
+            print(f"✓ {variant_name} completed. Combined points: {combined['total_points']:.0f}")
         except Exception as e:
             print(f"✗ {variant_name} failed: {e}")
+            import traceback
+            traceback.print_exc()
             results[variant_name] = {'error': str(e)}
 
     # Compute comparison metrics
@@ -94,6 +109,56 @@ def run_all_variants(eval_config: EvaluationConfig) -> Dict:
     results['_comparison'] = comparison
 
     return results
+
+
+def _aggregate_test_results(test_iterations: List[Dict]) -> Dict:
+    """
+    Aggregate test season results into combined metrics.
+
+    Args:
+        test_iterations: List of walk-forward iteration dicts, each with test_metrics
+
+    Returns:
+        Dict with combined metrics including CIs
+    """
+    if not test_iterations:
+        return {}
+
+    # Extract total points from each test iteration
+    points_list = [it.get('test_metrics', {}).get('total_points', 0)
+                   for it in test_iterations]
+    sharpes = [it.get('test_metrics', {}).get('sharpe_ratio', 0)
+               for it in test_iterations]
+    sortinos = [it.get('test_metrics', {}).get('sortino_ratio', 0)
+                for it in test_iterations]
+
+    # Compute bootstrap CIs for total points
+    if points_list:
+        # Simple bootstrap on points
+        mean_points = float(np.mean(points_list))
+
+        # Bootstrap CI
+        bootstrap_samples = []
+        for _ in range(10000):
+            sample = np.random.choice(points_list, size=len(points_list), replace=True)
+            bootstrap_samples.append(np.mean(sample))
+
+        bootstrap_samples = np.array(bootstrap_samples)
+        ci_lower = float(np.percentile(bootstrap_samples, 2.5))
+        ci_upper = float(np.percentile(bootstrap_samples, 97.5))
+    else:
+        mean_points = 0.0
+        ci_lower = 0.0
+        ci_upper = 0.0
+
+    return {
+        'total_points': mean_points,
+        'total_points_ci_lower': ci_lower,
+        'total_points_ci_upper': ci_upper,
+        'sharpe_ratio': float(np.mean(sharpes)) if sharpes else 0.0,
+        'sortino_ratio': float(np.mean(sortinos)) if sortinos else 0.0,
+        'num_test_seasons': len(test_iterations),
+    }
 
 
 def _compute_comparison(results: Dict, eval_config: EvaluationConfig) -> Dict:
@@ -123,6 +188,14 @@ def _compute_comparison(results: Dict, eval_config: EvaluationConfig) -> Dict:
             'sortino': combined.get('sortino_ratio', 0),
             'ci_lower': combined.get('total_points_ci_lower', 0),
             'ci_upper': combined.get('total_points_ci_upper', 0),
+        }
+
+    if not metrics_by_variant:
+        return {
+            'metrics_by_variant': {},
+            'significant_pairs': [],
+            'best_variant': 'N/A',
+            'summary_table': 'No valid results to compare',
         }
 
     # Find best variant (highest mean points)
