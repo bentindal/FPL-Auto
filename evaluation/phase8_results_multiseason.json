@@ -1,0 +1,121 @@
+{
+  "phase": "8-gap-closure",
+  "evaluation_type": "multi-season-walk-forward",
+  "test_seasons": [
+    "2021-22",
+    "2022-23",
+    "2023-24"
+  ],
+  "summary": {
+    "metrics_by_variant": {
+      "BENCH_SAFE_STATIC": {
+        "points": 1823.3333333333333,
+        "sharpe": 3.0347307406961623,
+        "sortino": 5.054042172732753,
+        "ci_lower": 1618.0,
+        "ci_upper": 2035.0,
+        "std_dev": 170.29843086639278,
+        "num_seasons": 3
+      },
+      "BENCH_SAFE_PREDICTIVE": {
+        "points": 1763.6666666666667,
+        "sharpe": 3.023705299058546,
+        "sortino": 4.957820254852414,
+        "ci_lower": 1591.0,
+        "ci_upper": 1994.0,
+        "std_dev": 169.50188461751358,
+        "num_seasons": 3
+      },
+      "BENCH_SPECULATIVE_STATIC": {
+        "points": 1823.3333333333333,
+        "sharpe": 3.0347307406961623,
+        "sortino": 5.054042172732753,
+        "ci_lower": 1618.0,
+        "ci_upper": 2035.0,
+        "std_dev": 170.29843086639278,
+        "num_seasons": 3
+      },
+      "BENCH_SPECULATIVE_PREDICTIVE": {
+        "points": 1763.6666666666667,
+        "sharpe": 3.023705299058546,
+        "sortino": 4.957820254852414,
+        "ci_lower": 1591.0,
+        "ci_upper": 1994.0,
+        "std_dev": 169.50188461751358,
+        "num_seasons": 3
+      }
+    },
+    "per_season_results": {
+      "2021-22": {
+        "BENCH_SAFE_STATIC": 1618.0,
+        "BENCH_SAFE_PREDICTIVE": 1591.0,
+        "BENCH_SPECULATIVE_STATIC": 1618.0,
+        "BENCH_SPECULATIVE_PREDICTIVE": 1591.0
+      },
+      "2022-23": {
+        "BENCH_SAFE_STATIC": 2035.0,
+        "BENCH_SAFE_PREDICTIVE": 1994.0,
+        "BENCH_SPECULATIVE_STATIC": 2035.0,
+        "BENCH_SPECULATIVE_PREDICTIVE": 1994.0
+      },
+      "2023-24": {
+        "BENCH_SAFE_STATIC": 1817.0,
+        "BENCH_SAFE_PREDICTIVE": 1706.0,
+        "BENCH_SPECULATIVE_STATIC": 1817.0,
+        "BENCH_SPECULATIVE_PREDICTIVE": 1706.0
+      }
+    },
+    "significant_pairs": [
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SAFE_PREDICTIVE",
+        false
+      ],
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SPECULATIVE_STATIC",
+        false
+      ],
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        false
+      ],
+      [
+        "BENCH_SAFE_PREDICTIVE",
+        "BENCH_SPECULATIVE_STATIC",
+        false
+      ],
+      [
+        "BENCH_SAFE_PREDICTIVE",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        false
+      ],
+      [
+        "BENCH_SPECULATIVE_STATIC",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        false
+      ]
+    ],
+    "best_variant": "BENCH_SAFE_STATIC",
+    "consistency_analysis": {
+      "wins": 3,
+      "num_seasons": 3,
+      "effect_sizes": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "avg_effect_size": 0.0,
+      "effect_size_std": 0.0
+    },
+    "summary_table": "Variant Comparison across all test seasons (sorted by total points):\n\nVariant                                  Points       StdDev     Sharpe     CI Lower   CI Upper  \n--------------------------------------------------------------------------------------------\nBENCH_SAFE_STATIC                        1823.3       170.3      3.03       1618.0     2035.0    \nBENCH_SPECULATIVE_STATIC                 1823.3       170.3      3.03       1618.0     2035.0    \nBENCH_SAFE_PREDICTIVE                    1763.7       169.5      3.02       1591.0     1994.0    \nBENCH_SPECULATIVE_PREDICTIVE             1763.7       169.5      3.02       1591.0     1994.0    \n\nPer-Season Breakdown:\n\nSeason          BENCH_SAFE_PREDICTIVE  BENCH_SAFE_STATIC  BENCH_SPECULATIVE_PREDICTIVE  BENCH_SPECULATIVE_STATIC\n--------------------------------------------------------------------------------\n2021-22         1591             1618             1591             1618           \n2022-23         1994             2035             1994             2035           \n2023-24         1706             1817             1706             1817           \n\nBonferroni-Corrected Significance (\u03b1=0.0125 for 4 variants):\n\n--------------------------------------------------------------------------------------------\n   BENCH_SAFE_STATIC vs BENCH_SAFE_PREDICTIVE: NOT significant\n   BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_STATIC: NOT significant\n   BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant\n   BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_STATIC: NOT significant\n   BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant\n   BENCH_SPECULATIVE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant\n\nConsistency Analysis:\n--------------------------------------------------------------------------------------------\nBest variant (BENCH_SAFE_STATIC) wins in 3/3 seasons\nAverage effect size vs worst variant: 0.0 points\nEffect size consistency (std): 0.0 points\n\nRecommendation: BENCH_SAFE_STATIC (highest combined points, consistent across seasons)"
+  },
+  "variants_tested": [
+    "BENCH_SAFE_STATIC",
+    "BENCH_SAFE_PREDICTIVE",
+    "BENCH_SPECULATIVE_STATIC",
+    "BENCH_SPECULATIVE_PREDICTIVE"
+  ],
+  "timestamp": "2026-05-28T16:27:55.930674"
+}
