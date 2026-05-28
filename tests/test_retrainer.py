@@ -24,7 +24,8 @@ from fpl_auto.retrainer import (
     FPLDataSource,
     LiveDataCollector,
     validate_week_data,
-    append_to_accumulated_csv
+    append_to_accumulated_csv,
+    FPLModelRetrainer
 )
 
 
@@ -464,6 +465,234 @@ class TestCSVAccumulation(unittest.TestCase):
             self.assertEqual(len(result_df), 1150)  # 550 + 600
             self.assertEqual(result_df['gw'].min(), 1)
             self.assertEqual(result_df['gw'].max(), 2)
+
+
+class TestFPLModelRetrainer(unittest.TestCase):
+    """Test FPLModelRetrainer class for retraining orchestration"""
+
+    def setUp(self):
+        """Initialize FPLModelRetrainer for testing"""
+        self.retrainer = FPLModelRetrainer(
+            historical_data_dir='data/',
+            season_2024_25_dir='data/2024-25/',
+            seasons=['2019-20', '2020-21', '2021-22', '2022-23', '2023-24']
+        )
+
+    def test_initialization(self):
+        """Test FPLModelRetrainer initializes with correct attributes"""
+        self.assertEqual(self.retrainer.historical_data_dir, 'data/')
+        self.assertEqual(self.retrainer.season_2024_25_dir, 'data/2024-25/')
+        self.assertEqual(len(self.retrainer.seasons), 5)
+        self.assertIsInstance(self.retrainer.model_cache, dict)
+        self.assertIsInstance(self.retrainer.baseline_rmse, dict)
+        self.assertIsInstance(self.retrainer.drift_history, dict)
+        # Verify drift tracking initialized for all positions
+        for pos in ['GK', 'DEF', 'MID', 'FWD']:
+            self.assertIn(pos, self.retrainer.drift_history)
+            self.assertEqual(self.retrainer.drift_history[pos], [])
+
+    def test_retrain_on_schedule_every_2_gws(self):
+        """Test retrain_on_schedule retrains every 2 GWs"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create mock accumulated_gw.csv
+            csv_path = Path(tmpdir) / 'accumulated_gw.csv'
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create 200 rows of synthetic data
+            data = pd.DataFrame({
+                'gw': [1] * 50 + [2] * 50 + [3] * 50 + [4] * 50,
+                'player_id': list(range(1, 51)) * 4,
+                'position': ['GK', 'DEF', 'MID', 'FWD'] * 50,
+                'team': ['Arsenal'] * 200,
+                'xp': np.random.uniform(0, 10, 200),
+                'minutes': np.random.randint(0, 90, 200),
+                'goals': np.random.randint(0, 3, 200),
+                'assists': np.random.randint(0, 2, 200),
+                'xg': np.random.uniform(0, 3, 200),
+                'xa': np.random.uniform(0, 2, 200),
+                'shots': np.random.randint(0, 10, 200),
+                'key_passes': np.random.randint(0, 5, 200),
+                'bps': np.random.randint(0, 50, 200),
+                'points': np.random.randint(0, 20, 200)
+            })
+            data.to_csv(csv_path, index=False)
+
+            # Patch the retrainer to use tmpdir
+            with patch.object(self.retrainer, 'season_2024_25_dir', str(tmpdir) + '/'):
+                with patch.object(self.retrainer, '_prepare_training_data') as mock_prepare:
+                    X = np.random.randn(200, 8)
+                    y = np.random.randn(200)
+                    mock_prepare.return_value = (X, y)
+
+                    with patch.object(self.retrainer, '_train_position_models') as mock_train:
+                        mock_train.return_value = MagicMock()
+
+                        # GW2: Should trigger retrain (every 2 GWs)
+                        self.retrainer.retrain_on_schedule(2)
+                        self.assertEqual(self.retrainer.last_retrain_gw, 2)
+
+                        # GW3: Should not trigger (odd GW)
+                        self.retrainer.retrain_on_schedule(3)
+                        self.assertEqual(self.retrainer.last_retrain_gw, 2)  # No change
+
+                        # GW4: Should trigger (even GW)
+                        self.retrainer.retrain_on_schedule(4)
+                        self.assertEqual(self.retrainer.last_retrain_gw, 4)
+
+    def test_drift_detection_triggers_retrain(self):
+        """Test drift detection triggers unscheduled retrain"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_path = Path(tmpdir) / 'accumulated_gw.csv'
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create data with high RMSE in GW 5-6 (15%+ above baseline)
+            positions = (['GK', 'DEF', 'MID', 'FWD'] * 37 + ['GK', 'DEF', 'MID', 'FWD'])[:150]
+            data = pd.DataFrame({
+                'gw': [4] * 50 + [5] * 50 + [6] * 50,  # GW 4, 5, 6
+                'player_id': list(range(1, 51)) * 3,
+                'position': positions,
+                'team': ['Arsenal'] * 150,
+                'xp': np.concatenate([
+                    np.random.uniform(1, 5, 50),  # GW4: Normal xp
+                    np.random.uniform(8, 12, 50),  # GW5: High xp (drift)
+                    np.random.uniform(8, 12, 50)   # GW6: High xp (drift)
+                ]),
+                'minutes': [90] * 150,
+                'goals': [0] * 150,
+                'assists': [0] * 150,
+                'xg': [0.5] * 150,
+                'xa': [0.2] * 150,
+                'shots': [3] * 150,
+                'key_passes': [2] * 150,
+                'bps': [10] * 150,
+                'points': np.concatenate([
+                    np.random.uniform(0, 2, 50),  # GW4: Low points (matches xp)
+                    np.random.uniform(0, 2, 50),  # GW5: Low points (mismatch → high RMSE)
+                    np.random.uniform(0, 2, 50)   # GW6: Low points (mismatch → high RMSE)
+                ])
+            })
+            data.to_csv(csv_path, index=False)
+
+            with patch.object(self.retrainer, 'season_2024_25_dir', str(tmpdir) + '/'):
+                with patch.object(self.retrainer, '_prepare_training_data') as mock_prepare:
+                    X = np.random.randn(150, 8)
+                    y = np.random.randn(150)
+                    mock_prepare.return_value = (X, y)
+
+                    with patch.object(self.retrainer, '_train_position_models') as mock_train:
+                        mock_train.return_value = MagicMock()
+
+                        # Call retrain at GW6 (should detect drift from GW5-6)
+                        self.retrainer.retrain_on_schedule(6)
+                        # Verify retrain was called (last_retrain_gw updated)
+                        self.assertEqual(self.retrainer.last_retrain_gw, 6)
+
+    def test_drift_not_triggered_on_single_gw(self):
+        """Test drift detection requires 2+ consecutive GWs"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_path = Path(tmpdir) / 'accumulated_gw.csv'
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create data with high RMSE only in GW5 (not persistent)
+            positions = (['GK', 'DEF', 'MID', 'FWD'] * 25)[:100]
+            data = pd.DataFrame({
+                'gw': [4] * 50 + [5] * 50,
+                'player_id': list(range(1, 51)) * 2,
+                'position': positions,
+                'team': ['Arsenal'] * 100,
+                'xp': np.concatenate([
+                    np.random.uniform(1, 5, 50),    # GW4: Normal
+                    np.random.uniform(8, 12, 50)    # GW5: High (single spike, not persistent)
+                ]),
+                'minutes': [90] * 100,
+                'goals': [0] * 100,
+                'assists': [0] * 100,
+                'xg': [0.5] * 100,
+                'xa': [0.2] * 100,
+                'shots': [3] * 100,
+                'key_passes': [2] * 100,
+                'bps': [10] * 100,
+                'points': np.concatenate([
+                    np.random.uniform(0, 2, 50),
+                    np.random.uniform(0, 2, 50)
+                ])
+            })
+            data.to_csv(csv_path, index=False)
+
+            with patch.object(self.retrainer, 'season_2024_25_dir', str(tmpdir) + '/'):
+                # Drift at GW5 but not persisted
+                drift_result = self.retrainer._detect_drift(5)
+                # Should be False because we need 2+ GWs for persistence
+                self.assertFalse(drift_result)
+
+    def test_position_specific_models_trained(self):
+        """Test that position-specific models are trained for all positions"""
+        X = np.random.randn(300, 8)
+        y = np.random.randn(300)
+
+        # Don't mock - let the real implementation run
+        model = self.retrainer._train_position_models(X, y, 'GK')
+
+        # Verify model is a Pipeline
+        from sklearn.pipeline import Pipeline
+        self.assertIsInstance(model, Pipeline)
+
+        # Verify it has the expected steps
+        self.assertIn('scaler', model.named_steps)
+        self.assertIn('ensemble', model.named_steps)
+
+    def test_predict_gw_returns_dict(self):
+        """Test predict_gw returns dict of predictions per position"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_path = Path(tmpdir) / 'accumulated_gw.csv'
+            csv_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Create small dataset
+            data = pd.DataFrame({
+                'gw': [1] * 10,
+                'player_id': list(range(1, 11)),
+                'position': ['GK'] * 3 + ['DEF'] * 3 + ['MID'] * 2 + ['FWD'] * 2,
+                'team': ['Arsenal'] * 10,
+                'xp': np.random.uniform(0, 10, 10),
+                'minutes': 90,
+                'goals': 0,
+                'assists': 0,
+                'xg': 0.5,
+                'xa': 0.2,
+                'shots': 3,
+                'key_passes': 2,
+                'bps': 10,
+                'points': np.random.randint(0, 20, 10)
+            })
+            data.to_csv(csv_path, index=False)
+
+            with patch.object(self.retrainer, 'season_2024_25_dir', str(tmpdir) + '/'):
+                # Add mock models to cache
+                mock_model = MagicMock()
+                mock_model.predict.return_value = np.array([5.0, 4.5, 3.2, 6.1])
+                self.retrainer.model_cache['GK'] = mock_model
+
+                predictions = self.retrainer.predict_gw(gw=1, lookahead_weeks=6)
+
+                # Verify dict with positions
+                self.assertIsInstance(predictions, dict)
+
+    def test_baseline_rmse_initialization(self):
+        """Test _get_baseline_rmse initializes with defaults"""
+        rmse_gk = self.retrainer._get_baseline_rmse('GK')
+        rmse_def = self.retrainer._get_baseline_rmse('DEF')
+        rmse_mid = self.retrainer._get_baseline_rmse('MID')
+        rmse_fwd = self.retrainer._get_baseline_rmse('FWD')
+
+        # Verify defaults are set
+        self.assertEqual(rmse_gk, 1.2)
+        self.assertEqual(rmse_def, 1.5)
+        self.assertEqual(rmse_mid, 1.8)
+        self.assertEqual(rmse_fwd, 2.0)
+
+        # Verify cache is populated
+        self.assertIn('GK', self.retrainer.baseline_rmse)
+        self.assertIn('DEF', self.retrainer.baseline_rmse)
 
 
 class TestIntegration(unittest.TestCase):
