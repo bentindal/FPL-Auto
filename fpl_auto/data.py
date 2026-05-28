@@ -147,6 +147,13 @@ class FplData:
             mid_data = pd.concat((mid_data, self.get_pos_data(season, i, 'MID')))
             fwd_data = pd.concat((fwd_data, self.get_pos_data(season, i, 'FWD')))
 
+        # If all form GWs were missing (e.g. GW30-37 gap in 2025-26), fall back to
+        # the last available window rather than returning empty DataFrames.
+        if len(gk_data) == 0:
+            for fallback in range(from_gw - 1, 0, -1):
+                if not self.get_gw_data(season, fallback).empty:
+                    return self.avg_player_data(season, max(1, fallback - 3), fallback)
+
         # === NEW: Apply feature engineering per position before averaging ===
         gk_data = self.engineer_features_on_gw_data(gk_data, season, to_gw, 'GK')
         def_data = self.engineer_features_on_gw_data(def_data, season, to_gw, 'DEF')

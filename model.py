@@ -63,6 +63,8 @@ def parse_args():
                         help='Save baseline metrics to BASELINE_METRICS.json')
     parser.add_argument('-display_permutation_importance', action=argparse.BooleanOptionalAction, default=False,
                         help='Display permutation importance features (slower than tree feature_importances_)')
+    parser.add_argument('-retrain_every', type=int, default=5,
+                        help='Retrain model every N GWs (default: 5). Use 1 for original GW-by-GW retraining.')
     return parser.parse_args()
 
 
@@ -274,6 +276,8 @@ def main():
 
     count = 0
     total_e = total_rmse = total_aa = 0.0
+    cached_predictor = None
+    cached_vif_training_data = None
 
     for i in range(target_gameweek, min(target_gameweek + repeat, 39)):
         try:
@@ -285,7 +289,18 @@ def main():
         # When saving predictions, train without VIF filtering so model features
         # match the full feature set used by get_player_predictions.
         apply_vif = not inputs.save
-        test_preds, metrics, predictor, vif_training_data, vif_test_data = evaluate_with_nested_cv(training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=apply_vif)
+        should_retrain = (cached_predictor is None) or ((i - target_gameweek) % inputs.retrain_every == 0)
+
+        if should_retrain:
+            _, metrics, cached_predictor, cached_vif_training_data, vif_test_data = evaluate_with_nested_cv(
+                training_data, test_data, inputs.model, '', inputs, apply_vif_filtering=apply_vif
+            )
+        else:
+            vif_test_data = test_data
+
+        predictor = cached_predictor
+        vif_training_data = cached_vif_training_data
+        test_preds = predictor.predict_test(vif_test_data)
 
         if inputs.display_weights:
             feature_list = vif_training_data[0][0].columns
