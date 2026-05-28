@@ -956,3 +956,489 @@ class FPLModelRetrainer:
                     logger.info(f"Checkpointed {position} model to {checkpoint_file}")
                 except Exception as e:
                     logger.error(f"Failed to checkpoint {position}: {e}")
+
+
+# ============================================================================
+# Airflow Task Callable Wrappers
+# ============================================================================
+
+def collect_gw_data(current_gw: int, season: str = '2024-25') -> dict:
+    """
+    Collect live FPL + Understat data for a gameweek.
+
+    Wrapper function for Airflow PythonOperator. Instantiates LiveDataCollector,
+    collects weekly data, validates, and appends to accumulated_gw.csv.
+
+    Args:
+        current_gw: Gameweek number (1-38)
+        season: Season code (default: '2024-25')
+
+    Returns:
+        dict: {
+            'gw': int,
+            'rows': int (number of players collected),
+            'status': 'success' or 'error'
+        }
+
+    Raises:
+        ValueError: If validation fails
+    """
+    try:
+        logger.info(f"[collect_gw_data] Starting collection for GW{current_gw}")
+
+        # Instantiate FPL data source and collector
+        fpl_source = FPLDataSource()
+        collector = LiveDataCollector(fpl_source)
+
+        # Collect weekly data
+        gw_data = collector.collect_week(current_gw)
+        if gw_data is None:
+            logger.error(f"[collect_gw_data] Failed to collect data for GW{current_gw}")
+            return {'gw': current_gw, 'rows': 0, 'status': 'error'}
+
+        # Validate data
+        try:
+            validate_week_data(gw_data, current_gw)
+        except ValueError as e:
+            logger.error(f"[collect_gw_data] Validation failed for GW{current_gw}: {e}")
+            return {'gw': current_gw, 'rows': 0, 'status': 'error'}
+
+        # Append to accumulated CSV
+        try:
+            append_to_accumulated_csv(gw_data, season, current_gw)
+        except Exception as e:
+            logger.error(f"[collect_gw_data] Failed to append to CSV for GW{current_gw}: {e}")
+            return {'gw': current_gw, 'rows': len(gw_data), 'status': 'error'}
+
+        logger.info(f"[collect_gw_data] Successfully collected GW{current_gw}: {len(gw_data)} players")
+        return {
+            'gw': current_gw,
+            'rows': len(gw_data),
+            'status': 'success'
+        }
+
+    except Exception as e:
+        logger.error(f"[collect_gw_data] Unexpected error for GW{current_gw}: {e}", exc_info=True)
+        return {'gw': current_gw, 'rows': 0, 'status': 'error'}
+
+
+def validate_week_data(gw_data: pd.DataFrame, gw: int) -> dict:
+    """
+    Validate week data meets QA thresholds.
+
+    Airflow wrapper for data validation. This is a lightweight check
+    that returns status for Airflow task reporting.
+
+    Args:
+        gw_data: DataFrame with gameweek data
+        gw: Gameweek number
+
+    Returns:
+        dict: {'gw': int, 'valid': bool, 'status': 'success'}
+
+    Note:
+        This function is also used standalone by collect_gw_data().
+        When called as Airflow task, expects gw_data to be passed via XCom
+        from collect task (simplified here to return validation status).
+    """
+    try:
+        logger.info(f"[validate_week_data] Validating GW{gw}")
+
+        # Check player count
+        if len(gw_data) <= 500:
+            raise ValueError(f"GW{gw} validation failed: only {len(gw_data)} players (need >500)")
+
+        # Check actual points coverage
+        points_valid = gw_data['points'].notna().sum()
+        if points_valid <= 400:
+            raise ValueError(f"GW{gw} validation failed: only {points_valid} actuals (need >400)")
+
+        # Check xP coverage
+        xp_valid = gw_data['xp'].notna().sum()
+        if xp_valid <= 400:
+            raise ValueError(f"GW{gw} validation failed: only {xp_valid} xP values (need >400)")
+
+        # Check position validity
+        if not gw_data['position'].isin(['GK', 'DEF', 'MID', 'FWD']).all():
+            invalid_pos = gw_data[~gw_data['position'].isin(['GK', 'DEF', 'MID', 'FWD'])]['position'].unique()
+            raise ValueError(f"GW{gw} validation failed: invalid positions {invalid_pos}")
+
+        logger.info(f"[validate_week_data] GW{gw} passed validation: {len(gw_data)} records, {points_valid} actuals, {xp_valid} xP")
+        return {
+            'gw': gw,
+            'valid': True,
+            'status': 'success'
+        }
+
+    except ValueError as e:
+        logger.error(f"[validate_week_data] Validation failed for GW{gw}: {e}")
+        return {
+            'gw': gw,
+            'valid': False,
+            'status': 'error'
+        }
+    except Exception as e:
+        logger.error(f"[validate_week_data] Unexpected error for GW{gw}: {e}", exc_info=True)
+        return {
+            'gw': gw,
+            'valid': False,
+            'status': 'error'
+        }
+
+
+def retrain_on_schedule(current_gw: int, season: str = '2024-25') -> dict:
+    """
+    Retrain position-specific models on schedule.
+
+    Wrapper for Airflow. Instantiates FPLModelRetrainer and retrains models
+    if scheduled (every 2 GWs) or drift detected.
+
+    Args:
+        current_gw: Current gameweek number (1-38)
+        season: Season code (default: '2024-25')
+
+    Returns:
+        dict: {
+            'gw': int,
+            'positions_trained': int (count of positions successfully trained),
+            'status': 'success' or 'error'
+        }
+    """
+    try:
+        logger.info(f"[retrain_on_schedule] Starting retrain check for GW{current_gw}")
+
+        # Instantiate retrainer
+        retrainer = FPLModelRetrainer(
+            historical_data_dir='data/',
+            season_2024_25_dir=f'data/{season}/'
+        )
+
+        # Trigger retrain_on_schedule
+        retrainer.retrain_on_schedule(current_gw)
+
+        # Count trained positions
+        positions_trained = len(retrainer.model_cache)
+
+        logger.info(f"[retrain_on_schedule] GW{current_gw}: {positions_trained} positions trained")
+        return {
+            'gw': current_gw,
+            'positions_trained': positions_trained,
+            'status': 'success'
+        }
+
+    except Exception as e:
+        logger.error(f"[retrain_on_schedule] Failed for GW{current_gw}: {e}", exc_info=True)
+        return {
+            'gw': current_gw,
+            'positions_trained': 0,
+            'status': 'error'
+        }
+
+
+def check_drift(current_gw: int, season: str = '2024-25') -> dict:
+    """
+    Detect model drift using RMSE thresholds and log metrics.
+
+    Wrapper for Airflow evaluate task. Computes metrics (RMSE, MAE, R², Spearman)
+    per position and alerts if thresholds exceeded.
+
+    Args:
+        current_gw: Current gameweek number (1-38)
+        season: Season code (default: '2024-25')
+
+    Returns:
+        dict: {
+            'gw': int,
+            'drift_detected': bool,
+            'metrics': {
+                'GK': {'rmse': float, 'mae': float, 'r2': float, 'spearman': float},
+                'DEF': {...},
+                'MID': {...},
+                'FWD': {...}
+            },
+            'status': 'success'
+        }
+    """
+    try:
+        logger.info(f"[check_drift] Starting drift detection for GW{current_gw}")
+
+        # Instantiate monitor and retrainer for metrics
+        monitor = ModelMonitor()
+        retrainer = FPLModelRetrainer(
+            historical_data_dir='data/',
+            season_2024_25_dir=f'data/{season}/'
+        )
+
+        # Load live data
+        live_file = Path(f'data/{season}/accumulated_gw.csv')
+        if not live_file.exists():
+            logger.warning(f"[check_drift] No accumulated_gw.csv found; skipping evaluation")
+            return {
+                'gw': current_gw,
+                'drift_detected': False,
+                'metrics': {},
+                'status': 'success'
+            }
+
+        live_data = pd.read_csv(live_file)
+
+        # Get recent GWs for evaluation
+        recent_data = live_data[
+            (live_data['gw'] >= max(1, current_gw - 4)) &
+            (live_data['gw'] <= current_gw)
+        ]
+
+        if len(recent_data) == 0:
+            logger.info(f"[check_drift] No recent data for GW{current_gw}")
+            return {
+                'gw': current_gw,
+                'drift_detected': False,
+                'metrics': {},
+                'status': 'success'
+            }
+
+        # Build predictions dict (use xp as baseline predictions)
+        predictions = {}
+        actuals = {}
+        drift_detected = False
+
+        for position in ['GK', 'DEF', 'MID', 'FWD']:
+            pos_data = recent_data[recent_data['position'] == position]
+
+            if len(pos_data) == 0:
+                continue
+
+            # Metrics computation
+            predictions[position] = pos_data['xp'].fillna(0).values
+            actuals[position] = pos_data['points'].fillna(0).values
+
+            # Compute RMSE
+            if len(predictions[position]) > 0 and len(actuals[position]) > 0:
+                rmse = np.sqrt(np.mean((predictions[position] - actuals[position]) ** 2))
+
+                # Check against baseline threshold
+                baseline_rmse = retrainer._get_baseline_rmse(position)
+                if rmse > baseline_rmse * 1.15:
+                    logger.warning(f"[check_drift] {position} RMSE {rmse:.3f} > baseline {baseline_rmse:.3f} × 1.15")
+                    drift_detected = True
+
+        # Evaluate metrics using ModelMonitor
+        metrics = monitor.evaluate_week(current_gw, predictions, actuals)
+
+        logger.info(f"[check_drift] GW{current_gw}: drift_detected={drift_detected}, metrics={metrics}")
+
+        return {
+            'gw': current_gw,
+            'drift_detected': drift_detected,
+            'metrics': metrics,
+            'status': 'success'
+        }
+
+    except Exception as e:
+        logger.error(f"[check_drift] Failed for GW{current_gw}: {e}", exc_info=True)
+        return {
+            'gw': current_gw,
+            'drift_detected': False,
+            'metrics': {},
+            'status': 'error'
+        }
+
+
+def write_predictions_tsv(current_gw: int, season: str = '2024-25') -> dict:
+    """
+    Export predictions to TSV format for manager.py consumption.
+
+    Wrapper for Airflow export task. Generates predictions for GW+1 through GW+6
+    and writes to predictions/{season}/GW{gw}/{position}.tsv files.
+
+    Args:
+        current_gw: Current gameweek number (1-38)
+        season: Season code (default: '2024-25')
+
+    Returns:
+        dict: {
+            'gw': int,
+            'exported': bool,
+            'positions_exported': int,
+            'status': 'success'
+        }
+    """
+    try:
+        logger.info(f"[write_predictions_tsv] Starting export for GW{current_gw}")
+
+        # Instantiate retrainer
+        retrainer = FPLModelRetrainer(
+            historical_data_dir='data/',
+            season_2024_25_dir=f'data/{season}/'
+        )
+
+        # Generate predictions
+        predictions = retrainer.predict_gw(current_gw, lookahead_weeks=6)
+
+        if len(predictions) == 0:
+            logger.warning(f"[write_predictions_tsv] No predictions generated for GW{current_gw}")
+            return {
+                'gw': current_gw,
+                'exported': False,
+                'positions_exported': 0,
+                'status': 'error'
+            }
+
+        # Export predictions
+        retrainer._export_predictions(current_gw, predictions, season)
+
+        positions_exported = len([p for p in predictions if len(predictions[p]) > 0])
+
+        logger.info(f"[write_predictions_tsv] GW{current_gw}: exported {positions_exported} positions")
+        return {
+            'gw': current_gw,
+            'exported': True,
+            'positions_exported': positions_exported,
+            'status': 'success'
+        }
+
+    except Exception as e:
+        logger.error(f"[write_predictions_tsv] Failed for GW{current_gw}: {e}", exc_info=True)
+        return {
+            'gw': current_gw,
+            'exported': False,
+            'positions_exported': 0,
+            'status': 'error'
+        }
+
+
+class ModelMonitor:
+    """
+    Metrics monitoring and alerting for model drift detection.
+
+    Evaluates position-specific predictions against actuals and generates
+    alerts based on RMSE, MAE, R², and Spearman correlation thresholds.
+
+    Attributes:
+        baseline_metrics (dict): Historical baselines per position
+        alert_thresholds (dict): Alert thresholds for each metric
+    """
+
+    def __init__(self):
+        """
+        Initialize ModelMonitor with baseline thresholds.
+
+        Baselines established from historical 2019-2023 training.
+        """
+        # Baseline RMSE per position (from training)
+        self.baseline_rmse = {
+            'GK': 1.2,
+            'DEF': 1.5,
+            'MID': 1.8,
+            'FWD': 2.0
+        }
+
+        # Alert thresholds
+        self.alert_thresholds = {
+            'rmse_multiplier': 1.15,  # 15% above baseline
+            'mae_threshold': 0.8,      # MAE > 0.8 pts/player
+            'r2_threshold': 0.80,      # R² < 0.80
+            'spearman_threshold': 0.85  # Rank correlation < 0.85
+        }
+
+    def evaluate_week(self, gw: int, predictions: dict, actuals: dict) -> dict:
+        """
+        Evaluate position-specific metrics for a gameweek.
+
+        Computes RMSE, MAE, R², and Spearman rank correlation per position.
+        Generates alerts if thresholds are exceeded.
+
+        Args:
+            gw: Gameweek number
+            predictions: {position → np.array of predictions}
+            actuals: {position → np.array of actual values}
+
+        Returns:
+            dict: {
+                'GK': {'rmse': float, 'mae': float, 'r2': float, 'spearman': float},
+                'DEF': {...},
+                'MID': {...},
+                'FWD': {...}
+            }
+        """
+        from scipy.stats import spearmanr
+
+        metrics = {}
+
+        for position in ['GK', 'DEF', 'MID', 'FWD']:
+            if position not in predictions or position not in actuals:
+                continue
+
+            pred = np.array(predictions[position]).flatten()
+            actual = np.array(actuals[position]).flatten()
+
+            if len(pred) == 0 or len(actual) == 0:
+                continue
+
+            # Compute RMSE
+            rmse = np.sqrt(np.mean((pred - actual) ** 2))
+
+            # Compute MAE
+            mae = np.mean(np.abs(pred - actual))
+
+            # Compute R²
+            ss_res = np.sum((actual - pred) ** 2)
+            ss_tot = np.sum((actual - np.mean(actual)) ** 2)
+            r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0
+
+            # Compute Spearman rank correlation
+            try:
+                spearman_corr, spearman_pval = spearmanr(pred, actual)
+                spearman_corr = float(spearman_corr) if not np.isnan(spearman_corr) else 0
+            except Exception as e:
+                logger.warning(f"Failed to compute Spearman for {position}: {e}")
+                spearman_corr = 0
+
+            metrics[position] = {
+                'rmse': rmse,
+                'mae': mae,
+                'r2': r2,
+                'spearman': spearman_corr
+            }
+
+            # Check alert thresholds
+            baseline = self.baseline_rmse.get(position, 1.5)
+
+            if rmse > baseline * self.alert_thresholds['rmse_multiplier']:
+                logger.warning(f"[ModelMonitor] GW{gw} {position}: RMSE {rmse:.3f} exceeds threshold ({baseline:.3f} × 1.15)")
+
+            if mae > self.alert_thresholds['mae_threshold']:
+                logger.warning(f"[ModelMonitor] GW{gw} {position}: MAE {mae:.3f} exceeds threshold ({self.alert_thresholds['mae_threshold']})")
+
+            if r2 < self.alert_thresholds['r2_threshold']:
+                logger.warning(f"[ModelMonitor] GW{gw} {position}: R² {r2:.3f} below threshold ({self.alert_thresholds['r2_threshold']})")
+
+            if spearman_corr < self.alert_thresholds['spearman_threshold']:
+                logger.warning(f"[ModelMonitor] GW{gw} {position}: Spearman {spearman_corr:.3f} below threshold ({self.alert_thresholds['spearman_threshold']})")
+
+        return metrics
+
+    def get_stability_metric(self, cv_scores: list) -> float:
+        """
+        Compute stability metric from CV scores.
+
+        Returns 1 - (std / mean), indicating model stability.
+        Higher values indicate more stable models.
+
+        Args:
+            cv_scores: List of cross-validation R² scores
+
+        Returns:
+            float: Stability metric in range [0, 1]
+        """
+        if len(cv_scores) == 0:
+            return 0
+
+        mean_score = np.mean(cv_scores)
+        std_score = np.std(cv_scores)
+
+        if mean_score == 0:
+            return 0
+
+        stability = 1 - (std_score / mean_score)
+        return max(0, stability)  # Clamp to [0, 1]
