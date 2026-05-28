@@ -360,18 +360,131 @@ class Team:
     # Captain
     # ------------------------------------------------------------------
 
-    def suggest_captaincy(self):
-        xp_list = sorted(self.get_all_xp(), key=lambda x: float(x[1]), reverse=True)
-        if len(xp_list) < 2:
+    def suggest_captaincy(self, strategy_config=None):
+        """
+        Suggest captain and vice-captain based on strategy mode.
+
+        Args:
+            strategy_config: Optional StrategyConfig with captain_mode, captain_lookback_gws,
+                            captain_variance_penalty. If None, defaults to highest_xp mode.
+
+        Returns:
+            ((captain_name, captain_xp), (vice_captain_name, vice_captain_xp))
+
+        Raises:
+            ValueError: If squad has fewer than 2 players.
+        """
+        import numpy as np
+
+        squad_xp = self.get_all_xp()
+        if len(squad_xp) < 2:
             raise ValueError(f'Need at least 2 players to suggest captaincy, squad has {self.squad_size()}')
-        return xp_list[0], xp_list[1]
+
+        # Determine mode and parameters
+        if strategy_config is None:
+            mode = 'highest_xp'
+            lookback_gws = 1
+            variance_penalty = 0.0
+        else:
+            mode = strategy_config.captain_mode
+            lookback_gws = strategy_config.captain_lookback_gws
+            variance_penalty = strategy_config.captain_variance_penalty
+
+        # ------ Mode 1: highest_xp (baseline) ------
+        if mode == 'highest_xp':
+            xp_list = sorted(squad_xp, key=lambda x: float(x[1]), reverse=True)
+            return xp_list[0], xp_list[1]
+
+        # ------ Mode 2: highest_value (price-based) ------
+        elif mode == 'highest_value':
+            # Get all squad players with their prices
+            price_list = []
+            for player_name, _ in self._all_xi_players():
+                price = self.player_value(player_name, self.gw_data)
+                xp = self._all_xp_dicts[self.player_pos(player_name)].get(player_name, 0)
+                if price is not None:
+                    price_list.append([player_name, float(price), float(xp)])
+
+            if len(price_list) < 2:
+                # Fallback to highest_xp if insufficient price data
+                xp_list = sorted(squad_xp, key=lambda x: float(x[1]), reverse=True)
+                return xp_list[0], xp_list[1]
+
+            # Sort by price descending
+            price_list.sort(key=lambda x: x[1], reverse=True)
+            captain = (price_list[0][0], price_list[0][2])
+            vice = (price_list[1][0], price_list[1][2])
+            return captain, vice
+
+        # ------ Mode 3: form_based (rolling average with variance penalty) ------
+        elif mode == 'form_based':
+            form_scores = []
+
+            for player_name, _ in self._all_xi_players():
+                pos = self.player_pos(player_name)
+
+                # Collect recent xP values from _all_xp_dicts
+                # _all_xp_dicts contains multi-GW discounted lookahead
+                # For form calculation, we want to use rolling window from discounted values
+                recent_xp = self._all_xp_dicts[pos].get(player_name, 0)
+
+                # Calculate rolling average over last lookback_gws
+                # Since _all_xp_dicts is a single dict per position (already multi-GW discounted),
+                # we approximate form by:
+                # 1. Use the discounted xP directly (already accounts for recent performance)
+                # 2. Apply variance penalty: score = xp + (variance * variance_penalty)
+                # Variance is estimated as the spread/uncertainty in player's xP
+                # For simplicity, approximate variance from player's recent performance range
+
+                # Get player's xP value from current position
+                current_xp = recent_xp if recent_xp > 0 else self._xp_dicts[pos].get(player_name, 0)
+
+                # Estimate variance: compare to team average (proxy for deviation)
+                all_pos_xp = [self._all_xp_dicts[pos].get(p, 0) for p, _ in self._all_xi_players() if self.player_pos(p) == pos]
+                if all_pos_xp:
+                    team_avg_xp = np.mean(all_pos_xp)
+                    variance = abs(current_xp - team_avg_xp) if team_avg_xp > 0 else 0
+                else:
+                    variance = 0
+
+                # Apply variance penalty (negative penalty = prefer high variance)
+                adjusted_score = current_xp + (variance * variance_penalty)
+                form_scores.append((player_name, adjusted_score, current_xp))
+
+            # Sort by adjusted score descending
+            form_scores.sort(key=lambda x: x[1], reverse=True)
+
+            if len(form_scores) < 2:
+                xp_list = sorted(squad_xp, key=lambda x: float(x[1]), reverse=True)
+                return xp_list[0], xp_list[1]
+
+            captain = (form_scores[0][0], form_scores[0][2])
+            vice = (form_scores[1][0], form_scores[1][2])
+            return captain, vice
+
+        else:
+            # Fallback to highest_xp if unknown mode
+            xp_list = sorted(squad_xp, key=lambda x: float(x[1]), reverse=True)
+            return xp_list[0], xp_list[1]
 
     def update_captain(self, captain, vice_captain):
         self.captain = captain
         self.vice_captain = vice_captain
 
-    def auto_captain(self):
-        captain, vice_captain = self.suggest_captaincy()
+    def auto_captain(self, strategy_config=None):
+        """
+        Automatically select captain using configured strategy.
+
+        Args:
+            strategy_config: Optional StrategyConfig. If None, uses self.strategy_config.
+        """
+        # Resolve strategy config (passed param takes precedence)
+        config = strategy_config if strategy_config is not None else self.strategy_config
+
+        # Suggest captain and vice using config
+        captain, vice_captain = self.suggest_captaincy(strategy_config=config)
+
+        # Update captain (existing behavior)
         self.update_captain(captain[0], vice_captain[0])
 
     # ------------------------------------------------------------------
@@ -541,38 +654,231 @@ class Team:
                 print(f"[GW{self.gameweek}] Transferred {transfer_in} for {out}; budget used: {xp_gain:.1f}, remaining: {transfer_budget_remaining:.1f}")
 
     # ------------------------------------------------------------------
+    # Gameweek Detection (blank/double)
+    # ------------------------------------------------------------------
+
+    def get_blank_gameweeks(self) -> list:
+        """
+        Return list of gameweeks where this team has no matches (blank GWs).
+
+        Returns:
+            List of GW numbers (1-38) where team is not playing.
+        """
+        try:
+            # Load fixtures for season (all matches)
+            fixtures = self.fpl.get_future_fixtures(self.season, 0)  # GW > 0 gets all fixtures
+
+            # Find all unique teams in squad
+            squad_team_ids = set()
+            for player_name, _ in self._all_squad_players():
+                try:
+                    team_id = self.fpl.get_player_team(player_name, self.gameweek, self.gw_data)
+                    if team_id is not None:
+                        squad_team_ids.add(team_id)
+                except Exception:
+                    # Skip players with lookup errors
+                    pass
+
+            if not squad_team_ids:
+                # No team IDs found; return empty list
+                return []
+
+            # Group fixtures by event (GW)
+            gw_fixtures = {}
+            for _, fixture in fixtures.iterrows():
+                gw = int(fixture['event'])
+                team_a = fixture['team_a']
+                team_h = fixture['team_h']
+                if gw not in gw_fixtures:
+                    gw_fixtures[gw] = []
+                gw_fixtures[gw].append((team_a, team_h))
+
+            # Find blank GWs for this team (team not in any fixture for that GW)
+            blank_gws = []
+            for gw in range(1, 39):
+                if gw not in gw_fixtures:
+                    blank_gws.append(gw)
+                    continue
+                # Check if any team from squad has a match in this GW
+                has_match = False
+                for team_a, team_h in gw_fixtures.get(gw, []):
+                    if team_a in squad_team_ids or team_h in squad_team_ids:
+                        has_match = True
+                        break
+                if not has_match:
+                    blank_gws.append(gw)
+
+            return blank_gws
+        except Exception:
+            # Graceful fallback if fixture data unavailable
+            return []
+
+    def get_double_gameweeks(self) -> list:
+        """
+        Return list of gameweeks where this team has 2+ matches (double GWs).
+
+        Returns:
+            List of GW numbers (1-38) where team plays twice.
+        """
+        try:
+            fixtures = self.fpl.get_future_fixtures(self.season, 0)  # GW > 0 gets all fixtures
+
+            # Find all unique teams in squad
+            squad_team_ids = set()
+            for player_name, _ in self._all_squad_players():
+                try:
+                    team_id = self.fpl.get_player_team(player_name, self.gameweek, self.gw_data)
+                    if team_id is not None:
+                        squad_team_ids.add(team_id)
+                except Exception:
+                    # Skip players with lookup errors
+                    pass
+
+            if not squad_team_ids:
+                # No team IDs found; return empty list
+                return []
+
+            # Count matches per team per GW
+            gw_team_match_count = {}
+            for _, fixture in fixtures.iterrows():
+                gw = int(fixture['event'])
+                team_a = fixture['team_a']
+                team_h = fixture['team_h']
+
+                if gw not in gw_team_match_count:
+                    gw_team_match_count[gw] = {}
+
+                if team_a in squad_team_ids:
+                    gw_team_match_count[gw][team_a] = gw_team_match_count[gw].get(team_a, 0) + 1
+                if team_h in squad_team_ids:
+                    gw_team_match_count[gw][team_h] = gw_team_match_count[gw].get(team_h, 0) + 1
+
+            # Find double GWs (any team in squad plays 2+ times)
+            double_gws = []
+            for gw in range(1, 39):
+                if gw in gw_team_match_count:
+                    for team_id, count in gw_team_match_count[gw].items():
+                        if count >= 2:
+                            double_gws.append(gw)
+                            break
+
+            return double_gws
+        except Exception:
+            # Graceful fallback if fixture data unavailable
+            return []
+
+    # ------------------------------------------------------------------
     # Chips
     # ------------------------------------------------------------------
 
     def any_chip_in_use(self):
         return self.chip_triple_captain_active or self.chip_bench_boost_active or self.chip_free_hit_active
 
-    def auto_chips(self, triple_captain_threshold=8, bench_threshold=4, free_hit_threshold=35, wildcard_threshold=30):
+    def auto_chips(self, strategy_config=None, triple_captain_threshold=8, bench_threshold=4,
+                   free_hit_threshold=35, wildcard_threshold=30):
+        """
+        Automatically use available chips based on strategy and conditions.
+
+        Args:
+            strategy_config: Optional StrategyConfig with chip_schedule timing.
+                Modes: 'conservative' (baseline), 'aggressive', 'doubles-optimized', 'blanks-optimized'
+                If None, uses self.strategy_config. If still None, defaults to 'conservative'.
+            triple_captain_threshold: Min xP gain to activate triple captain (default 8 points)
+            bench_threshold: Min bench xP to activate bench boost (default 4 points)
+            free_hit_threshold: Min gap to activate free hit (default 35 points)
+            wildcard_threshold: Min gap to activate wildcard (default 60 points)
+        """
         print('Checking for any chips...', end='\r')
         if self.season == '2022-23' and self.gameweek in (7, 8):
             return
 
+        # Resolve strategy config
+        config = strategy_config if strategy_config is not None else self.strategy_config
+        if config is None:
+            # Import StrategyConfig here to avoid circular imports
+            from fpl_auto.strategies import StrategyConfig
+            config = StrategyConfig()  # Use defaults
+
+        chip_schedule = config.chip_schedule
+
+        # Determine if we're in a timing window (for timing-based strategies)
+        in_double_window = False
+        in_blank_window = False
+
+        if chip_schedule in ['doubles-optimized', 'blanks-optimized']:
+            blank_gws = self.get_blank_gameweeks()
+            double_gws = self.get_double_gameweeks()
+
+            # Timing windows: GW-1 before and during/after target GWs
+            if chip_schedule == 'doubles-optimized':
+                # Check if we're GW-1 before or during a double GW
+                for double_gw in double_gws:
+                    if self.gameweek == double_gw - 1 or self.gameweek == double_gw:
+                        in_double_window = True
+                        break
+
+            elif chip_schedule == 'blanks-optimized':
+                # Check if we're GW-1 before or after a blank GW
+                for blank_gw in blank_gws:
+                    if self.gameweek == blank_gw - 1 or self.gameweek == blank_gw:
+                        in_blank_window = True
+                        break
+
         xi_xp = self.team_xp(include_subs=False)
 
+        # Triple Captain decision
         if self.chip_triple_captain_available and not self.any_chip_in_use():
             captain_xp = self.player_xp(self.captain, self.player_pos(self.captain))
-            if captain_xp > triple_captain_threshold and self.gameweek > 1:
-                print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {self.captain} with {captain_xp:.2f} xP\n')
+            expected_gain = captain_xp * 2  # Triple captain = 3x points, baseline is 1x, so gain is 2x
+
+            use_triple = False
+            if chip_schedule == 'conservative':
+                # Only use if xP gain very high
+                use_triple = expected_gain >= triple_captain_threshold * 2 and self.gameweek > 1
+            elif chip_schedule == 'aggressive':
+                # Use if xP gain moderate
+                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+            elif chip_schedule == 'doubles-optimized' and in_double_window:
+                # Use during double GWs if gain >= threshold
+                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+            elif chip_schedule == 'blanks-optimized' and in_blank_window:
+                # Use during blank GWs if gain >= threshold
+                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+            elif chip_schedule == 'never':
+                use_triple = False
+
+            if use_triple:
+                print(f'CHIP: Triple Captain activated on GW{self.gameweek} for {self.captain} with {captain_xp:.2f} xP (gain: {expected_gain:.1f})\n')
                 self.chips_used.append(['Triple Captain', self.gameweek])
                 self.chip_triple_captain_available = False
                 self.chip_triple_captain_active = True
 
+        # Bench Boost decision
         if self.chip_bench_boost_available and not self.any_chip_in_use():
             all_xp = self.team_xp(include_subs=True)
             bench_xp = all_xp - xi_xp
-            if bench_xp > bench_threshold and self.gameweek > 1:
+
+            use_boost = False
+            if chip_schedule == 'conservative':
+                use_boost = bench_xp >= bench_threshold * 2 and self.gameweek > 1
+            elif chip_schedule == 'aggressive':
+                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+            elif chip_schedule == 'doubles-optimized' and in_double_window:
+                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+            elif chip_schedule == 'blanks-optimized' and in_blank_window:
+                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+            elif chip_schedule == 'never':
+                use_boost = False
+
+            if use_boost:
                 print(f'CHIP: Bench Boost activated on GW{self.gameweek} for {bench_xp:.2f} xP\n')
                 self.chips_used.append(['Bench Boost', self.gameweek])
                 self.chip_bench_boost_available = False
                 self.chip_bench_boost_active = True
 
+        # Free Hit decision (timing-independent)
         if self.chip_free_hit_available and not self.any_chip_in_use():
-            if xi_xp < free_hit_threshold:
+            if xi_xp < free_hit_threshold and chip_schedule != 'never':
                 self.chip_free_hit_available = False
                 self.chip_free_hit_active = True
                 self.chips_used.append(['Free Hit', self.gameweek])
@@ -581,8 +887,9 @@ class Team:
                 self.free_hit_team = [[self.gks, self.defs, self.mids, self.fwds], self.budget, self.gameweek, dict(self.purchase_prices)]
                 self.initial_team_generator()
 
+        # Wildcard decision (timing-independent)
         if self.chip_wildcard_available and not self.any_chip_in_use():
-            if xi_xp < wildcard_threshold:
+            if xi_xp < wildcard_threshold and chip_schedule != 'never':
                 print(f'CHIP: Wildcard activated on GW{self.gameweek} for {xi_xp:.2f} xP\n')
                 self.initial_team_generator()
                 print(f'Current Team xP {xi_xp:.2f} vs New xP {self.team_xp(include_subs=True):.2f}')

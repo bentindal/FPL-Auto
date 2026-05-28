@@ -1592,5 +1592,246 @@ class TestTransferVariantIntegration(unittest.TestCase):
         self.assertIsInstance(results['transfer_history'], list)
 
 
+class TestChipActivation(unittest.TestCase):
+    """Test auto_chips() with timing-based chip activation."""
+
+    def setUp(self):
+        """Create test team with known blank/double GW configuration."""
+        self.season = '2023-24'
+        self.gw = 1  # Start at GW 1 for fresh squad
+        self.team = Team(
+            season=self.season,
+            gameweek=self.gw,
+            strategy_config=None
+        )
+        # Build a basic team for testing (initialize with known players)
+        # This is safe because we're testing chip logic, not team building
+        cheap_players = {
+            'GK': ['Hugo Lloris', 'Ederson Santana de Moraes'],
+            'DEF': ['Marc Guéhi', 'Thiago Emiliano da Silva', 'Victor Lindelöf', 'Alex Nicolao Telles', 'Aaron Cresswell'],
+            'MID': ['Mason Mount', 'Heung-Min Son', 'Rodrigo Hernandez', 'Raheem Sterling', 'James Maddison'],
+            'FWD': ['Harry Kane', 'Jean-Philippe Mateta', 'Danny Ings'],
+        }
+        for pos, names in cheap_players.items():
+            for name in names:
+                try:
+                    self.team.add_player(name, pos, 4.0 if pos != 'FWD' else 4.5)
+                except Exception:
+                    # Some players might not exist in data; skip
+                    pass
+
+    def test_get_blank_gameweeks_returns_list(self):
+        """get_blank_gameweeks() should return list of integers."""
+        blanks = self.team.get_blank_gameweeks()
+        self.assertIsInstance(blanks, list)
+        for gw in blanks:
+            self.assertIsInstance(gw, int)
+            self.assertGreaterEqual(gw, 1)
+            self.assertLessEqual(gw, 38)
+
+    def test_get_double_gameweeks_returns_list(self):
+        """get_double_gameweeks() should return list of integers."""
+        doubles = self.team.get_double_gameweeks()
+        self.assertIsInstance(doubles, list)
+        for gw in doubles:
+            self.assertIsInstance(gw, int)
+            self.assertGreaterEqual(gw, 1)
+            self.assertLessEqual(gw, 38)
+
+    def test_auto_chips_with_strategy_config_conservative(self):
+        """auto_chips() with conservative strategy should not crash."""
+        from fpl_auto.strategies import BASELINE_CURRENT
+        self.team.strategy_config = BASELINE_CURRENT
+        # Should run without error
+        self.team.auto_chips(strategy_config=BASELINE_CURRENT)
+        # Verify team state remains valid
+        self.assertIsNotNone(self.team.chips_used)
+
+    def test_auto_chips_with_doubles_optimized(self):
+        """auto_chips() with doubles-optimized strategy should not crash."""
+        from fpl_auto.strategies import CHIP_DOUBLES_OPTIMIZED
+        self.team.strategy_config = CHIP_DOUBLES_OPTIMIZED
+        # Should run without error
+        self.team.auto_chips(strategy_config=CHIP_DOUBLES_OPTIMIZED)
+        # Verify team state remains valid
+        self.assertIsNotNone(self.team.chips_used)
+
+    def test_auto_chips_with_blanks_optimized(self):
+        """auto_chips() with blanks-optimized strategy should not crash."""
+        from fpl_auto.strategies import CHIP_BLANKS_OPTIMIZED
+        self.team.strategy_config = CHIP_BLANKS_OPTIMIZED
+        # Should run without error
+        self.team.auto_chips(strategy_config=CHIP_BLANKS_OPTIMIZED)
+        # Verify team state remains valid
+        self.assertIsNotNone(self.team.chips_used)
+
+    def test_auto_chips_backward_compat_without_strategy(self):
+        """auto_chips() without strategy_config should use conservative behavior."""
+        self.team.strategy_config = None
+        # Should not crash; defaults to conservative
+        self.team.auto_chips()
+        # Verify team state remains valid
+        self.assertIsNotNone(self.team.chips_used)
+
+    def test_blank_and_double_gw_list_format(self):
+        """Blank/double GW lists should be sorted and unique."""
+        blanks = self.team.get_blank_gameweeks()
+        doubles = self.team.get_double_gameweeks()
+
+        # Check sorted
+        self.assertEqual(blanks, sorted(blanks))
+        self.assertEqual(doubles, sorted(doubles))
+
+        # Check no duplicates
+        self.assertEqual(len(blanks), len(set(blanks)))
+        self.assertEqual(len(doubles), len(set(doubles)))
+
+    def test_strategy_config_validation_allows_new_modes(self):
+        """StrategyConfig should accept new chip_schedule modes."""
+        from fpl_auto.strategies import StrategyConfig
+
+        # Should not raise for new modes
+        config1 = StrategyConfig(chip_schedule='doubles-optimized')
+        self.assertEqual(config1.chip_schedule, 'doubles-optimized')
+
+        config2 = StrategyConfig(chip_schedule='blanks-optimized')
+        self.assertEqual(config2.chip_schedule, 'blanks-optimized')
+
+        # Should still reject invalid modes
+        with self.assertRaises(ValueError):
+            StrategyConfig(chip_schedule='invalid_mode')
+
+
+class TestTeamCaptaincy(unittest.TestCase):
+    """Test suggest_captaincy() with all 3 captain modes."""
+
+    def setUp(self):
+        """Create test team with known xP/price distribution."""
+        self.season = '2021-22'
+        self.gw = 1
+        self.team = Team(
+            season=self.season,
+            gameweek=self.gw,
+            strategy_config=None  # Default (will use highest_xp in suggest_captaincy)
+        )
+
+    def test_suggest_captaincy_default_highest_xp(self):
+        """Captain should default to highest xP when strategy_config is None."""
+        # Add a few players to ensure we have at least 2
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)
+
+        captain, vice = self.team.suggest_captaincy(strategy_config=None)
+        # Verify captain has highest xP
+        all_xp = self.team.get_all_xp()
+        expected_captain = sorted(all_xp, key=lambda x: float(x[1]), reverse=True)[0]
+        self.assertEqual(captain[0], expected_captain[0])
+
+    def test_suggest_captaincy_highest_xp_mode(self):
+        """Captain should be highest xP player in highest_xp mode."""
+        from fpl_auto.strategies import CAPTAIN_HIGHEST_XP
+
+        # Add players
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)
+
+        captain, vice = self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_XP)
+        # Verify captain[0] is highest xP in squad
+        all_xp = self.team.get_all_xp()
+        expected_captain = sorted(all_xp, key=lambda x: float(x[1]), reverse=True)[0]
+        self.assertEqual(captain[0], expected_captain[0])
+
+    def test_suggest_captaincy_highest_value_mode(self):
+        """Captain should be highest-priced player in highest_value mode."""
+        from fpl_auto.strategies import CAPTAIN_HIGHEST_VALUE
+
+        # Add players with varying prices
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)  # xP high
+        self.team.add_player('Harry Kane', 'FWD', 11.0)     # xP high, expensive
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)  # xP low, cheap
+
+        captain, vice = self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_VALUE)
+        # Verify captain is highest priced
+        captain_price = self.team.player_value(captain[0], self.team.gw_data)
+        vice_price = self.team.player_value(vice[0], self.team.gw_data)
+        if captain_price is not None and vice_price is not None:
+            self.assertGreaterEqual(captain_price, vice_price)
+
+    def test_suggest_captaincy_form_based_mode(self):
+        """Captain should reflect form_based calculation with variance penalty."""
+        from fpl_auto.strategies import CAPTAIN_FORM_BASED
+
+        # Add players
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)
+
+        captain, vice = self.team.suggest_captaincy(strategy_config=CAPTAIN_FORM_BASED)
+        # Verify captain and vice are set (form calculation succeeded)
+        self.assertNotEqual(captain[0], '')
+        self.assertNotEqual(vice[0], '')
+        self.assertNotEqual(captain[0], vice[0])
+
+    def test_auto_captain_with_strategy_config(self):
+        """auto_captain() should use passed strategy_config."""
+        from fpl_auto.strategies import CAPTAIN_FORM_BASED
+
+        # Add players
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)
+        self.team.add_player('Andrew Robertson', 'DEF', 7.0)
+
+        config = CAPTAIN_FORM_BASED
+        self.team.auto_captain(strategy_config=config)
+        # Verify self.captain is set (not empty)
+        self.assertNotEqual(self.team.captain, '')
+
+    def test_auto_captain_without_strategy_config(self):
+        """auto_captain() should use self.strategy_config if param not provided."""
+        from fpl_auto.strategies import CAPTAIN_HIGHEST_VALUE
+
+        # Set strategy_config on team
+        self.team.strategy_config = CAPTAIN_HIGHEST_VALUE
+
+        # Add players
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+        self.team.add_player('Jordan Pickford', 'GK', 5.0)
+        self.team.add_player('Andrew Robertson', 'DEF', 7.0)
+
+        # Call auto_captain without passing config
+        self.team.auto_captain()
+        # Verify captain is set
+        self.assertNotEqual(self.team.captain, '')
+
+    def test_suggest_captaincy_squad_size_check(self):
+        """suggest_captaincy() should raise if squad < 2 players."""
+        from fpl_auto.strategies import CAPTAIN_HIGHEST_XP
+
+        # Only add 1 player
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        with self.assertRaises(ValueError):
+            self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_XP)
+
+    def test_suggest_captaincy_returns_tuples(self):
+        """suggest_captaincy() should return ((name, xp), (name, xp)) tuples."""
+        from fpl_auto.strategies import CAPTAIN_HIGHEST_XP
+
+        self.team.add_player('Mohamed Salah', 'MID', 10.0)
+        self.team.add_player('Harry Kane', 'FWD', 11.0)
+
+        captain, vice = self.team.suggest_captaincy(strategy_config=CAPTAIN_HIGHEST_XP)
+        # Verify tuple structure
+        self.assertIsInstance(captain, tuple)
+        self.assertIsInstance(vice, tuple)
+        self.assertEqual(len(captain), 2)
+        self.assertEqual(len(vice), 2)
+        self.assertIsInstance(captain[0], str)  # player name
+        self.assertIsInstance(float(captain[1]), float)  # xP (numeric)
+
+
 if __name__ == '__main__':
     unittest.main()

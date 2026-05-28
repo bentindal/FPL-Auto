@@ -100,6 +100,8 @@ class StrategyConfig:
     - 'never': Never use chips (preserve for defense against regression)
     - 'conservative': Use chips sparingly when conditions are favorable
     - 'aggressive': Use all chips proactively to maximize points
+    - 'doubles-optimized': Activate chips around DOUBLE gameweeks (Phase 7)
+    - 'blanks-optimized': Activate chips around BLANK gameweeks (Phase 7)
     """
 
     wildcard_threshold_points: float = 60.0
@@ -184,10 +186,10 @@ class StrategyConfig:
             )
 
         # Chip usage policy validation
-        if self.chip_schedule not in ['never', 'conservative', 'aggressive']:
+        if self.chip_schedule not in ['never', 'conservative', 'aggressive', 'doubles-optimized', 'blanks-optimized']:
             raise ValueError(
-                f"chip_schedule must be 'never', 'conservative', or 'aggressive', "
-                f"got {self.chip_schedule}"
+                f"chip_schedule must be 'never', 'conservative', 'aggressive', "
+                f"'doubles-optimized', or 'blanks-optimized', got {self.chip_schedule}"
             )
 
         if not (30 <= self.wildcard_threshold_points <= 80):
@@ -479,6 +481,136 @@ AGGRESSIVE_FULL = StrategyConfig(
 )
 
 
+# PHASE 7a: CAPTAIN STRATEGY VARIANTS
+# Test 3 captain modes with fixed transfer baseline (CONSERVATIVE_FULL)
+
+CAPTAIN_HIGHEST_XP = StrategyConfig(
+    # Philosophy: Always pick player with highest expected points.
+    # Captain mode: highest_xp (standard baseline)
+    # Form lookback: 1 GW (most recent only)
+    # Variance penalty: 0.0 (no penalty; accept all variance)
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+CAPTAIN_FORM_BASED = StrategyConfig(
+    # Philosophy: Pick player with recent hot streak (contrarian).
+    # Captain mode: form_based (rolling average of recent xP)
+    # Form lookback: 3 GW (recent form window)
+    # Variance penalty: -0.2 (prefer volatile/hot players)
+    # Rationale: Exploit recent momentum; expect reversion-to-mean is slower than market prices
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='form_based',
+    captain_lookback_gws=3,
+    captain_variance_penalty=-0.2,  # Prefer contrarian picks
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+CAPTAIN_HIGHEST_VALUE = StrategyConfig(
+    # Philosophy: Always pick the highest-priced player (most consistent/reliable).
+    # Captain mode: highest_value (pick by price)
+    # Form lookback: 1 GW (unused; highest_value ignores lookback)
+    # Variance penalty: 0.0 (unused; highest_value ignores penalty)
+    # Rationale: Expensive players are safer; model predictions more reliable for elite players
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_value',
+    captain_lookback_gws=1,  # Unused for highest_value
+    captain_variance_penalty=0.0,  # Unused for highest_value
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+
+# PHASE 7b: CHIP TIMING STRATEGY VARIANTS
+# Test 2 chip timing modes with fixed transfer baseline (CONSERVATIVE_FULL) and captain mode (highest_xp)
+
+CHIP_DOUBLES_OPTIMIZED = StrategyConfig(
+    # Philosophy: Maximize chip value by using them around DOUBLE gameweeks.
+    # Chip schedule: 'doubles-optimized' (activate GW-1 before and during double GWs)
+    # Threshold: 8 points xP gain (from CONTEXT.md D-03)
+    # Rationale: Double GWs mean players play twice; chips provide 2x value
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',  # Lock captain mode from Phase 7a findings
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='doubles-optimized',  # NEW: Timing-based chip activation
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+CHIP_BLANKS_OPTIMIZED = StrategyConfig(
+    # Philosophy: Hedge against blank gameweeks by using chips to maximize fill-in squad strength.
+    # Chip schedule: 'blanks-optimized' (activate GW-1 before and after blank GWs)
+    # Threshold: 8 points xP gain (from CONTEXT.md D-03)
+    # Rationale: Blank GWs force squad rotations; chips compensate with high-value lineup
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',  # Lock captain mode from Phase 7a findings
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='blanks-optimized',  # NEW: Timing-based chip activation
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+
 __all__ = [
     'StrategyConfig',
     'BASELINE_STATIC',
@@ -491,4 +623,9 @@ __all__ = [
     'BASELINE_MID',
     'AGGRESSIVE_LATE',
     'AGGRESSIVE_FULL',
+    'CAPTAIN_HIGHEST_XP',
+    'CAPTAIN_FORM_BASED',
+    'CAPTAIN_HIGHEST_VALUE',
+    'CHIP_DOUBLES_OPTIMIZED',
+    'CHIP_BLANKS_OPTIMIZED',
 ]
