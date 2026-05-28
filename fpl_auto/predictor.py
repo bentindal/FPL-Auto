@@ -121,11 +121,12 @@ class Predictor:
         # For now, just use standard fit() with Pipelines
         return self.fit(training_data)
 
-    def to_dataframes(self, player_names: list, predictions: list) -> list:
-        """Zip names + predictions into a list of DataFrames (one per position)."""
+    def to_dataframes(self, element_ids: list, player_names: list, predictions: list) -> list:
+        """Zip element IDs, names, and predictions into element-indexed DataFrames."""
         frames = []
-        for names, preds in zip(player_names, predictions):
-            df = pd.DataFrame({'Name': names, 'xP': preds}).set_index('Name')
+        for elems, names, preds in zip(element_ids, player_names, predictions):
+            df = pd.DataFrame({'Name': names, 'xP': preds},
+                              index=pd.Index(elems, name='element'))
             frames.append(df)
         return frames
 

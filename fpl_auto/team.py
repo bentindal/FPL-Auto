@@ -70,16 +70,22 @@ class Team:
         self.player_list = self.fpl.player_list
         self._pos_player_lists = {pos: self._generate_player_list(pos) for pos in POSITIONS}
 
+        def _xp_by_name(df):
+            """Build name→xP dict from a predictions DataFrame (element- or Name-indexed)."""
+            if 'Name' in df.columns:
+                return dict(zip(df['Name'], df['xP']))
+            return dict(zip(df.index, df['xP']))
+
         # Single-GW xP — used only for suggest_subs (bench weakest for next game)
         self._xp_dicts = {
-            'GK':  dict(zip(self.gk_xp.Name,  self.gk_xp.xP)),
-            'DEF': dict(zip(self.def_xp.Name, self.def_xp.xP)),
-            'MID': dict(zip(self.mid_xp.Name, self.mid_xp.xP)),
-            'FWD': dict(zip(self.fwd_xp.Name, self.fwd_xp.xP)),
+            'GK':  _xp_by_name(self.gk_xp),
+            'DEF': _xp_by_name(self.def_xp),
+            'MID': _xp_by_name(self.mid_xp),
+            'FWD': _xp_by_name(self.fwd_xp),
         }
         # Multi-GW discounted xP — used for captain, transfers, chips
         self._all_xp_dicts = {
-            pos: dict(zip(df.Name, df.xP))
+            pos: _xp_by_name(df)
             for pos, df in zip(POSITIONS, self.all_xp)
         }
 
@@ -644,8 +650,12 @@ class Team:
         return '', '', 0
 
     def suggest_transfer_in(self, position, out_player, budget):
-        player_xp_list = self.all_xp[POSITIONS.index(position)]
-        player_xp_list = player_xp_list.sort_values(by='xP', ascending=False).values.tolist()
+        pos_df = self.all_xp[POSITIONS.index(position)].sort_values(by='xP', ascending=False)
+        # Normalise to [[name, xP], ...] regardless of index format
+        if 'Name' in pos_df.columns:
+            player_xp_list = [[row['Name'], row['xP']] for _, row in pos_df.iterrows()]
+        else:
+            player_xp_list = [[name, xp] for name, xp in zip(pos_df.index, pos_df['xP'])]
         player_xp_list = [p for p in player_xp_list if p[1] >= 3]
         out_xp = self._all_xp_dicts[position].get(out_player, 0)
 
@@ -1083,7 +1093,8 @@ class Team:
         print('Complete!\n')
 
     def _get_best_players(self, position, budget, fillers):
-        players_by_xp = self.all_xp[POSITIONS.index(position)].sort_values(by='xP', ascending=False).Name.tolist()
+        pos_df = self.all_xp[POSITIONS.index(position)].sort_values(by='xP', ascending=False)
+        players_by_xp = pos_df['Name'].tolist() if 'Name' in pos_df.columns else pos_df.index.tolist()
         needed = self.pos_size(position)
         bought = []
         premium = 0

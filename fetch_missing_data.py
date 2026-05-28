@@ -141,13 +141,29 @@ def part_a_fill_gw30_37():
     season_df['value'] = (season_df['value'] * 10).round().astype(int)
     season_df['position'] = season_df['position'].replace({'GKP': 'GK'})
 
-    # Fuzzy-match names to vastaav player list
-    vastaav_players_df = pd.read_csv(DATA_DIR / SEASON_2526 / 'cleaned_players.csv')
-    vastaav_players_df['name'] = vastaav_players_df['first_name'] + ' ' + vastaav_players_df['second_name']
-    vastaav_names = vastaav_players_df['name'].tolist()
-    name_map = fuzzy_match_names(season_df['name'].tolist(), vastaav_names)
-    season_df['name'] = season_df['name'].map(name_map).fillna(season_df['name'])
-    print(f'  Matched {len(name_map)}/{len(season_df)} player names to vastaav')
+    # Join on element (global FPL player ID) to get vastaav canonical names.
+    # This replaces fragile fuzzy name matching that drops ~13% of players.
+    gw_dir = DATA_DIR / SEASON_2526 / 'gws'
+    elem_to_name = {}
+    for gw_f in sorted(gw_dir.glob('gw[0-9]*.csv')):
+        try:
+            ref = pd.read_csv(gw_f, usecols=['element', 'name'])
+            elem_to_name.update(ref.drop_duplicates('element').set_index('element')['name'].to_dict())
+        except (ValueError, KeyError):
+            continue
+    if elem_to_name and 'element' in season_df.columns:
+        before = len(season_df)
+        season_df['name'] = season_df['element'].map(elem_to_name).fillna(season_df['name'])
+        matched = season_df['element'].isin(elem_to_name).sum()
+        print(f'  Matched {matched}/{before} players via element ID join')
+    else:
+        # Fallback: fuzzy match (element column absent from calvinrostanto data)
+        vastaav_players_df = pd.read_csv(DATA_DIR / SEASON_2526 / 'cleaned_players.csv')
+        vastaav_players_df['name'] = vastaav_players_df['first_name'] + ' ' + vastaav_players_df['second_name']
+        vastaav_names = vastaav_players_df['name'].tolist()
+        name_map = fuzzy_match_names(season_df['name'].tolist(), vastaav_names)
+        season_df['name'] = season_df['name'].map(name_map).fillna(season_df['name'])
+        print(f'  Matched {len(name_map)}/{len(season_df)} player names (fuzzy fallback)')
 
     # Sum GW1-29 and GW38 for each player
     gw1_29_sum = load_gw_sum(SEASON_2526, list(range(1, 30)))
@@ -181,6 +197,7 @@ def part_a_fill_gw30_37():
 
         gw_df = pd.DataFrame(row_data)
         gw_df['name'] = remainder_df['name'].values
+        gw_df['element'] = remainder_df['element'].values if 'element' in remainder_df.columns else 0
         gw_df['team'] = remainder_df['team'].values
         gw_df['position'] = remainder_df['position'].values
         gw_df['value'] = remainder_df['value'].values

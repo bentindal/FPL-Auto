@@ -343,8 +343,8 @@ def main():
         print(f'Count: {count}, AE: {avg_e:.2f}, RMSE: {np.sqrt(avg_mse):.2f}, Accuracy: {avg_acc*100:.2f}%')
 
         print(f'Generating {season} GW{i} Predictions...', end='\r')
-        player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, predictor.models)
-        clean_predictions = predictor.to_dataframes(player_names, predictions)
+        element_ids, player_names, predictions = vastaav.get_player_predictions(season, i - predict_weeks, i, predictor.models)
+        clean_predictions = predictor.to_dataframes(element_ids, player_names, predictions)
 
         if 38 - i > 1:
             clean_predictions = vastaav.post_model_weightings_for_next_gw(clean_predictions, i - 1)

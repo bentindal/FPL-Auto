@@ -56,13 +56,15 @@ class FplData:
             pos: Position code ('GK', 'DEF', 'MID', 'FWD')
 
         Returns:
-            DataFrame with columns Name, xP (expected points)
+            DataFrame indexed by element with columns Name, xP (or Name-indexed for old TSVs)
         """
         key = (gw, pos)
         if key not in self._prediction_cache:
-            self._prediction_cache[key] = pd.read_csv(
-                f'predictions/{self.season}/GW{gw}/{pos}.tsv', sep='\t'
-            )
+            df = pd.read_csv(f'predictions/{self.season}/GW{gw}/{pos}.tsv', sep='\t')
+            if 'element' in df.columns:
+                df = df.set_index('element')
+                df.index.name = 'element'
+            self._prediction_cache[key] = df
         return self._prediction_cache[key]
 
     def get_gw_data(self, season, week_num):
@@ -83,10 +85,11 @@ class FplData:
         if cache_key in self._gw_cache:
             return self._gw_cache[cache_key]
 
-        _cols = ['name', 'position', 'team', 'assists', 'bps', 'clean_sheets', 'creativity',
-                 'goals_conceded', 'goals_scored', 'ict_index', 'influence', 'minutes',
-                 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards', 'saves',
-                 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home', 'value']
+        _cols = ['name', 'element', 'position', 'team', 'assists', 'bps', 'clean_sheets',
+                 'creativity', 'goals_conceded', 'goals_scored', 'ict_index', 'influence',
+                 'minutes', 'own_goals', 'penalties_missed', 'penalties_saved', 'red_cards',
+                 'saves', 'threat', 'total_points', 'yellow_cards', 'selected', 'was_home',
+                 'value']
         try:
             if week_num < 1:
                 gw_data = pd.read_csv(f'{self.data_location}/{self.prev_season}/gws/gw{38 + week_num}.csv')
@@ -96,7 +99,10 @@ class FplData:
             empty = pd.DataFrame(columns=_cols).set_index('name')
             self._gw_cache[cache_key] = empty
             return empty
-        gw_data = gw_data[_cols]
+        available = [c for c in _cols if c in gw_data.columns]
+        gw_data = gw_data[available]
+        if 'element' not in gw_data.columns:
+            gw_data['element'] = 0
         gw_data = gw_data.set_index('name')
         self._gw_cache[cache_key] = gw_data
         return gw_data
@@ -160,20 +166,42 @@ class FplData:
         mid_data = self.engineer_features_on_gw_data(mid_data, season, to_gw, 'MID')
         fwd_data = self.engineer_features_on_gw_data(fwd_data, season, to_gw, 'FWD')
 
-        gk_data = gk_data.groupby('name').mean().reset_index().set_index('name')
-        def_data = def_data.groupby('name').mean().reset_index().set_index('name')
-        mid_data = mid_data.groupby('name').mean().reset_index().set_index('name')
-        fwd_data = fwd_data.groupby('name').mean().reset_index().set_index('name')
+        gk_data = self._groupby_element(gk_data)
+        def_data = self._groupby_element(def_data)
+        mid_data = self._groupby_element(mid_data)
+        fwd_data = self._groupby_element(fwd_data)
 
         for gw_offset in (0, 1):
             non_players = self.non_players(season, from_gw + gw_offset).index
             for df in (gk_data, def_data, mid_data, fwd_data):
+                # Preserve element ID through the zero-out (it's an identifier, not a stat)
+                elem_backup = df['element'].copy() if 'element' in df.columns else None
                 df.loc[df.index.isin(non_players), :] = 0
+                if elem_backup is not None:
+                    df['element'] = elem_backup
 
         return gk_data, def_data, mid_data, fwd_data
 
+    def _groupby_element(self, data):
+        """Group name-indexed GW data by element ID, averaging stats and taking the canonical
+        (first) player name per element. Fixes cross-dataset name mismatches (e.g. calvinrostanto
+        'Gabriel Gabriel' vs vastaav 'Gabriel dos Santos Magalhães' for element 286)."""
+        data_reset = data.reset_index()  # bring 'name' back as a column
+        has_element = 'element' in data_reset.columns and (data_reset['element'] != 0).any()
+        if not has_element:
+            # No valid element IDs — fall back to name-based groupby
+            return data.groupby(level=0).mean(numeric_only=True)
+        numeric_cols = [c for c in data_reset.select_dtypes(include=['number']).columns
+                        if c != 'element']
+        name_by_elem = data_reset.groupby('element')['name'].first()
+        grouped = data_reset.groupby('element')[numeric_cols].mean()
+        grouped['element'] = grouped.index
+        grouped['name'] = name_by_elem
+        return grouped.reset_index(drop=True).set_index('name')
+
     def prune_features(self, features):
-        return features.drop(['total_points', 'id', 'bps', 'was_home'], axis=1)
+        return features.drop(['total_points', 'id', 'bps', 'was_home', 'element'], axis=1,
+                             errors='ignore')
 
     def prune_all_features(self, features):
         gk_features, def_features, mid_features, fwd_features = features
@@ -244,10 +272,12 @@ class FplData:
 
     def get_player_predictions(self, season, from_gw, to_gw, models):
         features = self.avg_player_data(season, from_gw, to_gw - 1)
+        element_ids = [f['element'].values if 'element' in f.columns else np.zeros(len(f), dtype=int)
+                       for f in features]
         player_names = [f.index.values for f in features]
         pruned_features = self.prune_all_features(features)
         predictions = [np.round(m.predict(f), 2) for m, f in zip(models, pruned_features)]
-        return player_names, predictions
+        return element_ids, player_names, predictions
 
     def get_price(self, week_num, player, gw_data):
         prices = gw_data[['value']].to_dict()['value']
@@ -312,13 +342,18 @@ class FplData:
                 adjs[i] = (0.1 if is_home else -0.1) + diff_map.get(diff, 0.0)
             team_adjs[team_id] = adjs
 
-        player_team = gw_data['team'].to_dict()
+        player_team = gw_data['team'].to_dict()  # name → team (gw_data is still name-indexed)
 
         overall_predictions = []
         for pos_df in clean_predictions:
-            df = pos_df.reset_index()[['Name', 'xP']].copy()
-            names = df['Name'].values
-            xp_vals = df['xP'].values.astype(float)
+            # pos_df may be element-indexed (new) or Name-indexed (old TSVs)
+            if pos_df.index.name == 'element':
+                elements = pos_df.index.values
+                names = pos_df['Name'].values
+            else:
+                names = pos_df.reset_index()['Name'].values if 'Name' in pos_df.reset_index().columns else pos_df.index.values
+                elements = pos_df['element'].values if 'element' in pos_df.columns else np.zeros(len(names), dtype=int)
+            xp_vals = pos_df['xP'].values.astype(float)
 
             # Build (n_players × next_num_gws) adjustment matrix
             adj_matrix = np.zeros((len(names), next_num_gws))
@@ -335,7 +370,8 @@ class FplData:
             xp_matrix[no_team] = 0.0
             xp_matrix = np.round(xp_matrix, 3)
 
-            result = pd.DataFrame({'Name': names, 'xP': list(xp_matrix)})
+            result = pd.DataFrame({'Name': names, 'xP': list(xp_matrix)},
+                                  index=pd.Index(elements, name='element'))
             overall_predictions.append(result)
 
         return overall_predictions
@@ -345,11 +381,14 @@ class FplData:
         diff_map = {1: 0.2, 2: 0.05, 3: 0.0, 4: -0.05, 5: -0.2}
         gw_data = self.get_gw_data(self.season, week_num)
         overall_predictions = []
-        for pos in clean_predictions:
-            pos = pos.reset_index()
+        for pos_df in clean_predictions:
+            pos = pos_df.reset_index()
+            # Determine column names (element-indexed new format vs Name-indexed old format)
+            has_element_col = 'element' in pos.columns
             post_predictions = []
             for i in range(len(pos)):
-                name = pos.loc[i, 'Name']
+                name = pos.loc[i, 'Name'] if 'Name' in pos.columns else pos.loc[i, pos.columns[0]]
+                element = pos.loc[i, 'element'] if has_element_col else 0
                 p = pos.loc[i, 'xP']
 
                 try:
@@ -357,7 +396,7 @@ class FplData:
                     team_id = self.team_to_id[team_name]
                     fixture_list = self.get_future_fixtures_for_player(name, week_num, gw_data)[0:1]
                 except (KeyError, TypeError):
-                    post_predictions.append([name, 0])
+                    post_predictions.append([element, name, 0])
                     continue
 
                 fixture = fixture_list.iloc[0]
@@ -368,16 +407,31 @@ class FplData:
                 diff_p = p * diff_map.get(difficulty, 0.0)
 
                 p = round(p + home_away_p + diff_p, 3)
-                post_predictions.append([name, p])
+                post_predictions.append([element, name, p])
 
-            overall_predictions.append(pd.DataFrame(post_predictions, columns=['Name', 'xP']))
+            result_df = pd.DataFrame(post_predictions, columns=['element', 'Name', 'xP'])
+            result_df = result_df.set_index('element')
+            overall_predictions.append(result_df)
 
         return overall_predictions
 
     def id_to_name_dict(self):
-        players = pd.read_csv(f'{self.data_location}/{self.season}/player_idlist.csv')
-        players['name'] = players['first_name'] + ' ' + players['second_name']
-        return players.set_index('id')['name'].to_dict()
+        """Build element→name mapping from GW CSVs (stable global FPL element ID)."""
+        import pathlib
+        gw_dir = pathlib.Path(f'{self.data_location}/{self.season}/gws')
+        for f in sorted(gw_dir.glob('gw[0-9]*.csv')):
+            try:
+                df = pd.read_csv(f, usecols=['name', 'element'])
+                return df.drop_duplicates('element').set_index('element')['name'].to_dict()
+            except (ValueError, KeyError):
+                continue
+        # Fallback: read player_idlist.csv with seasonal id (less accurate)
+        try:
+            players = pd.read_csv(f'{self.data_location}/{self.season}/player_idlist.csv')
+            players['name'] = players['first_name'] + ' ' + players['second_name']
+            return players.set_index('id')['name'].to_dict()
+        except (FileNotFoundError, KeyError):
+            return {}
 
     def get_recent_gw(self):
         if self._recent_gw is not None:
@@ -453,7 +507,10 @@ class FplData:
             xp_arrays = np.stack(pos_df['xP'].values)   # (n_players, n)
             discounted = xp_arrays * discount_weights     # (n_players, n) broadcast
 
-            df = pos_df[['Name']].copy()
+            # Preserve element index and Name column through discount operation
+            df = pd.DataFrame({'Name': pos_df['Name'].values},
+                              index=pos_df.index)
+            df.index.name = pos_df.index.name
             if sum:
                 df['xP'] = np.round(np.sum(discounted, axis=1), 2)
             else:
