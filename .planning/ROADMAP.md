@@ -11,14 +11,15 @@
 ## Phases
 
 - [x] **Phase 1: Temporal Integrity** - Fix lookahead bias and implement enforcement mechanism
-- [ ] **Phase 2: Model Diagnostics** - Understand prediction gaps by comparing to top 100 managers
+- [x] **Phase 2: Model Diagnostics** - Understand prediction gaps by comparing to top 100 managers
 - [x] **Phase 3: Model Infrastructure** - Establish proper validation pipeline (TimeSeriesSplit, nested CV)
 - [x] **Phase 4: Feature Engineering** - Expand and improve predictor features
-- [ ] **Phase 5: Strategy Framework & Evaluation** - Define parametrizable strategies and validation framework
-- [ ] **Phase 6: Transfer Strategy Evaluation** - Test transfer frequency and timing variants
-- [ ] **Phase 7: Captain & Chip Strategy Evaluation** - Test captain selection and chip usage variants
-- [ ] **Phase 8: Bench & Substitution Strategy Evaluation** - Test bench composition and substitution logic variants
-- [ ] **Phase 9: Performance Validation** - Final comparison against top 100 managers and lookahead audit
+- [x] **Phase 5: Strategy Framework & Evaluation** - Define parametrizable strategies and validation framework
+- [x] **Phase 6: Transfer Strategy Evaluation** - Test transfer frequency and timing variants
+- [x] **Phase 7: Captain & Chip Strategy Evaluation** - Test captain selection and chip usage variants
+- [x] **Phase 8: Bench & Substitution Strategy Evaluation** - Test bench composition and substitution logic variants
+- [x] **Phase 9: Performance Validation** - Final comparison against top 100 managers and lookahead audit
+- [ ] **Phase 10: Model Retraining & Time-Series Optimization** - Implement production retraining pipeline with drift detection
 
 ---
 
@@ -196,7 +197,42 @@
 3. Final metrics report generated: all strategy archetypes ranked, 95% CIs reported, per-season results shown
 4. Winning strategy parameters documented: transfer frequency, captain rules, chip timing, bench composition, risk settings
 
-**Plans**: TBD
+**Plans**:
+- [x] 09-01-PLAN.md — Data investigation and 2024-25 season status verification (PV-01)
+- [x] 09-02-PLAN.md — Temporal integrity audit harness implementation (PV-02)
+- [x] 09-03-PLAN.md — Phase 8 revalidation against baseline (PV-01, PV-02)
+- [x] 09-04-PLAN.md — Run temporal audit and verify integrity (PV-02)
+- [x] 09-05-PLAN.md — Phase 9 validation: metrics computation and CI estimation (PV-03, PV-04)
+- [x] 09-06-PLAN.md — Percentile ranking vs elite managers (PV-03)
+- [x] 09-07-PLAN.md — Validation summary and Phase 9 completion report (PV-03, PV-04)
+- [x] 09-08-PLAN.md — Update LOCKED_STRATEGIES.md with final findings (PV-04)
+
+---
+
+### Phase 10: Model Retraining & Time-Series Optimization
+**Goal**: Implement production-grade model retraining pipeline with automated drift detection and scheduled optimization. Enable live season prediction updates without manual retraining.
+
+**Depends on**: Phase 4 (Feature Engineering), Phase 5 (Strategy Framework)
+
+**Requirements**: MR-01, MR-02, MR-03, MR-04, MR-05, MR-06
+
+**Success Criteria** (what must be TRUE):
+1. Data collection pipeline operational: FPL + Understat API integration working, accumulated_gw.csv populated for 2024-25
+2. Scheduled retraining implemented: every 2 GWs OR when drift detected (15% RMSE threshold, PELT algorithm)
+3. Position-specific ensemble models trained: XGBoost + RandomForest per position (GK/DEF/MID/FWD) with TimeSeriesSplit validation
+4. Drift detection automated: PELT change-point analysis flags structural breaks; monitoring dashboard tracks RMSE/MAE/R²/Spearman correlation
+5. Orchestration pipeline deployed: Apache Airflow DAG scheduled for post-GW retraining; predictions exported to TSV format compatible with manager.py
+6. Live testing validated: retraining pipeline tested on 2024-25 season (GWs 1-5+), metrics tracked, thresholds calibrated
+
+**Plans**:
+- [x] 10-01-PLAN.md — Data collection pipeline + accumulated_gw.csv schema (MR-01)
+- [x] 10-02-PLAN.md — Scheduled retraining orchestrator + drift detection + position-specific ensembles (MR-02, MR-03, MR-04)
+- [x] 10-03-PLAN.md — Apache Airflow DAG deployment + task orchestration (MR-05)
+- [x] 10-04-PLAN.md — Live testing on 2024-25 + threshold calibration + runbook (MR-06)
+- [x] 10-05-PLAN.md — Phase consolidation, final documentation, production readiness verification (all MR-01 through MR-06)
+
+**Status**: Planning complete
+
 
 ---
 
@@ -205,24 +241,26 @@
 | Phase | Goal | Requirements | Plans | Status |
 |-------|------|--------------|-------|--------|
 | 1. Temporal Integrity | Fix lookahead bias | 4 | 2 | Execution complete |
-| 2. Model Diagnostics | Understand gaps | 4 | TBD | Not started |
+| 2. Model Diagnostics | Understand gaps | 4 | 2 | Execution complete |
 | 3. Model Infrastructure | Proper validation | 6 | 3 | Execution complete |
 | 4. Feature Engineering | Expand features | 4 | 3 | Execution complete |
-| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | 4 | Planning complete |
-| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | 4 | Planning complete |
-| 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | TBD | Not started |
-| 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | TBD | Not started |
-| 9. Performance Validation | Final validation | 4 | TBD | Not started |
+| 5. Strategy Framework & Evaluation | Parametrizable strategies | 8 | 4 | Execution complete |
+| 6. Transfer Strategy Evaluation | Evaluate transfers | 4 | 4 | Execution complete |
+| 7. Captain & Chip Evaluation | Evaluate captaincy/chips | 4 | 4 | Execution complete |
+| 8. Bench & Substitution Evaluation | Evaluate bench logic | 4 | 4 | Execution complete |
+| 9. Performance Validation | Final validation | 4 | 8 | Execution complete |
+| 10. Model Retraining & Time-Series | Production retraining pipeline | 6 | TBD | Planning phase |
 
 ---
 
 ## Notes
 
-- **Parallelization**: Phases 6, 7, 8 can run in parallel after Phase 5 completes. Phase 9 waits for all three.
+- **Parallelization**: Phases 6, 7, 8 can run in parallel after Phase 5 completes. Phase 9 waits for all three. Phase 10 runs independently after Phase 4-5.
 - **Temporal Integrity**: Enforced from Phase 1 onward. All subsequent phases inherit this constraint.
-- **Research Foundation**: Phases 1-5 directly address research recommendations; Phases 6-9 apply validated evaluation framework to strategy variants.
+- **Research Foundation**: Phases 1-5 directly address research recommendations; Phases 6-9 apply validated evaluation framework to strategy variants. Phase 10 implements time-series optimization based on published research.
 - **Statistical Rigor**: Walk-forward validation (Phase 5 onward) prevents overfitting. Bootstrapped CIs (not point estimates) quantify uncertainty. Bonferroni correction prevents false positives.
+- **Production Ready**: Phases 1-9 complete; Phase 10 bridges gap to production deployment with automated model maintenance pipeline.
 
 ---
 
-*Roadmap updated: 2026-05-27 - Phase 5 complete, Phase 6 planning complete*
+*Roadmap updated: 2026-05-28 - Phases 1-9 complete, Phase 10 planning initiated*
