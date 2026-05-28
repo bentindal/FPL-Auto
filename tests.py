@@ -1920,11 +1920,11 @@ class TestTeamSubstitution(unittest.TestCase):
         """auto_subs() should use passed strategy_config."""
         from fpl_auto.strategies import BENCH_SAFE
 
+        # Call auto_subs without error
         self.team.auto_subs(strategy_config=BENCH_SAFE)
 
-        # Verify squad updated (subs made)
-        squad_size = len(self.team.squad)
-        self.assertEqual(squad_size, 15)  # Squad size unchanged
+        # Verify subs are set (4 subs)
+        self.assertEqual(len(self.team.subs), 4)
 
     def test_auto_subs_without_strategy_config(self):
         """auto_subs() should use self.strategy_config if param not provided."""
@@ -1933,9 +1933,8 @@ class TestTeamSubstitution(unittest.TestCase):
         self.team.strategy_config = BENCH_SAFE
         self.team.auto_subs()
 
-        # Verify squad updated
-        squad_size = len(self.team.squad)
-        self.assertEqual(squad_size, 15)
+        # Verify subs are set (4 subs)
+        self.assertEqual(len(self.team.subs), 4)
 
     def test_suggest_subs_temporal_integrity(self):
         """suggest_subs() should only use _xp_dicts, never _all_xp_dicts (no lookahead)."""
