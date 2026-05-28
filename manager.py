@@ -13,7 +13,7 @@ import numpy as np
 
 import fpl_auto.team as team_module
 from fpl_auto import evaluate as eval
-from fpl_auto.strategies import StrategyConfig, BASELINE_CURRENT
+from fpl_auto.strategies import StrategyConfig, BASELINE_CURRENT, PHASE_8_OPTIMAL
 
 
 def parse_args():
@@ -31,8 +31,8 @@ def parse_args():
                         choices=['auto', 'custom_1'],
                         help='Initial team: auto = generate own team, default: auto')
     parser.add_argument('-strategy', type=str, default='baseline_current',
-                        choices=['static', 'baseline_current', 'conservative', 'aggressive', 'differential'],
-                        help='Strategy to use for season simulation (default: baseline_current)')
+                        choices=['static', 'baseline_current', 'phase_8_optimal', 'conservative', 'aggressive', 'differential'],
+                        help='Strategy to use for season simulation (default: baseline_current; phase_8_optimal = Phase 6-8 locked optimal)')
     parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
                         help='Export results to JSON + score plot')
     parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
@@ -49,7 +49,7 @@ def get_strategy_config(strategy_name: str):
 
     Args:
         strategy_name: Strategy name from CLI choices
-                      ('static', 'baseline_current', 'conservative', 'aggressive', 'differential')
+                      ('static', 'baseline_current', 'phase_8_optimal', 'conservative', 'aggressive', 'differential')
 
     Returns:
         StrategyConfig instance
@@ -58,11 +58,12 @@ def get_strategy_config(strategy_name: str):
         ValueError if strategy_name is not recognized
     """
     from fpl_auto.strategies import (
-        BASELINE_STATIC, BASELINE_CURRENT, CONSERVATIVE, AGGRESSIVE, DIFFERENTIAL
+        BASELINE_STATIC, BASELINE_CURRENT, PHASE_8_OPTIMAL, CONSERVATIVE, AGGRESSIVE, DIFFERENTIAL
     )
     strategies = {
         'static': BASELINE_STATIC,
         'baseline_current': BASELINE_CURRENT,
+        'phase_8_optimal': PHASE_8_OPTIMAL,  # LOCKED Phase 6-8 optimal (multi-season validated)
         'conservative': CONSERVATIVE,
         'aggressive': AGGRESSIVE,
         'differential': DIFFERENTIAL,
