@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "phase": "07b",
+    "evaluation_date": "2026-05-28T15:20:48.681598",
+    "variants": [
+      "CHIP_DOUBLES_OPTIMIZED",
+      "CHIP_BLANKS_OPTIMIZED"
+    ],
+    "test_seasons": [
+      "2023-24",
+      "2024-25"
+    ],
+    "train_seasons": [
+      "2021-22",
+      "2022-23"
+    ],
+    "baseline": "BASELINE_CURRENT",
+    "bonferroni_alpha": 0.025
+  },
+  "variants": {
+    "CHIP_DOUBLES_OPTIMIZED": {
+      "test_iterations": [
+        {
+          "test_season": "2023-24",
+          "total_points": 1805.0,
+          "sharpe_ratio": 3.1119163336494555,
+          "sortino_ratio": 5.381666954792545,
+          "coefficient_variation": 0.32134540032034353,
+          "max_drawdown": 0.0,
+          "chip_usage": {
+            "total_chips": 0,
+            "by_type": {
+              "Triple Captain": 0,
+              "Wildcard": 0,
+              "Bench Boost": 0,
+              "Free Hit": 0
+            },
+            "timing_accuracy": 0.0,
+            "in_blank_gws": 0,
+            "in_double_gws": 0
+          }
+        }
+      ],
+      "aggregated_metrics": {
+        "mean_total_points": 1805.0,
+        "ci_total_points_lower": 1805.0,
+        "ci_total_points_upper": 1805.0,
+        "mean_sharpe": 3.1119163336494555,
+        "ci_sharpe_lower": 3.1119163336494555,
+        "ci_sharpe_upper": 3.1119163336494555,
+        "mean_chips_used": 0.0
+      },
+      "vs_baseline": {
+        "mean_diff_total_points": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "significant": false
+      }
+    },
+    "CHIP_BLANKS_OPTIMIZED": {
+      "test_iterations": [
+        {
+          "test_season": "2023-24",
+          "total_points": 1805.0,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0,
+          "chip_usage": {
+            "total_chips": 2,
+            "by_type": {
+              "Triple Captain": 1,
+              "Wildcard": 0,
+              "Bench Boost": 1,
+              "Free Hit": 0
+            },
+            "timing_accuracy": 0.0,
+            "in_blank_gws": 0,
+            "in_double_gws": 0
+          }
+        }
+      ],
+      "aggregated_metrics": {
+        "mean_total_points": 1805.0,
+        "ci_total_points_lower": 1805.0,
+        "ci_total_points_upper": 1805.0,
+        "mean_sharpe": 2.9926094094374207,
+        "ci_sharpe_lower": 2.9926094094374207,
+        "ci_sharpe_upper": 2.9926094094374207,
+        "mean_chips_used": 2.0
+      },
+      "vs_baseline": {
+        "mean_diff_total_points": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "significant": false
+      }
+    }
+  },
+  "baseline_metrics": {
+    "mean_total_points": 1805.0,
+    "mean_sharpe": 2.9926094094374207
+  }
+}
