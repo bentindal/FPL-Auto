@@ -1,8 +1,8 @@
 # PROJECT STATE: FPL-Auto Performance Optimization
 
 **Last Updated:** 2026-05-28  
-**Milestone:** Phase 8 In Progress — Bench & Substitution Implementation Underway
-**Current Phase:** Phase 8 (Bench & Substitution Strategy Evaluation) — Plans 08-01 & 08-02 Complete
+**Milestone:** Phase 8 Complete — Bench & Substitution Evaluation Finished
+**Current Phase:** Phase 8 (Bench & Substitution Strategy Evaluation) — ✅ ALL 4 PLANS COMPLETE
 
 ---
 
@@ -29,7 +29,7 @@
 **Progress**: 
 ```
 Phases 1-7: ████████████████████ 100%
-Phase 8:    ███████████░░░░░░░░░░ 75% (Plans 1-3 complete, 4 pending)
+Phase 8:    ████████████████████ 100% (ALL 4 PLANS COMPLETE)
 Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
 ```
 
@@ -41,11 +41,11 @@ Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
   - Plan 02: Captain walk-forward evaluation (+12 pts from CAPTAIN_HIGHEST_VALUE)
   - Plan 03: Chip variants implemented (2 timing strategies)
   - Plan 04: Chip walk-forward evaluation (no significant improvement)
-- Phase 8 (Bench & Substitution): 🔄 IN PROGRESS
+- Phase 8 (Bench & Substitution): ✅ COMPLETE
   - Plan 01: Bench composition framework (BENCH_SAFE, BENCH_SPECULATIVE presets with static subs) ✅
   - Plan 02: Predictive swap logic (SUBS_PREDICTIVE_SWAP with >20% threshold, 4 factorial presets) ✅
   - Plan 03: Walk-forward evaluation (4-variant 2×2 factorial on 2023-24; 2024-25 data error) ✅
-  - Plan 04: Results analysis and Phase 9 recommendations (PENDING)
+  - Plan 04: Results analysis and Phase 9 recommendations ✅
 
 ---
 
@@ -64,7 +64,7 @@ Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
 | 5 | Strategy Framework | ✅ Complete | Walk-forward + bootstrap CI framework |
 | 6 | Transfer Evaluation | ✅ Complete | CONSERVATIVE_FULL optimal (+22 pts) |
 | 7 | Captain & Chip | ✅ Complete | CAPTAIN_HIGHEST_VALUE wins (+12 pts) |
-| 8 | Bench & Substitution | 📋 Planned | Next optimization tier |
+| 8 | Bench & Substitution | ✅ Complete | BENCH_SAFE_STATIC optimal; predictive swaps degrade (-111 pts) |
 | 9 | Performance Validation | ⏳ Pending | Final validation vs top 100 managers |
 
 **Critical Path**: 1 → 2 → 3 → 4 → 5 → {6, 7, 8} → 9
