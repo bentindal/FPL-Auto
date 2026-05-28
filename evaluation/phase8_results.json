@@ -1,0 +1,76 @@
+{
+  "summary": {
+    "metrics_by_variant": {
+      "BENCH_SAFE_STATIC": {
+        "points": 1817.0,
+        "sharpe": 3.0399027574906006,
+        "sortino": 5.126962106926467,
+        "ci_lower": 1817.0,
+        "ci_upper": 1817.0
+      },
+      "BENCH_SAFE_PREDICTIVE": {
+        "points": 1706.0,
+        "sharpe": 3.0930778872617033,
+        "sortino": 5.086952424743879,
+        "ci_lower": 1706.0,
+        "ci_upper": 1706.0
+      },
+      "BENCH_SPECULATIVE_STATIC": {
+        "points": 1817.0,
+        "sharpe": 3.0399027574906006,
+        "sortino": 5.126962106926467,
+        "ci_lower": 1817.0,
+        "ci_upper": 1817.0
+      },
+      "BENCH_SPECULATIVE_PREDICTIVE": {
+        "points": 1706.0,
+        "sharpe": 3.0930778872617033,
+        "sortino": 5.086952424743879,
+        "ci_lower": 1706.0,
+        "ci_upper": 1706.0
+      }
+    },
+    "significant_pairs": [
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SAFE_PREDICTIVE",
+        true
+      ],
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SPECULATIVE_STATIC",
+        false
+      ],
+      [
+        "BENCH_SAFE_STATIC",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        true
+      ],
+      [
+        "BENCH_SAFE_PREDICTIVE",
+        "BENCH_SPECULATIVE_STATIC",
+        true
+      ],
+      [
+        "BENCH_SAFE_PREDICTIVE",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        false
+      ],
+      [
+        "BENCH_SPECULATIVE_STATIC",
+        "BENCH_SPECULATIVE_PREDICTIVE",
+        true
+      ]
+    ],
+    "best_variant": "BENCH_SAFE_STATIC",
+    "summary_table": "Variant Comparison (sorted by total points):\n\nVariant                                  Points     Sharpe     CI Lower   CI Upper  \n--------------------------------------------------------------------------------\nBENCH_SAFE_STATIC                        1817.0     3.04       1817.0     1817.0    \nBENCH_SPECULATIVE_STATIC                 1817.0     3.04       1817.0     1817.0    \nBENCH_SAFE_PREDICTIVE                    1706.0     3.09       1706.0     1706.0    \nBENCH_SPECULATIVE_PREDICTIVE             1706.0     3.09       1706.0     1706.0    \n\nBonferroni-Corrected Significance (\u03b1=0.0125 for 4 variants):\n--------------------------------------------------------------------------------\n** BENCH_SAFE_STATIC vs BENCH_SAFE_PREDICTIVE: SIGNIFICANT\n   BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_STATIC: NOT significant\n** BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: SIGNIFICANT\n** BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_STATIC: SIGNIFICANT\n   BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant\n** BENCH_SPECULATIVE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: SIGNIFICANT\n\nRecommendation: BENCH_SAFE_STATIC (highest points)"
+  },
+  "variants_tested": [
+    "BENCH_SAFE_STATIC",
+    "BENCH_SAFE_PREDICTIVE",
+    "BENCH_SPECULATIVE_STATIC",
+    "BENCH_SPECULATIVE_PREDICTIVE",
+    "_comparison"
+  ],
+  "timestamp": "2026-05-28T16:05:37.157226"
+}
