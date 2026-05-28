@@ -221,3 +221,61 @@ All parameters have been tested via walk-forward validation across Phases 5-9. R
 
 *Phase 9 validation complete 2026-05-28*  
 *PHASE_8_OPTIMAL locked and production-ready*
+
+---
+
+## Phase 10: Model Retraining & Time-Series Optimization (COMPLETE)
+
+**Retraining Strategy (LOCKED):**
+- Frequency: Every 2 gameweeks (GW 2, 4, 6, ..., 38)
+- Override: If RMSE > baseline × 1.15 for 2+ consecutive GWs, retrain immediately
+- Window: Expanding (2019-2023 + accumulated 2024-25 GWs)
+- Validation: TimeSeriesSplit(n_splits=3) for fast cross-validation
+- Ensemble: XGBoost + RandomForest per position (GK/DEF/MID/FWD) with median aggregation
+
+**Position-Specific Hyperparameters:**
+- GK: max_depth=4, learning_rate=0.05, n_estimators=500 (high regularization)
+- DEF: max_depth=5, learning_rate=0.05, n_estimators=500 (balanced)
+- MID: max_depth=5, learning_rate=0.05, n_estimators=500 (default)
+- FWD: max_depth=6, learning_rate=0.05, n_estimators=500 (deeper for goals)
+
+**Drift Detection Thresholds (LOCKED):**
+- RMSE: Alert if > baseline × 1.15 (15% increase)
+- MAE: Alert if > 0.8 pts/player
+- R²: Alert if < 0.80 (degradation indicator)
+- Spearman Correlation: Alert if < 0.85 (ranking quality critical for captain selection)
+- Trigger Condition: Drift must persist 2+ consecutive GWs before override retrain
+
+**Orchestration (LOCKED):**
+- Platform: Apache Airflow (scheduled) + Prefect (optional drift-driven)
+- Schedule: Tuesday-Sunday 19:00 UTC (post-match window)
+- DAG: fpl_retrain_schedule with 5 sequential tasks
+- Tasks: collect_gw_data → validate_week_data → retrain_on_schedule → check_drift → write_predictions_tsv
+
+**Live Test Results (2024-25 GW1-5):**
+- Baseline RMSE established from historical 2019-2023 data
+- Live metrics tracked: [see tests/results/live_retraining_metrics_2024-25.csv]
+- No drift detected in GW1-5 range
+- Predictions exported to TSV format; manager.py integration validated
+- Recommendation: Deploy Airflow DAG for production 2024-25 season
+
+**Implementation Status: COMPLETE**
+- Data collection pipeline: ✅ FPL + Understat dual-source
+- Scheduled retraining: ✅ Every 2 GWs with drift override
+- Position-specific ensembles: ✅ XGBoost + RandomForest per position
+- Drift detection: ✅ PELT-inspired 4-GW rolling RMSE monitor
+- Airflow orchestration: ✅ DAG defined and tested
+- Live testing: ✅ GW1-5 validated; thresholds calibrated
+
+**Known Limitations (Phase 11+):**
+- Fixture difficulty weighting (FPL API available; not integrated)
+- Injury/suspension prediction (requires NLP; deferred)
+- Advanced ensemble stacking (baseline voting sufficient for Phase 10)
+- Real-time updates during matches (batch post-GW only)
+
+**Production Readiness: YES**
+- All 6 requirements met
+- Thresholds validated on live data
+- Runbook documented
+- Manager.py integration verified
+- Ready for scheduled deployment
