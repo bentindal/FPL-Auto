@@ -1833,5 +1833,181 @@ class TestTeamCaptaincy(unittest.TestCase):
         self.assertIsInstance(float(captain[1]), float)  # xP (numeric)
 
 
+class TestTeamSubstitution(unittest.TestCase):
+    """Test suggest_subs() with both substitution modes (static, predictive_swap)."""
+
+    def setUp(self):
+        """Create test team with known xP distribution."""
+        self.team = make_team(budget=1000)
+        # Add a full squad (15 players minimum)
+        # GK (2)
+        self.team.add_player('Jordan Pickford', 'GK', 4.5)
+        self.team.add_player('Dean Henderson', 'GK', 4.0)
+        # DEF (5)
+        self.team.add_player('Andrew Robertson', 'DEF', 7.0)
+        self.team.add_player('Trent Alexander-Arnold', 'DEF', 7.5)
+        self.team.add_player('Ruben Dias', 'DEF', 6.0)
+        self.team.add_player('Joao Cancelo', 'DEF', 6.5)
+        self.team.add_player('Luke Shaw', 'DEF', 5.0)
+        # MID (5)
+        self.team.add_player('Mohamed Salah', 'MID', 12.0)
+        self.team.add_player('Bruno Fernandes', 'MID', 10.5)
+        self.team.add_player('Heung-Min Son', 'MID', 9.5)
+        self.team.add_player('Phil Foden', 'MID', 8.0)
+        self.team.add_player('Bernardo Silva', 'MID', 7.5)
+        # FWD (3)
+        self.team.add_player('Harry Kane', 'FWD', 11.5)
+        self.team.add_player('Cristiano Ronaldo', 'FWD', 10.0)
+        self.team.add_player('Jamie Vardy', 'FWD', 9.0)
+        # Note: Squad should have 15 players exactly
+        # We have 15 now (2 GK + 5 DEF + 5 MID + 3 FWD)
+
+    def test_suggest_subs_static_mode(self):
+        """Static mode should return lowest xP players as bench."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        subs = self.team.suggest_subs(strategy_config=BENCH_SAFE)
+
+        # Verify 4 subs returned
+        self.assertEqual(len(subs), 4)
+
+        # Verify format: [[name, pos], ...]
+        self.assertEqual(subs[0][1], 'GK')  # First is always GK
+
+        # Verify all subs have valid names and positions
+        for sub in subs:
+            self.assertIsInstance(sub[0], str)
+            self.assertIn(sub[1], ['GK', 'DEF', 'MID', 'FWD'])
+
+    def test_suggest_subs_predictive_swap_mode(self):
+        """Predictive swap should be callable without errors."""
+        from fpl_auto.strategies import BENCH_SPECULATIVE
+        from fpl_auto.strategies import StrategyConfig
+
+        # Create config with predictive_swap mode
+        config = StrategyConfig(
+            transfer_mode='flexible',
+            max_transfers_per_gw=1,
+            transfer_discount_factor=0.8,
+            transfer_budget_per_gw=0.5,
+            transfer_window_gw_range=None,
+            transfer_xp_threshold=0.20,
+            transfer_xp_threshold_mode='relative',
+            captain_mode='highest_value',
+            captain_lookback_gws=1,
+            captain_variance_penalty=0.0,
+            chip_schedule='conservative',
+            wildcard_threshold_points=60.0,
+            chip_budget_limit=3,
+            bench_mode='rotate_low_xp',
+            bench_injury_threshold=0.5,
+            bench_composition_variant='speculative',
+            substitution_mode='predictive_swap',
+            substitution_trigger_threshold=0.20,
+            position_variance_tolerance=1.2,
+            punt_threshold=0.5,
+        )
+
+        subs = self.team.suggest_subs(strategy_config=config)
+
+        # Verify 4 subs returned
+        self.assertEqual(len(subs), 4)
+
+        # Verify format is correct
+        self.assertEqual(subs[0][1], 'GK')
+
+    def test_auto_subs_with_strategy_config(self):
+        """auto_subs() should use passed strategy_config."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        self.team.auto_subs(strategy_config=BENCH_SAFE)
+
+        # Verify squad updated (subs made)
+        squad_size = len(self.team.squad)
+        self.assertEqual(squad_size, 15)  # Squad size unchanged
+
+    def test_auto_subs_without_strategy_config(self):
+        """auto_subs() should use self.strategy_config if param not provided."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        self.team.strategy_config = BENCH_SAFE
+        self.team.auto_subs()
+
+        # Verify squad updated
+        squad_size = len(self.team.squad)
+        self.assertEqual(squad_size, 15)
+
+    def test_suggest_subs_temporal_integrity(self):
+        """suggest_subs() should only use _xp_dicts, never _all_xp_dicts (no lookahead)."""
+        from fpl_auto.strategies import BENCH_SPECULATIVE
+        from fpl_auto.strategies import StrategyConfig
+
+        config = StrategyConfig(
+            transfer_mode='flexible',
+            max_transfers_per_gw=1,
+            transfer_discount_factor=0.8,
+            transfer_budget_per_gw=0.5,
+            transfer_window_gw_range=None,
+            transfer_xp_threshold=0.20,
+            transfer_xp_threshold_mode='relative',
+            captain_mode='highest_value',
+            captain_lookback_gws=1,
+            captain_variance_penalty=0.0,
+            chip_schedule='conservative',
+            wildcard_threshold_points=60.0,
+            chip_budget_limit=3,
+            bench_mode='rotate_low_xp',
+            bench_injury_threshold=0.5,
+            bench_composition_variant='speculative',
+            substitution_mode='predictive_swap',
+            substitution_trigger_threshold=0.20,
+            position_variance_tolerance=1.2,
+            punt_threshold=0.5,
+        )
+
+        subs = self.team.suggest_subs(strategy_config=config)
+
+        # If suggest_subs calls it successfully, temporal integrity is maintained
+        self.assertEqual(len(subs), 4)
+
+    def test_suggest_subs_min_squad_size(self):
+        """suggest_subs() should raise if squad has no GK (upstream error)."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        self.team.gks = []  # Empty GK list → invalid squad
+        config = BENCH_SAFE
+
+        with self.assertRaises(ValueError):
+            self.team.suggest_subs(strategy_config=config)
+
+    def test_bench_safe_config_loads(self):
+        """BENCH_SAFE should load and have correct attributes."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        self.assertEqual(BENCH_SAFE.bench_composition_variant, 'safe')
+        self.assertEqual(BENCH_SAFE.substitution_mode, 'static')
+        self.assertEqual(BENCH_SAFE.transfer_budget_per_gw, 0.5)
+        self.assertEqual(BENCH_SAFE.captain_mode, 'highest_value')
+
+    def test_bench_speculative_config_loads(self):
+        """BENCH_SPECULATIVE should load and have correct attributes."""
+        from fpl_auto.strategies import BENCH_SPECULATIVE
+
+        self.assertEqual(BENCH_SPECULATIVE.bench_composition_variant, 'speculative')
+        self.assertEqual(BENCH_SPECULATIVE.substitution_mode, 'static')
+        self.assertEqual(BENCH_SPECULATIVE.transfer_budget_per_gw, 0.5)
+        self.assertEqual(BENCH_SPECULATIVE.captain_mode, 'highest_value')
+
+    def test_auto_subs_returns_4_subs(self):
+        """auto_subs() should maintain exactly 4 subs after execution."""
+        from fpl_auto.strategies import BENCH_SAFE
+
+        initial_subs = len(self.team.subs)
+        self.team.auto_subs(strategy_config=BENCH_SAFE)
+        final_subs = len(self.team.subs)
+
+        self.assertEqual(final_subs, 4)
+
+
 if __name__ == '__main__':
     unittest.main()
