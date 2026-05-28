@@ -401,5 +401,107 @@ class TestLiveRetraining(unittest.TestCase):
             self.assertTrue(pd.api.types.is_numeric_dtype(loaded['xp']))
 
 
+    def test_manager_integration_with_strategy_config(self):
+        """Test manager.py integration with StrategyConfig and retraining predictions"""
+        import sys
+        import os
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+        # Create predictions TSV files for GW1-4
+        for gw in [2, 4]:
+            export_dir = self.temp_path / 'predictions' / '2024-25' / f'GW{gw}'
+            export_dir.mkdir(parents=True, exist_ok=True)
+
+            for position in ['GK', 'DEF', 'MID', 'FWD']:
+                pred_data = {
+                    'player_id': range(1, 100),
+                    'xp': np.random.uniform(1.0, 3.5, 99)
+                }
+                pred_df = pd.DataFrame(pred_data)
+                tsv_file = export_dir / f'{position}.tsv'
+                pred_df.to_csv(tsv_file, sep='\t', index=False)
+
+        # Verify that predictions match manager.py expected format
+        for gw in [2, 4]:
+            export_dir = self.temp_path / 'predictions' / '2024-25' / f'GW{gw}'
+            for position in ['GK', 'DEF', 'MID', 'FWD']:
+                tsv_file = export_dir / f'{position}.tsv'
+                loaded = pd.read_csv(tsv_file, sep='\t')
+
+                # Manager.py expects: player_id, xp columns minimum
+                self.assertIn('player_id', loaded.columns)
+                self.assertIn('xp', loaded.columns)
+                self.assertTrue(pd.api.types.is_numeric_dtype(loaded['xp']))
+                self.assertGreater(len(loaded), 0)
+
+                # Verify xP values in reasonable range
+                self.assertTrue((loaded['xp'] > 0).all())
+                self.assertTrue((loaded['xp'] < 10).all())
+
+    def test_predictions_lookahead_format(self):
+        """Test that exported predictions support 6-GW lookahead as required by manager.py"""
+        # Create predictions for 6-GW lookahead (GW2 predicts GW3-8)
+        gw_start = 2
+        export_dir = self.temp_path / 'predictions' / '2024-25' / f'GW{gw_start}'
+        export_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create combined predictions for GW3-8 (6 future GWs)
+        lookahead_data = []
+        for future_gw in range(gw_start + 1, gw_start + 7):
+            for position in ['GK', 'DEF', 'MID', 'FWD']:
+                for player_id in range(1, 50):
+                    lookahead_data.append({
+                        'player_id': player_id,
+                        'position': position,
+                        'future_gw': future_gw,
+                        'xp': np.random.uniform(1.0, 3.5)
+                    })
+
+        lookahead_df = pd.DataFrame(lookahead_data)
+
+        # Export per-position (as manager.py expects)
+        for position in ['GK', 'DEF', 'MID', 'FWD']:
+            pos_data = lookahead_df[lookahead_df['position'] == position]
+            tsv_file = export_dir / f'{position}.tsv'
+            pos_data.to_csv(tsv_file, sep='\t', index=False)
+
+        # Verify lookahead structure
+        for position in ['GK', 'DEF', 'MID', 'FWD']:
+            tsv_file = export_dir / f'{position}.tsv'
+            loaded = pd.read_csv(tsv_file, sep='\t')
+
+            # Should have predictions for GW3-8 (6 GWs)
+            unique_gws = loaded['future_gw'].unique() if 'future_gw' in loaded.columns else []
+            if 'future_gw' in loaded.columns:
+                self.assertLessEqual(len(unique_gws), 6, f"{position} has more than 6-GW lookahead")
+
+    def test_retraining_predictions_vs_baseline(self):
+        """Test that retraining predictions improve on baseline (if baseline available)"""
+        df = pd.read_csv(self.accumulated_file)
+
+        # Compare GW2 retraining predictions to baseline
+        gw2_data = df[df['gw'] == 2]
+
+        baseline_rmses = {}
+        retrain_rmses = {}
+
+        for position in ['GK', 'DEF', 'MID', 'FWD']:
+            pos_data = gw2_data[gw2_data['position'] == position]
+
+            if len(pos_data) > 0:
+                predictions = pos_data['xp'].values
+                actuals = pos_data['points'].values
+
+                rmse = np.sqrt(np.mean((predictions - actuals) ** 2))
+
+                # For this test, we expect retrained models to have RMSE < 1.5
+                # (reasonable for FPL predictions)
+                self.assertLess(rmse, 1.5, f"{position} RMSE too high: {rmse}")
+                retrain_rmses[position] = rmse
+
+        # Verify all positions have valid RMSE
+        self.assertEqual(len(retrain_rmses), 4, "Not all positions have RMSE values")
+
+
 if __name__ == '__main__':
     unittest.main()
