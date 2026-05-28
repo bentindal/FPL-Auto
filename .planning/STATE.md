@@ -1,9 +1,9 @@
 # PROJECT STATE: FPL-Auto Performance Optimization
 
 **Last Updated:** 2026-05-28  
-**Milestone:** Phase 9 COMPLETE & STRATEGIES VALIDATED; ALL 8 PLANS EXECUTED
-**Current Phase:** Phase 9 (Performance Validation) — ✅ EXECUTION COMPLETE
-**Production Strategy:** PHASE_8_OPTIMAL (temporal integrity PASS, risk metrics strong, performance 71.7% vs elite managers)
+**Milestone:** Phase 10 In Progress — Live Retraining Pipeline (10-01, 10-02, 10-03, 10-04 COMPLETE)
+**Current Phase:** Phase 10 (Model Retraining & Time-Series Optimization) — ✅ 4/5 PLANS EXECUTED
+**Production Strategy:** PHASE_8_OPTIMAL (temporal integrity PASS, risk metrics strong, performance 71.7% vs elite managers) + Phase 10 live retraining integration
 
 ---
 
@@ -22,47 +22,45 @@
 
 ## Current Position
 
-**Status**: Phase 9 ALL PLANS COMPLETE; Phase 9 execution closed
-**Phase**: 9 (Performance Validation) - Execution complete, 8/8 plans executed
-**Last Completed**: Phase 9 Plan 08 LOCKED_STRATEGIES.md update (2026-05-28)  
-**Next Milestone**: Phase 10 (Alternative Optimization Vectors) — Planning phase
+**Status**: Phase 10 In Progress (4/5 plans complete)
+**Phase**: 10 (Model Retraining & Time-Series Optimization) - Execution in progress, 4/5 plans executed
+**Last Completed**: Phase 10 Plan 04 Live Retraining Execution (2026-05-28)  
+**Next Milestone**: Phase 10 Plan 05 (Airflow deployment + Phase 11 planning)
 
 **Progress**: 
 ```
-Phases 1-8: ████████████████████ 100% (EXECUTION COMPLETE)
-Phase 9:    ████████████████████ 100% (EXECUTION COMPLETE)
+Phases 1-9:    ████████████████████ 100% (EXECUTION COMPLETE)
+Phase 10 P01:  ████████████████████ 100% (Live data collection)
+Phase 10 P02:  ████████████████████ 100% (Ensemble retraining)
+Phase 10 P03:  ████████████████████ 100% (Airflow DAG + drift monitoring)
+Phase 10 P04:  ████████████████████ 100% (Live testing & validation)
+Phase 10 P05:  ░░░░░░░░░░░░░░░░░░░░ 0% (Deployment planning)
 ```
 
 **Current Phase Status:**
 - Phase 5 (Strategy Framework): ✅ COMPLETE
 - Phase 6 (Transfer Strategy Evaluation): ✅ COMPLETE
 - Phase 7 (Captain & Chip Evaluation): ✅ COMPLETE
-  - Plan 01: Captain variants implemented (3 modes)
-  - Plan 02: Captain walk-forward evaluation (+12 pts from CAPTAIN_HIGHEST_VALUE)
-  - Plan 03: Chip variants implemented (2 timing strategies)
-  - Plan 04: Chip walk-forward evaluation (no significant improvement)
 - Phase 8 (Bench & Substitution): ✅ COMPLETE
-  - Plan 01: Bench composition framework (BENCH_SAFE, BENCH_SPECULATIVE presets with static subs) ✅
-  - Plan 02: Predictive swap logic (SUBS_PREDICTIVE_SWAP with >20% threshold, 4 factorial presets) ✅
-  - Plan 03: Walk-forward evaluation (4-variant 2×2 factorial on 2023-24; 2024-25 data error) ✅
-  - Plan 04: Results analysis and Phase 9 recommendations ✅
 - Phase 9 (Performance Validation): ✅ EXECUTION COMPLETE
-  - Plan 01: Data investigation — 2024-25 incomplete (GW1-GW4 only), skip decision documented ✅
-  - Plan 02: Temporal audit harness — TemporalAudit class + TestPhase9TemporalAudit (4 tests) ✅
-  - Plan 03: Phase 8 revalidation — Skip documented, BENCH_SAFE_STATIC locked ✅
-  - Plan 04: Run temporal audit — PASS verdict, 0 violations across 38 GW ✅
-  - Plan 05: Phase 9 validation — mean=1,823 pts, 95% CI=[1,618, 2,035], sharpe=3.035, sortino=5.054 ✅
-  - Plan 06: Percentile ranking — 71.7% of top 10 managers (threshold 75% NOT MET) ✅
-  - Plan 07: Validation summary — 09-VALIDATION-SUMMARY.md + PHASE9-FINAL-REPORT.md ✅
-  - Plan 08: Update LOCKED_STRATEGIES.md — Phase 9 section added, production recommendation documented ✅
+- Phase 10 (Model Retraining & Time-Series Optimization): IN PROGRESS (4/5 plans)
+  - Plan 01: Live data collection (FPL API + Understat) ✅ COMPLETE (2026-05-26)
+  - Plan 02: Ensemble retraining framework (FPLModelRetrainer class) ✅ COMPLETE (2026-05-27)
+  - Plan 03: Airflow DAG + drift monitoring ✅ COMPLETE (2026-05-27)
+  - Plan 04: Live retraining execution & validation ✅ COMPLETE (2026-05-28)
+    - Integration test suite: 10 tests (test_live_retraining.py), all passing
+    - Live metrics report: 20 records (5 GW × 4 positions), drift calibration (15% RMSE threshold)
+    - Operational runbook: 8 sections (setup, execution, monitoring, alerts, recovery, maintenance, FAQ)
+    - Manager.py integration: 3 dedicated tests validating TSV format, 6-GW lookahead, quality metrics
+  - Plan 05: Airflow deployment & Phase 11 planning — IN PROGRESS
 
 ---
 
 ## Roadmap Summary
 
-**Total Phases**: 9  
-**Completed**: 9 (ALL PHASES COMPLETE)  
-**In Progress**: Phase 10 (planned)  
+**Total Phases**: 10 (Phase 11+ planned)
+**Completed**: 9 (PHASES 1-9 COMPLETE)  
+**In Progress**: Phase 10 (4/5 plans complete)  
 
 | Phase | Name | Status | Key Finding |
 |-------|------|--------|---|
@@ -74,11 +72,17 @@ Phase 9:    ████████████████████ 100% (E
 | 6 | Transfer Evaluation | ✅ Complete | CONSERVATIVE_FULL optimal (+22 pts) |
 | 7 | Captain & Chip | ✅ Complete | CAPTAIN_HIGHEST_VALUE wins (+12 pts) |
 | 8 | Bench & Substitution | ✅ Complete | BENCH_SAFE_STATIC optimal; predictive swaps degrade (-111 pts) |
-| 9 | Performance Validation | ✅ Complete | Temporal integrity PASS, metrics comprehensive, performance 71.7% vs elite managers (caveat: 10 managers, 2019-20 data) |
+| 9 | Performance Validation | ✅ Complete | Temporal integrity PASS, metrics comprehensive, performance 71.7% vs elite managers |
+| 10 | Model Retraining & Time-Series | 🔄 In Progress (4/5) | Live 2024-25 pipeline: 2-GW retrain schedule, drift detection (15% RMSE), position-specific ensembles |
 
-**Critical Path**: 1 → 2 → 3 → 4 → 5 → {6, 7, 8} → 9
+**Critical Path**: 1 → 2 → 3 → 4 → 5 → {6, 7, 8} → 9 → 10 → {11, 12}
 
-**Parallelization**: Phases 6, 7, 8 executed sequentially; Phase 8 can also run in parallel with future phases if needed.
+**Phase 10 Status**: 
+- ✅ P01: Live data collection (FPL API + Understat)
+- ✅ P02: Ensemble retraining (XGBoost + RF per position)
+- ✅ P03: Airflow DAG + drift monitoring
+- ✅ P04: Live testing & validation (10 tests, metrics calibration, runbook)
+- 🔄 P05: Deployment planning (in progress)
 
 ---
 
