@@ -280,21 +280,87 @@ class Team:
             return subs
 
         elif substitution_mode == 'predictive_swap':
-            # Predictive swap mode: trigger swap if bench player has >threshold% xP advantage
-            # Only swap if gameweek > 5 (enough history to be meaningful)
+            """
+            Predictive swap: Swap starter for bench if bench has >threshold% xP advantage.
 
-            subs = [[ranked_gk[0][0], 'GK']]
-            positions_substituted = {'GK': 1}
+            Temporal safety: Uses _xp_dicts (single-GW predictions, known before deadline).
+            Never reads _all_xp_dicts (multi-GW lookahead) or actual match points (retroactive).
+            """
+            subs = []
+            threshold = substitution_trigger_threshold
+            only_after_gw5 = True  # Prevent early-season churn
 
-            # For each non-GK position, find lowest xP player
-            for player in ranked_others:
-                if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
-                    # Check if this is a bench player with significant advantage over starter
-                    # This requires knowing which players are currently starters
-                    # For now, use the same logic as static mode (lowest xP players)
-                    # The predictive_swap logic would be implemented based on actual game state
-                    subs.append([player[0], player[2]])
-                    positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
+            # Process each position independently
+            for position in POSITIONS:
+                # Identify current starters in this position
+                xi_players_in_pos = [p for p, pos in self._all_xi_players() if pos == position]
+
+                if not xi_players_in_pos:
+                    # No starter in this position (shouldn't happen with valid squad)
+                    continue
+
+                starter = xi_players_in_pos[0]  # Primary starter (XI ordering matters)
+
+                # Get starter xP from single-GW dict (temporal safety)
+                starter_xp = self._xp_dicts.get(position, {}).get(starter, 0)
+
+                # Find bench players in this position
+                xi_set = set(p for p, _ in self._all_xi_players())
+                bench_players_in_pos = [
+                    p for p in self._pos_squad_list(position)
+                    if p not in xi_set  # Not in XI
+                ]
+
+                if not bench_players_in_pos:
+                    # No bench options; keep starter (add starter as bench placeholder)
+                    # Use the lowest xP among starters as fallback
+                    all_in_pos = self._pos_squad_list(position)
+                    ranked = sorted(
+                        [[p, self._xp_dicts.get(position, {}).get(p, 0)] for p in all_in_pos],
+                        key=lambda x: float(x[1])
+                    )
+                    if ranked:
+                        subs.append([ranked[0][0], position])
+                    continue
+
+                # Find best bench player by xP improvement
+                best_bench = None
+                best_improvement = 0
+
+                for bench_player in bench_players_in_pos:
+                    bench_xp = self._xp_dicts.get(position, {}).get(bench_player, 0)
+
+                    # Calculate improvement: (bench_xp - starter_xp) / max(starter_xp, 0.1)
+                    improvement = (bench_xp - starter_xp) / max(starter_xp, 0.1)
+
+                    # Check threshold: only swap if improvement > threshold AND after GW5
+                    if improvement > threshold and (not only_after_gw5 or self.gameweek > 5):
+                        if improvement > best_improvement:
+                            best_bench = bench_player
+                            best_improvement = improvement
+
+                # Add to subs: either swapped bench player or default lowest xP
+                if best_bench:
+                    subs.append([best_bench, position])
+                else:
+                    # Default: lowest xP in position (static fallback)
+                    ranked = sorted(
+                        [[p, self._xp_dicts.get(position, {}).get(p, 0)] for p in self._pos_squad_list(position)],
+                        key=lambda x: float(x[1])
+                    )
+                    if ranked:
+                        subs.append([ranked[0][0], position])
+
+            # Ensure we have exactly 4 subs (1 GK, 3 others max 2 per position)
+            # If we have fewer than 4, pad with lowest xP players
+            if len(subs) < 4:
+                # Revert to static mode to fill out the bench
+                subs = [[ranked_gk[0][0], 'GK']]
+                positions_substituted = {'GK': 1}
+                for player in ranked_others:
+                    if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
+                        subs.append([player[0], player[2]])
+                        positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
 
             return subs
 

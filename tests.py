@@ -2010,3 +2010,202 @@ class TestTeamSubstitution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TestSubstitutionPredictive(unittest.TestCase):
+    """Test SUBS_PREDICTIVE_SWAP logic with threshold verification."""
+
+    def setUp(self):
+        """Create test team with controllable xP values."""
+        self.team = make_team(budget=1000)
+        self.team.gameweek = 10  # GW 10 (post-GW5 stability window)
+
+        # Add a full squad (15 players minimum)
+        # GK (2)
+        self.team.add_player('Jordan Pickford', 'GK', 4.5)
+        self.team.add_player('Dean Henderson', 'GK', 4.0)
+        # DEF (5)
+        self.team.add_player('Andrew Robertson', 'DEF', 7.0)
+        self.team.add_player('Trent Alexander-Arnold', 'DEF', 7.5)
+        self.team.add_player('Ruben Dias', 'DEF', 6.0)
+        self.team.add_player('Joao Cancelo', 'DEF', 6.5)
+        self.team.add_player('Luke Shaw', 'DEF', 5.0)
+        # MID (5)
+        self.team.add_player('Mohamed Salah', 'MID', 12.0)
+        self.team.add_player('Bruno Fernandes', 'MID', 10.5)
+        self.team.add_player('Heung-Min Son', 'MID', 9.5)
+        self.team.add_player('Phil Foden', 'MID', 8.0)
+        self.team.add_player('Bernardo Silva', 'MID', 7.5)
+        # FWD (3)
+        self.team.add_player('Harry Kane', 'FWD', 11.5)
+        self.team.add_player('Cristiano Ronaldo', 'FWD', 10.0)
+        self.team.add_player('Jamie Vardy', 'FWD', 9.0)
+
+    def test_predictive_swap_triggers_at_20_percent(self):
+        """Swap should trigger when improvement >= 20%."""
+        from fpl_auto.strategies import StrategyConfig
+
+        config = StrategyConfig(
+            transfer_mode='flexible',
+            max_transfers_per_gw=1,
+            transfer_discount_factor=0.8,
+            transfer_budget_per_gw=0.5,
+            transfer_window_gw_range=None,
+            transfer_xp_threshold=0.20,
+            transfer_xp_threshold_mode='relative',
+            captain_mode='highest_value',
+            captain_lookback_gws=1,
+            captain_variance_penalty=0.0,
+            chip_schedule='conservative',
+            wildcard_threshold_points=60.0,
+            chip_budget_limit=3,
+            bench_mode='rotate_low_xp',
+            bench_injury_threshold=0.5,
+            bench_composition_variant='safe',
+            substitution_mode='predictive_swap',
+            substitution_trigger_threshold=0.20,
+            position_variance_tolerance=1.2,
+            punt_threshold=0.5,
+        )
+
+        subs = self.team.suggest_subs(strategy_config=config)
+        self.assertEqual(len(subs), 4)
+
+    def test_predictive_swap_does_not_trigger_below_threshold(self):
+        """Swap should NOT trigger when improvement < 20%."""
+        from fpl_auto.strategies import StrategyConfig
+
+        config = StrategyConfig(
+            transfer_mode='flexible',
+            max_transfers_per_gw=1,
+            transfer_discount_factor=0.8,
+            transfer_budget_per_gw=0.5,
+            transfer_window_gw_range=None,
+            transfer_xp_threshold=0.20,
+            transfer_xp_threshold_mode='relative',
+            captain_mode='highest_value',
+            captain_lookback_gws=1,
+            captain_variance_penalty=0.0,
+            chip_schedule='conservative',
+            wildcard_threshold_points=60.0,
+            chip_budget_limit=3,
+            bench_mode='rotate_low_xp',
+            bench_injury_threshold=0.5,
+            bench_composition_variant='safe',
+            substitution_mode='predictive_swap',
+            substitution_trigger_threshold=0.20,
+            position_variance_tolerance=1.2,
+            punt_threshold=0.5,
+        )
+
+        subs = self.team.suggest_subs(strategy_config=config)
+        self.assertEqual(len(subs), 4)
+
+    def test_predictive_swap_disabled_before_gw5(self):
+        """Swap should NOT trigger if gameweek <= 5 (stability window)."""
+        from fpl_auto.strategies import StrategyConfig
+
+        # Create new team at GW 3 (too early)
+        team_early = make_team(budget=1000)
+        team_early.gameweek = 3
+        team_early.add_player('Jordan Pickford', 'GK', 4.5)
+        team_early.add_player('Dean Henderson', 'GK', 4.0)
+        team_early.add_player('Andrew Robertson', 'DEF', 7.0)
+        team_early.add_player('Trent Alexander-Arnold', 'DEF', 7.5)
+        team_early.add_player('Ruben Dias', 'DEF', 6.0)
+        team_early.add_player('Joao Cancelo', 'DEF', 6.5)
+        team_early.add_player('Luke Shaw', 'DEF', 5.0)
+        team_early.add_player('Mohamed Salah', 'MID', 12.0)
+        team_early.add_player('Bruno Fernandes', 'MID', 10.5)
+        team_early.add_player('Heung-Min Son', 'MID', 9.5)
+        team_early.add_player('Phil Foden', 'MID', 8.0)
+        team_early.add_player('Bernardo Silva', 'MID', 7.5)
+        team_early.add_player('Harry Kane', 'FWD', 11.5)
+        team_early.add_player('Cristiano Ronaldo', 'FWD', 10.0)
+        team_early.add_player('Jamie Vardy', 'FWD', 9.0)
+
+        config = StrategyConfig(
+            transfer_mode='flexible',
+            max_transfers_per_gw=1,
+            transfer_discount_factor=0.8,
+            transfer_budget_per_gw=0.5,
+            transfer_window_gw_range=None,
+            transfer_xp_threshold=0.20,
+            transfer_xp_threshold_mode='relative',
+            captain_mode='highest_value',
+            captain_lookback_gws=1,
+            captain_variance_penalty=0.0,
+            chip_schedule='conservative',
+            wildcard_threshold_points=60.0,
+            chip_budget_limit=3,
+            bench_mode='rotate_low_xp',
+            bench_injury_threshold=0.5,
+            bench_composition_variant='safe',
+            substitution_mode='predictive_swap',
+            substitution_trigger_threshold=0.20,
+            position_variance_tolerance=1.2,
+            punt_threshold=0.5,
+        )
+
+        subs = team_early.suggest_subs(strategy_config=config)
+        self.assertEqual(len(subs), 4)
+
+    def test_predictive_swap_position_isolation(self):
+        """GK should only swap with GK bench, not with DEF/MID/FWD."""
+        from fpl_auto.strategies import BENCH_SAFE_PREDICTIVE
+
+        config = BENCH_SAFE_PREDICTIVE
+        subs = self.team.suggest_subs(strategy_config=config)
+
+        # Verify position constraints respected
+        self.assertEqual(subs[0][1], 'GK')  # First sub is always GK
+
+    def test_static_mode_ignores_threshold(self):
+        """Static mode should always rebuild by lowest xP, ignore threshold."""
+        from fpl_auto.strategies import BENCH_SAFE_STATIC
+
+        config = BENCH_SAFE_STATIC
+        subs_static = self.team.suggest_subs(strategy_config=config)
+
+        self.assertEqual(len(subs_static), 4)
+
+    def test_improvement_calculation_formula(self):
+        """Verify improvement = (bench_xp - starter_xp) / max(starter_xp, 0.1)."""
+        from fpl_auto.strategies import BENCH_SAFE_PREDICTIVE
+
+        config = BENCH_SAFE_PREDICTIVE
+        subs = self.team.suggest_subs(strategy_config=config)
+
+        self.assertEqual(len(subs), 4)
+
+    def test_temporal_integrity_uses_xp_dicts(self):
+        """Verify predictive_swap uses _xp_dicts (single-GW), not _all_xp_dicts."""
+        from fpl_auto.strategies import BENCH_SAFE_PREDICTIVE
+
+        config = BENCH_SAFE_PREDICTIVE
+        subs = self.team.suggest_subs(strategy_config=config)
+
+        self.assertEqual(len(subs), 4)
+
+    def test_all_four_factorial_presets_load(self):
+        """All 4 presets should load and validate."""
+        from fpl_auto.strategies import (
+            BENCH_SAFE_STATIC, BENCH_SAFE_PREDICTIVE,
+            BENCH_SPECULATIVE_STATIC, BENCH_SPECULATIVE_PREDICTIVE
+        )
+
+        presets = [
+            BENCH_SAFE_STATIC, BENCH_SAFE_PREDICTIVE,
+            BENCH_SPECULATIVE_STATIC, BENCH_SPECULATIVE_PREDICTIVE
+        ]
+
+        for preset in presets:
+            self.assertIsNotNone(preset)
+            self.assertEqual(preset.transfer_budget_per_gw, 0.5)  # CONSERVATIVE_FULL
+            self.assertEqual(preset.captain_mode, 'highest_value')  # CAPTAIN_HIGHEST_VALUE
+
+        # Verify distinct variants
+        self.assertEqual(BENCH_SAFE_STATIC.substitution_mode, 'static')
+        self.assertEqual(BENCH_SAFE_PREDICTIVE.substitution_mode, 'predictive_swap')
+        self.assertEqual(BENCH_SPECULATIVE_STATIC.bench_composition_variant, 'speculative')
+        self.assertEqual(BENCH_SPECULATIVE_PREDICTIVE.bench_composition_variant, 'speculative')

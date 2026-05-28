@@ -657,9 +657,10 @@ CHIP_BLANKS_OPTIMIZED = StrategyConfig(
 # Test 2 bench composition modes + 2 substitution modes (2x2 factorial)
 # All inherit CONSERVATIVE_FULL transfer + CAPTAIN_HIGHEST_VALUE captain
 
-BENCH_SAFE = StrategyConfig(
-    # Philosophy: Defensive bench emphasizing injury coverage and experience.
+BENCH_SAFE_STATIC = StrategyConfig(
+    # Philosophy: Defensive bench + static rotation
     # Bench composition: 1 GK (cheapest), 2 DEF (established, clean sheet probability), 1 MID (budget)
+    # Subs: Rotate by lowest xP every GW (current behavior) — passive
     # Focus: Squad depth, availability, predictability
     # Rationale: Maximizes flexibility to cover injuries without overcommitting capital
     transfer_mode='flexible',
@@ -677,16 +678,45 @@ BENCH_SAFE = StrategyConfig(
     chip_budget_limit=3,
     bench_mode='rotate_low_xp',  # Current: rotate by lowest xP
     bench_injury_threshold=0.5,
-    bench_composition_variant='safe',  # NEW: Safe composition
-    substitution_mode='static',  # NEW: Static rotation
+    bench_composition_variant='safe',  # Safe composition
+    substitution_mode='static',  # Static rotation
     substitution_trigger_threshold=0.20,  # Unused in static mode
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
 )
 
-BENCH_SPECULATIVE = StrategyConfig(
-    # Philosophy: Speculative bench chasing high-upside players.
+BENCH_SAFE_PREDICTIVE = StrategyConfig(
+    # Philosophy: Defensive bench + predictive swaps
+    # Bench composition: 1 GK (cheapest), 2 DEF (established, clean sheet probability), 1 MID (budget)
+    # Subs: Swap if bench has >20% xP advantage over starter (GW > 5 only) — active
+    # Focus: Squad depth, availability, predictability
+    # Rationale: Maximizes flexibility to cover injuries without overcommitting capital
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_value',  # CAPTAIN_HIGHEST_VALUE baseline
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',  # Current: rotate by lowest xP
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',  # Safe composition
+    substitution_mode='predictive_swap',  # Predictive swap logic
+    substitution_trigger_threshold=0.20,  # Trigger if >20% improvement
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+BENCH_SPECULATIVE_STATIC = StrategyConfig(
+    # Philosophy: Speculative bench + static rotation
     # Bench composition: 1 GK, 2 DEF (higher-variance, younger), 1 MID (upside potential)
+    # Subs: Rotate by lowest xP every GW (current behavior) — passive
     # Focus: Differential points, younger talent, promoted clubs
     # Rationale: Accept bench volatility for potential breakout performances
     transfer_mode='flexible',
@@ -704,12 +734,44 @@ BENCH_SPECULATIVE = StrategyConfig(
     chip_budget_limit=3,
     bench_mode='rotate_low_xp',  # Current: rotate by lowest xP
     bench_injury_threshold=0.5,
-    bench_composition_variant='speculative',  # NEW: Speculative composition
-    substitution_mode='static',  # NEW: Static rotation
+    bench_composition_variant='speculative',  # Speculative composition
+    substitution_mode='static',  # Static rotation
     substitution_trigger_threshold=0.20,  # Unused in static mode
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
 )
+
+BENCH_SPECULATIVE_PREDICTIVE = StrategyConfig(
+    # Philosophy: Speculative bench + predictive swaps
+    # Bench composition: 1 GK, 2 DEF (higher-variance, younger), 1 MID (upside potential)
+    # Subs: Swap if bench has >20% xP advantage over starter (GW > 5 only) — active
+    # Focus: Differential points, younger talent, promoted clubs
+    # Rationale: Accept bench volatility for potential breakout performances
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL baseline
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_value',  # CAPTAIN_HIGHEST_VALUE baseline
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',  # Current: rotate by lowest xP
+    bench_injury_threshold=0.5,
+    bench_composition_variant='speculative',  # Speculative composition
+    substitution_mode='predictive_swap',  # Predictive swap logic
+    substitution_trigger_threshold=0.20,  # Trigger if >20% improvement
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
+# Backward compatibility aliases (Plan 08-01)
+BENCH_SAFE = BENCH_SAFE_STATIC
+BENCH_SPECULATIVE = BENCH_SPECULATIVE_STATIC
 
 
 __all__ = [
@@ -729,6 +791,10 @@ __all__ = [
     'CAPTAIN_HIGHEST_VALUE',
     'CHIP_DOUBLES_OPTIMIZED',
     'CHIP_BLANKS_OPTIMIZED',
-    'BENCH_SAFE',
-    'BENCH_SPECULATIVE',
+    'BENCH_SAFE_STATIC',
+    'BENCH_SAFE_PREDICTIVE',
+    'BENCH_SPECULATIVE_STATIC',
+    'BENCH_SPECULATIVE_PREDICTIVE',
+    'BENCH_SAFE',  # Backward compat alias
+    'BENCH_SPECULATIVE',  # Backward compat alias
 ]
