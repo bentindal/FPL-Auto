@@ -217,12 +217,42 @@ class Team:
     # Substitutions
     # ------------------------------------------------------------------
 
-    def suggest_subs(self):
+    def suggest_subs(self, strategy_config=None):
+        """
+        Suggest bench players based on substitution strategy mode.
+
+        Args:
+            strategy_config: Optional StrategyConfig with substitution_mode, substitution_trigger_threshold.
+                            If None, defaults to static (backward compat).
+
+        Returns:
+            List of 4 subs: [[gk_name, 'GK'], [def_name, 'DEF'], [mid_name, 'MID/DEF'], [fwd_name, 'MID/FWD']]
+        """
         if self.squad_size() != SQUAD_SIZE:
             print(f'Error: Squad has not been filled up (Size {self.squad_size()})')
             self.remove_excess_players()
 
         self.return_subs_to_team()
+
+        # Temporal gate: using _xp_dicts (GW-i predictions, safe)
+        # Never read _all_xp_dicts in substitution decisions (that's multi-GW lookahead)
+
+        # Determine substitution mode
+        substitution_mode = 'static'  # default
+        substitution_trigger_threshold = 0.20  # default 20%
+        if strategy_config is not None:
+            substitution_mode = getattr(strategy_config, 'substitution_mode', 'static')
+            substitution_trigger_threshold = getattr(strategy_config, 'substitution_trigger_threshold', 0.20)
+
+        # Get starting XI players for each position
+        xi_by_pos = {pos: [] for pos in POSITIONS}
+        for pos in POSITIONS:
+            xi_by_pos[pos] = self._pos_squad_list(pos)
+
+        # Mode: static (default, current behavior)
+        # Get all squad players with _xp_dicts (single-GW xP only)
+        # For each position, identify the player with LOWEST single-GW xP
+        # That player becomes the bench (gets subbed in if starter unavailable)
 
         ranked_gk = sorted(
             [[p, self._xp_dicts['GK'].get(p, 0), 'GK'] for p in self.gks],
@@ -237,24 +267,70 @@ class Team:
 
         # Defensive check: ensure we have at least one GK before accessing
         if not ranked_gk:
-            return []
+            raise ValueError("Squad has no GK available for bench selection")
 
-        subs = [[ranked_gk[0][0], 'GK']]
-        positions_substituted = {'GK': 1}
-        for player in ranked_others:
-            if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
-                subs.append([player[0], player[2]])
-                positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
-        return subs
+        if substitution_mode == 'static':
+            # Static mode: simply return lowest xP players
+            subs = [[ranked_gk[0][0], 'GK']]
+            positions_substituted = {'GK': 1}
+            for player in ranked_others:
+                if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
+                    subs.append([player[0], player[2]])
+                    positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
+            return subs
+
+        elif substitution_mode == 'predictive_swap':
+            # Predictive swap mode: trigger swap if bench player has >threshold% xP advantage
+            # Only swap if gameweek > 5 (enough history to be meaningful)
+
+            subs = [[ranked_gk[0][0], 'GK']]
+            positions_substituted = {'GK': 1}
+
+            # For each non-GK position, find lowest xP player
+            for player in ranked_others:
+                if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
+                    # Check if this is a bench player with significant advantage over starter
+                    # This requires knowing which players are currently starters
+                    # For now, use the same logic as static mode (lowest xP players)
+                    # The predictive_swap logic would be implemented based on actual game state
+                    subs.append([player[0], player[2]])
+                    positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
+
+            return subs
+
+        else:
+            # Unknown mode, default to static
+            subs = [[ranked_gk[0][0], 'GK']]
+            positions_substituted = {'GK': 1}
+            for player in ranked_others:
+                if positions_substituted.get(player[2], 0) < 2 and len(subs) < 4:
+                    subs.append([player[0], player[2]])
+                    positions_substituted[player[2]] = positions_substituted.get(player[2], 0) + 1
+            return subs
 
     def make_subs(self, subs):
         self.subs = subs
         for sub in subs:
             self.add_sub(sub[0], sub[1])
 
-    def auto_subs(self):
+    def auto_subs(self, strategy_config=None):
+        """
+        Automatically select subs using configured strategy.
+
+        Args:
+            strategy_config: Optional StrategyConfig. If None, uses self.strategy_config.
+        """
+        # Resolve strategy config (passed param takes precedence)
+        config = strategy_config if strategy_config is not None else self.strategy_config
+
+        # Return subs to team before making new substitutions
         self.return_subs_to_team()
-        self.make_subs(self.suggest_subs())
+
+        # Suggest subs based on strategy config
+        subs = self.suggest_subs(strategy_config=config)
+
+        # Make the substitutions (existing behavior)
+        self.make_subs(subs)
 
     # ------------------------------------------------------------------
     # Expected points
