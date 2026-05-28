@@ -2209,3 +2209,80 @@ class TestSubstitutionPredictive(unittest.TestCase):
         self.assertEqual(BENCH_SAFE_PREDICTIVE.substitution_mode, 'predictive_swap')
         self.assertEqual(BENCH_SPECULATIVE_STATIC.bench_composition_variant, 'speculative')
         self.assertEqual(BENCH_SPECULATIVE_PREDICTIVE.bench_composition_variant, 'speculative')
+
+
+class TestPhase8Integration(unittest.TestCase):
+    """Integration test for Phase 8 variants in full season context."""
+
+    def test_bench_safe_static_runs_single_season(self):
+        """BENCH_SAFE_STATIC should run 2021-22 without error."""
+        from fpl_auto.strategies import BENCH_SAFE_STATIC
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 5,  # Just first 6 GWs for speed
+            'starting_team': 'auto',
+            'quiet': True,
+            'strategy': BENCH_SAFE_STATIC,
+        }
+
+        result = manager.run_season(config)
+
+        self.assertIsNotNone(result)
+        self.assertIn('p_list', result)
+        self.assertGreater(sum(result['p_list']), 0)
+
+    def test_bench_speculative_predictive_runs_single_season(self):
+        """BENCH_SPECULATIVE_PREDICTIVE should run 2021-22 without error."""
+        from fpl_auto.strategies import BENCH_SPECULATIVE_PREDICTIVE
+        import manager
+
+        config = {
+            'season': '2021-22',
+            'start_gw': 1,
+            'repeat': 5,  # Just first 6 GWs for speed
+            'starting_team': 'auto',
+            'quiet': True,
+            'strategy': BENCH_SPECULATIVE_PREDICTIVE,
+        }
+
+        result = manager.run_season(config)
+
+        self.assertIsNotNone(result)
+        self.assertIn('p_list', result)
+        self.assertGreater(sum(result['p_list']), 0)
+
+    def test_all_four_variants_pass_single_season(self):
+        """All 4 variants should complete 2021-22 without errors."""
+        from fpl_auto.strategies import (
+            BENCH_SAFE_STATIC, BENCH_SAFE_PREDICTIVE,
+            BENCH_SPECULATIVE_STATIC, BENCH_SPECULATIVE_PREDICTIVE
+        )
+        import manager
+
+        variants = [
+            ('BENCH_SAFE_STATIC', BENCH_SAFE_STATIC),
+            ('BENCH_SAFE_PREDICTIVE', BENCH_SAFE_PREDICTIVE),
+            ('BENCH_SPECULATIVE_STATIC', BENCH_SPECULATIVE_STATIC),
+            ('BENCH_SPECULATIVE_PREDICTIVE', BENCH_SPECULATIVE_PREDICTIVE),
+        ]
+
+        for variant_name, variant_config in variants:
+            with self.subTest(variant=variant_name):
+                config = {
+                    'season': '2021-22',
+                    'start_gw': 1,
+                    'repeat': 5,  # Just first 6 GWs for speed
+                    'starting_team': 'auto',
+                    'quiet': True,
+                    'strategy': variant_config,
+                }
+
+                result = manager.run_season(config)
+
+                self.assertIsNotNone(result)
+                self.assertIn('p_list', result)
+                self.assertGreater(sum(result['p_list']), 0)
+                self.assertEqual(result['season'], '2021-22')

@@ -130,7 +130,7 @@ def run_season(config: dict) -> dict:
 
         for i in range(start_gw, start_gw + repeat + 1):
             t.auto_transfer(strategy_config=strategy_config)
-            t.auto_subs()
+            t.auto_subs(strategy_config=strategy_config)
             t.auto_captain()
             t.auto_chips()
             team_xp = t.team_xp()
