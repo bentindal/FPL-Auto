@@ -221,9 +221,34 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 
 ---
 
+---
+
+## Phase 10: Model Retraining & Time-Series Optimization
+
+**Status:** 🔬 RESEARCH COMPLETE (2026-05-28)
+
+**Key Research Findings:**
+- Optimal retraining frequency: every 2-4 GWs (not weekly)
+- Drift detection: PELT algorithm with 15% RMSE threshold trigger
+- Window strategy: Expanding windows (all historical + live) outperform rolling
+- Position-specific ensembles: Separate XGBoost + RandomForest per position (GK/DEF/MID/FWD)
+- Data collection: Dual-source (FPL API official + Understat xG/xA)
+- Orchestration: Apache Airflow (scheduled) + Prefect (drift-driven retrains)
+
+**Research Document:** `.planning/research/10-MODEL-RETRAINING-RESEARCH.md`
+
+**Phase 10 Milestones (Planned):**
+- M1: Data collection pipeline + Airflow skeleton
+- M2: Model retraining orchestrator + drift detection
+- M3: Live testing on 2024-25 + threshold calibration
+
+**Next Steps:** Phase 10 roadmap creation (requirements → phases) in fresh session with full context.
+
+---
+
 *State updated: 2026-05-28*  
 *Phase 9 EXECUTION COMPLETE — All 8 plans executed (wave-based parallelization)*  
 *PHASE_8_OPTIMAL validation results: mean=1,823 pts, 95% CI=[1,618, 2,035], sharpe=3.035, sortino=5.054*  
 *Temporal integrity: PASS (0 violations). Performance: 71.7% vs elite managers (below 75% threshold).*  
 *Production recommendation: PHASE_8_OPTIMAL ready for deployment with documented performance caveat.*  
-*Next: Phase 10 exploration of alternative optimization vectors (fixture weighting, injury prediction, squad efficiency)*
+*Phase 10 RESEARCH COMPLETE — Model retraining strategy defined; ready for roadmap creation*
