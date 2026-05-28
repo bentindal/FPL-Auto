@@ -50,6 +50,79 @@ def xp_lookahead(req: XpRequest):
     return {"predictions": discounted[0].set_index('Name')['xP'].to_dict()}
 
 
+class BestAltRequest(BaseModel):
+    season: str
+    gameweek: int
+    position: str            # 'GK' | 'DEF' | 'MID' | 'FWD'
+    budget: float            # selling price of transferred-out player, in millions (e.g. 7.5)
+    transferred_out_name: str
+    squad_player_names: list[str]   # current squad names, for the 3-per-club rule
+
+
+@app.post("/scoring/best_alt")
+def best_alt(req: BestAltRequest):
+    """Returns the best affordable, club-legal alternative player for a position at a GW.
+
+    Uses single-GW xP predictions (historical decision -> single-GW source per CLAUDE.md).
+    Mirrors suggest_transfer_in logic WITHOUT the xp_gain >= 2 threshold.
+    Returns {"best_alt_name": <name or None>, "best_alt_xp": <float or None>}.
+    """
+    fpl_data = _fpl_data_instances.get(req.season)
+    if not fpl_data:
+        raise HTTPException(status_code=400, detail=f"Season {req.season} not loaded")
+
+    # Single-GW xP predictions for this position
+    preds = fpl_data.get_predictions(req.gameweek, req.position)
+    # Sort candidates by xP descending
+    candidates = preds.sort_values(by='xP', ascending=False)[['Name', 'xP']].values.tolist()
+
+    # GW data for prices and team lookups
+    gw_data = fpl_data.get_gw_data(req.season, req.gameweek)
+
+    # Pre-compute club counts from squad_player_names using gw_data team column
+    club_counts: dict = {}
+    for name in req.squad_player_names:
+        try:
+            team = gw_data.loc[name]['team']
+            if team is not None:
+                club_counts[str(team)] = club_counts.get(str(team), 0) + 1
+        except KeyError:
+            pass  # player not in gw_data — skip (mirrors suggest_transfer_in robustness)
+
+    for candidate in candidates:
+        name, xp = candidate[0], float(candidate[1])
+
+        # Skip the transferred-out player and anyone already in the squad
+        if name == req.transferred_out_name or name in req.squad_player_names:
+            continue
+
+        # Price check — value column is in tenths
+        try:
+            p_cost = gw_data.loc[name]['value']
+        except KeyError:
+            continue  # player not in gw_data — skip
+        if p_cost is None:
+            continue
+        p_cost = float(p_cost) / 10.0
+        if p_cost > req.budget:
+            continue
+
+        # Club rule: max 3 players per club
+        try:
+            player_club = str(fpl_data.get_player_team(name, req.gameweek, gw_data))
+        except Exception:
+            continue
+        if player_club == 'None':
+            continue
+        if club_counts.get(player_club, 0) + 1 > 3:
+            continue
+
+        # First candidate that passes all filters is the best alternative
+        return {"best_alt_name": name, "best_alt_xp": xp}
+
+    return {"best_alt_name": None, "best_alt_xp": None}
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "seasons_loaded": list(_fpl_data_instances.keys())}
