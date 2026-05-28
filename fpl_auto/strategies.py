@@ -117,6 +117,18 @@ class StrategyConfig:
     Controls overall chip spending (0=never, 3=use all available).
     """
 
+    chip_triple_captain_earliest_gw: int = 20
+    """
+    Earliest GW to activate Triple Captain (default 10).
+    Prevents using TC in the first weeks before double GW opportunities emerge.
+    """
+
+    chip_bench_boost_earliest_gw: int = 25
+    """
+    Earliest GW to activate Bench Boost (default 15).
+    Prevents using BB before mid-season double GW opportunities.
+    """
+
     # Bench policy
     bench_mode: str = 'rotate_low_xp'
     """
@@ -470,7 +482,7 @@ BASELINE_MID = StrategyConfig(
     transfer_discount_factor=0.8,
     transfer_budget_per_gw=1.5,
     transfer_window_gw_range=(11, 24),
-    transfer_xp_threshold=0.15,
+    transfer_xp_threshold=0.20,
     transfer_xp_threshold_mode='relative',
     captain_mode='highest_xp',
     captain_lookback_gws=1,
@@ -492,7 +504,7 @@ AGGRESSIVE_LATE = StrategyConfig(
     transfer_discount_factor=0.8,
     transfer_budget_per_gw=2.0,
     transfer_window_gw_range=(25, 38),
-    transfer_xp_threshold=0.10,
+    transfer_xp_threshold=0.20,
     transfer_xp_threshold_mode='relative',
     captain_mode='highest_xp',
     captain_lookback_gws=1,

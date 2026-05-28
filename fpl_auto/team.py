@@ -984,18 +984,15 @@ class Team:
             expected_gain = captain_xp * 2  # Triple captain = 3x points, baseline is 1x, so gain is 2x
 
             use_triple = False
+            tc_gw_ok = self.gameweek >= config.chip_triple_captain_earliest_gw
             if chip_schedule == 'conservative':
-                # Only use if xP gain very high
-                use_triple = expected_gain >= triple_captain_threshold * 2 and self.gameweek > 1
+                use_triple = expected_gain >= triple_captain_threshold * 2 and tc_gw_ok
             elif chip_schedule == 'aggressive':
-                # Use if xP gain moderate
-                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+                use_triple = expected_gain >= triple_captain_threshold and tc_gw_ok
             elif chip_schedule == 'doubles-optimized' and in_double_window:
-                # Use during double GWs if gain >= threshold
-                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+                use_triple = expected_gain >= triple_captain_threshold and tc_gw_ok
             elif chip_schedule == 'blanks-optimized' and in_blank_window:
-                # Use during blank GWs if gain >= threshold
-                use_triple = expected_gain >= triple_captain_threshold and self.gameweek > 1
+                use_triple = expected_gain >= triple_captain_threshold and tc_gw_ok
             elif chip_schedule == 'never':
                 use_triple = False
 
@@ -1011,14 +1008,15 @@ class Team:
             bench_xp = all_xp - xi_xp
 
             use_boost = False
+            bb_gw_ok = self.gameweek >= config.chip_bench_boost_earliest_gw
             if chip_schedule == 'conservative':
-                use_boost = bench_xp >= bench_threshold * 2 and self.gameweek > 1
+                use_boost = bench_xp >= bench_threshold * 2 and bb_gw_ok
             elif chip_schedule == 'aggressive':
-                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+                use_boost = bench_xp >= bench_threshold and bb_gw_ok
             elif chip_schedule == 'doubles-optimized' and in_double_window:
-                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+                use_boost = bench_xp >= bench_threshold and bb_gw_ok
             elif chip_schedule == 'blanks-optimized' and in_blank_window:
-                use_boost = bench_xp >= bench_threshold and self.gameweek > 1
+                use_boost = bench_xp >= bench_threshold and bb_gw_ok
             elif chip_schedule == 'never':
                 use_boost = False
 
