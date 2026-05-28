@@ -304,6 +304,38 @@ def part_b_historical_seasons():
     print('Part B complete.')
 
 
+def part_c_fill_2024_25():
+    """Fetch missing 2024-25 GW CSVs from the vastaav GitHub repo."""
+    print('\n=== Part C: Fill 2024-25 GWs from vastaav/Fantasy-Premier-League ===')
+    import urllib.request
+
+    SEASON = '2024-25'
+    BASE_URL = 'https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/master/data/2024-25/gws/gw{}.csv'
+    gw_dir = DATA_DIR / SEASON / 'gws'
+    gw_dir.mkdir(parents=True, exist_ok=True)
+
+    fetched = 0
+    for gw in range(1, 39):
+        out_path = gw_dir / f'gw{gw}.csv'
+        if out_path.exists():
+            continue
+        url = BASE_URL.format(gw)
+        try:
+            urllib.request.urlretrieve(url, out_path)
+            fetched += 1
+            print(f'  Fetched gw{gw}.csv', end='\r')
+        except Exception:
+            print(f'  gw{gw} not yet available, stopping.')
+            break
+
+    if fetched == 0:
+        print('  No new GWs fetched (all present or none available).')
+    else:
+        print(f'  Fetched {fetched} new GW CSV(s) for 2024-25.            ')
+
+    print('Part C complete.')
+
+
 def main():
     print('=== fetch_missing_data.py ===')
     print('Requires: pip install "kagglehub[pandas-datasets]==0.3.6"')
@@ -315,8 +347,10 @@ def main():
 
     part_a_fill_gw30_37()
     part_b_historical_seasons()
+    part_c_fill_2024_25()
 
     print('\nDone. Next steps:')
+    print('  python model.py -season 2024-25 -save -target_gw 1 -repeat 38 -retrain_every 5')
     print('  python model.py -season 2025-26 -save -target_gw 1 -repeat 38 -retrain_every 5')
     print('  python manager.py -season 2025-26')
 
