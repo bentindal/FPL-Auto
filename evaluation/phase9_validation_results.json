@@ -1,0 +1,61 @@
+{
+  "phase": "09-performance-validation",
+  "strategy": "PHASE_8_OPTIMAL",
+  "evaluation_type": "direct_multi_season",
+  "seasons_tested": [
+    "2021-22",
+    "2022-23",
+    "2023-24"
+  ],
+  "per_season": [
+    {
+      "season": "2021-22",
+      "total_points": 1618.0,
+      "mean_gw_points": 42.578947368421055,
+      "std_gw_points": 15.370223398279524,
+      "sharpe_ratio": 2.7702230647595636,
+      "sortino_ratio": 5.496918468564562,
+      "max_drawdown": 0.0,
+      "cv": 0.3609817608990247,
+      "best_week": 76.0,
+      "worst_week": 14.0
+    },
+    {
+      "season": "2022-23",
+      "total_points": 2035.0,
+      "mean_gw_points": 53.55263157894737,
+      "std_gw_points": 16.257301790144787,
+      "sharpe_ratio": 3.2940663998383233,
+      "sortino_ratio": 4.53824594270723,
+      "max_drawdown": 0.0,
+      "cv": 0.303576151363883,
+      "best_week": 84.0,
+      "worst_week": 0.0
+    },
+    {
+      "season": "2023-24",
+      "total_points": 1817.0,
+      "mean_gw_points": 47.81578947368421,
+      "std_gw_points": 15.729381262562331,
+      "sharpe_ratio": 3.0399027574906006,
+      "sortino_ratio": 5.126962106926467,
+      "max_drawdown": 0.0,
+      "cv": 0.3289578910167136,
+      "best_week": 84.0,
+      "worst_week": 10.0
+    }
+  ],
+  "aggregate": {
+    "mean_total_points": 1823.3333333333333,
+    "total_points_95ci_lower": 1618.0,
+    "total_points_95ci_upper": 2035.0,
+    "total_points_std": 170.29843086639278,
+    "mean_sharpe_ratio": 3.0347307406961623,
+    "mean_sortino_ratio": 5.054042172732753,
+    "mean_max_drawdown": 0.0,
+    "mean_cv": 0.3311719344265404,
+    "seasons_count": 3,
+    "bootstrap_method": "resample_with_replacement_10000",
+    "timestamp": "2026-05-28T16:20:16.179433Z"
+  }
+}
