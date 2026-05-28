@@ -15,10 +15,14 @@ Locked parameters (inherited from Phase 6-7):
 
 import json
 import sys
+import os
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
 from multiprocessing import Pool
 import numpy as np
+
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Imports
 from fpl_auto.strategies import (
