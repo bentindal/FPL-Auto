@@ -316,3 +316,70 @@ def format_metrics_table(
         lines.append(line)
 
     return '\n'.join(lines)
+
+
+def bench_utilization_pct(team_history: Dict) -> float:
+    """
+    Calculate percentage of season where bench players contributed (made subs).
+
+    Args:
+        team_history: Dictionary with keys 'gameweek_results' containing
+                     per-GW records with 'subs_made' or 'bench_players_played' info.
+                     Can also be a dict with 'p_list' key (from manager.py results).
+
+    Returns:
+        Float: percentage of GWs where at least one bench player was substituted in
+               or played due to starter unavailability
+               0% = static team, no bench rotations
+               50% = half the season used bench players
+               100% = every GW at least one bench swap/substitution
+    """
+
+    # Check if this is a manager.py result dict (has p_list, xp_list, etc.)
+    # For now, return 0 since bench utilization tracking is done at Team level
+    if 'p_list' in team_history and 'gameweek_results' not in team_history:
+        # This is a manager.py result; bench utilization not tracked
+        # In a future iteration, we'd need to capture bench utilization in Team.result_summary()
+        return 0.0
+
+    if 'gameweek_results' not in team_history:
+        return 0.0
+
+    gw_results = team_history['gameweek_results']
+    gws_with_bench_play = sum(
+        1 for gw in gw_results
+        if gw.get('subs_made', False) or gw.get('bench_contribution', 0) > 0
+    )
+
+    total_gws = len(gw_results)
+    if total_gws == 0:
+        return 0.0
+
+    return (gws_with_bench_play / total_gws) * 100.0
+
+
+def compute_metrics_with_bench(team_results: Dict) -> Dict:
+    """
+    Compute extended metrics including bench utilization.
+
+    Standard metrics (from Phase 5):
+    - total_points
+    - sharpe_ratio
+    - sortino_ratio
+    - max_drawdown
+    - variance
+
+    New Phase 8 metrics:
+    - bench_utilization_pct
+    """
+
+    metrics = {
+        'total_points': team_results.get('total_points', 0),
+        'sharpe_ratio': team_results.get('sharpe_ratio', 0),
+        'sortino_ratio': team_results.get('sortino_ratio', 0),
+        'max_drawdown': team_results.get('max_drawdown', 0),
+        'variance': team_results.get('variance', 0),
+        'bench_utilization_pct': bench_utilization_pct(team_results),
+    }
+
+    return metrics
