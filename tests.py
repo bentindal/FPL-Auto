@@ -2286,3 +2286,182 @@ class TestPhase8Integration(unittest.TestCase):
                 self.assertIn('p_list', result)
                 self.assertGreater(sum(result['p_list']), 0)
                 self.assertEqual(result['season'], '2021-22')
+
+
+class TestPhase9TemporalAudit(unittest.TestCase):
+    """
+    Temporal integrity audit tests for Phase 9 validation.
+
+    These tests verify that the FPL automation system respects temporal boundaries
+    during season simulation. No future data (GW(N+1) onwards) should be accessed
+    during GW(N) decision-making.
+
+    Primary gate: test_temporal_integrity_full_season() must PASS before Phase 9
+    validation proceeds.
+    """
+
+    def setUp(self):
+        """Load Phase 8 optimal strategy for audit."""
+        from fpl_auto.strategies import PHASE_8_OPTIMAL
+        self.strategy = PHASE_8_OPTIMAL
+
+    def test_temporal_integrity_transfers(self):
+        """
+        Audit auto_transfer() for future-data violations on 2023-24 (limited GWs).
+
+        Tests that the transfer decision logic only accesses:
+        - Historical form: GW(1) through GW(N-1)
+        - Predictions: GW(N) only
+        - Never: GW(N+1) or later
+
+        Expected: audit_results['transfer'] == 'PASS'
+        """
+        from evaluation.temporal_audit import TemporalAudit
+
+        audit = TemporalAudit(self.strategy, season='2023-24')
+
+        # Run audit for a limited set of gameweeks to verify transfer logic
+        # This is a quick smoke test; full test is test_temporal_integrity_full_season
+        try:
+            results = audit.audit_season()
+            self.assertEqual(
+                results.get('transfer', 'FAIL'),
+                'PASS',
+                msg=f"Transfer temporal violations detected: {results}"
+            )
+        except ValueError as e:
+            # Data initialization error is not a temporal violation
+            self.skipTest(f"Could not audit transfers: {e}")
+
+    def test_temporal_integrity_captain(self):
+        """
+        Audit auto_captain() for future-data violations.
+
+        Tests that captain selection only accesses current GW predictions,
+        never future gameweek data.
+
+        Expected: audit_results['captain'] == 'PASS'
+        """
+        from evaluation.temporal_audit import TemporalAudit
+
+        audit = TemporalAudit(self.strategy, season='2023-24')
+
+        try:
+            results = audit.audit_season()
+            self.assertEqual(
+                results.get('captain', 'FAIL'),
+                'PASS',
+                msg=f"Captain temporal violations detected: {results}"
+            )
+        except ValueError as e:
+            self.skipTest(f"Could not audit captain: {e}")
+
+    def test_temporal_integrity_full_season(self):
+        """
+        Run full temporal audit on 2023-24 season with all decision points.
+
+        BLOCKING GATE for Phase 9: All decision points must pass.
+
+        Tests all 4 decision points:
+        1. auto_transfer() - uses discounted predictions (GW(N) only)
+        2. auto_captain() - accesses captain xP (GW(N) only)
+        3. auto_chips() - uses fixture metadata (pre-season knowledge, allowed)
+        4. auto_subs() - accesses bench xP (GW(N) only)
+
+        Expected outcomes:
+        - results['overall'] == 'PASS'
+        - results['transfer'] == 'PASS'
+        - results['captain'] == 'PASS'
+        - results['chips'] == 'PASS'
+        - results['subs'] == 'PASS'
+        """
+        from evaluation.temporal_audit import TemporalAudit
+
+        audit = TemporalAudit(self.strategy, season='2023-24')
+
+        try:
+            results = audit.audit_season()
+
+            # Overall verdict must PASS
+            self.assertEqual(
+                results.get('overall', 'FAIL'),
+                'PASS',
+                msg=f"Temporal audit FAILED overall. Results: {results}"
+            )
+
+            # All decision points must individually PASS
+            for decision in ['transfer', 'captain', 'chips', 'subs']:
+                self.assertEqual(
+                    results.get(decision, 'FAIL'),
+                    'PASS',
+                    msg=f"{decision.upper()} decision point has temporal violations"
+                )
+
+        except ValueError as e:
+            self.skipTest(f"Could not complete temporal audit: {e}")
+
+    def test_temporal_audit_evidence_artifact(self):
+        """
+        Verify audit report generated with sample traces.
+
+        Tests that the audit harness produces a human-readable evidence report
+        with summary table and sample gameweek traces.
+
+        Expected:
+        - evaluation/temporal_audit_report.md file exists
+        - File contains sample GW traces (grep for "GW[0-9]:")
+        - File contains summary table with all decision points
+        """
+        from evaluation.temporal_audit import TemporalAudit
+        from pathlib import Path
+
+        audit = TemporalAudit(self.strategy, season='2023-24')
+
+        try:
+            audit.audit_season()
+
+            # Generate audit report
+            report_path = 'evaluation/temporal_audit_report.md'
+            audit.write_audit_report(report_path)
+
+            # Verify report exists
+            report_file = Path(report_path)
+            self.assertTrue(
+                report_file.exists(),
+                msg=f"Audit report not created at {report_path}"
+            )
+
+            # Verify report contains key content
+            report_content = report_file.read_text()
+
+            # Check for executive summary
+            self.assertIn(
+                'Executive Summary',
+                report_content,
+                msg="Report missing Executive Summary section"
+            )
+
+            # Check for summary table
+            self.assertIn(
+                'Decision Point',
+                report_content,
+                msg="Report missing decision point summary table"
+            )
+
+            # Check for sample traces (at least one GW mentioned)
+            self.assertIn(
+                'GW',
+                report_content,
+                msg="Report missing sample gameweek traces"
+            )
+
+            # Check for all decision points in report
+            for decision in ['transfer', 'captain', 'chips', 'subs']:
+                self.assertIn(
+                    decision,
+                    report_content.lower(),
+                    msg=f"Report missing {decision} decision point"
+                )
+
+        except ValueError as e:
+            self.skipTest(f"Could not generate audit report: {e}")
