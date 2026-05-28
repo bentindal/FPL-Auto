@@ -189,8 +189,13 @@ class FplData:
         data_reset = data.reset_index()  # bring 'name' back as a column
         has_element = 'element' in data_reset.columns and (data_reset['element'] != 0).any()
         if not has_element:
-            # No valid element IDs — fall back to name-based groupby
             return data.groupby(level=0).mean(numeric_only=True)
+        # Coerce all stat columns to numeric — pd.concat can turn int cols into object
+        # when some GWs have empty/all-NA entries (pandas FutureWarning).
+        for col in data_reset.columns:
+            if col not in ('name', 'element'):
+                data_reset[col] = pd.to_numeric(data_reset[col], errors='coerce').fillna(0)
+        data_reset['element'] = pd.to_numeric(data_reset['element'], errors='coerce').fillna(0).astype(int)
         numeric_cols = [c for c in data_reset.select_dtypes(include=['number']).columns
                         if c != 'element']
         name_by_elem = data_reset.groupby('element')['name'].first()
