@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "phase": "07a",
+    "evaluation_date": "2026-05-28T15:19:34.316280",
+    "variants": [
+      "CAPTAIN_HIGHEST_XP",
+      "CAPTAIN_FORM_BASED",
+      "CAPTAIN_HIGHEST_VALUE"
+    ],
+    "test_seasons": [
+      "2023-24",
+      "2024-25"
+    ],
+    "train_seasons": [
+      "2021-22",
+      "2022-23"
+    ],
+    "baseline": "BASELINE_CURRENT",
+    "bonferroni_alpha": 0.016666666666666666
+  },
+  "variants": {
+    "CAPTAIN_HIGHEST_XP": {
+      "test_iterations": [
+        {
+          "test_season": "2023-24",
+          "total_points": 1805.0,
+          "sharpe_ratio": 2.9926094094374207,
+          "sortino_ratio": 5.361579787068557,
+          "coefficient_variation": 0.3341565380521842,
+          "max_drawdown": 0.0
+        }
+      ],
+      "aggregated_metrics": {
+        "mean_total_points": 1805.0,
+        "ci_total_points_lower": 1805.0,
+        "ci_total_points_upper": 1805.0,
+        "mean_sharpe": 2.9926094094374207,
+        "ci_sharpe_lower": 2.9926094094374207,
+        "ci_sharpe_upper": 2.9926094094374207,
+        "mean_sortino": 5.361579787068557,
+        "ci_sortino_lower": 5.361579787068557,
+        "ci_sortino_upper": 5.361579787068557
+      },
+      "vs_baseline": {
+        "mean_diff_total_points": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "significant": false
+      }
+    },
+    "CAPTAIN_FORM_BASED": {
+      "test_iterations": [
+        {
+          "test_season": "2023-24",
+          "total_points": 1808.0,
+          "sharpe_ratio": 3.0007565120752098,
+          "sortino_ratio": 5.313840681138089,
+          "coefficient_variation": 0.3332492976274299,
+          "max_drawdown": 0.0
+        }
+      ],
+      "aggregated_metrics": {
+        "mean_total_points": 1808.0,
+        "ci_total_points_lower": 1808.0,
+        "ci_total_points_upper": 1808.0,
+        "mean_sharpe": 3.0007565120752098,
+        "ci_sharpe_lower": 3.0007565120752098,
+        "ci_sharpe_upper": 3.0007565120752098,
+        "mean_sortino": 5.313840681138089,
+        "ci_sortino_lower": 5.313840681138089,
+        "ci_sortino_upper": 5.313840681138089
+      },
+      "vs_baseline": {
+        "mean_diff_total_points": 3.0,
+        "ci_lower": 3.0,
+        "ci_upper": 3.0,
+        "significant": true
+      }
+    },
+    "CAPTAIN_HIGHEST_VALUE": {
+      "test_iterations": [
+        {
+          "test_season": "2023-24",
+          "total_points": 1817.0,
+          "sharpe_ratio": 3.0399027574906006,
+          "sortino_ratio": 5.126962106926467,
+          "coefficient_variation": 0.3289578910167136,
+          "max_drawdown": 0.0
+        }
+      ],
+      "aggregated_metrics": {
+        "mean_total_points": 1817.0,
+        "ci_total_points_lower": 1817.0,
+        "ci_total_points_upper": 1817.0,
+        "mean_sharpe": 3.0399027574906006,
+        "ci_sharpe_lower": 3.0399027574906006,
+        "ci_sharpe_upper": 3.0399027574906006,
+        "mean_sortino": 5.126962106926467,
+        "ci_sortino_lower": 5.126962106926467,
+        "ci_sortino_upper": 5.126962106926467
+      },
+      "vs_baseline": {
+        "mean_diff_total_points": 12.0,
+        "ci_lower": 12.0,
+        "ci_upper": 12.0,
+        "significant": true
+      }
+    }
+  },
+  "baseline_metrics": {
+    "mean_total_points": 1805.0,
+    "mean_sharpe": 2.9926094094374207,
+    "mean_sortino": 5.361579787068557
+  }
+}
