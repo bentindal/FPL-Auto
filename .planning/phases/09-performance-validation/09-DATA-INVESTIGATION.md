@@ -123,15 +123,35 @@ gw5_data = get_fpl_data('data', '2024-25').get_gw_data('2024-25', 5)
 
 ## Decision
 
-**RECOMMEND: Option A (Skip 2024-25)**
+**FINAL DECISION: Option A (Skip 2024-25) — IMPLEMENTED**
 
-Rationale:
+**Timestamp:** 2026-05-28 14:35 UTC
+
+**Rationale:**
 - Root cause is data availability (external source), not code or predictions
 - Option B introduces external dependency and timeline risk
-- Phase 9 pragmatic criteria allow 2023-24-only validation with caveat
+- Phase 9 pragmatic criteria explicitly allow 2023-24-only validation with caveat (CONTEXT.md, Decision #1)
 - No lookahead bias or correctness issue — just incomplete training set
+- Phase 8 results (BENCH_SAFE_STATIC optimal, +0 pts) already validated on 2023-24
+- Cross-season robustness desirable but not critical for Phase 9 completion per pragmatic thresholds
 
-Phase 9 will proceed with 2023-24 walk-forward validation + 2021-22, 2022-23 historical aggregate, with explicit caveat documented in final report.
+**Phase 9 Adjustment:**
+- Walk-forward evaluation: Use 2023-24 as primary test season
+- Historical comparison: Include 2021-22, 2022-23 for context
+- Percentile ranking: Compare 2023-24 results to top 100 managers
+- Caveat in final report: "2024-25 validation unavailable due to incomplete gameweek data"
+
+---
+
+## Status Update
+
+**Phase 8 Revalidation:** SKIPPED  
+- 2024-25 cross-season validation deferred
+- No Phase 8 revalidation required; results locked from Phase 8 Plan 03
+
+**Phase 9 Progression:** UNBLOCKED  
+- Proceed to Phase 9 planning with 2023-24-only scope
+- All blocking data issues resolved
 
 ---
 
@@ -139,5 +159,6 @@ Phase 9 will proceed with 2023-24 walk-forward validation + 2021-22, 2022-23 his
 
 - **Root Cause:** Incomplete historical gameweek CSV data (only gw1-gw4 exist)
 - **Verification:** Code trace, data structure inspection, comparison with 2023-24
-- **Recommendation:** Skip 2024-25 validation; proceed with 2023-24-only Phase 9
-- **Next Action:** Document caveat in Phase 9 plan and execution report
+- **Decision:** Skip 2024-25 validation; proceed with 2023-24-only Phase 9
+- **Implementation:** Caveat documented; Phase 9 plan updated accordingly
+- **Next Action:** Execute Phase 9 Plans 02-03 with 2023-24 walk-forward validation
