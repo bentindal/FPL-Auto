@@ -77,6 +77,15 @@
 - [ ] **PV-03**: Generate final metrics report comparing all strategy archetypes
 - [ ] **PV-04**: Document winning strategy parameters and decision rules
 
+### Model Retraining & Time-Series Optimization
+
+- [ ] **MR-01**: Implement FPL API + Understat data collection pipeline; populate accumulated_gw.csv for 2024-25 season
+- [ ] **MR-02**: Build scheduled retraining orchestrator: every 2 GWs OR on drift detection (15% RMSE threshold using PELT algorithm)
+- [ ] **MR-03**: Train position-specific ensemble models (XGBoost + RandomForest per GK/DEF/MID/FWD) using expanding time window (2019-2023 + live GWs)
+- [ ] **MR-04**: Implement drift detection using PELT change-point analysis; alert on structural breaks with >15% RMSE degradation
+- [ ] **MR-05**: Deploy Apache Airflow DAG orchestrating data collection → validation → retraining → evaluation → prediction export (post-GW Tuesday 19:00 UTC)
+- [ ] **MR-06**: Execute live testing on 2024-25 season (GWs 1-5+); validate metrics (RMSE, MAE, R², Spearman), calibrate thresholds, document runbooks
+
 ## v2 Requirements
 
 ### Advanced Features
@@ -154,10 +163,16 @@
 | PV-02 | Phase 9 | Pending |
 | PV-03 | Phase 9 | Pending |
 | PV-04 | Phase 9 | Pending |
+| MR-01 | Phase 10 | Pending |
+| MR-02 | Phase 10 | Pending |
+| MR-03 | Phase 10 | Pending |
+| MR-04 | Phase 10 | Pending |
+| MR-05 | Phase 10 | Pending |
+| MR-06 | Phase 10 | Pending |
 
 **Coverage:**
-- v1 requirements: 36 total
-- Mapped to phases: 36
+- v1 requirements: 42 total
+- Mapped to phases: 42
 - Unmapped: 0 ✓
 
 ---

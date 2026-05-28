@@ -1361,7 +1361,12 @@ class ModelMonitor:
                 'FWD': {...}
             }
         """
-        from scipy.stats import spearmanr
+        try:
+            from scipy.stats import spearmanr
+            HAS_SCIPY = True
+        except ImportError:
+            HAS_SCIPY = False
+            logger.warning("scipy not available; Spearman correlation will be skipped")
 
         metrics = {}
 
@@ -1387,12 +1392,15 @@ class ModelMonitor:
             r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0
 
             # Compute Spearman rank correlation
-            try:
-                spearman_corr, spearman_pval = spearmanr(pred, actual)
-                spearman_corr = float(spearman_corr) if not np.isnan(spearman_corr) else 0
-            except Exception as e:
-                logger.warning(f"Failed to compute Spearman for {position}: {e}")
-                spearman_corr = 0
+            if HAS_SCIPY:
+                try:
+                    spearman_corr, spearman_pval = spearmanr(pred, actual)
+                    spearman_corr = float(spearman_corr) if not np.isnan(spearman_corr) else 0
+                except Exception as e:
+                    logger.warning(f"Failed to compute Spearman for {position}: {e}")
+                    spearman_corr = 0
+            else:
+                spearman_corr = 0  # Fallback if scipy not available
 
             metrics[position] = {
                 'rmse': rmse,

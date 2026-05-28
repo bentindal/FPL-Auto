@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/bentindal/Desktop/coding/FPL-Auto/evaluation/compare_bench_variants.py", line 24, in <module>
+    from fpl_auto.strategies import (
+ModuleNotFoundError: No module named 'fpl_auto'

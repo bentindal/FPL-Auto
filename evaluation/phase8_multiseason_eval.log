@@ -1,0 +1,197 @@
+
+Starting multi-season evaluation at 2026-05-28T16:23:34.726271
+
+==========================================================================================
+PHASE 8 GAP CLOSURE: MULTI-SEASON BENCH & SUBSTITUTION EVALUATION
+==========================================================================================
+
+Running 4-variant 2x2 factorial design on seasons: ['2021-22', '2022-23', '2023-24']
+
+
+==========================================================================================
+Running: BENCH_SAFE_STATIC
+  Bench composition: safe
+  Substitution mode: static
+  Transfer budget/GW: 0.5
+  Captain mode: highest_value
+==========================================================================================
+
+  [Single-Season Walk-Forward]
+    Test season: 2021-22
+    Train seasons: ['2022-23', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1926
+    Running strategy on test season...
+      Test complete. Test points: 1618
+  [Single-Season Walk-Forward]
+    Test season: 2022-23
+    Train seasons: ['2021-22', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1718
+    Running strategy on test season...
+      Test complete. Test points: 2035
+  [Single-Season Walk-Forward]
+    Test season: 2023-24
+    Train seasons: ['2021-22', '2022-23']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1826
+    Running strategy on test season...
+      Test complete. Test points: 1817
+
+✓ BENCH_SAFE_STATIC completed.
+  Combined points across 3 seasons: 1823
+    2021-22: 1618 pts
+    2022-23: 2035 pts
+    2023-24: 1817 pts
+
+==========================================================================================
+Running: BENCH_SAFE_PREDICTIVE
+  Bench composition: safe
+  Substitution mode: predictive_swap
+  Transfer budget/GW: 0.5
+  Captain mode: highest_value
+==========================================================================================
+
+  [Single-Season Walk-Forward]
+    Test season: 2021-22
+    Train seasons: ['2022-23', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1850
+    Running strategy on test season...
+      Test complete. Test points: 1591
+  [Single-Season Walk-Forward]
+    Test season: 2022-23
+    Train seasons: ['2021-22', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1648
+    Running strategy on test season...
+      Test complete. Test points: 1994
+  [Single-Season Walk-Forward]
+    Test season: 2023-24
+    Train seasons: ['2021-22', '2022-23']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1792
+    Running strategy on test season...
+      Test complete. Test points: 1706
+
+✓ BENCH_SAFE_PREDICTIVE completed.
+  Combined points across 3 seasons: 1764
+    2021-22: 1591 pts
+    2022-23: 1994 pts
+    2023-24: 1706 pts
+
+==========================================================================================
+Running: BENCH_SPECULATIVE_STATIC
+  Bench composition: speculative
+  Substitution mode: static
+  Transfer budget/GW: 0.5
+  Captain mode: highest_value
+==========================================================================================
+
+  [Single-Season Walk-Forward]
+    Test season: 2021-22
+    Train seasons: ['2022-23', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1926
+    Running strategy on test season...
+      Test complete. Test points: 1618
+  [Single-Season Walk-Forward]
+    Test season: 2022-23
+    Train seasons: ['2021-22', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1718
+    Running strategy on test season...
+      Test complete. Test points: 2035
+  [Single-Season Walk-Forward]
+    Test season: 2023-24
+    Train seasons: ['2021-22', '2022-23']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1826
+    Running strategy on test season...
+      Test complete. Test points: 1817
+
+✓ BENCH_SPECULATIVE_STATIC completed.
+  Combined points across 3 seasons: 1823
+    2021-22: 1618 pts
+    2022-23: 2035 pts
+    2023-24: 1817 pts
+
+==========================================================================================
+Running: BENCH_SPECULATIVE_PREDICTIVE
+  Bench composition: speculative
+  Substitution mode: predictive_swap
+  Transfer budget/GW: 0.5
+  Captain mode: highest_value
+==========================================================================================
+
+  [Single-Season Walk-Forward]
+    Test season: 2021-22
+    Train seasons: ['2022-23', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1850
+    Running strategy on test season...
+      Test complete. Test points: 1591
+  [Single-Season Walk-Forward]
+    Test season: 2022-23
+    Train seasons: ['2021-22', '2023-24']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1648
+    Running strategy on test season...
+      Test complete. Test points: 1994
+  [Single-Season Walk-Forward]
+    Test season: 2023-24
+    Train seasons: ['2021-22', '2022-23']
+    Running strategy on training seasons...
+      Training complete. Avg points: 1792
+    Running strategy on test season...
+      Test complete. Test points: 1706
+
+✓ BENCH_SPECULATIVE_PREDICTIVE completed.
+  Combined points across 3 seasons: 1764
+    2021-22: 1591 pts
+    2022-23: 1994 pts
+    2023-24: 1706 pts
+
+==========================================================================================
+CROSS-SEASON RESULTS COMPARISON
+==========================================================================================
+
+
+Variant Comparison across all test seasons (sorted by total points):
+
+Variant                                  Points       StdDev     Sharpe     CI Lower   CI Upper  
+--------------------------------------------------------------------------------------------
+BENCH_SAFE_STATIC                        1823.3       170.3      3.03       1618.0     2035.0    
+BENCH_SPECULATIVE_STATIC                 1823.3       170.3      3.03       1618.0     2035.0    
+BENCH_SAFE_PREDICTIVE                    1763.7       169.5      3.02       1591.0     1994.0    
+BENCH_SPECULATIVE_PREDICTIVE             1763.7       169.5      3.02       1591.0     1994.0    
+
+Per-Season Breakdown:
+
+Season          BENCH_SAFE_PREDICTIVE  BENCH_SAFE_STATIC  BENCH_SPECULATIVE_PREDICTIVE  BENCH_SPECULATIVE_STATIC
+--------------------------------------------------------------------------------
+2021-22         1591             1618             1591             1618           
+2022-23         1994             2035             1994             2035           
+2023-24         1706             1817             1706             1817           
+
+Bonferroni-Corrected Significance (α=0.0125 for 4 variants):
+
+--------------------------------------------------------------------------------------------
+   BENCH_SAFE_STATIC vs BENCH_SAFE_PREDICTIVE: NOT significant
+   BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_STATIC: NOT significant
+   BENCH_SAFE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant
+   BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_STATIC: NOT significant
+   BENCH_SAFE_PREDICTIVE vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant
+   BENCH_SPECULATIVE_STATIC vs BENCH_SPECULATIVE_PREDICTIVE: NOT significant
+
+Consistency Analysis:
+--------------------------------------------------------------------------------------------
+Best variant (BENCH_SAFE_STATIC) wins in 3/3 seasons
+Average effect size vs worst variant: 0.0 points
+Effect size consistency (std): 0.0 points
+
+Recommendation: BENCH_SAFE_STATIC (highest combined points, consistent across seasons)
+
+✓ Multi-season results saved to evaluation/phase8_results_multiseason.json
+
+Evaluation complete. Results saved to evaluation/phase8_results_multiseason.json
