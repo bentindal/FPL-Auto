@@ -1,4 +1,6 @@
 import sys
+import json
+from pathlib import Path
 from contextlib import asynccontextmanager
 sys.path.insert(0, '.')  # ensure fpl_auto package is importable
 
@@ -9,15 +11,55 @@ from fpl_auto.data import get_fpl_data
 _SEASONS = ['2021-22', '2022-23', '2023-24', '2024-25']
 _fpl_data_instances = {}
 
+# Pre-computed top-100 weekly averages, keyed by season string.
+# Populated at startup and refreshable via POST /top100/refresh.
+_top100_weekly_avg: dict[str, dict[str, float]] = {}
+
+_TOP100_DATA_PATHS: dict[str, Path] = {
+    "2025-26": Path("data/season_winners_2025-26"),
+}
+
+
+def _compute_top100_weekly_avg(season: str) -> dict[str, float]:
+    """Read per-GW points from local season_winners archive and average across managers."""
+    data_dir = _TOP100_DATA_PATHS.get(season)
+    if data_dir is None or not data_dir.is_dir():
+        return {}
+
+    gw_totals: dict[int, list[int]] = {}
+    for mgr_dir in data_dir.iterdir():
+        if not mgr_dir.is_dir() or not mgr_dir.name.isdigit():
+            continue
+        season_file = mgr_dir / "_complete_season.json"
+        if not season_file.exists():
+            continue
+        with season_file.open() as f:
+            season_data = json.load(f)
+        for gw_str, gw_data in season_data.items():
+            try:
+                gw = int(gw_str)
+                pts = gw_data["entry_history"]["points"]
+                gw_totals.setdefault(gw, []).append(pts)
+            except (KeyError, ValueError):
+                continue
+
+    return {
+        str(gw): round(sum(pts) / len(pts), 1)
+        for gw, pts in sorted(gw_totals.items())
+    }
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Eager model load at startup (D-01)
-    # Loads all season data before accepting requests so first call isn't slow
     for season in _SEASONS:
         _fpl_data_instances[season] = get_fpl_data('data', season)
+
+    # Pre-compute top-100 weekly averages from local archive files
+    for season in _TOP100_DATA_PATHS:
+        _top100_weekly_avg[season] = _compute_top100_weekly_avg(season)
+
     yield
-    # Shutdown: nothing to clean up
 
 
 app = FastAPI(lifespan=lifespan)
@@ -121,6 +163,31 @@ def best_alt(req: BestAltRequest):
         return {"best_alt_name": name, "best_alt_xp": xp}
 
     return {"best_alt_name": None, "best_alt_xp": None}
+
+
+@app.get("/top100/weekly_avg")
+def top100_weekly_avg(season: str = "2025-26"):
+    """Returns pre-computed top-100 manager average GW points.
+
+    Data is loaded from local season_winners archive at startup.
+    Call POST /top100/refresh to reload after the archive files change.
+    """
+    data = _top100_weekly_avg.get(season)
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"No top-100 data for season {season}")
+    return {"weekly_avg": data}
+
+
+@app.post("/top100/refresh")
+def top100_refresh(season: str = "2025-26"):
+    """Re-reads the local season_winners archive and refreshes the in-memory cache.
+
+    Intended to be called by a daily Sidekiq cron job after the archive is updated.
+    """
+    if season not in _TOP100_DATA_PATHS:
+        raise HTTPException(status_code=404, detail=f"No archive path configured for season {season}")
+    _top100_weekly_avg[season] = _compute_top100_weekly_avg(season)
+    return {"refreshed": season, "gameweeks": len(_top100_weekly_avg[season])}
 
 
 @app.get("/health")
