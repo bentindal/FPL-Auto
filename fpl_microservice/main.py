@@ -1,4 +1,5 @@
 import sys
+import csv
 import json
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -163,6 +164,23 @@ def best_alt(req: BestAltRequest):
         return {"best_alt_name": name, "best_alt_xp": xp}
 
     return {"best_alt_name": None, "best_alt_xp": None}
+
+
+@app.get("/xp/by_element/{gw}")
+def xp_by_element(gw: int):
+    """Returns element_id → xP for 2025-26 from pre-generated CSV files.
+
+    Returns empty predictions dict (not 404) when the CSV for this GW doesn't
+    exist yet — Rails callers skip empty dicts without needing special error handling.
+    """
+    path = Path(f"data/2025-26/gws/xP{gw}.csv")
+    if not path.exists():
+        return {"predictions": {}}
+    predictions = {}
+    with path.open() as f:
+        for row in csv.DictReader(f):
+            predictions[int(row["id"])] = float(row["xP"])
+    return {"predictions": predictions}
 
 
 @app.get("/top100/weekly_avg")
