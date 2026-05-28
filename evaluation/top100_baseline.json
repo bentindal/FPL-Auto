@@ -1,0 +1,24 @@
+{
+  "source": "2019-20 season top managers (available data)",
+  "note": "Only 10 top managers available in repository. Data sourced from data/2019-20/managers/top_managers_gwInfo.csv. This represents the elite group tracked for this historical season.",
+  "count": 10,
+  "mean": 2542.0,
+  "median": 2544.0,
+  "std": 15.931101656822104,
+  "min": 2519.0,
+  "max": 2575.0,
+  "percentile_25": 2528.5,
+  "percentile_75": 2548.5,
+  "data_points": [
+    2575,
+    2557,
+    2549,
+    2547,
+    2547,
+    2541,
+    2533,
+    2527,
+    2525,
+    2519
+  ]
+}
