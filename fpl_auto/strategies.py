@@ -327,9 +327,12 @@ BASELINE_STATIC = StrategyConfig(
 )
 
 BASELINE_CURRENT = StrategyConfig(
-    # Philosophy: Phase 6 optimal strategy (CONSERVATIVE_FULL). Low-risk transfers throughout season.
+    # Philosophy: Phase 6-8 optimal strategy (CONSERVATIVE_FULL + BENCH_SAFE_STATIC).
     # Empirically validated across all seasons (2021-22, 2022-23, 2023-24): top performer.
-    # Budget: 0.5 (conservative); Window: None (full season); Threshold: 20% relative improvement
+    # Transfer: Budget 0.5 (conservative); Window: None (full season); Threshold: 20% relative improvement
+    # Captain: highest_xp baseline (Phase 7 optimal: CAPTAIN_HIGHEST_VALUE used in final system)
+    # Bench: BENCH_SAFE_STATIC (Phase 8 optimal) — static rotation with safe composition
+    # Chips: Conservative schedule
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,  # Matches discount_next_n_gws(n=5, factor=0.8)
@@ -345,6 +348,9 @@ BASELINE_CURRENT = StrategyConfig(
     chip_budget_limit=3,
     bench_mode='rotate_low_xp',
     bench_injury_threshold=0.5,
+    bench_composition_variant='safe',  # LOCKED Phase 8: BENCH_SAFE_STATIC optimal
+    substitution_mode='static',  # LOCKED Phase 8: static rotation optimal
+    substitution_trigger_threshold=0.20,
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
 )
@@ -686,6 +692,9 @@ BENCH_SAFE_STATIC = StrategyConfig(
 )
 
 BENCH_SAFE_PREDICTIVE = StrategyConfig(
+    # DEPRECATED: Phase 8 evaluation (multi-season validation) shows predictive swaps degrade
+    # performance across all seasons (2021-22: -27 pts, 2022-23: -41 pts, 2023-24: -111 pts).
+    # Kept for reference/historical comparison only. DO NOT USE in production.
     # Philosophy: Defensive bench + predictive swaps
     # Bench composition: 1 GK (cheapest), 2 DEF (established, clean sheet probability), 1 MID (budget)
     # Subs: Swap if bench has >20% xP advantage over starter (GW > 5 only) — active
@@ -714,6 +723,8 @@ BENCH_SAFE_PREDICTIVE = StrategyConfig(
 )
 
 BENCH_SPECULATIVE_STATIC = StrategyConfig(
+    # DEPRECATED: Phase 8 evaluation shows bench composition has zero impact on performance.
+    # Kept for reference/historical comparison only. DO NOT USE in production.
     # Philosophy: Speculative bench + static rotation
     # Bench composition: 1 GK, 2 DEF (higher-variance, younger), 1 MID (upside potential)
     # Subs: Rotate by lowest xP every GW (current behavior) — passive
@@ -742,6 +753,8 @@ BENCH_SPECULATIVE_STATIC = StrategyConfig(
 )
 
 BENCH_SPECULATIVE_PREDICTIVE = StrategyConfig(
+    # DEPRECATED: Phase 8 evaluation shows both bench composition and predictive swaps degrade
+    # performance (composition 0 pts, swaps -27 to -111 pts). Kept for reference only. DO NOT USE.
     # Philosophy: Speculative bench + predictive swaps
     # Bench composition: 1 GK, 2 DEF (higher-variance, younger), 1 MID (upside potential)
     # Subs: Swap if bench has >20% xP advantage over starter (GW > 5 only) — active
@@ -769,6 +782,38 @@ BENCH_SPECULATIVE_PREDICTIVE = StrategyConfig(
     punt_threshold=0.5,
 )
 
+# PHASE 8 FINAL OPTIMIZED STRATEGY
+# Locks all Phase 6-8 optimal decisions: CONSERVATIVE_FULL transfer + CAPTAIN_HIGHEST_VALUE captain + BENCH_SAFE_STATIC
+
+PHASE_8_OPTIMAL = StrategyConfig(
+    # Philosophy: Combines Phase 6-8 optimal findings: conservative transfers + value-based captaincy + safe static bench
+    # Phase 6: CONSERVATIVE_FULL (budget 0.5, 20% threshold, full season window)
+    # Phase 7: CAPTAIN_HIGHEST_VALUE (prefer high-priced stable players)
+    # Phase 8: BENCH_SAFE_STATIC (safe composition, static rotation) — multi-season validated
+    # Multi-season validation: Optimal across 2021-22, 2022-23, 2023-24
+    # Confidence: VERY HIGH (3-season cross-validation, robust to seasonal variation)
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,  # CONSERVATIVE_FULL locked
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_value',  # CAPTAIN_HIGHEST_VALUE locked (Phase 7 optimal)
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',  # BENCH_SAFE_STATIC locked (Phase 8 optimal)
+    substitution_mode='static',  # Static rotation optimal (predictive swaps degrade -27 to -111 pts)
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+)
+
 # Backward compatibility aliases (Plan 08-01)
 BENCH_SAFE = BENCH_SAFE_STATIC
 BENCH_SPECULATIVE = BENCH_SPECULATIVE_STATIC
@@ -792,9 +837,10 @@ __all__ = [
     'CHIP_DOUBLES_OPTIMIZED',
     'CHIP_BLANKS_OPTIMIZED',
     'BENCH_SAFE_STATIC',
-    'BENCH_SAFE_PREDICTIVE',
-    'BENCH_SPECULATIVE_STATIC',
-    'BENCH_SPECULATIVE_PREDICTIVE',
+    'BENCH_SAFE_PREDICTIVE',  # DEPRECATED (Phase 8: degrades -27 to -111 pts)
+    'BENCH_SPECULATIVE_STATIC',  # DEPRECATED (Phase 8: zero impact)
+    'BENCH_SPECULATIVE_PREDICTIVE',  # DEPRECATED (Phase 8: both variants degrade)
     'BENCH_SAFE',  # Backward compat alias
     'BENCH_SPECULATIVE',  # Backward compat alias
+    'PHASE_8_OPTIMAL',  # LOCKED Phase 6-8 optimal (multi-season validated)
 ]
