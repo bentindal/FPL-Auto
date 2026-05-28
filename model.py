@@ -16,6 +16,17 @@ from datetime import datetime
 import os
 
 
+def get_available_seasons(gw_data_path='data/'):
+    """Dynamically discover available seasons from data directory."""
+    try:
+        seasons = [d for d in os.listdir(gw_data_path)
+                   if os.path.isdir(os.path.join(gw_data_path, d))
+                   and '-' in d and len(d) == 7]  # Format: YYYY-YY
+        return sorted(seasons)
+    except (FileNotFoundError, OSError):
+        return ['2021-22', '2022-23', '2023-24', '2024-25']  # Fallback
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="FPL Automation Project: Model")
     parser.add_argument('-gw_data', type=str, default='data/',
@@ -23,9 +34,13 @@ def parse_args():
     parser.add_argument('-model', type=str, default='gradientboost',
                         choices=Predictor.TYPES,
                         help=f'Model type to use. Choices: {Predictor.TYPES}. Default: gradientboost')
+
+    # Dynamically discover available seasons
+    available_seasons = get_available_seasons('data/')
+
     parser.add_argument('-season', type=str, required=True,
-                        choices=['2021-22', '2022-23', '2023-24', '2024-25'],
-                        help='Season to predict points for. Format: YYYY-YY e.g 2021-22')
+                        choices=available_seasons,
+                        help=f'Season to predict points for. Format: YYYY-YY. Available: {", ".join(available_seasons)}')
     parser.add_argument('-target_gw', type=int, default=1,
                         help='Gameweek to predict points for, default 1')
     parser.add_argument('-repeat', type=int, default=38,
