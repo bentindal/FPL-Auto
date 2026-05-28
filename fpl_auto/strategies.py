@@ -283,11 +283,16 @@ BASELINE_STATIC = StrategyConfig(
 )
 
 BASELINE_CURRENT = StrategyConfig(
-    # Philosophy: Current manager.py behavior. Use xP predictions adaptively.
-    # Establishes "cost of complexity" baseline: is new strategy worth implementation effort?
+    # Philosophy: Phase 6 optimal strategy (CONSERVATIVE_FULL). Low-risk transfers throughout season.
+    # Empirically validated across all seasons (2021-22, 2022-23, 2023-24): top performer.
+    # Budget: 0.5 (conservative); Window: None (full season); Threshold: 20% relative improvement
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,  # Matches discount_next_n_gws(n=5, factor=0.8)
+    transfer_budget_per_gw=0.5,  # Conservative budget
+    transfer_window_gw_range=None,  # Full season availability (critical)
+    transfer_xp_threshold=0.20,  # 20% relative improvement required
+    transfer_xp_threshold_mode='relative',
     captain_mode='highest_xp',
     captain_lookback_gws=1,
     captain_variance_penalty=0.0,
