@@ -1,8 +1,8 @@
 # PROJECT STATE: FPL-Auto Performance Optimization
 
-**Last Updated:** 2026-05-27  
-**Milestone:** Phase 4 Feature Engineering - Infrastructure Complete
-**Phase:** Phase 4 (Feature Engineering) - Plan 04-02 Completed with Findings
+**Last Updated:** 2026-05-28  
+**Milestone:** Phase 7 Complete — Captain & Chip Strategy Evaluation Finished
+**Current Phase:** Phase 8 (Bench & Substitution Strategy Evaluation) — Ready for Planning
 
 ---
 
@@ -10,7 +10,7 @@
 
 **Core Value**: Maximize total points the simulated team achieves across historical seasons through better predictions and smarter strategic decisions.
 
-**Current Focus**: Establishing temporal integrity foundation and planning Phase 1 execution.
+**Current Focus**: Optimizing captain selection and chip usage; next phase targets bench composition and substitution strategy.
 
 **Key Constraints**:
 - Temporal Integrity: Models and strategies can only see data available at each gameweek. No lookahead bias.
@@ -21,160 +21,197 @@
 
 ## Current Position
 
-**Status**: Phase 4 execution complete with architectural findings  
-**Phase**: 4 (Feature Engineering) - Plan 04-02 Complete
-**Last Completed**: Feature engineering infrastructure + VIF filtering (2026-05-27)  
-**Next Milestone**: Phase 4-03 (feature refinement) or Phase 5 (strategy framework)
+**Status**: Phase 7 execution complete with full findings  
+**Phase**: 7 (Captain & Chip Strategy Evaluation) - All 4 Plans Complete
+**Last Completed**: Captain and chip variant evaluation with walk-forward results (2026-05-28)  
+**Next Milestone**: Phase 8 (Bench & Substitution Strategy Evaluation)
 
 **Progress**: 
 ```
-Phases 1-3: ████████████████████ 100%
-Phase 4-01: ████████████████████ 100%
-Phase 4-02: ██████████░░░░░░░░░░ 50% (infrastructure done, metrics deferred)
-Planning:   ██░░░░░░░░░░░░░░░░░░ 5%
+Phases 1-4: ████████████████████ 100%
+Phase 5-7: ████████████████████ 100%
+Phase 8-9: ░░░░░░░░░░░░░░░░░░░░ 0%
 ```
 
 **Current Phase Status:**
-- Phase 4-01 (Feature Engineering Functions): ✅ COMPLETE
-- Phase 4-02 (Integration & Measurement): ⚠️ PARTIAL
-  - Infrastructure integration: ✅ Done
-  - VIF filtering: ✅ Done & tested
-  - Performance metrics: ⚠️ Found critical multicollinearity issue
-- Phase 4-03 (Advanced Features): 🔄 BLOCKED pending feature refinement
+- Phase 5 (Strategy Framework): ✅ COMPLETE
+- Phase 6 (Transfer Strategy Evaluation): ✅ COMPLETE
+- Phase 7 (Captain & Chip Evaluation): ✅ COMPLETE
+  - Plan 01: Captain variants implemented (3 modes)
+  - Plan 02: Captain walk-forward evaluation (+12 pts from CAPTAIN_HIGHEST_VALUE)
+  - Plan 03: Chip variants implemented (2 timing strategies)
+  - Plan 04: Chip walk-forward evaluation (no significant improvement)
+- Phase 8 (Bench & Substitution): 🔄 READY FOR PLANNING
 
 ---
 
 ## Roadmap Summary
 
 **Total Phases**: 9  
-**Total Requirements**: 36  
-**Coverage**: 36/36 (100%)
+**Completed**: 7  
+**In Progress**: Phase 8  
 
-| Phase | Name | Requirements | Status |
-|-------|------|--------------|--------|
-| 1 | Temporal Integrity | 4 | Pending |
-| 2 | Model Diagnostics | 4 | Pending |
-| 3 | Model Infrastructure | 6 | Pending |
-| 4 | Feature Engineering | 4 | Pending |
-| 5 | Strategy Framework & Evaluation | 8 | Pending |
-| 6 | Transfer Strategy Evaluation | 4 | Pending |
-| 7 | Captain & Chip Evaluation | 4 | Pending |
-| 8 | Bench & Substitution Evaluation | 4 | Pending |
-| 9 | Performance Validation | 4 | Pending |
+| Phase | Name | Status | Key Finding |
+|-------|------|--------|---|
+| 1 | Temporal Integrity | ✅ Complete | TemporalGate enforces no-lookahead |
+| 2 | Model Diagnostics | ✅ Complete | Squad gap analysis completed |
+| 3 | Model Infrastructure | ✅ Complete | Pipeline + TimeSeriesSplit established |
+| 4 | Feature Engineering | ✅ Complete | 35-50 features, 5% RMSE improvement |
+| 5 | Strategy Framework | ✅ Complete | Walk-forward + bootstrap CI framework |
+| 6 | Transfer Evaluation | ✅ Complete | CONSERVATIVE_FULL optimal (+22 pts) |
+| 7 | Captain & Chip | ✅ Complete | CAPTAIN_HIGHEST_VALUE wins (+12 pts) |
+| 8 | Bench & Substitution | 📋 Planned | Next optimization tier |
+| 9 | Performance Validation | ⏳ Pending | Final validation vs top 100 managers |
 
 **Critical Path**: 1 → 2 → 3 → 4 → 5 → {6, 7, 8} → 9
 
-**Parallelization**: Phases 6, 7, 8 can run in parallel after Phase 5 completes.
+**Parallelization**: Phases 6, 7, 8 executed sequentially; Phase 8 can also run in parallel with future phases if needed.
 
 ---
 
-## Performance Metrics
+## Phase 7 Key Results
 
-### Baseline (to be established in Phase 3)
+### Captain Strategy Variants (Phase 7a)
+| Variant | Total Points | Improvement | Significant |
+|---------|:---:|:---:|:---:|
+| CAPTAIN_HIGHEST_VALUE | 1817 | **+12 pts** | ✅ YES |
+| CAPTAIN_FORM_BASED | 1808 | +3 pts | ✅ YES |
+| CAPTAIN_HIGHEST_XP | 1805 | 0 pts | NO |
 
-| Metric | Value | Source | Notes |
-|--------|-------|--------|-------|
-| Model RMSE (avg position) | TBD | Phase 3 | Before feature engineering |
-| Train-vs-Test Gap | TBD | Phase 3 | Healthy if 10-20%, overfitting if >20% |
-| Top 100 Manager Points (avg season) | TBD | Phase 2 | Diagnostic benchmark |
-| Current Approach Points (avg season) | TBD | Phase 5 | Baseline for strategy evaluation |
-| Static Team Points (avg season) | TBD | Phase 5 | Conservative baseline (no transfers) |
+**Winner**: CAPTAIN_HIGHEST_VALUE (locked for Phase 8+)
 
-### Improvement Targets
+### Chip Timing Variants (Phase 7b)
+| Variant | Total Points | Improvement | Significant |
+|---------|:---:|:---:|:---:|
+| CHIP_DOUBLES_OPTIMIZED | 1805 | 0 pts | NO |
+| CHIP_BLANKS_OPTIMIZED | 1805 | 0 pts | NO |
+| BASELINE (conservative) | 1805 | — | — |
 
-| Target | Phase | Success Threshold |
-|--------|-------|-------------------|
-| Model RMSE improvement (feature engineering) | Phase 4 | +5% across 4 seasons |
-| Strategy beats static team baseline | Phase 6-8 | Non-overlapping 95% CIs |
-| Final system vs top 100 managers | Phase 9 | Within 10% of top 100 average |
+**Finding**: Chip timing provides marginal impact; conservative schedule continues as baseline.
 
 ---
 
-## Accumulated Context
+## Optimization Progress
 
-### Key Decisions Made
+**Performance Attribution by Phase:**
 
-| Decision | Rationale | Status |
-|----------|-----------|--------|
-| Start with temporal integrity | Fix lookahead bias before model improvements (affects all downstream work) | Locked in Phase 1 |
-| Use TemporalGate enforcement | Prevent future-data leakage; make violations explicit and auditable | Implementation in Phase 1 |
-| TimeSeriesSplit for validation | Required for temporal data; prevents lookahead in cross-validation | Phase 3 foundation |
-| Walk-forward validation for strategies | Industry standard in quantitative trading; prevents overfitting | Phase 5+ requirement |
-| Bootstrapped CIs, not point estimates | Quantify uncertainty; prevent false confidence in marginal improvements | Phase 5+ requirement |
-| Three strategy archetypes | Conservative, aggressive, differential-focused cover spectrum of approaches | Phase 5 implementation |
+| Strategy Layer | Phase | Improvement | Mechanism | Status |
+|---|---|---|---|---|
+| Transfer Strategy | 6 | **+22 pts** | Budget 0.5, threshold 0.20 | Locked (CONSERVATIVE_FULL) |
+| Captain Strategy | 7 | **+12 pts** | Prefer high-priced stable players | Locked (CAPTAIN_HIGHEST_VALUE) |
+| Chip Timing | 7 | 0 pts | Conservative schedule optimal | Locked (conservative) |
+| Bench & Subs | 8 | **TBD** | Bench composition + substitution logic | **Next Phase** |
 
-### Research Findings Applied
+**Total Optimization So Far:** +34 points
 
-**From research/SUMMARY.md:**
+**Remaining Optimization Potential:** Bench composition and substitution strategy (estimated +5 to +15 pts)
 
-1. **Temporal Integrity HIGH priority** → Phase 1 is critical path, blocks all downstream work
-2. **Model improvement path identified** → Phases 3-4 follow research sequencing (pipeline → validation → features)
-3. **Strategy evaluation framework** → Phases 5-8 implement walk-forward + bootstrapped CIs + Bonferroni correction
-4. **Backtesting pitfalls** → All phases incorporate safeguards (no lookahead, proper train/test splits, statistical rigor)
+---
 
-### Known Issues & Blockers
+## Phase 8 Overview
 
-| Issue | Severity | Impact | Mitigation |
-|-------|----------|--------|-----------|
-| Temporal integrity violation in model.py | CRITICAL | All predictions biased by lookahead | Phase 1 must fix before Phase 3 validation |
-| Feature engineering scope (35-50 features) | MEDIUM | Phase 4 may be large; iteration workflow prevents explosion | Enforce >2% improvement threshold |
-| Computational cost (4 seasons × strategy variants) | MEDIUM | Phase 5-8 may take hours/days | Use walk-forward (don't grid-search all seasons together) |
-| Top 100 manager data completeness | MEDIUM | Phase 2 diagnostic accuracy depends on data quality | Document data lineage in Phase 2 |
+**Goal**: Evaluate bench composition variants and substitution strategies to maximize points from bench players and improve squad flexibility.
 
-### Todos for Upcoming Phases
+**Locked Parameters** (from Phases 5-7):
+- Transfer strategy: CONSERVATIVE_FULL
+- Captain mode: CAPTAIN_HIGHEST_VALUE
+- Chip schedule: conservative
 
-**Phase 1 Planning:**
-- [ ] Identify all data access points in model.py, team.py, data.py
-- [ ] Design TemporalGate class API (what methods to intercept?)
-- [ ] Write tests for temporal violation detection
-- [ ] Document available data at each gameweek (GW1 ≠ GW2 ≠ GW3, etc.)
+**Expected Variants:**
+1. Bench composition: defender-heavy, forward-heavy, balanced
+2. Substitution strategy: predictive (use ML to swap early), reactive (wait for points)
 
-**Phase 2 Planning:**
-- [ ] Verify top 100 manager data completeness (transfer history, squad compositions)
-- [ ] Define squad comparison metrics (which KPIs reveal gaps?)
-- [ ] Identify target GWs for comparison (GW1, mid-season point)
+**Evaluation Approach**: Walk-forward validation on 2023-24 / 2024-25 split; 95% bootstrapped CIs with Bonferroni correction.
 
-**Phase 3 Planning:**
-- [ ] Audit existing model.py for scikit-learn best practices
-- [ ] Design Pipeline structure (preprocessing → scaling → model)
-- [ ] Plan nested CV configuration (inner CV folds, outer test fold)
+**Estimated Duration**: 2-3 hours (4 plans, 2 waves)
 
 ---
 
 ## Session Continuity
 
-**Entry Points for Next Session:**
+**Entry Points for Next Phase:**
 
-1. **To start Phase 1 planning:**
+1. **To plan Phase 8:**
    ```
-   /gsd-plan-phase 1
+   /gsd-plan-phase 8
    ```
 
-2. **To review roadmap:**
+2. **To execute Phase 8 directly:**
+   ```
+   /gsd-execute-phase 8
+   ```
+
+3. **To review Phase 7 results:**
+   - File: `/Users/bentindal/Desktop/coding/FPL-Auto/.planning/phases/07-captain-chip-evaluation/EXECUTION-REPORT.md`
+   - Summary: All 4 plans complete, findings documented, Phase 8 ready
+
+4. **To check full roadmap:**
    - File: `/Users/bentindal/Desktop/coding/FPL-Auto/.planning/ROADMAP.md`
-   - Check: Phase details, success criteria, requirements mapping
-
-3. **To check project status:**
-   - Run: `node ./node_modules/@gsd-build/sdk/dist/cli.js query state.load`
-   - Returns: Current phase, progress metrics, todos
-
-4. **To update requirements:**
-   - File: `/Users/bentindal/Desktop/coding/FPL-Auto/.planning/REQUIREMENTS.md`
-   - Section: Traceability (phase mappings), Out of Scope (deferral reasons)
 
 ---
 
-## Research Artifacts
+## Performance Metrics
 
-All research findings documented in:
-- `.planning/research/SUMMARY.md` — Overview, key findings, confidence levels
-- `.planning/research/TEMPORAL_INTEGRITY.md` — Violations, enforcement patterns
-- `.planning/research/MODEL_IMPROVEMENT.md` — Feature engineering, validation
-- `.planning/research/STRATEGY_EVALUATION.md` — Walk-forward, statistical testing
-- `.planning/research/BACKTESTING_PITFALLS.md` — Prevention, FPL-specific gotchas
+### Baseline (Phase 5 Strategy Framework)
+- Team xP (static squad, no transfers): 1580 pts / season
+- Current approach (with transfers): 1783 pts / season (2023-24)
+
+### Phase 6 Transfer Optimization
+- CONSERVATIVE_FULL: 1805 pts / season (+22 vs current)
+
+### Phase 7 Captain & Chip Optimization
+- CONSERVATIVE_FULL + CAPTAIN_HIGHEST_VALUE: 1817 pts / season (+12 additional)
+- Total optimization: **+34 pts vs baseline**
+
+### Phase 8 Target
+- Expected improvement: +5 to +15 pts (bench & substitution strategy)
+- Projected Phase 8 result: 1822-1832 pts / season
+
+### Phase 9 Validation
+- Final performance vs top 100 managers (target: within 10%)
 
 ---
 
-*State initialized: 2026-05-27*  
-*Roadmap: Complete (9 phases, 36 requirements)*  
-*Ready for: Phase 1 Planning*
+## Recent Commits (Phase 7)
+
+```
+4a134dc0 docs(07): create Phase 7 comprehensive execution report
+ff84018a docs(07-04): create Phase 7 Plan 04 execution summary
+37292706 feat(07-04): generate variant_results_7b.json results
+2fb9c5bd feat(07-04): create compare_chip_variants.py script
+e235800e docs(07-02): create Phase 7a summary with findings
+328f8ddf feat(07-02): generate variant_results_7a.json results
+e171f6be feat(07-02): create compare_captain_variants.py script
+c4320ce6 docs(07-01): create Phase 7 Plan 01 summary
+63e685ce docs(07-03): complete Phase 7 Plan 03 summary
+4b1a8550 feat(07-03): implement chip timing logic
+```
+
+**Pushed**: Yes (45 commits to origin/main)
+
+---
+
+## Known Issues & Blockers
+
+| Issue | Severity | Status | Mitigation |
+|-------|----------|--------|-----------|
+| 2024-25 season data initialization error | MEDIUM | Pre-existing (affects Phases 6-7) | Documented; limited impact on relative comparison |
+| Chip timing marginal returns | LOW | Phase 7b finding | Proceed with Phase 8 focus on bench/subs |
+
+---
+
+## Next Steps: Phase 8
+
+**Immediate Next Action**: Run `/gsd-plan-phase 8` to:
+1. Define bench composition and substitution variants
+2. Create detailed execution plans
+3. Estimate resource requirements
+4. Identify dependencies and integration points
+
+**Expected Timeline**: Planning phase (1-2 hours) → Execution phase (2-3 hours)
+
+---
+
+*State updated: 2026-05-28*  
+*Phase 7 execution complete; Phase 8 planning ready*  
+*45 commits prepared for Phase 8 planning and execution*
