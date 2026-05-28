@@ -29,7 +29,7 @@
 **Progress**: 
 ```
 Phases 1-7: ████████████████████ 100%
-Phase 8:    ██████░░░░░░░░░░░░░░ 50% (Plans 1-2 complete, 3-4 pending)
+Phase 8:    ███████████░░░░░░░░░░ 75% (Plans 1-3 complete, 4 pending)
 Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
 ```
 
@@ -42,10 +42,10 @@ Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
   - Plan 03: Chip variants implemented (2 timing strategies)
   - Plan 04: Chip walk-forward evaluation (no significant improvement)
 - Phase 8 (Bench & Substitution): 🔄 IN PROGRESS
-  - Plan 01: Bench composition framework (BENCH_SAFE, BENCH_SPECULATIVE presets with static subs)
-  - Plan 02: Predictive swap logic (SUBS_PREDICTIVE_SWAP with >20% threshold, 4 factorial presets)
-  - Plan 03: Walk-forward evaluation (TBD)
-  - Plan 04: Results and findings (TBD)
+  - Plan 01: Bench composition framework (BENCH_SAFE, BENCH_SPECULATIVE presets with static subs) ✅
+  - Plan 02: Predictive swap logic (SUBS_PREDICTIVE_SWAP with >20% threshold, 4 factorial presets) ✅
+  - Plan 03: Walk-forward evaluation (4-variant 2×2 factorial on 2023-24; 2024-25 data error) ✅
+  - Plan 04: Results analysis and Phase 9 recommendations (PENDING)
 
 ---
 
@@ -104,11 +104,11 @@ Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
 | Transfer Strategy | 6 | **+22 pts** | Budget 0.5, threshold 0.20 | Locked (CONSERVATIVE_FULL) |
 | Captain Strategy | 7 | **+12 pts** | Prefer high-priced stable players | Locked (CAPTAIN_HIGHEST_VALUE) |
 | Chip Timing | 7 | 0 pts | Conservative schedule optimal | Locked (conservative) |
-| Bench & Subs | 8 | **TBD** | Bench composition + substitution logic | **Next Phase** |
+| Bench & Subs | 8 | **0 pts** | Static rotation already optimal; predictive swaps degrade | Locked (no change) |
 
-**Total Optimization So Far:** +34 points
+**Total Optimization So Far:** +34 points (all gains locked; bench/subs plateau reached)
 
-**Remaining Optimization Potential:** Bench composition and substitution strategy (estimated +5 to +15 pts)
+**Remaining Optimization Potential:** Phase 9 validation and alternative optimization vectors (e.g., fixture weighting, injury prediction)
 
 ---
 
@@ -176,22 +176,20 @@ Phase 9:    ░░░░░░░░░░░░░░░░░░░░ 0%
 
 ---
 
-## Recent Commits (Phase 7)
+## Recent Commits (Phase 8 Plan 03)
 
 ```
-4a134dc0 docs(07): create Phase 7 comprehensive execution report
-ff84018a docs(07-04): create Phase 7 Plan 04 execution summary
-37292706 feat(07-04): generate variant_results_7b.json results
-2fb9c5bd feat(07-04): create compare_chip_variants.py script
-e235800e docs(07-02): create Phase 7a summary with findings
-328f8ddf feat(07-02): generate variant_results_7a.json results
-e171f6be feat(07-02): create compare_captain_variants.py script
-c4320ce6 docs(07-01): create Phase 7 Plan 01 summary
-63e685ce docs(07-03): complete Phase 7 Plan 03 summary
-4b1a8550 feat(07-03): implement chip timing logic
+380fab15 docs(08-03): update SUMMARY with actual walk-forward evaluation results
+dfc4ce6a feat(08-03): add Phase 8 walk-forward evaluation results
+87d46eb2 fix(08-03): add sys.path handling for relative imports
+393a2f50 fix(08-03): update compare_bench_variants to handle walk_forward results
+951348b7 feat(08-03): pass strategy_config to auto_subs() and add integration tests
+1d2d481e feat(08-03): add bench_utilization_pct metric to evaluation/metrics.py
+c20f68f0 feat(08-03): create compare_bench_variants orchestration script
 ```
 
-**Pushed**: Yes (45 commits to origin/main)
+**Total Phase 8**: 7 new commits (Plan 03 execution)  
+**Pushed**: No (pending final phase summary and STATE.md update)
 
 ---
 
