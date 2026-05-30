@@ -1068,16 +1068,7 @@ class Team:
     # ------------------------------------------------------------------
 
     def initial_team_generator(self):
-        """Select optimal 15-player squad via Integer Linear Programming.
-
-        Replaces the greedy ratio-split heuristic with a global optimisation:
-        maximise total multi-GW discounted xP subject to budget, position counts,
-        and the max-3-per-club rule. Solver: scipy.optimize.milp (HiGHS backend,
-        ~500 binary variables, solves in <1s).
-
-        Falls back to the greedy approach if the ILP is infeasible or scipy.milp
-        is unavailable.
-        """
+        """Select 15-player squad using the algorithm in strategy_config.initial_team_algorithm."""
         print('Selecting fresh team...')
         if self.gameweek != 1:
             self.budget = self.team_value() + self.budget
@@ -1086,29 +1077,58 @@ class Team:
             self._pos_squad_list(pos).clear()
         self.subs = []
 
-        self._greedy_team_generator()
+        algo = 'greedy'
+        if self.strategy_config is not None:
+            algo = self.strategy_config.initial_team_algorithm
+
+        budget_snapshot = self.budget
+
+        if algo == 'two_tier':
+            self._two_tier_greedy_team_generator()
+        elif algo == 'ilp_xp':
+            if not self._ilp_team_generator(objective='xp'):
+                self._greedy_team_generator()
+        elif algo == 'ilp_ratio':
+            if not self._ilp_team_generator(objective='ratio'):
+                self._greedy_team_generator()
+        elif algo == 'ilp_penalised':
+            lam = self.strategy_config.ilp_lambda if self.strategy_config else 2.0
+            if not self._ilp_team_generator(objective='penalised', lam=lam):
+                self._greedy_team_generator()
+        elif algo == 'ilp_captain':
+            if not self._ilp_team_generator(objective='captain'):
+                self._greedy_team_generator()
+        elif algo == 'rolling_horizon':
+            n = self.strategy_config.ilp_rolling_weeks if self.strategy_config else 4
+            self._rolling_horizon_team_generator(n_weeks=n)
+        else:
+            self._greedy_team_generator()
+
+        # Safety: if primary algorithm left an incomplete/malformed squad, fall back to greedy
+        pos_ok = all(len(self._pos_squad_list(pos)) == MAX_PER_POS[pos] for pos in POSITIONS)
+        if (self.squad_size() < SQUAD_SIZE or not pos_ok) and algo != 'greedy':
+            print(f'Warning: {algo} left incomplete squad ({self.squad_size()} players, '
+                  f'GK={len(self.gks)}), falling back to greedy')
+            for pos in POSITIONS:
+                self._pos_squad_list(pos).clear()
+            self.subs = []
+            self.budget = budget_snapshot  # restore budget so greedy has full funds
+            self._greedy_team_generator()
 
         print('Complete!\n')
 
-    def _ilp_team_generator(self):
-        """Build the squad via ILP. Returns True on success, False on fallback."""
-        try:
-            from scipy.optimize import milp, LinearConstraint, Bounds
-            import numpy as np
-        except ImportError:
-            return False
-
-        # --- Build candidate pool -------------------------------------------
-        # Use next-GW prices where available, fall back to current GW.
+    def _build_ilp_candidates(self, xp_source=None):
+        """Return (names, pos_arr, costs, xp_arr, clubs) arrays from xp_source (defaults to self.all_xp)."""
+        import numpy as np
+        source = xp_source if xp_source is not None else self.all_xp
         last_gw_data = self.fpl.get_gw_data(self.season, self.gameweek + 1)
         if last_gw_data.empty:
             last_gw_data = self.gw_data
         gw_prices = last_gw_data[['value']].to_dict()['value']
 
-        # Collect (name, position, cost, xp, club) for every player with data.
         candidates = []
         for pos_idx, pos in enumerate(POSITIONS):
-            df = self.all_xp[pos_idx]
+            df = source[pos_idx]
             names = df['Name'].tolist() if 'Name' in df.columns else df.index.tolist()
             xp_vals = df['xP'].tolist()
             for name, xp in zip(names, xp_vals):
@@ -1122,72 +1142,155 @@ class Team:
                 candidates.append((name, pos, cost, float(xp), club))
 
         if not candidates:
-            return False
+            return None
+        names_l = [c[0] for c in candidates]
+        pos_l = [c[1] for c in candidates]
+        costs = np.array([c[2] for c in candidates])
+        xp_arr = np.array([c[3] for c in candidates])
+        clubs = [c[4] for c in candidates]
+        return names_l, pos_l, costs, xp_arr, clubs
 
-        n = len(candidates)
-        names  = [c[0] for c in candidates]
-        pos_arr   = [c[1] for c in candidates]
-        costs  = np.array([c[2] for c in candidates])
-        xp_arr    = np.array([c[3] for c in candidates])
-        clubs  = [c[4] for c in candidates]
+    def _apply_ilp_result(self, result_x, names_l, pos_l, costs):
+        """Write selected ILP players into squad lists and deduct costs from budget."""
+        n = len(names_l)
+        selected_idx = [i for i in range(n) if result_x[i] > 0.5]
+        pos_counts_added = {pos: 0 for pos in POSITIONS}
+        for i in selected_idx:
+            name, pos, cost = names_l[i], pos_l[i], costs[i]
+            self._pos_squad_list(pos).append(name)
+            self.purchase_prices[name] = cost
+            self.budget -= cost
+            pos_counts_added[pos] += 1
+        for pos, count in pos_counts_added.items():
+            print(f'{count} players bought for {pos}')
 
-        # --- Constraint matrix ----------------------------------------------
+    def _build_ilp_constraints(self, n, pos_l, clubs, costs, budget_reserve=4.0):
+        """Return (A, b_lo, b_hi) for position/squad/club/budget constraints."""
+        import numpy as np
         A_rows, b_lo, b_hi = [], [], []
 
-        # Budget — reserve £15m for in-season transfers (empirically matches greedy)
-        BUDGET_RESERVE = 20.0
+        # Budget
         A_rows.append(costs)
         b_lo.append(-np.inf)
-        b_hi.append(self.budget - BUDGET_RESERVE)
+        b_hi.append(self.budget - budget_reserve)
 
-        # Total squad size = 15
+        # Squad size = 15
         A_rows.append(np.ones(n))
         b_lo.append(15); b_hi.append(15)
 
-        # Position counts: GK=2, DEF=5, MID=5, FWD=3
-        pos_counts = {'GK': 2, 'DEF': 5, 'MID': 5, 'FWD': 3}
-        for pos, count in pos_counts.items():
-            mask = np.array([1.0 if p == pos else 0.0 for p in pos_arr])
+        # Position counts
+        for pos, count in {'GK': 2, 'DEF': 5, 'MID': 5, 'FWD': 3}.items():
+            mask = np.array([1.0 if p == pos else 0.0 for p in pos_l])
             A_rows.append(mask)
             b_lo.append(count); b_hi.append(count)
 
-        # Club quota: max 3 per club
+        # Club quota ≤ 3
         for club in set(clubs):
             mask = np.array([1.0 if c == club else 0.0 for c in clubs])
             if mask.sum() > 3:
                 A_rows.append(mask)
                 b_lo.append(-np.inf); b_hi.append(3)
 
-        A = np.vstack(A_rows)
-        constraints = LinearConstraint(A, np.array(b_lo), np.array(b_hi))
+        return np.vstack(A_rows), np.array(b_lo), np.array(b_hi)
+
+    def _ilp_team_generator(self, objective='xp', lam=2.0, xp_source=None):
+        """Build squad via ILP. objective: 'xp'|'ratio'|'penalised'|'captain'. Returns True on success."""
+        try:
+            from scipy.optimize import milp, LinearConstraint, Bounds
+            import numpy as np
+        except ImportError:
+            return False
+
+        result = self._build_ilp_candidates(xp_source)
+        if result is None:
+            return False
+        names_l, pos_l, costs, xp_arr, clubs = result
+        n = len(names_l)
+
+        # Build objective vector
+        if objective == 'ratio':
+            # Maximise xP/cost (value-ratio); guard against zero cost
+            safe_costs = np.where(costs > 0, costs, 1.0)
+            c_obj = -(xp_arr / safe_costs)
+        elif objective == 'penalised':
+            # Maximise xP − λ·cost
+            c_obj = -(xp_arr - lam * costs)
+        elif objective == 'captain':
+            # Double-count the highest-xP player (captain bonus)
+            best_idx = int(np.argmax(xp_arr))
+            bonus = np.zeros(n)
+            bonus[best_idx] = xp_arr[best_idx]  # extra xP for captain slot
+            c_obj = -(xp_arr + bonus)
+        else:  # 'xp'
+            c_obj = -xp_arr
+
+        A, b_lo, b_hi = self._build_ilp_constraints(n, pos_l, clubs, costs)
+        from scipy.optimize import LinearConstraint, Bounds
+        constraints = LinearConstraint(A, b_lo, b_hi)
         bounds = Bounds(lb=0, ub=1)
         integrality = np.ones(n)
 
-        result = milp(
-            c=-xp_arr,          # minimise negative xP = maximise xP
-            constraints=constraints,
-            integrality=integrality,
-            bounds=bounds,
-        )
-
-        if result.status != 0:
+        result_opt = milp(c=c_obj, constraints=constraints, integrality=integrality, bounds=bounds)
+        if result_opt.status != 0:
             return False
 
-        # --- Apply result ---------------------------------------------------
-        selected = [names[i] for i in range(n) if result.x[i] > 0.5]
-        pos_counts_added = {pos: 0 for pos in POSITIONS}
-        for name in selected:
-            pos = pos_arr[names.index(name)]
-            cost = costs[names.index(name)]
-            self._pos_squad_list(pos).append(name)
-            self.purchase_prices[name] = cost
-            self.budget -= cost
-            pos_counts_added[pos] += 1
-
-        for pos, count in pos_counts_added.items():
-            print(f'{count} players bought for {pos}')
-
+        self._apply_ilp_result(result_opt.x, names_l, pos_l, costs)
         return True
+
+    def _get_rolling_horizon_xp(self, n_weeks=4):
+        """Sum xP from actual prediction files for GW, GW+1, ..., GW+n-1.
+
+        Returns a list of 4 DataFrames [GK, DEF, MID, FWD] with xP columns summed
+        across future gameweeks. Falls back to self.all_xp if no future files exist.
+        """
+        combined = None
+        for offset in range(n_weeks):
+            gw = self.gameweek + offset
+            if gw > 38:
+                break
+            try:
+                week_preds = [self.fpl.get_predictions(gw, pos) for pos in POSITIONS]
+            except (FileNotFoundError, KeyError):
+                break
+
+            if combined is None:
+                combined = [df.copy() for df in week_preds]
+                for df in combined:
+                    df['xP'] = df['xP'].astype(float)
+            else:
+                for i, df_new in enumerate(week_preds):
+                    df_ex = combined[i]
+                    key_ex = df_ex['Name'].tolist() if 'Name' in df_ex.columns else df_ex.index.tolist()
+                    key_new = df_new['Name'].tolist() if 'Name' in df_new.columns else df_new.index.tolist()
+                    xp_new = dict(zip(key_new, df_new['xP'].astype(float)))
+                    df_ex['xP'] = [
+                        df_ex['xP'].iloc[j] + xp_new.get(k, 0.0)
+                        for j, k in enumerate(key_ex)
+                    ]
+
+        return combined if combined is not None else self.all_xp
+
+    def _rolling_horizon_team_generator(self, n_weeks=4):
+        """Greedy selection using summed xP from next n_weeks actual prediction files."""
+        original_xp = self.all_xp
+        try:
+            self.all_xp = self._get_rolling_horizon_xp(n_weeks)
+            self._greedy_team_generator()
+        finally:
+            self.all_xp = original_xp
+
+    def _two_tier_greedy_team_generator(self):
+        """Greedy with premium slots by raw xP and filler slots by xP/£m ratio."""
+        spending_budget = self.budget - sum(
+            self.pos_size(pos) * MIN_PRICE[pos] for pos in POSITIONS
+        )
+        ratio_split = {'GK': 0.1, 'FWD': 0.2, 'MID': 0.4, 'DEF': 0.3}
+        fillers = {'GK': 1, 'FWD': 1, 'MID': 2, 'DEF': 2}
+        budget_excess = 0
+        for pos in ['GK', 'FWD', 'MID', 'DEF']:
+            pos_budget = spending_budget * ratio_split[pos] + self.pos_size(pos) * MIN_PRICE[pos]
+            _, budget_excess = self._get_best_players(pos, pos_budget + budget_excess, fillers[pos],
+                                                       filler_rank='ratio')
 
     def _greedy_team_generator(self):
         """Original greedy ratio-split fallback."""
@@ -1201,7 +1304,12 @@ class Team:
             pos_budget = spending_budget * ratio_split[pos] + self.pos_size(pos) * MIN_PRICE[pos]
             _, budget_excess = self._get_best_players(pos, pos_budget + budget_excess, fillers[pos])
 
-    def _get_best_players(self, position, budget, fillers):
+    def _get_best_players(self, position, budget, fillers, filler_rank='price'):
+        """Select premium + filler players for a position.
+
+        filler_rank: 'price' (original — cheapest eligible ≤£6m) or
+                     'ratio' (xP/£m — best value ≤£6m).
+        """
         pos_df = self.all_xp[POSITIONS.index(position)].sort_values(by='xP', ascending=False)
         players_by_xp = pos_df['Name'].tolist() if 'Name' in pos_df.columns else pos_df.index.tolist()
         needed = self.pos_size(position)
@@ -1214,6 +1322,22 @@ class Team:
         last_gw_data = self.fpl.get_gw_data(self.season, self.gameweek + 1)
         if last_gw_data.empty:
             last_gw_data = self.gw_data
+
+        # Build filler candidate list sorted by xP/£m if ratio mode requested
+        if filler_rank == 'ratio' and budget_fillers < fillers:
+            filler_candidates = []
+            for p in players_by_xp:
+                cost = self.player_value(p, last_gw_data)
+                if cost is None or cost > 6 or cost <= 0:
+                    continue
+                xp_val = pos_df.loc[pos_df['Name'] == p, 'xP'].values if 'Name' in pos_df.columns else pos_df.loc[p, 'xP']
+                xp_val = float(xp_val[0]) if hasattr(xp_val, '__len__') else float(xp_val)
+                filler_candidates.append((p, cost, xp_val / cost))
+            filler_candidates.sort(key=lambda x: -x[2])
+            filler_order = [fc[0] for fc in filler_candidates]
+        else:
+            filler_order = players_by_xp  # original: iterate by xP, buy first cheap one
+
         for player in players_by_xp:
             if len(bought) >= needed:
                 break
@@ -1227,13 +1351,22 @@ class Team:
                     budget -= p_cost
                     premium += 1
                     total_spent += p_cost
-            elif budget_fillers < fillers and p_cost <= 6:
-                if self.transfer_in_allowed(player, position, p_cost):
-                    self.add_player(player, position, p_cost)
-                    bought.append(player)
-                    budget -= p_cost
-                    budget_fillers += 1
-                    total_spent += p_cost
+
+        # Fillers: iterate filler_order to pick best-value cheap players
+        for player in filler_order:
+            if budget_fillers >= fillers or len(bought) >= needed:
+                break
+            if player in bought:
+                continue
+            p_cost = self.player_value(player, last_gw_data)
+            if p_cost is None or p_cost > 6:
+                continue
+            if self.transfer_in_allowed(player, position, p_cost):
+                self.add_player(player, position, p_cost)
+                bought.append(player)
+                budget -= p_cost
+                budget_fillers += 1
+                total_spent += p_cost
 
         print(f'{len(bought)} players bought for {position}')
         return bought, original_budget - total_spent

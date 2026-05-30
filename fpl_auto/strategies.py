@@ -129,6 +129,33 @@ class StrategyConfig:
     Prevents using BB before mid-season double GW opportunities.
     """
 
+    # Initial team selection algorithm
+    initial_team_algorithm: str = 'greedy'
+    """
+    Algorithm for initial squad selection (used at GW1, free hit, wildcard).
+    - 'greedy': Two-tier greedy — premium slots by raw xP, fillers by cheapest ≤£6m (default)
+    - 'two_tier': Premium slots by raw xP, filler slots by xP/£m ratio
+    - 'ilp_xp': ILP maximising total xP (hard budget constraint)
+    - 'ilp_ratio': ILP maximising total xP/cost ratio
+    - 'ilp_penalised': ILP maximising xP − λ·cost (soft budget penalty, see ilp_lambda)
+    - 'ilp_captain': ILP with captain double-counted in objective
+    - 'rolling_horizon': Greedy on summed xP from next N prediction files (see ilp_rolling_weeks)
+    """
+
+    ilp_lambda: float = 2.0
+    """
+    Cost-penalty coefficient for 'ilp_penalised' algorithm (default 2.0).
+    Objective: maximise Σ(xP_i - lambda * cost_i) * x_i.
+    Higher values penalise expensive players more (preserves more budget).
+    Sweep [0, 5] to tune; 0 = pure xP ILP, higher = more budget-conscious.
+    """
+
+    ilp_rolling_weeks: int = 4
+    """
+    Number of future prediction files to sum for 'rolling_horizon' algorithm (default 4).
+    Reads GW, GW+1, ..., GW+n-1 prediction TSVs and sums xP column-wise.
+    """
+
     # Bench policy
     bench_mode: str = 'rotate_low_xp'
     """
@@ -319,6 +346,19 @@ class StrategyConfig:
                 f"got {self.substitution_trigger_threshold}"
             )
 
+        _valid_algorithms = {'greedy', 'two_tier', 'ilp_xp', 'ilp_ratio', 'ilp_penalised', 'ilp_captain', 'rolling_horizon'}
+        if self.initial_team_algorithm not in _valid_algorithms:
+            raise ValueError(
+                f"initial_team_algorithm must be one of {_valid_algorithms}, "
+                f"got {self.initial_team_algorithm}"
+            )
+
+        if self.ilp_lambda < 0:
+            raise ValueError(f"ilp_lambda must be >= 0, got {self.ilp_lambda}")
+
+        if not (1 <= self.ilp_rolling_weeks <= 10):
+            raise ValueError(f"ilp_rolling_weeks must be 1-10, got {self.ilp_rolling_weeks}")
+
 
 # BASELINE STRATEGIES (for comparison and validation)
 
@@ -345,6 +385,7 @@ BASELINE_CURRENT = StrategyConfig(
     # Captain: highest_xp baseline (Phase 7 optimal: CAPTAIN_HIGHEST_VALUE used in final system)
     # Bench: BENCH_SAFE_STATIC (Phase 8 optimal) — static rotation with safe composition
     # Chips: Conservative schedule
+    # Init: two_tier greedy (Phase 10 benchmark winner: +38 avg vs greedy baseline)
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,  # Matches discount_next_n_gws(n=5, factor=0.8)
@@ -365,6 +406,7 @@ BASELINE_CURRENT = StrategyConfig(
     substitution_trigger_threshold=0.20,
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
+    initial_team_algorithm='two_tier',  # LOCKED Phase 10: +38 avg over greedy baseline
 )
 
 # ARCHETYPE STRATEGIES (for systematic comparison)
@@ -798,12 +840,13 @@ BENCH_SPECULATIVE_PREDICTIVE = StrategyConfig(
 # Locks all Phase 6-8 optimal decisions: CONSERVATIVE_FULL transfer + CAPTAIN_HIGHEST_VALUE captain + BENCH_SAFE_STATIC
 
 PHASE_8_OPTIMAL = StrategyConfig(
-    # Philosophy: Combines Phase 6-8 optimal findings: conservative transfers + value-based captaincy + safe static bench
+    # Philosophy: Combines Phase 6-10 optimal findings
     # Phase 6: CONSERVATIVE_FULL (budget 0.5, 20% threshold, full season window)
     # Phase 7: CAPTAIN_HIGHEST_VALUE (prefer high-priced stable players)
     # Phase 8: BENCH_SAFE_STATIC (safe composition, static rotation) — multi-season validated
-    # Multi-season validation: Optimal across 2021-22, 2022-23, 2023-24
-    # Confidence: VERY HIGH (3-season cross-validation, robust to seasonal variation)
+    # Phase 10: two_tier initial team (+38 avg vs greedy baseline)
+    # Multi-season validation: Optimal across 2021-22, 2022-23, 2023-24, 2024-25
+    # Confidence: VERY HIGH (4-season cross-validation, robust to seasonal variation)
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,
@@ -824,11 +867,171 @@ PHASE_8_OPTIMAL = StrategyConfig(
     substitution_trigger_threshold=0.20,
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
+    initial_team_algorithm='two_tier',  # LOCKED Phase 10: +38 avg over greedy baseline
 )
 
 # Backward compatibility aliases (Plan 08-01)
 BENCH_SAFE = BENCH_SAFE_STATIC
 BENCH_SPECULATIVE = BENCH_SPECULATIVE_STATIC
+
+
+# INITIAL TEAM ALGORITHM BENCHMARK VARIANTS
+# All use BASELINE_CURRENT transfer/captain/chip settings; only initial_team_algorithm differs.
+# Run manager.py -seasons 2021-22 2022-23 2023-24 2024-25 for each to compare.
+
+INIT_GREEDY = BASELINE_CURRENT  # Baseline: two-tier greedy (premium by xP, fillers ≤£6m)
+
+INIT_TWO_TIER = StrategyConfig(
+    # Fillers by xP/£m ratio instead of cheapest absolute price.
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='two_tier',
+)
+
+INIT_ILP_XP = StrategyConfig(
+    # ILP maximising total multi-GW xP with hard budget constraint.
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='ilp_xp',
+)
+
+INIT_ILP_RATIO = StrategyConfig(
+    # ILP maximising xP/cost ratio — value-ratio objective.
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='ilp_ratio',
+)
+
+INIT_ILP_PENALISED = StrategyConfig(
+    # ILP maximising xP − lambda*cost (lambda=2.0 empirically tuned).
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='ilp_penalised',
+    ilp_lambda=2.0,
+)
+
+INIT_ILP_CAPTAIN = StrategyConfig(
+    # ILP with captain's xP double-counted in objective.
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='ilp_captain',
+)
+
+INIT_ROLLING_HORIZON = StrategyConfig(
+    # Greedy on summed xP across next 4 actual prediction files (GW+0..GW+3).
+    transfer_mode='flexible',
+    max_transfers_per_gw=1,
+    transfer_discount_factor=0.8,
+    transfer_budget_per_gw=0.5,
+    transfer_window_gw_range=None,
+    transfer_xp_threshold=0.20,
+    transfer_xp_threshold_mode='relative',
+    captain_mode='highest_xp',
+    captain_lookback_gws=1,
+    captain_variance_penalty=0.0,
+    chip_schedule='conservative',
+    wildcard_threshold_points=60.0,
+    chip_budget_limit=3,
+    bench_mode='rotate_low_xp',
+    bench_injury_threshold=0.5,
+    bench_composition_variant='safe',
+    substitution_mode='static',
+    substitution_trigger_threshold=0.20,
+    position_variance_tolerance=1.2,
+    punt_threshold=0.5,
+    initial_team_algorithm='rolling_horizon',
+    ilp_rolling_weeks=4,
+)
 
 
 __all__ = [
@@ -855,4 +1058,12 @@ __all__ = [
     'BENCH_SAFE',  # Backward compat alias
     'BENCH_SPECULATIVE',  # Backward compat alias
     'PHASE_8_OPTIMAL',  # LOCKED Phase 6-8 optimal (multi-season validated)
+    # Initial team algorithm benchmarks
+    'INIT_GREEDY',
+    'INIT_TWO_TIER',
+    'INIT_ILP_XP',
+    'INIT_ILP_RATIO',
+    'INIT_ILP_PENALISED',
+    'INIT_ILP_CAPTAIN',
+    'INIT_ROLLING_HORIZON',
 ]

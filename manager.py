@@ -13,7 +13,11 @@ import numpy as np
 
 import fpl_auto.team as team_module
 from fpl_auto import evaluate as eval
-from fpl_auto.strategies import StrategyConfig, BASELINE_CURRENT, PHASE_8_OPTIMAL
+from fpl_auto.strategies import (
+    StrategyConfig, BASELINE_CURRENT, PHASE_8_OPTIMAL,
+    INIT_GREEDY, INIT_TWO_TIER, INIT_ILP_XP, INIT_ILP_RATIO,
+    INIT_ILP_PENALISED, INIT_ILP_CAPTAIN, INIT_ROLLING_HORIZON,
+)
 
 
 def parse_args():
@@ -33,6 +37,8 @@ def parse_args():
     parser.add_argument('-strategy', type=str, default='baseline_current',
                         choices=['static', 'baseline_current', 'phase_8_optimal', 'conservative', 'aggressive', 'differential'],
                         help='Strategy to use for season simulation (default: baseline_current; phase_8_optimal = Phase 6-8 locked optimal)')
+    parser.add_argument('-benchmark_init', action=argparse.BooleanOptionalAction, default=False,
+                        help='Benchmark all 6 initial-team algorithms across the given seasons')
     parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
                         help='Export results to JSON + score plot')
     parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
@@ -185,11 +191,96 @@ def _print_season_summary(result: dict):
     print(f'  Chips: {result["chips_used"]}')
 
 
+def _safe_run_season(cfg):
+    """Wrapper around run_season that catches exceptions for benchmark runs."""
+    try:
+        return run_season(cfg)
+    except Exception as e:
+        return {
+            'season': cfg['season'], 'p_list': [], 'xp_list': [],
+            'chips_used': [], 'transfer_history': [], '_error': str(e),
+        }
+
+
+def run_benchmark_init(seasons: list, start_gw: int, repeat: int):
+    """Benchmark all 6 initial-team algorithms across seasons.
+
+    Runs each algorithm × each season in parallel and prints a comparison table.
+    """
+    algorithms = [
+        ('greedy',          INIT_GREEDY),
+        ('two_tier',        INIT_TWO_TIER),
+        ('ilp_xp',          INIT_ILP_XP),
+        ('ilp_ratio',       INIT_ILP_RATIO),
+        ('ilp_penalised',   INIT_ILP_PENALISED),
+        ('ilp_captain',     INIT_ILP_CAPTAIN),
+        ('rolling_horizon', INIT_ROLLING_HORIZON),
+    ]
+
+    configs = []
+    for algo_name, strategy in algorithms:
+        for season in seasons:
+            configs.append({
+                'season': season,
+                'start_gw': start_gw,
+                'repeat': repeat,
+                'starting_team': 'auto',
+                'quiet': True,
+                'strategy': strategy,
+                '_algo': algo_name,
+            })
+
+    print(f'Benchmarking {len(algorithms)} init algorithms × {len(seasons)} seasons '
+          f'({len(configs)} runs in parallel)...')
+
+    with Pool(processes=min(len(configs), 12)) as pool:
+        all_results = pool.map(_safe_run_season, configs)
+
+    # Attach algo name to results (same order as configs)
+    for res, cfg in zip(all_results, configs):
+        res['_algo'] = cfg.get('_algo', res.get('_algo', '?'))
+        if res.get('_error'):
+            print(f"  ERROR [{res['_algo']} / {res['season']}]: {res['_error']}")
+
+    # Build table: algo → season → total_p
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_algo']] = sum(res['p_list'])
+
+    algo_names = [a[0] for a in algorithms]
+    col_w = 16
+    header = f"{'Algorithm':<{col_w}}" + ''.join(f"{s:>{col_w}}" for s in seasons) + f"{'AVG':>{col_w}}"
+    print('\n' + '=' * len(header))
+    print('INITIAL TEAM ALGORITHM BENCHMARK')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    baseline_avg = None
+    rows = []
+    for algo in algo_names:
+        pts = [season_totals[s].get(algo, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((algo, pts, avg))
+        if algo == 'greedy':
+            baseline_avg = avg
+
+    for algo, pts, avg in rows:
+        delta = f'(+{avg - baseline_avg:.0f})' if algo != 'greedy' and baseline_avg else ''
+        row = f"{algo:<{col_w}}" + ''.join(f"{p:>{col_w}}" for p in pts) + f"{avg:>{col_w - len(delta)}.0f}{delta}"
+        print(row)
+    print('=' * len(header))
+
+
 def main():
     inputs = parse_args()
 
     seasons = inputs.seasons if inputs.seasons else [inputs.season]
     parallel = len(seasons) > 1
+
+    if inputs.benchmark_init:
+        run_benchmark_init(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
 
     # Instantiate strategy config
     strategy_config = get_strategy_config(inputs.strategy)
