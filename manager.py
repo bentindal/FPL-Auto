@@ -39,6 +39,8 @@ def parse_args():
                         help='Strategy to use for season simulation (default: baseline_current; phase_8_optimal = Phase 6-8 locked optimal)')
     parser.add_argument('-benchmark_init', action=argparse.BooleanOptionalAction, default=False,
                         help='Benchmark all 6 initial-team algorithms across the given seasons')
+    parser.add_argument('-benchmark_transfer_lockout', action=argparse.BooleanOptionalAction, default=False,
+                        help='Sweep no-transfer lockout lengths (GW 1..X) across the given seasons')
     parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
                         help='Export results to JSON + score plot')
     parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
@@ -272,6 +274,75 @@ def run_benchmark_init(seasons: list, start_gw: int, repeat: int):
     print('=' * len(header))
 
 
+def run_benchmark_transfer_lockout(seasons: list, start_gw: int, repeat: int):
+    """Sweep no-transfer lockout lengths across seasons.
+
+    For each lockout value X, transfers are blocked for GWs 1..X and allowed GW X+1..38.
+    X=0 is the unrestricted baseline (full season window).
+    """
+    from dataclasses import replace as dc_replace
+    lockout_values = [0, 1, 2, 3, 4, 5, 6, 8, 10, 12]
+
+    configs = []
+    for x in lockout_values:
+        window = (x + 1, 38) if x > 0 else None
+        strategy = dc_replace(BASELINE_CURRENT, transfer_window_gw_range=window)
+        for season in seasons:
+            configs.append({
+                'season': season,
+                'start_gw': start_gw,
+                'repeat': repeat,
+                'starting_team': 'auto',
+                'quiet': True,
+                'strategy': strategy,
+                '_lockout': x,
+            })
+
+    print(f'Benchmarking {len(lockout_values)} lockout lengths × {len(seasons)} seasons '
+          f'({len(configs)} runs in parallel)...')
+
+    with Pool(processes=min(len(configs), 16)) as pool:
+        all_results = pool.map(_safe_run_season, configs)
+
+    for res, cfg in zip(all_results, configs):
+        res['_lockout'] = cfg['_lockout']
+        if res.get('_error'):
+            print(f"  ERROR [lockout={res['_lockout']} / {res['season']}]: {res['_error']}")
+
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_lockout']] = sum(res['p_list'])
+
+    col_w = 14
+    header = f"{'Lock GW 1..':<{col_w}}" + ''.join(f"{s:>{col_w}}" for s in seasons) + f"{'AVG':>{col_w}}"
+    print('\n' + '=' * len(header))
+    print('TRANSFER LOCKOUT BENCHMARK  (no transfers for GWs 1..X)')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    baseline_avg = None
+    rows = []
+    for x in lockout_values:
+        pts = [season_totals[s].get(x, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((x, pts, avg))
+        if x == 0:
+            baseline_avg = avg
+
+    for x, pts, avg in rows:
+        label = f"X={x} (none)" if x == 0 else f"X={x}"
+        delta = f'({avg - baseline_avg:+.0f})' if x != 0 and baseline_avg else ''
+        row = (f"{label:<{col_w}}"
+               + ''.join(f"{p:>{col_w}}" for p in pts)
+               + f"{avg:>{col_w - len(delta)}.0f}{delta}")
+        print(row)
+    print('=' * len(header))
+
+    best_x, _, best_avg = max(rows, key=lambda r: r[2])
+    print(f'\nBest: X={best_x} (avg {best_avg:.0f})')
+
+
 def main():
     inputs = parse_args()
 
@@ -280,6 +351,10 @@ def main():
 
     if inputs.benchmark_init:
         run_benchmark_init(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
+
+    if inputs.benchmark_transfer_lockout:
+        run_benchmark_transfer_lockout(seasons, inputs.start_gw, inputs.repeat_until - 1)
         return
 
     # Instantiate strategy config
