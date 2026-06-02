@@ -1,3 +1,18 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: Phase 10 (Model Retraining & Time-Series Optimization) — ✅ COMPLETE (5/5 PLANS EXECUTED)
+status: completed
+last_updated: "2026-05-29T17:33:38.855Z"
+progress:
+  total_phases: 10
+  completed_phases: 7
+  total_plans: 39
+  completed_plans: 35
+  percent: 90
+---
+
 # PROJECT STATE: FPL-Auto Performance Optimization
 
 **Last Updated:** 2026-05-28  
@@ -14,6 +29,7 @@
 **Current Focus**: Optimizing captain selection and chip usage; next phase targets bench composition and substitution strategy.
 
 **Key Constraints**:
+
 - Temporal Integrity: Models and strategies can only see data available at each gameweek. No lookahead bias.
 - Compatibility: Must integrate with existing manager.py, team.py, data pipeline without breaking changes.
 - Reproducibility: All results must be reproducible (seeded, deterministic data loading).
@@ -28,6 +44,7 @@
 **Next Milestone**: Phase 10 Plan 05 (Airflow deployment + Phase 11 planning)
 
 **Progress**: 
+
 ```
 Phases 1-9:    ████████████████████ 100% (EXECUTION COMPLETE)
 Phase 10 P01:  ████████████████████ 100% (Live data collection)
@@ -38,6 +55,7 @@ Phase 10 P05:  ████████████████████ 100%
 ```
 
 **Current Phase Status:**
+
 - Phase 5 (Strategy Framework): ✅ COMPLETE
 - Phase 6 (Transfer Strategy Evaluation): ✅ COMPLETE
 - Phase 7 (Captain & Chip Evaluation): ✅ COMPLETE
@@ -81,6 +99,7 @@ Phase 10 P05:  ████████████████████ 100%
 **Critical Path**: 1 → 2 → 3 → 4 → 5 → {6, 7, 8} → 9 → 10 → {11, 12}
 
 **Phase 10 Status**: 
+
 - ✅ P01: Live data collection (FPL API + Understat)
 - ✅ P02: Ensemble retraining (XGBoost + RF per position)
 - ✅ P03: Airflow DAG + drift monitoring
@@ -92,6 +111,7 @@ Phase 10 P05:  ████████████████████ 100%
 ## Phase 7 Key Results
 
 ### Captain Strategy Variants (Phase 7a)
+
 | Variant | Total Points | Improvement | Significant |
 |---------|:---:|:---:|:---:|
 | CAPTAIN_HIGHEST_VALUE | 1817 | **+12 pts** | ✅ YES |
@@ -101,6 +121,7 @@ Phase 10 P05:  ████████████████████ 100%
 **Winner**: CAPTAIN_HIGHEST_VALUE (locked for Phase 8+)
 
 ### Chip Timing Variants (Phase 7b)
+
 | Variant | Total Points | Improvement | Significant |
 |---------|:---:|:---:|:---:|
 | CHIP_DOUBLES_OPTIMIZED | 1805 | 0 pts | NO |
@@ -133,11 +154,13 @@ Phase 10 P05:  ████████████████████ 100%
 **Goal**: Evaluate bench composition variants and substitution strategies to maximize points from bench players and improve squad flexibility.
 
 **Locked Parameters** (from Phases 5-7):
+
 - Transfer strategy: CONSERVATIVE_FULL
 - Captain mode: CAPTAIN_HIGHEST_VALUE
 - Chip schedule: conservative
 
 **Expected Variants:**
+
 1. Bench composition: defender-heavy, forward-heavy, balanced
 2. Substitution strategy: predictive (use ML to swap early), reactive (wait for points)
 
@@ -173,21 +196,26 @@ Phase 10 P05:  ████████████████████ 100%
 ## Performance Metrics
 
 ### Baseline (Phase 5 Strategy Framework)
+
 - Team xP (static squad, no transfers): 1580 pts / season
 - Current approach (with transfers): 1783 pts / season (2023-24)
 
 ### Phase 6 Transfer Optimization
+
 - CONSERVATIVE_FULL: 1805 pts / season (+22 vs current)
 
 ### Phase 7 Captain & Chip Optimization
+
 - CONSERVATIVE_FULL + CAPTAIN_HIGHEST_VALUE: 1817 pts / season (+12 additional)
 - Total optimization: **+34 pts vs baseline**
 
 ### Phase 8 Target
+
 - Expected improvement: +5 to +15 pts (bench & substitution strategy)
 - Projected Phase 8 result: 1822-1832 pts / season
 
 ### Phase 9 Validation
+
 - Final performance vs top 100 managers (target: within 10%)
 
 ---
@@ -219,6 +247,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 ## Next Steps: Phase 8
 
 **Immediate Next Action**: Run `/gsd-plan-phase 8` to:
+
 1. Define bench composition and substitution variants
 2. Create detailed execution plans
 3. Estimate resource requirements
@@ -235,6 +264,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 **Status:** 🔬 RESEARCH COMPLETE (2026-05-28)
 
 **Key Research Findings:**
+
 - Optimal retraining frequency: every 2-4 GWs (not weekly)
 - Drift detection: PELT algorithm with 15% RMSE threshold trigger
 - Window strategy: Expanding windows (all historical + live) outperform rolling
@@ -245,6 +275,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 **Research Document:** `.planning/research/10-MODEL-RETRAINING-RESEARCH.md`
 
 **Phase 10 Milestones (Planned):**
+
 - M1: Data collection pipeline + Airflow skeleton
 - M2: Model retraining orchestrator + drift detection
 - M3: Live testing on 2024-25 + threshold calibration
@@ -258,6 +289,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 **Status:** 🚀 EXECUTION COMPLETE (2026-05-28)
 
 **Key Results:**
+
 - Data collection pipeline: FPL + Understat dual-source operational
 - Scheduled retraining: Every 2 GWs with 15% RMSE drift override (LOCKED)
 - Position-specific ensembles: XGBoost + RandomForest per GK/DEF/MID/FWD trained
@@ -266,6 +298,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 - Live testing: GW1-5 validated; metrics tracked; manager.py integration OK
 
 **Metrics (Live Test GW1-5):**
+
 - No drift detected
 - RMSE baseline established from historical 2019-2023
 - Predictions exported to TSV format; manager.py consumption verified
@@ -273,6 +306,7 @@ a774f0d9 docs(09-07): aggregate Phase 9 validation results into comprehensive fi
 **Requirements Met:** MR-01 through MR-06 (100%)
 
 **Production Status: READY**
+
 - Thresholds validated on live data
 - Runbook documented (docs/RETRAINING_RUNBOOK.md)
 - All 5 plans executed and tested
