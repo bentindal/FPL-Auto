@@ -156,6 +156,13 @@ class StrategyConfig:
     Reads GW, GW+1, ..., GW+n-1 prediction TSVs and sums xP column-wise.
     """
 
+    rolling_horizon_discount: float = 1.0
+    """
+    Per-week discount factor for 'rolling_horizon' algorithm (default 1.0 = no discount).
+    Week offset i is weighted by discount^i: 1.0, d, d², d³, ...
+    Values <1.0 down-weight far-future GWs (e.g. 0.8 matches the main xP discount).
+    """
+
     # Bench policy
     bench_mode: str = 'rotate_low_xp'
     """
@@ -359,6 +366,9 @@ class StrategyConfig:
         if not (1 <= self.ilp_rolling_weeks <= 10):
             raise ValueError(f"ilp_rolling_weeks must be 1-10, got {self.ilp_rolling_weeks}")
 
+        if not (0.0 < self.rolling_horizon_discount <= 1.0):
+            raise ValueError(f"rolling_horizon_discount must be in (0, 1], got {self.rolling_horizon_discount}")
+
 
 # BASELINE STRATEGIES (for comparison and validation)
 
@@ -382,10 +392,10 @@ BASELINE_CURRENT = StrategyConfig(
     # Philosophy: Phase 6-8 optimal strategy (CONSERVATIVE_FULL + BENCH_SAFE_STATIC).
     # Empirically validated across all seasons (2021-22, 2022-23, 2023-24): top performer.
     # Transfer: Budget 0.5 (conservative); Window: None (full season); Threshold: 20% relative improvement
-    # Captain: highest_xp baseline (Phase 7 optimal: CAPTAIN_HIGHEST_VALUE used in final system)
-    # Bench: BENCH_SAFE_STATIC (Phase 8 optimal) — static rotation with safe composition
-    # Chips: Conservative schedule
-    # Init: two_tier greedy (Phase 10 benchmark winner: +38 avg vs greedy baseline)
+    # Captain: highest_value (strategy-sweep winner: +65 avg vs highest_xp, per-GW benchmark)
+    # Bench: predictive_swap substitution (strategy-sweep winner: +19 avg vs static)
+    # Chips: aggressive schedule (chip benchmark winner: +5 avg vs conservative, full-season)
+    # Init: rolling_horizon n=5 (GW-selection benchmark winner: +604 avg vs greedy baseline)
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,  # Matches discount_next_n_gws(n=5, factor=0.8)
@@ -393,20 +403,21 @@ BASELINE_CURRENT = StrategyConfig(
     transfer_window_gw_range=None,  # Full season availability (critical)
     transfer_xp_threshold=0.20,  # 20% relative improvement required
     transfer_xp_threshold_mode='relative',
-    captain_mode='highest_xp',
+    captain_mode='highest_value',  # LOCKED: strategy-sweep winner (+65 avg vs highest_xp)
     captain_lookback_gws=1,
     captain_variance_penalty=0.0,
-    chip_schedule='conservative',
+    chip_schedule='aggressive',  # LOCKED: chip benchmark winner (+5 avg vs conservative)
     wildcard_threshold_points=60.0,
     chip_budget_limit=3,
     bench_mode='rotate_low_xp',
     bench_injury_threshold=0.5,
     bench_composition_variant='safe',  # LOCKED Phase 8: BENCH_SAFE_STATIC optimal
-    substitution_mode='static',  # LOCKED Phase 8: static rotation optimal
+    substitution_mode='predictive_swap',  # LOCKED: strategy-sweep winner (+19 avg vs static)
     substitution_trigger_threshold=0.20,
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
-    initial_team_algorithm='two_tier',  # LOCKED Phase 10: +38 avg over greedy baseline
+    initial_team_algorithm='rolling_horizon',  # LOCKED: +604 avg over greedy baseline (GW-selection benchmark)
+    ilp_rolling_weeks=5,                       # LOCKED: n=5 d=1.0 optimal (rolling_horizon benchmark)
 )
 
 # ARCHETYPE STRATEGIES (for systematic comparison)
@@ -1008,7 +1019,7 @@ INIT_ILP_CAPTAIN = StrategyConfig(
 )
 
 INIT_ROLLING_HORIZON = StrategyConfig(
-    # Greedy on summed xP across next 4 actual prediction files (GW+0..GW+3).
+    # Greedy on summed xP across next 5 actual prediction files (GW+0..GW+4).
     transfer_mode='flexible',
     max_transfers_per_gw=1,
     transfer_discount_factor=0.8,
@@ -1030,7 +1041,7 @@ INIT_ROLLING_HORIZON = StrategyConfig(
     position_variance_tolerance=1.2,
     punt_threshold=0.5,
     initial_team_algorithm='rolling_horizon',
-    ilp_rolling_weeks=4,
+    ilp_rolling_weeks=5,
 )
 
 

@@ -1100,7 +1100,8 @@ class Team:
                 self._greedy_team_generator()
         elif algo == 'rolling_horizon':
             n = self.strategy_config.ilp_rolling_weeks if self.strategy_config else 4
-            self._rolling_horizon_team_generator(n_weeks=n)
+            d = self.strategy_config.rolling_horizon_discount if self.strategy_config else 1.0
+            self._rolling_horizon_team_generator(n_weeks=n, discount_factor=d)
         else:
             self._greedy_team_generator()
 
@@ -1237,9 +1238,10 @@ class Team:
         self._apply_ilp_result(result_opt.x, names_l, pos_l, costs)
         return True
 
-    def _get_rolling_horizon_xp(self, n_weeks=4):
+    def _get_rolling_horizon_xp(self, n_weeks=4, discount_factor=1.0):
         """Sum xP from actual prediction files for GW, GW+1, ..., GW+n-1.
 
+        Week offset i is weighted by discount_factor^i (1.0 = plain sum, <1.0 = decay).
         Returns a list of 4 DataFrames [GK, DEF, MID, FWD] with xP columns summed
         across future gameweeks. Falls back to self.all_xp if no future files exist.
         """
@@ -1253,10 +1255,11 @@ class Team:
             except (FileNotFoundError, KeyError):
                 break
 
+            weight = discount_factor ** offset
             if combined is None:
                 combined = [df.copy() for df in week_preds]
                 for df in combined:
-                    df['xP'] = df['xP'].astype(float)
+                    df['xP'] = df['xP'].astype(float) * weight
             else:
                 for i, df_new in enumerate(week_preds):
                     df_ex = combined[i]
@@ -1264,17 +1267,17 @@ class Team:
                     key_new = df_new['Name'].tolist() if 'Name' in df_new.columns else df_new.index.tolist()
                     xp_new = dict(zip(key_new, df_new['xP'].astype(float)))
                     df_ex['xP'] = [
-                        df_ex['xP'].iloc[j] + xp_new.get(k, 0.0)
+                        df_ex['xP'].iloc[j] + xp_new.get(k, 0.0) * weight
                         for j, k in enumerate(key_ex)
                     ]
 
         return combined if combined is not None else self.all_xp
 
-    def _rolling_horizon_team_generator(self, n_weeks=4):
-        """Greedy selection using summed xP from next n_weeks actual prediction files."""
+    def _rolling_horizon_team_generator(self, n_weeks=4, discount_factor=1.0):
+        """Greedy selection using (optionally discounted) summed xP from next n_weeks prediction files."""
         original_xp = self.all_xp
         try:
-            self.all_xp = self._get_rolling_horizon_xp(n_weeks)
+            self.all_xp = self._get_rolling_horizon_xp(n_weeks, discount_factor=discount_factor)
             self._greedy_team_generator()
         finally:
             self.all_xp = original_xp

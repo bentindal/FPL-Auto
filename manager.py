@@ -41,6 +41,14 @@ def parse_args():
                         help='Benchmark all 6 initial-team algorithms across the given seasons')
     parser.add_argument('-benchmark_transfer_lockout', action=argparse.BooleanOptionalAction, default=False,
                         help='Sweep no-transfer lockout lengths (GW 1..X) across the given seasons')
+    parser.add_argument('-benchmark_gw_selection', action=argparse.BooleanOptionalAction, default=False,
+                        help='Per-GW team selection benchmark: fresh squad each GW, no transfers, all 7 algorithms')
+    parser.add_argument('-benchmark_rolling_horizon', action=argparse.BooleanOptionalAction, default=False,
+                        help='Sweep rolling_horizon n_weeks (1-5) × discount_factor (1.0-0.7)')
+    parser.add_argument('-benchmark_strategy_sweep', action=argparse.BooleanOptionalAction, default=False,
+                        help='Sweep captain_mode × substitution_mode (per-GW fresh squad)')
+    parser.add_argument('-benchmark_chip_schedule', action=argparse.BooleanOptionalAction, default=False,
+                        help='Sweep chip_schedule (full-season simulation, chips need season state)')
     parser.add_argument('-save', '-s', action=argparse.BooleanOptionalAction, default=False,
                         help='Export results to JSON + score plot')
     parser.add_argument('-plot_p_minus_xp', action=argparse.BooleanOptionalAction, default=False)
@@ -343,6 +351,315 @@ def run_benchmark_transfer_lockout(seasons: list, start_gw: int, repeat: int):
     print(f'\nBest: X={best_x} (avg {best_avg:.0f})')
 
 
+def _gw_selection_worker(config: dict) -> dict:
+    season = config['season']
+    start_gw = config['start_gw']
+    repeat = config['repeat']
+    strategy_config = config.get('strategy', BASELINE_CURRENT)
+    algo_name = config.get('_algo', '?')
+
+    if config.get('quiet'):
+        sys.stdout = open(os.devnull, 'w')
+
+    gw_points = []
+    try:
+        for gw in range(start_gw, start_gw + repeat + 1):
+            try:
+                t = team_module.Team(season, gw, 100.0, strategy_config=strategy_config)
+                t.initial_team_generator()
+                gw_p = t.team_p()
+                gw_points.append(gw_p)
+            except FileNotFoundError:
+                break
+        return {'season': season, '_algo': algo_name, 'gw_points': gw_points}
+    except Exception as e:
+        return {'season': season, '_algo': algo_name, 'gw_points': [], '_error': str(e)}
+    finally:
+        if config.get('quiet'):
+            sys.stdout = sys.__stdout__
+
+
+def run_benchmark_gw_selection(seasons: list, start_gw: int, repeat: int):
+    """Per-GW team selection benchmark.
+
+    Freshly generates a squad each GW (£100m budget, no prior state) with each
+    initial-team algorithm, then scores against actual GW points with captain 2×.
+    No transfers, no chips. Isolates team-selection signal from transfer noise.
+    """
+    algorithms = [
+        ('greedy',          INIT_GREEDY),
+        ('two_tier',        INIT_TWO_TIER),
+        ('ilp_xp',          INIT_ILP_XP),
+        ('ilp_ratio',       INIT_ILP_RATIO),
+        ('ilp_penalised',   INIT_ILP_PENALISED),
+        ('ilp_captain',     INIT_ILP_CAPTAIN),
+        ('rolling_horizon', INIT_ROLLING_HORIZON),
+    ]
+
+    configs = [
+        {'season': season, 'start_gw': start_gw, 'repeat': repeat,
+         'quiet': True, 'strategy': strategy, '_algo': algo_name}
+        for algo_name, strategy in algorithms
+        for season in seasons
+    ]
+
+    print(f'GW-Selection Benchmark: {len(algorithms)} algorithms × {len(seasons)} seasons '
+          f'({len(configs)} runs, {repeat + 1} GWs each)...')
+
+    with Pool(processes=min(len(configs), 12)) as pool:
+        all_results = pool.map(_gw_selection_worker, configs)
+
+    for res, cfg in zip(all_results, configs):
+        res['_algo'] = cfg['_algo']
+        if res.get('_error'):
+            print(f"  ERROR [{res['_algo']} / {res['season']}]: {res['_error']}")
+
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_algo']] = sum(res['gw_points'])
+
+    algo_names = [a[0] for a in algorithms]
+    col_w = 16
+    header = (f"{'Algorithm':<{col_w}}"
+              + ''.join(f"{s:>{col_w}}" for s in seasons)
+              + f"{'AVG':>{col_w}}")
+    print('\n' + '=' * len(header))
+    print('GW TEAM SELECTION BENCHMARK  (fresh squad each GW, no transfers)')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    baseline_avg = None
+    rows = []
+    for algo in algo_names:
+        pts = [season_totals[s].get(algo, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((algo, pts, avg))
+        if algo == 'greedy':
+            baseline_avg = avg
+
+    for algo, pts, avg in rows:
+        delta = f'({avg - baseline_avg:+.0f})' if algo != 'greedy' and baseline_avg else ''
+        row = (f"{algo:<{col_w}}"
+               + ''.join(f"{p:>{col_w}}" for p in pts)
+               + f"{avg:>{col_w - len(delta)}.0f}{delta}")
+        print(row)
+
+    best_algo, _, best_avg = max(rows, key=lambda r: r[2])
+    print('=' * len(header))
+    print(f'\nBest: {best_algo} (avg {best_avg:.0f})')
+
+
+def run_benchmark_rolling_horizon(seasons: list, start_gw: int, repeat: int):
+    """Sweep rolling_horizon n_weeks (1-5) × discount_factor across seasons.
+
+    Each variant generates a fresh squad each GW (£100m, no transfers) and scores
+    against actual GW points. Isolates which look-ahead depth and decay rate maximises
+    team-selection quality.
+    """
+    from dataclasses import replace as dc_replace
+    n_weeks_values = [5, 6, 7, 8]
+
+    variants = [
+        (f'n={n}', dc_replace(INIT_ROLLING_HORIZON, ilp_rolling_weeks=n, rolling_horizon_discount=1.0))
+        for n in n_weeks_values
+    ]
+
+    configs = [
+        {'season': season, 'start_gw': start_gw, 'repeat': repeat,
+         'quiet': True, 'strategy': strategy, '_algo': label}
+        for label, strategy in variants
+        for season in seasons
+    ]
+
+    print(f'Rolling Horizon Benchmark: {len(variants)} variants × {len(seasons)} seasons '
+          f'({len(configs)} runs, {repeat + 1} GWs each)...')
+
+    with Pool(processes=min(len(configs), 16)) as pool:
+        all_results = pool.map(_gw_selection_worker, configs)
+
+    for res, cfg in zip(all_results, configs):
+        res['_algo'] = cfg['_algo']
+        if res.get('_error'):
+            print(f"  ERROR [{res['_algo']} / {res['season']}]: {res['_error']}")
+
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_algo']] = sum(res['gw_points'])
+
+    variant_labels = [v[0] for v in variants]
+    col_w = 14
+    header = (f"{'Variant':<14}"
+              + ''.join(f"{s:>{col_w}}" for s in seasons)
+              + f"{'AVG':>{col_w}}")
+    print('\n' + '=' * len(header))
+    print('ROLLING HORIZON BENCHMARK  (n_weeks × discount_factor, fresh squad each GW)')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    baseline_label = 'n=5'
+    baseline_avg = None
+    rows = []
+    for label in variant_labels:
+        pts = [season_totals[s].get(label, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((label, pts, avg))
+        if label == baseline_label:
+            baseline_avg = avg
+
+    best_label, _, best_avg = max(rows, key=lambda r: r[2])
+    for label, pts, avg in rows:
+        delta = f'({avg - baseline_avg:+.0f})' if label != baseline_label and baseline_avg else ''
+        marker = ' *' if label == best_label else ''
+        row = (f"{label:<14}"
+               + ''.join(f"{p:>{col_w}}" for p in pts)
+               + f"{avg:>{col_w - len(delta) - len(marker)}.0f}{delta}{marker}")
+        print(row)
+        pass
+
+    print('=' * len(header))
+    print(f'\nBest: {best_label} (avg {best_avg:.0f})')
+
+
+def run_benchmark_strategy_sweep(seasons: list, start_gw: int, repeat: int):
+    """Sweep captain_mode × substitution_mode using per-GW fresh-squad methodology.
+
+    Holds initial_team_algorithm='rolling_horizon' (n=5, d=1.0) fixed.
+    Isolates which captaincy + sub policies maximise team-selection quality.
+    Chips are NOT tested here — they require season state (see run_benchmark_chip_schedule).
+    """
+    from dataclasses import replace as dc_replace
+    captain_modes = ['highest_xp', 'highest_value', 'form_based']
+    substitution_modes = ['static', 'predictive_swap']
+
+    variants = [
+        (f'cap={cm:<13} sub={sm}',
+         dc_replace(BASELINE_CURRENT, captain_mode=cm, substitution_mode=sm))
+        for cm in captain_modes
+        for sm in substitution_modes
+    ]
+
+    configs = [
+        {'season': season, 'start_gw': start_gw, 'repeat': repeat,
+         'quiet': True, 'strategy': strategy, '_algo': label}
+        for label, strategy in variants
+        for season in seasons
+    ]
+
+    print(f'Strategy Sweep: {len(variants)} (captain × sub) × {len(seasons)} seasons '
+          f'({len(configs)} runs, {repeat + 1} GWs each)...')
+
+    with Pool(processes=min(len(configs), 16)) as pool:
+        all_results = pool.map(_gw_selection_worker, configs)
+
+    for res, cfg in zip(all_results, configs):
+        res['_algo'] = cfg['_algo']
+        if res.get('_error'):
+            print(f"  ERROR [{res['_algo']} / {res['season']}]: {res['_error']}")
+
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_algo']] = sum(res['gw_points'])
+
+    col_w = 14
+    label_w = 32
+    header = (f"{'Variant':<{label_w}}"
+              + ''.join(f"{s:>{col_w}}" for s in seasons)
+              + f"{'AVG':>{col_w}}")
+    print('\n' + '=' * len(header))
+    print('STRATEGY SWEEP  (rolling_horizon n=5, per-GW fresh squad, no transfers/chips)')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    rows = []
+    for label, _ in variants:
+        pts = [season_totals[s].get(label, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((label, pts, avg))
+
+    rows.sort(key=lambda r: -r[2])  # sort best first
+    best_label, _, best_avg = rows[0]
+    baseline_avg = next((r[2] for r in rows if 'cap=highest_xp ' in r[0] and 'sub=static' in r[0]), best_avg)
+
+    for label, pts, avg in rows:
+        delta = f'({avg - baseline_avg:+.0f})' if avg != baseline_avg else ''
+        marker = ' *' if label == best_label else ''
+        row = (f"{label:<{label_w}}"
+               + ''.join(f"{p:>{col_w}}" for p in pts)
+               + f"{avg:>{col_w - len(delta) - len(marker)}.0f}{delta}{marker}")
+        print(row)
+    print('=' * len(header))
+    print(f'\nBest: {best_label.strip()} (avg {best_avg:.0f})')
+
+
+def run_benchmark_chip_schedule(seasons: list, start_gw: int, repeat: int):
+    """Sweep chip_schedule values across seasons using full-season simulation.
+
+    Chips need season state (1 wildcard, 1 bench boost, etc.) so per-GW fresh-squad
+    methodology doesn't apply. Uses standard run_season with rolling_horizon n=5 init.
+    """
+    from dataclasses import replace as dc_replace
+    chip_schedules = ['never', 'conservative', 'aggressive', 'doubles-optimized', 'blanks-optimized']
+
+    configs = []
+    for sched in chip_schedules:
+        strategy = dc_replace(BASELINE_CURRENT, chip_schedule=sched)
+        for season in seasons:
+            configs.append({
+                'season': season, 'start_gw': start_gw, 'repeat': repeat,
+                'starting_team': 'auto', 'quiet': True,
+                'strategy': strategy, '_chip': sched,
+            })
+
+    print(f'Chip Schedule Benchmark: {len(chip_schedules)} schedules × {len(seasons)} seasons '
+          f'({len(configs)} full-season runs)...')
+
+    with Pool(processes=min(len(configs), 16)) as pool:
+        all_results = pool.map(_safe_run_season, configs)
+
+    for res, cfg in zip(all_results, configs):
+        res['_chip'] = cfg['_chip']
+        if res.get('_error'):
+            print(f"  ERROR [{res['_chip']} / {res['season']}]: {res['_error']}")
+
+    season_totals = {s: {} for s in seasons}
+    for res in all_results:
+        season_totals[res['season']][res['_chip']] = sum(res['p_list'])
+
+    col_w = 14
+    label_w = 22
+    header = (f"{'Chip Schedule':<{label_w}}"
+              + ''.join(f"{s:>{col_w}}" for s in seasons)
+              + f"{'AVG':>{col_w}}")
+    print('\n' + '=' * len(header))
+    print('CHIP SCHEDULE BENCHMARK  (full-season, rolling_horizon n=5 init)')
+    print('=' * len(header))
+    print(header)
+    print('-' * len(header))
+
+    baseline_avg = None
+    rows = []
+    for sched in chip_schedules:
+        pts = [season_totals[s].get(sched, 0) for s in seasons]
+        avg = sum(pts) / len(pts) if pts else 0
+        rows.append((sched, pts, avg))
+        if sched == 'conservative':
+            baseline_avg = avg
+
+    best_sched, _, best_avg = max(rows, key=lambda r: r[2])
+    for sched, pts, avg in rows:
+        delta = f'({avg - baseline_avg:+.0f})' if sched != 'conservative' and baseline_avg else ''
+        marker = ' *' if sched == best_sched else ''
+        row = (f"{sched:<{label_w}}"
+               + ''.join(f"{p:>{col_w}}" for p in pts)
+               + f"{avg:>{col_w - len(delta) - len(marker)}.0f}{delta}{marker}")
+        print(row)
+    print('=' * len(header))
+    print(f'\nBest: {best_sched} (avg {best_avg:.0f})')
+
+
 def main():
     inputs = parse_args()
 
@@ -355,6 +672,22 @@ def main():
 
     if inputs.benchmark_transfer_lockout:
         run_benchmark_transfer_lockout(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
+
+    if inputs.benchmark_gw_selection:
+        run_benchmark_gw_selection(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
+
+    if inputs.benchmark_rolling_horizon:
+        run_benchmark_rolling_horizon(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
+
+    if inputs.benchmark_strategy_sweep:
+        run_benchmark_strategy_sweep(seasons, inputs.start_gw, inputs.repeat_until - 1)
+        return
+
+    if inputs.benchmark_chip_schedule:
+        run_benchmark_chip_schedule(seasons, inputs.start_gw, inputs.repeat_until - 1)
         return
 
     # Instantiate strategy config
